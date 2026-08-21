@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>PTE ROOM - Multi-Task Practice & Leitner Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
@@ -10,7 +10,8 @@
     
     html, body {
       margin: 0;
-      padding: 6px;
+      /* فاصله استاندارد از ناچ بالای گوشی و گوشه‌های نمایشگر */
+      padding: max(12px, env(safe-area-inset-top, 12px)) 10px max(12px, env(safe-area-inset-bottom, 12px)) 10px;
       background: #eef2f5;
       color: #222;
       width: 100vw;
@@ -22,20 +23,21 @@
       display: flex;
       flex-direction: column;
       background: #fff;
-      border-radius: 8px;
+      border-radius: 12px;
       border: 1px solid #c9d2db;
-      padding: 10px 12px;
+      padding: 12px 14px;
       width: 100%;
       height: 100%;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
     
     .nav-tabs {
       display: flex;
-      gap: 4px;
-      margin-bottom: 8px;
+      gap: 5px;
+      margin-top: 4px;
+      margin-bottom: 10px;
       border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 6px;
+      padding-bottom: 8px;
       flex-shrink: 0;
     }
 
@@ -43,11 +45,11 @@
       flex: 1;
       background: #edf2f7;
       border: 1px solid #cbd5e1;
-      padding: 7px 2px;
-      border-radius: 4px;
+      padding: 9px 3px;
+      border-radius: 6px;
       font-weight: 700;
       cursor: pointer;
-      font-size: 11px;
+      font-size: 11.5px;
       color: #475569;
       text-align: center;
     }
@@ -62,12 +64,12 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1.5px solid #0056b3;
-      padding-bottom: 4px;
-      margin-bottom: 8px;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
       flex-shrink: 0;
     }
-    .brand { font-weight: 800; color: #0056b3; font-size: 13.5px; }
-    .timer { font-weight: bold; color: #c00; font-size: 13.5px; }
+    .brand { font-weight: 800; color: #0056b3; font-size: 14px; }
+    .timer { font-weight: bold; color: #c00; font-size: 14px; }
     
     .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
     
@@ -81,10 +83,10 @@
 
     select {
       flex: 1;
-      padding: 8px 10px;
-      border-radius: 4px;
-      border: 1px solid #0056b3;
-      font-size: 13px;
+      padding: 9px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #0056b3;
+      font-size: 13.5px;
       font-weight: 600;
       background: #f8fafc;
       color: #0056b3;
@@ -95,24 +97,24 @@
       display: none;
       margin-bottom: 8px;
       background: #f1f5f9;
-      padding: 6px 10px;
+      padding: 8px 10px;
       border-radius: 6px;
       border: 1px solid #cbd5e1;
       flex-shrink: 0;
     }
-    audio { width: 100%; height: 32px; outline: none; }
+    audio { width: 100%; height: 34px; outline: none; }
 
     .prompt-box {
       flex: 1;
       min-height: 90px;
       background: #fafbfc;
       border: 1px solid #dbe2e8;
-      padding: 10px;
-      font-size: 13.5px;
-      line-height: 1.55;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.6;
       overflow-y: auto;
       margin-bottom: 8px;
-      border-radius: 4px;
+      border-radius: 6px;
       text-align: justify;
       white-space: pre-line;
       -webkit-overflow-scrolling: touch;
@@ -120,12 +122,12 @@
 
     textarea {
       flex: 1;
-      min-height: 100px;
+      min-height: 110px;
       width: 100%;
       padding: 10px;
-      font-size: 14px;
+      font-size: 14.5px;
       border: 1px solid #a0aec0;
-      border-radius: 4px;
+      border-radius: 6px;
       resize: none;
       outline: none;
       -webkit-overflow-scrolling: touch;
@@ -139,16 +141,16 @@
       margin-top: 8px;
       flex-shrink: 0;
     }
-    .word-count { font-size: 13px; font-weight: bold; color: #333; }
+    .word-count { font-size: 13.5px; font-weight: bold; color: #333; }
     .btn {
       background: #0056b3;
       color: #fff;
       border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
+      padding: 11px 22px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 13.5px;
     }
     .btn:hover { background: #004494; }
 
@@ -167,12 +169,12 @@
       justify-content: space-between;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 6px;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 700;
       color: #475569;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       flex-shrink: 0;
     }
     .card-scene {
@@ -187,7 +189,7 @@
       position: relative;
       transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
       transform-style: preserve-3d;
-      border-radius: 10px;
+      border-radius: 12px;
     }
     .card.is-flipped {
       transform: rotateY(180deg);
@@ -198,14 +200,11 @@
       height: 100%;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      border-radius: 10px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
       border: 1.5px solid #cbd5e1;
       background: #ffffff;
       overflow-y: auto;
@@ -213,42 +212,47 @@
     .card-front {
       background: linear-gradient(135deg, #0056b3, #003366);
       color: #fff;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
     .card-front .word-title {
-      font-size: 26px;
+      font-size: 34px;
       font-weight: 800;
       letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
     }
     .card-front .tap-hint {
-      font-size: 12px;
-      opacity: 0.8;
+      font-size: 13.5px;
+      opacity: 0.9;
       margin-top: 14px;
-      background: rgba(255,255,255,0.15);
-      padding: 4px 10px;
-      border-radius: 12px;
+      background: rgba(255,255,255,0.18);
+      padding: 6px 14px;
+      border-radius: 16px;
     }
     .card-back {
       background: #fafbfc;
       color: #1e293b;
       transform: rotateY(180deg);
-      align-items: flex-start;
+      justify-content: center;
+      align-items: stretch;
       text-align: left;
+      gap: 10px;
     }
     .card-back .meta-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       width: 100%;
-      border-bottom: 1px solid #e2e8f0;
-      padding-bottom: 6px;
-      margin-bottom: 8px;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 8px;
     }
-    .card-back .pronunciation { font-style: italic; color: #64748b; font-size: 13px; }
-    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-    .card-back .persian-meaning { font-size: 15px; font-weight: 800; color: #0056b3; margin-bottom: 8px; direction: rtl; text-align: right; width: 100%; }
-    .card-back .section-title { font-size: 12px; font-weight: bold; color: #475569; margin-top: 4px; }
-    .card-back .collocations { font-size: 13px; color: #334155; margin-bottom: 6px; }
-    .card-back .example-sentence { font-size: 12.5px; color: #0f172a; background: #f1f5f9; padding: 6px 8px; border-radius: 4px; border-left: 3px solid #0056b3; width: 100%; }
+    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 16px; font-weight: 600; }
+    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 6px; font-size: 13px; font-weight: 800; text-transform: uppercase; }
+    .card-back .persian-meaning { font-size: 19px; font-weight: 800; color: #0056b3; margin: 4px 0; direction: rtl; text-align: right; width: 100%; }
+    .card-back .section-title { font-size: 14px; font-weight: 800; color: #334155; margin-top: 4px; }
+    .card-back .collocations { font-size: 15px; font-weight: 600; color: #1e293b; line-height: 1.5; }
+    .card-back .example-sentence { font-size: 14.5px; line-height: 1.5; color: #0f172a; background: #f1f5f9; padding: 10px 12px; border-radius: 6px; border-left: 4px solid #0056b3; width: 100%; }
 
     .leitner-actions {
       display: flex;
@@ -259,10 +263,10 @@
     }
     .leitner-btn {
       flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 13px;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
       border: none;
       cursor: pointer;
       color: #fff;
@@ -295,7 +299,7 @@
     </div>
 
     <div class="audio-container" id="audioSection">
-      <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Listen to the lecture:</div>
+      <div style="font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Listen to the lecture:</div>
       <audio id="audioPlayer" controls>
         Your browser does not support audio element.
       </audio>
@@ -315,7 +319,7 @@
   <div class="flashcard-wrapper" id="flashcardContainer">
     <div class="leitner-progress">
       <span id="cardCounter">Card 1 of 8</span>
-      <span id="boxLevel">📦 Box Level: 1</span>
+      <span id="boxLevel">📦 Box Level: 1/5</span>
     </div>
 
     <div class="card-scene" onclick="flipCard()">
@@ -323,7 +327,7 @@
         <!-- Front Face -->
         <div class="card-face card-front">
           <div class="word-title" id="frontWord">Mitigate</div>
-          <div class="tap-hint">👆 Tap to flip</div>
+          <div class="tap-hint">👆 برای دیدن معنی لمس کنید</div>
         </div>
         <!-- Back Face -->
         <div class="card-face card-back">
@@ -331,13 +335,13 @@
             <span class="pronunciation" id="backPhonetic">/ˈmɪt.ɪ.ɡeɪt/</span>
             <span class="pos" id="backPos">verb</span>
           </div>
-          <div class="persian-meaning" id="backMeaning">کاهش دادن، تسکین دادن اثرات منفی</div>
+          <div class="persian-meaning" id="backMeaning">کاهش دادن، تعدیل کردن، تسکین دادن</div>
           
           <div class="section-title">Collocations:</div>
-          <div class="collocations" id="backCollocations">• mitigate the impact<br>• mitigate risks</div>
+          <div class="collocations" id="backCollocations">• mitigate the risk<br>• mitigate environmental damage</div>
           
-          <div class="section-title">Example:</div>
-          <div class="example-sentence" id="backSentence">Effective policies can mitigate the adverse effects of climate change.</div>
+          <div class="section-title">Example Sentence:</div>
+          <div class="example-sentence" id="backSentence">Governments must implement stringent policies to mitigate the adverse impacts of pollution.</div>
         </div>
       </div>
     </div>
@@ -354,7 +358,6 @@
   let timerInterval = null;
   let sec = 600;
 
-  // ۱. بانک سوالات SWT
   const swtQuestions = [
     { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Like many archaeological materials, human remains require distinctive and specialized methods of recovery, analysis, and interpretation, while technological innovations and the accumulation of expertise have enabled archaeologists to extract ever greater amounts of information from assemblages of skeletal material. Alongside analyses of new finds, these advances have consistently thrown new light on existing collections of human remains in museums, universities and other institutions. Given the powerful emotional, social and religious meanings attached to the dead body, it is perhaps unsurprising that human remains pose a distinctive set of ethical questions for archaeologists.\nWith the rise of indigenous rights movements and the emergence of post-colonial nations, the acquisition and ownership of human remains became a divisive and politically loaded issue. It became increasingly clear that many human remains in museum collections around the world represented the traces of colonial exploitation and discredited pseudo-scientific theories of race. In the light of these debates and changing attitudes, some human remains were returned or repatriated to their communities of origin, a process which continues to this day. Recently a new set of challenges to the study of human remains has emerged from a rather unexpected direction: the British government revised its interpretation of nineteenth-century burial legislation in a way that would drastically curtail the ability of archaeologists to study human remains of any age excavated in England and Wales. This paper examines these extraordinary events and the legal, political and ethical questions that they raise." },
     { id: "#39", title: "#39 Malaysia Tourism", text: "Malaysia is also launching its biggest ever tourism campaign in an effort to lure 20 million visitors here this year. Tourism is the Southeast Asian nation's second-largest source of foreign exchange after exports. Malaysia is one of the most pleasant, hassle-free countries to visit in Southeast Asia. Aside from its gleaming 21st century glass towers, it boasts some of the most superb beaches, mountains and national parks in the region.\nAny tourist itinerary would have to begin in the capital, Kuala Lumpur, where you will find the Petronas Twin Towers, which once comprised the world's tallest buildings and now hold the title of second-tallest. Both the 88-story towers soar 1,480 feet high and are connected by a sky-bridge on the 41st floor. The limestone temple Batu Caves, located 9 miles north of the city, have a 328-foot-high ceiling and feature ornate Hindu shrines, including a 141-foot-tall gold-painted statue of a Hindu deity. To reach the caves, visitors have to climb a steep flight of 272 steps. In Sabah state on Borneo island not to be confused with Indonesia's Borneo you'll find the small mushroom-shaped Sipadan island, off the coast of Sabah, rated as one of the top five diving sites in the world. Sipadan is the only oceanic island in Malaysia, rising from a 2,300-foot abyss in the Celebes Sea. You can also climb Mount Kinabalu, the tallest peak in Southeast Asia, visit the Sepilok Orang Utan Sanctuary, go white-water rafting and catch a glimpse of the bizarre proboscis monkey, a primate found only in Borneo with a huge pendulous nose, a characteristic pot belly and strange honking sounds.\nWhile you're in Malaysia, consider a trip to Malacca. In its heyday, this southern state was a powerful Malay sultanate and a booming trading port in the region. Facing the Straits of Malacca, this historical state is now a place of intriguing Chinese streets, antique shops, old temples and reminders of European colonial powers. Another interesting destination is Penang, known as the Pearl of the Orient. This island off the northwest coast of Malaysia boasts of a rich Chinese cultural heritage, good food and beautiful beaches." },
@@ -367,7 +370,6 @@
     { id: "#503", title: "#503 Triangulation", text: "While multi-method research is experiencing a surge of popularity, there are reasons to worry about whether multi-method applications are producing more grounded, justified, and persuasive inferences than single-method studies. These concerns arise from the 'triangulation' framework as prototypical research design for multi-method social science. Simply put, triangulation designs involve asking the same causal inference question using two different methods, checking same substantive conclusions. The metaphor is to the geometric technique of estimating distance by measuring the angle of sight toward an object from two different vantage points.\nTriangulation in social sciences has major flaws. One is well-known and widely discussed: what conclusion should be drawn when the two methods produce different findings? Unfortunately, the list of intellectually plausible responses to such an outcome is all but unbounded.\nFor example, a scholar could reasonably conclude that both findings are correct but capture different aspects of the phenomenon of interest; that one method or the other displayed fundamental limitations in the analysis; that the divergence provides evidence against the credibility of the assumptions involved in both methods; that the outcome involves a contrast in terms of scope or relevant populations for the two methods; or that the failure to triangulate simply leaves the inference in a state of uncertainty. In decades of writing about triangulation, no definitive guidance has yet emerged about how to respond to divergent findings between the multiple methods in a study." }
   ];
 
-  // ۲. بانک سوالات Write Essay
   const weQuestions = [
     { id: "#WE1", title: "#1 Mass Media & Public Perception", text: "Mass media has a powerful influence on shaping public opinion and perceptions. Do you agree or disagree with the notion that news outlets manipulate public thinking? Support your position with reasons and relevant examples." },
     { id: "#WE2", title: "#2 Climate Change Responsibility", text: "Some people believe that individual actions are negligible in combating climate change and that only governments and large corporations can solve environmental issues. Discuss both views and give your opinion." },
@@ -375,7 +377,6 @@
     { id: "#WE4", title: "#4 Cashless Society Transition", text: "Many developed nations are transitioning toward an entirely cashless economy. What are the major advantages and disadvantages of this transition for individuals and financial institutions?" }
   ];
 
-  // ۳. بانک سوالات SST
   const sstQuestions = [
     {
       id: "#136",
@@ -391,7 +392,6 @@
     }
   ];
 
-  // ۴. بانک لغات آکادمیک و فلش‌کارت‌های لایتنر
   const academicVocab = [
     {
       word: "Mitigate",
@@ -608,7 +608,6 @@
     }
   }
 
-  // Flashcard & Leitner Functions
   function renderFlashcard() {
     const cardObj = academicVocab[currentCardIndex];
     const cardLevel = leitnerData[currentCardIndex]?.box || 1;
