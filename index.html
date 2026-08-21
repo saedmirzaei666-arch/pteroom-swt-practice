@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PTE ROOM - Multi-Task Practice Platform</title>
+  <title>PTE ROOM - Multi-Task Practice & Leitner Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -32,7 +32,7 @@
     
     .nav-tabs {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       margin-bottom: 8px;
       border-bottom: 2px solid #e2e8f0;
       padding-bottom: 6px;
@@ -43,11 +43,11 @@
       flex: 1;
       background: #edf2f7;
       border: 1px solid #cbd5e1;
-      padding: 8px 4px;
+      padding: 7px 2px;
       border-radius: 4px;
       font-weight: 700;
       cursor: pointer;
-      font-size: 11.5px;
+      font-size: 11px;
       color: #475569;
       text-align: center;
     }
@@ -68,6 +68,8 @@
     }
     .brand { font-weight: 800; color: #0056b3; font-size: 13.5px; }
     .timer { font-weight: bold; color: #c00; font-size: 13.5px; }
+    
+    .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
     
     .selector-bar {
       display: flex;
@@ -149,15 +151,136 @@
       font-size: 13px;
     }
     .btn:hover { background: #004494; }
+
+    /* Flashcard & Leitner Styles */
+    .flashcard-wrapper {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .leitner-progress {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #475569;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+    .card-scene {
+      width: 100%;
+      flex: 1;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 10px;
+    }
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      overflow-y: auto;
+    }
+    .card-front {
+      background: linear-gradient(135deg, #0056b3, #003366);
+      color: #fff;
+    }
+    .card-front .word-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .card-front .tap-hint {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 14px;
+      background: rgba(255,255,255,0.15);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+    .card-back {
+      background: #fafbfc;
+      color: #1e293b;
+      transform: rotateY(180deg);
+      align-items: flex-start;
+      text-align: left;
+    }
+    .card-back .meta-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .card-back .pronunciation { font-style: italic; color: #64748b; font-size: 13px; }
+    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .card-back .persian-meaning { font-size: 15px; font-weight: 800; color: #0056b3; margin-bottom: 8px; direction: rtl; text-align: right; width: 100%; }
+    .card-back .section-title { font-size: 12px; font-weight: bold; color: #475569; margin-top: 4px; }
+    .card-back .collocations { font-size: 13px; color: #334155; margin-bottom: 6px; }
+    .card-back .example-sentence { font-size: 12.5px; color: #0f172a; background: #f1f5f9; padding: 6px 8px; border-radius: 4px; border-left: 3px solid #0056b3; width: 100%; }
+
+    .leitner-actions {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .leitner-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-again { background: #ef4444; }
+    .btn-again:hover { background: #dc2626; }
+    .btn-good { background: #10b981; }
+    .btn-good:hover { background: #059669; }
   </style>
 </head>
 <body>
 
 <div class="box">
   <div class="nav-tabs">
-    <button class="tab-btn active" id="tabSWT" onclick="switchTask('SWT')">SWT (Reading/Writing)</button>
-    <button class="tab-btn" id="tabWE" onclick="switchTask('WE')">Write Essay (WE)</button>
-    <button class="tab-btn" id="tabSST" onclick="switchTask('SST')">SST (Listening/Writing)</button>
+    <button class="tab-btn active" id="tabSWT" onclick="switchTask('SWT')">SWT</button>
+    <button class="tab-btn" id="tabWE" onclick="switchTask('WE')">Write Essay</button>
+    <button class="tab-btn" id="tabSST" onclick="switchTask('SST')">SST</button>
+    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Flashcards</button>
   </div>
 
   <div class="header">
@@ -165,24 +288,64 @@
     <span class="timer" id="timer">Time Left: 10:00</span>
   </div>
 
-  <div class="selector-bar">
-    <select id="questionSelect" onchange="onSelectQuestion()"></select>
+  <!-- Writing & Listening Task Mode -->
+  <div class="task-container" id="taskContainer">
+    <div class="selector-bar">
+      <select id="questionSelect" onchange="onSelectQuestion()"></select>
+    </div>
+
+    <div class="audio-container" id="audioSection">
+      <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Listen to the lecture:</div>
+      <audio id="audioPlayer" controls>
+        Your browser does not support audio element.
+      </audio>
+    </div>
+
+    <div class="prompt-box" id="promptText">Loading prompt...</div>
+
+    <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
+
+    <div class="footer">
+      <span class="word-count" id="wordCount">Total Word Count: 0</span>
+      <button class="btn" onclick="sendResult()">Submit Response</button>
+    </div>
   </div>
 
-  <div class="audio-container" id="audioSection">
-    <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Listen to the lecture:</div>
-    <audio id="audioPlayer" controls>
-      Your browser does not support audio element.
-    </audio>
-  </div>
+  <!-- Flashcards & Leitner Mode -->
+  <div class="flashcard-wrapper" id="flashcardContainer">
+    <div class="leitner-progress">
+      <span id="cardCounter">Card 1 of 8</span>
+      <span id="boxLevel">📦 Box Level: 1</span>
+    </div>
 
-  <div class="prompt-box" id="promptText">Loading prompt...</div>
+    <div class="card-scene" onclick="flipCard()">
+      <div class="card" id="activeCard">
+        <!-- Front Face -->
+        <div class="card-face card-front">
+          <div class="word-title" id="frontWord">Mitigate</div>
+          <div class="tap-hint">👆 Tap to flip</div>
+        </div>
+        <!-- Back Face -->
+        <div class="card-face card-back">
+          <div class="meta-row">
+            <span class="pronunciation" id="backPhonetic">/ˈmɪt.ɪ.ɡeɪt/</span>
+            <span class="pos" id="backPos">verb</span>
+          </div>
+          <div class="persian-meaning" id="backMeaning">کاهش دادن، تسکین دادن اثرات منفی</div>
+          
+          <div class="section-title">Collocations:</div>
+          <div class="collocations" id="backCollocations">• mitigate the impact<br>• mitigate risks</div>
+          
+          <div class="section-title">Example:</div>
+          <div class="example-sentence" id="backSentence">Effective policies can mitigate the adverse effects of climate change.</div>
+        </div>
+      </div>
+    </div>
 
-  <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
-
-  <div class="footer">
-    <span class="word-count" id="wordCount">Total Word Count: 0</span>
-    <button class="btn" onclick="sendResult()">Submit Response</button>
+    <div class="leitner-actions">
+      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 بلد نبودم (Box 1)</button>
+      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 مسلط بودم (+1 Box)</button>
+    </div>
   </div>
 </div>
 
@@ -212,7 +375,7 @@
     { id: "#WE4", title: "#4 Cashless Society Transition", text: "Many developed nations are transitioning toward an entirely cashless economy. What are the major advantages and disadvantages of this transition for individuals and financial institutions?" }
   ];
 
-  // ۳. بانک سوالات SST همراه با فایل‌های صوتی
+  // ۳. بانک سوالات SST
   const sstQuestions = [
     {
       id: "#136",
@@ -228,20 +391,89 @@
     }
   ];
 
+  // ۴. بانک لغات آکادمیک و فلش‌کارت‌های لایتنر
+  const academicVocab = [
+    {
+      word: "Mitigate",
+      phonetic: "/ˈmɪt.ɪ.ɡeɪt/",
+      pos: "Verb",
+      meaning: "کاهش دادن، تعدیل کردن، تسکین دادن",
+      collocations: ["mitigate the risk", "mitigate environmental damage"],
+      sentence: "Governments must implement stringent policies to mitigate the adverse impacts of pollution."
+    },
+    {
+      word: "Detrimental",
+      phonetic: "/ˌdet.rɪˈmen.təl/",
+      pos: "Adjective",
+      meaning: "مضر، زیان‌آور، آسیب‌رسان",
+      collocations: ["detrimental effect", "detrimental impact on health"],
+      sentence: "Excessive screen time can have a detrimental effect on cognitive development."
+    },
+    {
+      word: "Ubiquitous",
+      phonetic: "/juːˈbɪk.wɪ.təs/",
+      pos: "Adjective",
+      meaning: "همه‌جا حاضر، فراگیر، بسیار متداول",
+      collocations: ["ubiquitous presence", "become ubiquitous"],
+      sentence: "Smartphones have become ubiquitous in almost every aspect of contemporary life."
+    },
+    {
+      word: "Exacerbate",
+      phonetic: "/ɪɡˈzæs.ə.beɪt/",
+      pos: "Verb",
+      meaning: "وخیم‌تر کردن، تشدید کردن (مشکل یا بیماری)",
+      collocations: ["exacerbate the problem", "exacerbate tension"],
+      sentence: "Unplanned urbanization will inevitably exacerbate the existing housing crisis."
+    },
+    {
+      word: "Substantiate",
+      phonetic: "/səbˈstæn.ʃi.eɪt/",
+      pos: "Verb",
+      meaning: "اثبات کردن با مدرک، مستدل ساختن",
+      collocations: ["substantiate the claim", "substantiate findings"],
+      sentence: "Researchers failed to provide sufficient empirical data to substantiate their hypothesis."
+    },
+    {
+      word: "Paradigm",
+      phonetic: "/ˈpær.ə.daɪm/",
+      pos: "Noun",
+      meaning: "الگو، مدل، پارادایم فکری",
+      collocations: ["paradigm shift", "dominant paradigm"],
+      sentence: "The rise of generative AI represents a fundamental paradigm shift in modern education."
+    },
+    {
+      word: "Plausible",
+      phonetic: "/ˈplɔː.zə.bəl/",
+      pos: "Adjective",
+      meaning: "باورپذیر، محتمل، موجه",
+      collocations: ["plausible explanation", "plausible scenario"],
+      sentence: "The scientist offered a plausible explanation for the sudden atmospheric changes."
+    },
+    {
+      word: "Cohesive",
+      phonetic: "/kəʊˈhiː.sɪv/",
+      pos: "Adjective",
+      meaning: "منسجم، یکپارچه و متصل",
+      collocations: ["cohesive argument", "cohesive society"],
+      sentence: "A well-structured essay requires clear paragraph transitions to remain cohesive."
+    }
+  ];
+
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
+  let currentCardIndex = 0;
+
+  academicVocab.forEach((v, idx) => {
+    if (!leitnerData[idx]) {
+      leitnerData[idx] = { box: 1 };
+    }
+  });
+
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
     tg.expand();
-    
-    // فعال‌سازی تمام صفحه کامل در تلگرام
-    if (tg.requestFullscreen) {
-      tg.requestFullscreen();
-    }
-    
-    // جلوگیری از بسته شدن با اسکرول به پایین
-    if (tg.disableVerticalSwipes) {
-      tg.disableVerticalSwipes();
-    }
+    if (tg.requestFullscreen) tg.requestFullscreen();
+    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
   function startTimer(duration) {
@@ -264,9 +496,28 @@
     document.getElementById('tabSWT').className = task === 'SWT' ? 'tab-btn active' : 'tab-btn';
     document.getElementById('tabWE').className = task === 'WE' ? 'tab-btn active' : 'tab-btn';
     document.getElementById('tabSST').className = task === 'SST' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tabFlash').className = task === 'FLASH' ? 'tab-btn active' : 'tab-btn';
     
+    const taskContainer = document.getElementById('taskContainer');
+    const flashContainer = document.getElementById('flashcardContainer');
+    const timerElem = document.getElementById('timer');
     const audioSec = document.getElementById('audioSection');
     const audioPl = document.getElementById('audioPlayer');
+
+    if (task === 'FLASH') {
+      taskContainer.style.display = 'none';
+      flashContainer.style.display = 'flex';
+      audioSec.style.display = 'none';
+      audioPl.pause();
+      if (timerInterval) clearInterval(timerInterval);
+      timerElem.innerText = "Study Mode";
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Academic Leitner Cards";
+      renderFlashcard();
+      return;
+    }
+
+    taskContainer.style.display = 'flex';
+    flashContainer.style.display = 'none';
 
     if (task === 'SWT') {
       audioSec.style.display = 'none';
@@ -355,6 +606,45 @@
       tg.sendData(payload);
       tg.close();
     }
+  }
+
+  // Flashcard & Leitner Functions
+  function renderFlashcard() {
+    const cardObj = academicVocab[currentCardIndex];
+    const cardLevel = leitnerData[currentCardIndex]?.box || 1;
+    
+    document.getElementById('activeCard').classList.remove('is-flipped');
+    
+    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
+    document.getElementById('boxLevel').innerText = `📦 Box Level: ${cardLevel}/5`;
+    
+    document.getElementById('frontWord').innerText = cardObj.word;
+    document.getElementById('backPhonetic').innerText = cardObj.phonetic;
+    document.getElementById('backPos').innerText = cardObj.pos;
+    document.getElementById('backMeaning').innerText = cardObj.meaning;
+    document.getElementById('backCollocations').innerHTML = cardObj.collocations.map(c => `• ${c}`).join('<br>');
+    document.getElementById('backSentence').innerText = cardObj.sentence;
+  }
+
+  function flipCard() {
+    document.getElementById('activeCard').classList.toggle('is-flipped');
+  }
+
+  function answerCard(known) {
+    if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
+    
+    if (known) {
+      if (leitnerData[currentCardIndex].box < 5) {
+        leitnerData[currentCardIndex].box += 1;
+      }
+    } else {
+      leitnerData[currentCardIndex].box = 1;
+    }
+    
+    localStorage.setItem('pteroom_leitner_data', JSON.stringify(leitnerData));
+    
+    currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
+    renderFlashcard();
   }
 
   window.onload = () => switchTask('SWT');
