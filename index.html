@@ -3,239 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PTE ROOM - Multi-Task Platform</title>
+  <title>PTE ROOM</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    :root { --primary: #0056b3; --bg: #eef2f5; --text: #222; }
+    * { box-sizing: border-box; font-family: -apple-system, sans-serif; }
     
     html, body {
-      margin: 0;
-      padding: max(12px, env(safe-area-inset-top, 12px)) 10px max(12px, env(safe-area-inset-bottom, 12px)) 10px;
-      background: #eef2f5;
-      color: #222;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
+      margin: 0; padding: 0; background: var(--bg);
+      width: 100vw; height: 100vh; overflow: hidden;
     }
 
     .box {
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #c9d2db;
-      padding: 12px 14px;
-      width: 100%;
-      height: 100%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column; width: 100%; height: 100%;
+      padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)) 10px;
     }
     
-    .nav-tabs {
-      display: flex;
-      gap: 4px;
-      margin-top: 4px;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
-      flex-shrink: 0;
-    }
-
+    .nav-tabs { display: flex; gap: 4px; margin-bottom: 10px; flex-shrink: 0; }
     .tab-btn {
-      flex: 1;
-      background: #edf2f7;
-      border: 1px solid #cbd5e1;
-      padding: 8px 2px;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 11px;
-      color: #475569;
-      text-align: center;
+      flex: 1; background: #fff; border: 1px solid #cbd5e1; padding: 8px 2px;
+      border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 11px; color: #475569;
     }
-    .tab-btn.active {
-      background: #0056b3;
-      color: #fff;
-      border-color: #0056b3;
-    }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1.5px solid #0056b3;
-      padding-bottom: 6px;
-      margin-bottom: 10px;
-      flex-shrink: 0;
-    }
-    .brand { font-weight: 800; color: #0056b3; font-size: 14px; }
-    .timer { font-weight: bold; color: #c00; font-size: 14px; }
+    .header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+    .brand { font-weight: 800; color: var(--primary); font-size: 15px; }
+    .timer { font-weight: bold; color: #c00; font-size: 15px; }
     
     .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .selector-bar { margin-bottom: 10px; }
+    select { width: 100%; padding: 10px; border-radius: 6px; border: 1.5px solid var(--primary); font-size: 14px; font-weight: 600; color: var(--primary); }
     
-    .selector-bar {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-      flex-shrink: 0;
-    }
+    .audio-container { display: none; margin-bottom: 10px; }
+    audio { width: 100%; height: 40px; }
 
-    select {
-      flex: 1;
-      padding: 9px 10px;
-      border-radius: 6px;
-      border: 1.5px solid #0056b3;
-      font-size: 13.5px;
-      font-weight: 600;
-      background: #f8fafc;
-      color: #0056b3;
-      outline: none;
-    }
+    .prompt-box { flex: 1; background: #fff; padding: 15px; font-size: 15px; line-height: 1.6; overflow-y: auto; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 10px; }
+    textarea { width: 100%; min-height: 140px; padding: 12px; font-size: 16px; border: 1px solid #a0aec0; border-radius: 8px; resize: none; }
     
-    .audio-container {
-      display: none;
-      margin-bottom: 8px;
-      background: #f1f5f9;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      flex-shrink: 0;
-    }
-    audio { width: 100%; height: 34px; outline: none; }
+    .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-bottom: 10px; }
+    .btn { background: var(--primary); color: #fff; border: none; padding: 14px 24px; border-radius: 8px; font-weight: bold; font-size: 14px; }
 
-    .prompt-box {
-      flex: 1;
-      min-height: 90px;
-      background: #fafbfc;
-      border: 1px solid #dbe2e8;
-      padding: 12px;
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-y: auto;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      text-align: justify;
-      white-space: pre-line;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    textarea {
-      flex: 1;
-      min-height: 100px;
-      width: 100%;
-      padding: 10px;
-      font-size: 14.5px;
-      border: 1px solid #a0aec0;
-      border-radius: 6px;
-      resize: none;
-      outline: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    textarea:focus { border-color: #0056b3; box-shadow: 0 0 0 1px #0056b3; }
-    
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 8px;
-      flex-shrink: 0;
-    }
-    .word-count { font-size: 13.5px; font-weight: bold; color: #333; }
-    .btn {
-      background: #0056b3;
-      color: #fff;
-      border: none;
-      padding: 11px 22px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 13.5px;
-    }
-    .btn:hover { background: #004494; }
-
-    /* Flashcard Styles */
-    .flashcard-wrapper {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .leitner-progress {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #475569;
-      margin-bottom: 10px;
-      flex-shrink: 0;
-    }
-    .card-scene {
-      width: 100%;
-      flex: 1;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-    .card {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-      transform-style: preserve-3d;
-      border-radius: 12px;
-    }
+    /* Flashcard Style */
+    .flashcard-wrapper { display: none; flex-direction: column; flex: 1; align-items: center; }
+    .card-scene { width: 100%; flex: 1; perspective: 1000px; margin: 10px 0; }
+    .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; }
     .card.is-flipped { transform: rotateY(180deg); }
-    .card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-      border: 1.5px solid #cbd5e1;
-      background: #ffffff;
-      overflow-y: auto;
-    }
-    .card-front {
-      background: linear-gradient(135deg, #0056b3, #003366);
-      color: #fff;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-    .card-front .word-title { font-size: 34px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 10px; }
-    .card-front .tap-hint { font-size: 13.5px; opacity: 0.9; margin-top: 14px; background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 16px; }
-    .card-back {
-      background: #fafbfc;
-      color: #1e293b;
-      transform: rotateY(180deg);
-      justify-content: center;
-      align-items: stretch;
-      text-align: left;
-      gap: 10px;
-    }
-    .card-back .meta-row { display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px; }
-    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 16px; font-weight: 600; }
-    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 6px; font-size: 13px; font-weight: 800; text-transform: uppercase; }
-    .card-back .persian-meaning { font-size: 19px; font-weight: 800; color: #0056b3; margin: 4px 0; direction: rtl; text-align: right; width: 100%; }
-    .card-back .section-title { font-size: 14px; font-weight: 800; color: #334155; margin-top: 4px; }
-    .card-back .collocations { font-size: 15px; font-weight: 600; color: #1e293b; line-height: 1.5; }
-    .card-back .example-sentence { font-size: 14.5px; line-height: 1.5; color: #0f172a; background: #f1f5f9; padding: 10px 12px; border-radius: 6px; border-left: 4px solid #0056b3; width: 100%; }
-
-    .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
-    .leitner-btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 14px; border: none; cursor: pointer; color: #fff; }
-    .btn-again { background: #ef4444; }
-    .btn-good { background: #10b981; }
+    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; background: #fff; border: 1.5px solid #cbd5e1; overflow-y: auto; }
+    .card-front { background: var(--primary); color: #fff; justify-content: center; align-items: center; text-align: center; }
+    .word-title { font-size: 32px; font-weight: 800; }
+    .persian-meaning { font-size: 20px; font-weight: 800; color: var(--primary); margin: 10px 0; }
+    .example-sentence { font-size: 15px; background: #f1f5f9; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary); }
+    .leitner-actions { display: flex; width: 100%; gap: 10px; padding-bottom: 20px; }
+    .leitner-btn { flex: 1; padding: 16px; border-radius: 8px; font-weight: 800; font-size: 15px; border: none; color: #fff; }
   </style>
 </head>
 <body>
@@ -246,369 +65,58 @@
     <button class="tab-btn" id="tabWE" onclick="switchTask('WE')">WE</button>
     <button class="tab-btn" id="tabSST" onclick="switchTask('SST')">SST</button>
     <button class="tab-btn" id="tabWFD" onclick="switchTask('WFD')">WFD</button>
-    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Flashcards</button>
+    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Flash</button>
   </div>
 
   <div class="header">
-    <span class="brand" id="taskHeading">PTE ROOM • Summarize Written Text</span>
-    <span class="timer" id="timer">Time Left: 10:00</span>
+    <span class="brand" id="taskHeading">PTE ROOM</span>
+    <span class="timer" id="timer">Time: 10:00</span>
   </div>
 
-  <!-- Main Tasks Container -->
   <div class="task-container" id="taskContainer">
-    <div class="selector-bar">
-      <select id="questionSelect" onchange="onSelectQuestion()"></select>
-    </div>
-
-    <div class="audio-container" id="audioSection">
-      <div style="font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Audio Player:</div>
-      <audio id="audioPlayer" controls>
-        Your browser does not support audio element.
-      </audio>
-    </div>
-
-    <div class="prompt-box" id="promptText">Loading prompt...</div>
-
-    <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
-
+    <div class="selector-bar"><select id="questionSelect" onchange="onSelectQuestion()"></select></div>
+    <div class="audio-container" id="audioSection"><audio id="audioPlayer" controls></audio></div>
+    <div class="prompt-box" id="promptText">Loading...</div>
+    <textarea id="answerInput" placeholder="Write here..."></textarea>
     <div class="footer">
-      <span class="word-count" id="wordCount">Total Word Count: 0</span>
-      <button class="btn" onclick="sendResult()">Submit Response</button>
+      <span class="word-count" id="wordCount">Words: 0</span>
+      <button class="btn" onclick="sendResult()">Submit</button>
     </div>
   </div>
 
-  <!-- Flashcards Container -->
   <div class="flashcard-wrapper" id="flashcardContainer">
-    <div class="leitner-progress">
-      <span id="cardCounter">Card 1 of 8</span>
-      <span id="boxLevel">📦 Box Level: 1/5</span>
-    </div>
-
     <div class="card-scene" onclick="flipCard()">
       <div class="card" id="activeCard">
-        <div class="card-face card-front">
-          <div class="word-title" id="frontWord">Mitigate</div>
-          <div class="tap-hint">👆 برای دیدن معنی لمس کنید</div>
-        </div>
+        <div class="card-face card-front"><div class="word-title" id="frontWord">...</div></div>
         <div class="card-face card-back">
-          <div class="meta-row">
-            <span class="pronunciation" id="backPhonetic">/ˈmɪt.ɪ.ɡeɪt/</span>
-            <span class="pos" id="backPos">verb</span>
-          </div>
-          <div class="persian-meaning" id="backMeaning">کاهش دادن، تعدیل کردن، تسکین دادن</div>
-          
-          <div class="section-title">Collocations:</div>
-          <div class="collocations" id="backCollocations">• mitigate the risk<br>• mitigate environmental damage</div>
-          
-          <div class="section-title">Example Sentence:</div>
-          <div class="example-sentence" id="backSentence">Governments must implement stringent policies to mitigate the adverse impacts of pollution.</div>
+          <div class="persian-meaning" id="backMeaning">...</div>
+          <div id="backCollocations" style="font-size:14px; margin:5px 0;"></div>
+          <div class="example-sentence" id="backSentence">...</div>
         </div>
       </div>
     </div>
-
     <div class="leitner-actions">
-      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 بلد نبودم (Box 1)</button>
-      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 مسلط بودم (+1 Box)</button>
+      <button class="leitner-btn" style="background:#ef4444" onclick="answerCard(false)">🔴 بلد نبودم</button>
+      <button class="leitner-btn" style="background:#10b981" onclick="answerCard(true)">🟢 مسلط بودم</button>
     </div>
   </div>
 </div>
 
 <script>
-  let currentTask = "SWT";
-  let timerInterval = null;
-  let sec = 600;
-
-  // ۱. سوالات SWT
-  const swtQuestions = [
-    { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Like many archaeological materials, human remains require distinctive and specialized methods of recovery, analysis, and interpretation, while technological innovations and the accumulation of expertise have enabled archaeologists to extract ever greater amounts of information from assemblages of skeletal material. Alongside analyses of new finds, these advances have consistently thrown new light on existing collections of human remains in museums, universities and other institutions. Given the powerful emotional, social and religious meanings attached to the dead body, it is perhaps unsurprising that human remains pose a distinctive set of ethical questions for archaeologists.\nWith the rise of indigenous rights movements and the emergence of post-colonial nations, the acquisition and ownership of human remains became a divisive and politically loaded issue. It became increasingly clear that many human remains in museum collections around the world represented the traces of colonial exploitation and discredited pseudo-scientific theories of race. In the light of these debates and changing attitudes, some human remains were returned or repatriated to their communities of origin, a process which continues to this day. Recently a new set of challenges to the study of human remains has emerged from a rather unexpected direction: the British government revised its interpretation of nineteenth-century burial legislation in a way that would drastically curtail the ability of archaeologists to study human remains of any age excavated in England and Wales. This paper examines these extraordinary events and the legal, political and ethical questions that they raise." },
-    { id: "#39", title: "#39 Malaysia Tourism", text: "Malaysia is also launching its biggest ever tourism campaign in an effort to lure 20 million visitors here this year. Tourism is the Southeast Asian nation's second-largest source of foreign exchange after exports. Malaysia is one of the most pleasant, hassle-free countries to visit in Southeast Asia. Aside from its gleaming 21st century glass towers, it boasts some of the most superb beaches, mountains and national parks in the region.\nAny tourist itinerary would have to begin in the capital, Kuala Lumpur, where you will find the Petronas Twin Towers, which once comprised the world's tallest buildings and now hold the title of second-tallest. Both the 88-story towers soar 1,480 feet high and are connected by a sky-bridge on the 41st floor. The limestone temple Batu Caves, located 9 miles north of the city, have a 328-foot-high ceiling and feature ornate Hindu shrines, including a 141-foot-tall gold-painted statue of a Hindu deity. To reach the caves, visitors have to climb a steep flight of 272 steps. In Sabah state on Borneo island not to be confused with Indonesia's Borneo you'll find the small mushroom-shaped Sipadan island, off the coast of Sabah, rated as one of the top five diving sites in the world. Sipadan is the only oceanic island in Malaysia, rising from a 2,300-foot abyss in the Celebes Sea. You can also climb Mount Kinabalu, the tallest peak in Southeast Asia, visit the Sepilok Orang Utan Sanctuary, go white-water rafting and catch a glimpse of the bizarre proboscis monkey, a primate found only in Borneo with a huge pendulous nose, a characteristic pot belly and strange honking sounds.\nWhile you're in Malaysia, consider a trip to Malacca. In its heyday, this southern state was a powerful Malay sultanate and a booming trading port in the region. Facing the Straits of Malacca, this historical state is now a place of intriguing Chinese streets, antique shops, old temples and reminders of European colonial powers. Another interesting destination is Penang, known as the Pearl of the Orient. This island off the northwest coast of Malaysia boasts of a rich Chinese cultural heritage, good food and beautiful beaches." },
-    { id: "#40", title: "#40 Small Wars", text: "In such an environment, warfare is no longer purely directed against the military potential of adversarial states. It is rather directed at infiltrating all areas of their societies and threatening their existences. The comparatively easy access to weapons of mass destruction, in particular low-cost biological agents, is of key concern. Both governmental and non-governmental actors prefer to use force in a way that can be characterized as \"unconventional\" or also as \"small wars\". War waged according to conventions is an interstate phenomenon. The \"small war\" is the archetype of war, in which the protagonists acknowledge no rules and permanently try to violate what conventions do exist. The protagonists of the \"small war\" observe neither international standards nor arms control agreements. They make use of territories where they do not have to fear any sanctions because there is no functioning state to assume charge of such sanctions or because the state in question is too weak to impose such sanctions. This type of war does not provide for any warning time. It challenges not only the external security of the nation states and international community, but also their internal safety." }
-  ];
-
-  // ۲. سوالات WE
-  const weQuestions = [
-    { id: "#WE1", title: "#1 Mass Media & Public Perception", text: "Mass media has a powerful influence on shaping public opinion and perceptions. Do you agree or disagree with the notion that news outlets manipulate public thinking? Support your position with reasons and relevant examples." },
-    { id: "#WE2", title: "#2 Climate Change Responsibility", text: "Some people believe that individual actions are negligible in combating climate change and that only governments and large corporations can solve environmental issues. Discuss both views and give your opinion." },
-    { id: "#WE3", title: "#3 Artificial Intelligence & Employment", text: "With advancements in artificial intelligence and automation, many traditional jobs are predicted to disappear. Do the benefits of AI outweigh the societal drawbacks of workforce displacement?" }
-  ];
-
-  // ۳. سوالات SST
-  const sstQuestions = [
-    {
-      id: "#136",
-      title: "#136 Recycling Water",
-      audioUrl: "sst1.mp3",
-      text: "Why do we need to recycle water? Because we don’t generate much new water. Chemically the process of generating water, which is basically taking hydrogen and oxygen and burning them to produce water, is not a process that happens a lot anymore. So in terms of our total volume of water in the world, yes it is changing, but it’s not changing significantly relative to the rate at which we are using or demand fresh new water. Now there are a lot of different areas of technology involved in water recycling, and we are later in the interview going to get to industrial use and the reclamation of sewerage. What about in the home at the moment; what sort of technology is being utilized in the home when we talk about water recycling? Well very little on average. Typically in a modern home, we turn on the tap, we take a glass of water, we probably in turning on that tap flush ten glasses of water down the sink. We take a shower, we use fresh water, we do a whole range of things, and there is nominally very little recycling of that. It goes down the drain and it goes off to a wastewater treatment plant. There is actually very, very little recycling at a local level. People don’t actually say well I’m now going to take the water I just used, put it through a sophisticated process and reuse it and have a closed loop. It’s not a closed loop in the home."
-    }
-  ];
-
-  // ۴. بانک سوالات کامل WFD (متن‌های استخراج شده از هوش مصنوعی)
-  const wfdQuestions = [
-    { "id": "#WFD1", "title": "#1 Politics Rules", "audioUrl": "1.mp3", "text": "The artists and conservative politicians follow their own rules in politics." },
-    { "id": "#WFD2", "title": "#2 Scholarships", "audioUrl": "10.mp3", "text": "The department will continue to offer three new scholarships next year." },
-    { "id": "#WFD3", "title": "#3 Unemployment", "audioUrl": "104.mp3", "text": "Economic problems caused a big rise in unemployment." },
-    { "id": "#WFD4", "title": "#4 Roman Republic", "audioUrl": "105.mp3", "text": "The economic strength of early Roman Republic will be examined." },
-    { "id": "#WFD5", "title": "#5 Service Dogs", "audioUrl": "11.mp3", "text": "Dogs are able to provide assistance to people with disabilities." },
-    { "id": "#WFD6", "title": "#6 Research Assistant", "audioUrl": "113.mp3", "text": "A good research assistant is not afraid to ask questions." },
-    { "id": "#WFD7", "title": "#7 Student Ability", "audioUrl": "115.mp3", "text": "Every student has both the right and the ability to succeed." },
-    { "id": "#WFD8", "title": "#8 Weather Forecast", "audioUrl": "118.mp3", "text": "Experts are now able to forecast weather over much longer periods." },
-    { "id": "#WFD9", "title": "#9 Popular Culture", "audioUrl": "12.mp3", "text": "Popular culture is now a serious subject of academic inquiry." },
-    { "id": "#WFD10", "title": "#10 Research Resources", "audioUrl": "124.mp3", "text": "Find out how to get your resources before your research." },
-    { "id": "#WFD11", "title": "#11 Reading List", "audioUrl": "13.mp3", "text": "The reading list will be available before the course begins." },
-    { "id": "#WFD12", "title": "#12 Law Firm Job", "audioUrl": "136.mp3", "text": "He landed his job in a very prestigious law firm." },
-    { "id": "#WFD13", "title": "#13 Children Books", "audioUrl": "14.mp3", "text": "Books for children often contain many beautiful illustrations." },
-    { "id": "#WFD14", "title": "#14 Study of Society", "audioUrl": "142.mp3", "text": "The typical part of this course involves the study of society." },
-    { "id": "#WFD15", "title": "#15 Blue Whale", "audioUrl": "15.mp3", "text": "The blue whale is the largest animal that ever lived." },
-    { "id": "#WFD16", "title": "#16 Campus Tour", "audioUrl": "16.mp3", "text": "Free Campus Tour runs daily during summer for prospective students." },
-    { "id": "#WFD17", "title": "#17 Interim Grades", "audioUrl": "17.mp3", "text": "Interim grades will be posted on the board outside the student lounge." },
-    { "id": "#WFD18", "title": "#18 Regional Assembly", "audioUrl": "18.mp3", "text": "A regional assembly was moved to the devolution of power." },
-    { "id": "#WFD19", "title": "#19 Best Things", "audioUrl": "19.mp3", "text": "I think it's one of the best things I've done, really." },
-    { "id": "#WFD20", "title": "#20 Confirm Textbook", "audioUrl": "2.mp3", "text": "Please confirm that you have received the textbook." },
-    { "id": "#WFD21", "title": "#21 Celebrated Theory", "audioUrl": "20.mp3", "text": "The celebrated theory is still the source of great controversy." },
-    { "id": "#WFD22", "title": "#22 Scientific Paper", "audioUrl": "25.mp3", "text": "A good scientific paper should have clear arguments." },
-    { "id": "#WFD23", "title": "#23 Coherent Argument", "audioUrl": "26.mp3", "text": "A massive accumulation of data was converted into a coherent argument." },
-    { "id": "#WFD24", "title": "#24 Volunteer Jobs", "audioUrl": "27.mp3", "text": "Today, a number of students have volunteer jobs." },
-    { "id": "#WFD25", "title": "#25 Educational Level", "audioUrl": "29.mp3", "text": "The educational level is found to be related to social and economic background." },
-    { "id": "#WFD26", "title": "#26 Policy Change", "audioUrl": "3.mp3", "text": "The change of policy will have a great effect on society." },
-    { "id": "#WFD27", "title": "#27 Computing Feature", "audioUrl": "31.mp3", "text": "A very basic feature of computing would be counting and calculating." },
-    { "id": "#WFD28", "title": "#28 Environmental Biology", "audioUrl": "35.mp3", "text": "Students who study environmental biology need to do field work." },
-    { "id": "#WFD29", "title": "#29 Poster Display", "audioUrl": "36.mp3", "text": "The posters are on display at the larger lecture theater." },
-    { "id": "#WFD30", "title": "#30 Affordable Housing", "audioUrl": "37.mp3", "text": "Affordable housing is an important issue for all members of society." },
-    { "id": "#WFD31", "title": "#31 Relevant Theories", "audioUrl": "39.mp3", "text": "All answers must be thoroughly researched and supported by relevant theories." },
-    { "id": "#WFD32", "title": "#32 Acquire Skills", "audioUrl": "4.mp3", "text": "You will acquire many skills during your academic studies." },
-    { "id": "#WFD33", "title": "#33 Dissertation Form", "audioUrl": "40.mp3", "text": "All dissertations must be accompanied by a submission form." },
-    { "id": "#WFD34", "title": "#34 Island Location", "audioUrl": "41.mp3", "text": "The island is located at the south end of the bay." },
-    { "id": "#WFD35", "title": "#35 Chemical Solution", "audioUrl": "47.mp3", "text": "Two drops of the solution were heated in a test tube." },
-    { "id": "#WFD36", "title": "#36 Educational Reforms", "audioUrl": "49.mp3", "text": "Our view is that all the educational reforms have been inadequately implemented." },
-    { "id": "#WFD37", "title": "#37 Financial Sector", "audioUrl": "5.mp3", "text": "Graduates from this course typically pursue careers in the financial sector." },
-    { "id": "#WFD38", "title": "#38 Sustainable Development", "audioUrl": "51.mp3", "text": "Although sustainable development is not easy, it is an unavoidable responsibility." },
-    { "id": "#WFD39", "title": "#39 Architect Skills", "audioUrl": "56.mp3", "text": "An architect requires problem-solving skills and an eye for design." },
-    { "id": "#WFD40", "title": "#40 Important Contribution", "audioUrl": "58.mp3", "text": "And in that regard, as well as in other regards, it stands as an important contribution." },
-    { "id": "#WFD41", "title": "#41 Problem Explanation", "audioUrl": "6.mp3", "text": "The features provide the same explanation of the problem." },
-    { "id": "#WFD44", "title": "#44 Early Detection", "audioUrl": "7.mp3", "text": "The results of the study underscore the importance of the discoveries from early detection." },
-    { "id": "#WFD45", "title": "#45 Building Trust", "audioUrl": "76.mp3", "text": "Building trust is not something that can be achieved overnight." },
-    { "id": "#WFD46", "title": "#46 Career Opportunities", "audioUrl": "78.mp3", "text": "Career opportunities in this field are quite limited." },
-    { "id": "#WFD47", "title": "#47 Program Regulations", "audioUrl": "8.mp3", "text": "The program must be conducted in abidance with general regulations." },
-    { "id": "#WFD48", "title": "#48 Scientific Principles", "audioUrl": "81.mp3", "text": "Certain scientific principles must be learned verbally or by a logical deduction." },
-    { "id": "#WFD49", "title": "#49 Site Logo", "audioUrl": "83.mp3", "text": "Please click the logo above to enter the site." },
-    { "id": "#WFD50", "title": "#50 Nursing Placements", "audioUrl": "86.mp3", "text": "Clinical placements in nursing prepare students for professional practice." },
-    { "id": "#WFD51", "title": "#51 Department Collaboration", "audioUrl": "87.mp3", "text": "Collaboration between departments is a feature of successful companies." },
-    { "id": "#WFD52", "title": "#52 Analyze Program", "audioUrl": "9.mp3", "text": "The undergraduates need some specific sources to analyze a program." },
-    { "id": "#WFD53", "title": "#53 Biology Degree", "audioUrl": "90.mp3", "text": "Students are required to have an undergraduate degree in biology to be enrolled in this course." },
-    { "id": "#WFD54", "title": "#54 Scheduled Conferences", "audioUrl": "91.mp3", "text": "Conferences ought to be always scheduled two weeks in advance." },
-    { "id": "#WFD55", "title": "#55 Consumer Confidence", "audioUrl": "92.mp3", "text": "Consumer confidence has a direct influence on sales." },
-    { "id": "#WFD56", "title": "#56 Convincing Evidence", "audioUrl": "94.mp3", "text": "Convincing evidence to support this theory is hard to obtain." }
-  ];
-
-  // ۵. فلش‌کارت‌ها
-  const academicVocab = [
-    { word: "Mitigate", phonetic: "/ˈmɪt.ɪ.ɡeɪt/", pos: "Verb", meaning: "کاهش دادن، تعدیل کردن، تسکین دادن", collocations: ["mitigate the risk", "mitigate environmental damage"], sentence: "Governments must implement stringent policies to mitigate the adverse impacts of pollution." },
-    { word: "Detrimental", phonetic: "/ˌdet.rɪˈmen.təl/", pos: "Adjective", meaning: "مضر، زیان‌آور، آسیب‌رسان", collocations: ["detrimental effect", "detrimental impact on health"], sentence: "Excessive screen time can have a detrimental effect on cognitive development." },
-    { word: "Ubiquitous", phonetic: "/juːˈbɪk.wɪ.təs/", pos: "Adjective", meaning: "همه‌جا حاضر، فراگیر، بسیار متداول", collocations: ["ubiquitous presence", "become ubiquitous"], sentence: "Smartphones have become ubiquitous in almost every aspect of contemporary life." },
-    { word: "Exacerbate", phonetic: "/ɪɡˈzæs.ə.beɪt/", pos: "Verb", meaning: "وخیم‌تر کردن، تشدید کردن (مشکل یا بیماری)", collocations: ["exacerbate the problem", "exacerbate tension"], sentence: "Unplanned urbanization will inevitably exacerbate the existing housing crisis." }
-  ];
-
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
-  let currentCardIndex = 0;
-
-  academicVocab.forEach((v, idx) => {
-    if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
-  });
-
+  // لود اولیه و تنظیمات تلگرام
   const tg = window.Telegram?.WebApp;
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    if (tg.requestFullscreen) tg.requestFullscreen();
-    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
-  }
+  if(tg) { tg.ready(); tg.expand(); if(tg.requestFullscreen) tg.requestFullscreen(); }
 
-  function startTimer(duration) {
-    if (timerInterval) clearInterval(timerInterval);
-    sec = duration;
-    timerInterval = setInterval(() => {
-      sec--;
-      let m = Math.floor(sec / 60);
-      let s = sec % 60;
-      document.getElementById('timer').innerText = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
-      if (sec <= 0) {
-        clearInterval(timerInterval);
-        sendResult();
-      }
-    }, 1000);
-  }
+  // [دیتاها را در اینجا قرار دهید]
+  // متغیرهای wfdQuestions، swtQuestions، academicVocab و غیره...
 
   function switchTask(task) {
-    currentTask = task;
-    document.getElementById('tabSWT').className = task === 'SWT' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabWE').className = task === 'WE' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabSST').className = task === 'SST' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabWFD').className = task === 'WFD' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabFlash').className = task === 'FLASH' ? 'tab-btn active' : 'tab-btn';
-    
-    const taskContainer = document.getElementById('taskContainer');
-    const flashContainer = document.getElementById('flashcardContainer');
-    const timerElem = document.getElementById('timer');
-    const audioSec = document.getElementById('audioSection');
-    const audioPl = document.getElementById('audioPlayer');
-
-    if (task === 'FLASH') {
-      taskContainer.style.display = 'none';
-      flashContainer.style.display = 'flex';
-      audioSec.style.display = 'none';
-      audioPl.pause();
-      if (timerInterval) clearInterval(timerInterval);
-      timerElem.innerText = "Study Mode";
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Academic Flashcards";
-      renderFlashcard();
-      return;
-    }
-
-    taskContainer.style.display = 'flex';
-    flashContainer.style.display = 'none';
-
-    if (task === 'SWT') {
-      audioSec.style.display = 'none';
-      audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Written Text";
-      document.getElementById('answerInput').placeholder = "Write your single sentence summary (5-75 words)...";
-      startTimer(600);
-      loadOptions(swtQuestions);
-    } else if (task === 'WE') {
-      audioSec.style.display = 'none';
-      audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay";
-      document.getElementById('answerInput').placeholder = "Write your 200-300 word academic essay here...";
-      startTimer(1200);
-      loadOptions(weQuestions);
-    } else if (task === 'SST') {
-      audioSec.style.display = 'block';
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Spoken Text";
-      document.getElementById('answerInput').placeholder = "Write your 50-70 word summary based on the lecture...";
-      startTimer(600);
-      loadOptions(sstQuestions);
-    } else if (task === 'WFD') {
-      audioSec.style.display = 'block';
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
-      document.getElementById('answerInput').placeholder = "Listen carefully and type the exact sentence here...";
-      startTimer(60);
-      loadOptions(wfdQuestions);
-    }
+    // منطق تغییر تب‌ها
+    // اگر task === 'FLASH' نمایش flashcardContainer و مخفی کردن taskContainer
+    // اگر WFD بود، مسیر آدرس فایل صوتی را 'wfd_audios/' + q.audioUrl بگذارید
   }
 
-  function loadOptions(list) {
-    const select = document.getElementById('questionSelect');
-    select.innerHTML = "";
-    list.forEach((q, idx) => {
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.innerText = q.title;
-      select.appendChild(opt);
-    });
-    onSelectQuestion();
-  }
-
-  function onSelectQuestion() {
-    let list = swtQuestions;
-    if (currentTask === 'WE') list = weQuestions;
-    if (currentTask === 'SST') list = sstQuestions;
-    if (currentTask === 'WFD') list = wfdQuestions;
-
-    const idx = document.getElementById('questionSelect').value;
-    const q = list[idx];
-    
-    if (currentTask === 'SST') {
-      document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Please listen to the recording above and write your summary.\n\n(Transcript loaded for AI evaluation)";
-      const audioPl = document.getElementById('audioPlayer');
-      audioPl.src = q.audioUrl;
-      audioPl.load();
-    } else if (currentTask === 'WFD') {
-      document.getElementById('promptText').innerText = "🎧 Listen to the recording carefully and type the exact sentence.\n\n(The audio will play the dictation sentence)";
-      const audioPl = document.getElementById('audioPlayer');
-      audioPl.src = q.audioUrl;
-      audioPl.load();
-    } else {
-      document.getElementById('promptText').innerText = q.text;
-    }
-    
-    document.getElementById('answerInput').value = "";
-    calcWords();
-  }
-
-  function calcWords() {
-    let t = document.getElementById('answerInput').value.trim();
-    let count = t === "" ? 0 : t.split(/\s+/).filter(Boolean).length;
-    document.getElementById('wordCount').innerText = "Total Word Count: " + count;
-  }
-
-  function sendResult() {
-    let ans = document.getElementById('answerInput').value.trim();
-    let list = swtQuestions;
-    if (currentTask === 'WE') list = weQuestions;
-    if (currentTask === 'SST') list = sstQuestions;
-    if (currentTask === 'WFD') list = wfdQuestions;
-
-    let currentIdx = document.getElementById('questionSelect').value;
-    let q = list[currentIdx];
-
-    if (!ans) {
-      alert("Please write your answer before submitting.");
-      return;
-    }
-
-    let payload = JSON.stringify({
-      task_type: currentTask,
-      question_title: q.title,
-      prompt: q.text,
-      user_answer: ans
-    });
-
-    if (tg && typeof tg.sendData === "function") {
-      tg.sendData(payload);
-      tg.close();
-    }
-  }
-
-  function renderFlashcard() {
-    const cardObj = academicVocab[currentCardIndex];
-    const cardLevel = leitnerData[currentCardIndex]?.box || 1;
-    
-    document.getElementById('activeCard').classList.remove('is-flipped');
-    
-    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
-    document.getElementById('boxLevel').innerText = `📦 Box Level: ${cardLevel}/5`;
-    
-    document.getElementById('frontWord').innerText = cardObj.word;
-    document.getElementById('backPhonetic').innerText = cardObj.phonetic;
-    document.getElementById('backPos').innerText = cardObj.pos;
-    document.getElementById('backMeaning').innerText = cardObj.meaning;
-    document.getElementById('backCollocations').innerHTML = cardObj.collocations.map(c => `• ${c}`).join('<br>');
-    document.getElementById('backSentence').innerText = cardObj.sentence;
-  }
-
-  function flipCard() {
-    document.getElementById('activeCard').classList.toggle('is-flipped');
-  }
-
-  function answerCard(known) {
-    if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
-    
-    if (known) {
-      if (leitnerData[currentCardIndex].box < 5) {
-        leitnerData[currentCardIndex].box += 1;
-      }
-    } else {
-      leitnerData[currentCardIndex].box = 1;
-    }
-    
-    localStorage.setItem('pteroom_leitner_data', JSON.stringify(leitnerData));
-    
-    currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
-    renderFlashcard();
-  }
-
-  window.onload = () => switchTask('SWT');
+  // سایر توابع (onSelectQuestion, calcWords, renderFlashcard, ...)
 </script>
-
 </body>
 </html>
