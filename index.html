@@ -403,28 +403,28 @@
     }
   ];
 
-  // ۴. بانک سوالات کامل WFD
+  // ۴. بانک سوالات کامل WFD (با شماره غیرقابل حدس)
   const wfdQuestions = [
-    { id: "#WFD1", title: "#1 Politics Rules", audioUrl: "1.mp3", text: "The artists and conservative politicians follow their own rules in politics." },
-    { id: "#WFD2", title: "#2 Scholarships", audioUrl: "10.mp3", text: "The department will continue to offer three new scholarships next year." },
-    { id: "#WFD3", title: "#3 Unemployment", audioUrl: "104.mp3", text: "Economic problems caused a big rise in unemployment." },
-    { id: "#WFD4", title: "#4 Roman Republic", audioUrl: "105.mp3", text: "The economic strength of early Roman Republic will be examined." },
-    { id: "#WFD5", title: "#5 Service Dogs", audioUrl: "11.mp3", text: "Dogs are able to provide assistance to people with disabilities." },
-    { id: "#WFD6", title: "#6 Research Assistant", audioUrl: "113.mp3", text: "A good research assistant is not afraid to ask questions." },
-    { id: "#WFD7", title: "#7 Student Ability", audioUrl: "115.mp3", text: "Every student has both the right and the ability to succeed." },
-    { id: "#WFD8", title: "#8 Weather Forecast", audioUrl: "118.mp3", text: "Experts are now able to forecast weather over much longer periods." },
-    { id: "#WFD9", title: "#9 Popular Culture", audioUrl: "12.mp3", text: "Popular culture is now a serious subject of academic inquiry." },
-    { id: "#WFD10", title: "#10 Research Resources", audioUrl: "124.mp3", text: "Find out how to get your resources before your research." },
-    { id: "#WFD11", title: "#11 Reading List", audioUrl: "13.mp3", text: "The reading list will be available before the course begins." },
-    { id: "#WFD12", title: "#12 Law Firm Job", audioUrl: "136.mp3", text: "He landed his job in a very prestigious law firm." },
-    { id: "#WFD13", title: "#13 Children Books", audioUrl: "14.mp3", text: "Books for children often contain many beautiful illustrations." },
-    { id: "#WFD14", title: "#14 Study of Society", audioUrl: "142.mp3", text: "The typical part of this course involves the study of society." },
-    { id: "#WFD15", title: "#15 Blue Whale", audioUrl: "15.mp3", text: "The blue whale is the largest animal that ever lived." },
-    { id: "#WFD16", title: "#16 Campus Tour", audioUrl: "16.mp3", text: "Free Campus Tour runs daily during summer for prospective students." },
-    { id: "#WFD17", title: "#17 Interim Grades", audioUrl: "17.mp3", text: "Interim grades will be posted on the board outside the student lounge." },
-    { id: "#WFD18", title: "#18 Regional Assembly", audioUrl: "18.mp3", text: "A regional assembly was moved to the devolution of power." },
-    { id: "#WFD19", title: "#19 Best Things", audioUrl: "19.mp3", text: "I think it's one of the best things I've done, really." },
-    { id: "#WFD20", title: "#20 Confirm Textbook", audioUrl: "2.mp3", text: "Please confirm that you have received the textbook." }
+    { id: "#WFD1", title: "Question #1", audioUrl: "1.mp3", text: "The artists and conservative politicians follow their own rules in politics." },
+    { id: "#WFD2", title: "Question #2", audioUrl: "10.mp3", text: "The department will continue to offer three new scholarships next year." },
+    { id: "#WFD3", title: "Question #3", audioUrl: "104.mp3", text: "Economic problems caused a big rise in unemployment." },
+    { id: "#WFD4", title: "Question #4", audioUrl: "105.mp3", text: "The economic strength of early Roman Republic will be examined." },
+    { id: "#WFD5", title: "Question #5", audioUrl: "11.mp3", text: "Dogs are able to provide assistance to people with disabilities." },
+    { id: "#WFD6", title: "Question #6", audioUrl: "113.mp3", text: "A good research assistant is not afraid to ask questions." },
+    { id: "#WFD7", title: "Question #7", audioUrl: "115.mp3", text: "Every student has both the right and the ability to succeed." },
+    { id: "#WFD8", title: "Question #8", audioUrl: "118.mp3", text: "Experts are now able to forecast weather over much longer periods." },
+    { id: "#WFD9", title: "Question #9", audioUrl: "12.mp3", text: "Popular culture is now a serious subject of academic inquiry." },
+    { id: "#WFD10", title: "Question #10", audioUrl: "124.mp3", text: "Find out how to get your resources before your research." },
+    { id: "#WFD11", title: "Question #11", audioUrl: "13.mp3", text: "The reading list will be available before the course begins." },
+    { id: "#WFD12", title: "Question #12", audioUrl: "136.mp3", text: "He landed his job in a very prestigious law firm." },
+    { id: "#WFD13", title: "Question #13", audioUrl: "14.mp3", text: "Books for children often contain many beautiful illustrations." },
+    { id: "#WFD14", title: "Question #14", audioUrl: "142.mp3", text: "The typical part of this course involves the study of society." },
+    { id: "#WFD15", title: "Question #15", audioUrl: "15.mp3", text: "The blue whale is the largest animal that ever lived." },
+    { id: "#WFD16", title: "Question #16", audioUrl: "16.mp3", text: "Free Campus Tour runs daily during summer for prospective students." },
+    { id: "#WFD17", title: "Question #17", audioUrl: "17.mp3", text: "Interim grades will be posted on the board outside the student lounge." },
+    { id: "#WFD18", title: "Question #18", audioUrl: "18.mp3", text: "A regional assembly was moved to the devolution of power." },
+    { id: "#WFD19", title: "Question #19", audioUrl: "19.mp3", text: "I think it's one of the best things I've done, really." },
+    { id: "#WFD20", title: "Question #20", audioUrl: "2.mp3", text: "Please confirm that you have received the textbook." }
   ];
 
   // ۵. فلش‌کارت‌ها
@@ -525,7 +525,7 @@
       loadOptions(sstQuestions);
     } else if (task === 'WFD') {
       audioSec.style.display = 'block';
-      promptBox.style.display = 'none'; // حذف کامل بخش فارسی
+      promptBox.style.display = 'none';
       document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
       document.getElementById('answerInput').placeholder = "Type the exact sentence you heard here...";
       submitBtn.innerText = "Check Answer";
@@ -613,7 +613,6 @@
     }
   }
 
-  // ارزیابی لحظه‌ای WFD در درون برنامه
   function evaluateWfdLocally(originalSentence, userSentence) {
     const cleanWord = (w) => w.replace(/[^\w]/g, '').toLowerCase();
     
@@ -684,8 +683,5 @@
 </html>
 ```eof
 
-### Summary of Changes:
-- **Clean UI**: Removed the Persian prompt text block completely when in WFD mode.
-- **Instant Local Feedback**: Clicking **Check Answer** calculates your score immediately right in the app.
-- **Word Analysis**: Displays the full original sentence below with correct words in **green** and missing/misspelled words in **red**.
-- **Score Counter**: Displays exact score format (e.g. `8 / 10`).
+### تغییرات اعمال شده:
+1. تمام عنوان‌های سوالات WFD در لیست انتخابی به فرمت **`Question #1`**, **`Question #2`**, **`Question #3`** و ... تبدیل شدند تا متن یا لغات آن برای کاربر لو نرود.
