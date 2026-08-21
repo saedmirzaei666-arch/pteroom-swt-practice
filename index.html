@@ -124,8 +124,8 @@
       flex: 1;
       min-height: 100px;
       width: 100%;
-      padding: 10px;
-      font-size: 14.5px;
+      padding: 12px;
+      font-size: 15px;
       border: 1px solid #a0aec0;
       border-radius: 6px;
       resize: none;
@@ -134,6 +134,50 @@
     }
     textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
     
+    /* WFD Result Box */
+    .wfd-result-card {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      overflow-y: auto;
+    }
+    .wfd-score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--primary);
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 6px;
+    }
+    .wfd-sentence-display {
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 600;
+      word-spacing: 2px;
+    }
+    .wfd-word-correct {
+      background: #d1fae5;
+      color: #065f46;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #10b981;
+    }
+    .wfd-word-missing {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #ef4444;
+      text-decoration: line-through;
+    }
+
     .footer {
       display: flex;
       justify-content: space-between;
@@ -272,9 +316,19 @@
 
     <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
 
+    <!-- WFD Instant Result Box -->
+    <div class="wfd-result-card" id="wfdResultCard">
+      <div class="wfd-score-header">
+        <span>📊 Score Evaluation:</span>
+        <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:3px 10px; border-radius:12px;">0 / 0</span>
+      </div>
+      <div style="font-size:12px; color:#64748b; font-weight:700; margin-top:4px;">Original Sentence Analysis:</div>
+      <div class="wfd-sentence-display" id="wfdSentenceMarkup"></div>
+    </div>
+
     <div class="footer">
       <span class="word-count" id="wordCount">Total Word Count: 0</span>
-      <button class="btn" onclick="sendResult()">Submit Response</button>
+      <button class="btn" id="submitBtn" onclick="sendResult()">Submit Response</button>
     </div>
   </div>
 
@@ -424,6 +478,11 @@
     const timerElem = document.getElementById('timer');
     const audioSec = document.getElementById('audioSection');
     const audioPl = document.getElementById('audioPlayer');
+    const promptBox = document.getElementById('promptText');
+    const wfdResultCard = document.getElementById('wfdResultCard');
+    const submitBtn = document.getElementById('submitBtn');
+
+    wfdResultCard.style.display = 'none';
 
     if (task === 'FLASH') {
       taskContainer.style.display = 'none';
@@ -439,12 +498,14 @@
 
     taskContainer.style.display = 'flex';
     flashContainer.style.display = 'none';
+    promptBox.style.display = 'block';
 
     if (task === 'SWT') {
       audioSec.style.display = 'none';
       audioPl.pause();
       document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Written Text";
       document.getElementById('answerInput').placeholder = "Write your single sentence summary (5-75 words)...";
+      submitBtn.innerText = "Submit Response";
       startTimer(600);
       loadOptions(swtQuestions);
     } else if (task === 'WE') {
@@ -452,18 +513,22 @@
       audioPl.pause();
       document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay";
       document.getElementById('answerInput').placeholder = "Write your 200-300 word academic essay here...";
+      submitBtn.innerText = "Submit Response";
       startTimer(1200);
       loadOptions(weQuestions);
     } else if (task === 'SST') {
       audioSec.style.display = 'block';
       document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Spoken Text";
       document.getElementById('answerInput').placeholder = "Write your 50-70 word summary based on the lecture...";
+      submitBtn.innerText = "Submit Response";
       startTimer(600);
       loadOptions(sstQuestions);
     } else if (task === 'WFD') {
       audioSec.style.display = 'block';
+      promptBox.style.display = 'none'; // حذف کامل بخش فارسی
       document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
-      document.getElementById('answerInput').placeholder = "Listen carefully and type the exact sentence here...";
+      document.getElementById('answerInput').placeholder = "Type the exact sentence you heard here...";
+      submitBtn.innerText = "Check Answer";
       startTimer(60);
       loadOptions(wfdQuestions);
     }
@@ -490,13 +555,14 @@
     const idx = document.getElementById('questionSelect').value;
     const q = list[idx];
     
+    document.getElementById('wfdResultCard').style.display = 'none';
+
     if (currentTask === 'SST') {
       document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Please listen to the recording above and write your summary.";
       const audioPl = document.getElementById('audioPlayer');
       audioPl.src = q.audioUrl;
       audioPl.load();
     } else if (currentTask === 'WFD') {
-      document.getElementById('promptText').innerText = "🎧 به جمله صوتی با دقت گوش دهید و آن را به صورت کامل بنویسید:";
       const audioPl = document.getElementById('audioPlayer');
       audioPl.src = "wfd_audios/" + q.audioUrl;
       audioPl.load();
@@ -529,6 +595,11 @@
       return;
     }
 
+    if (currentTask === 'WFD') {
+      evaluateWfdLocally(q.text, ans);
+      return;
+    }
+
     let payload = JSON.stringify({
       task_type: currentTask,
       question_title: q.title,
@@ -540,6 +611,32 @@
       tg.sendData(payload);
       tg.close();
     }
+  }
+
+  // ارزیابی لحظه‌ای WFD در درون برنامه
+  function evaluateWfdLocally(originalSentence, userSentence) {
+    const cleanWord = (w) => w.replace(/[^\w]/g, '').toLowerCase();
+    
+    const origWords = originalSentence.trim().split(/\s+/);
+    const userWordsClean = userSentence.trim().split(/\s+/).map(cleanWord);
+
+    let score = 0;
+    let markupHTML = "";
+
+    origWords.forEach(word => {
+      const cleaned = cleanWord(word);
+      if (userWordsClean.includes(cleaned)) {
+        score++;
+        markupHTML += `<span class="wfd-word-correct">${word}</span> `;
+      } else {
+        markupHTML += `<span class="wfd-word-missing">${word}</span> `;
+      }
+    });
+
+    const totalWords = origWords.length;
+    document.getElementById('wfdScoreBadge').innerText = `${score} / ${totalWords}`;
+    document.getElementById('wfdSentenceMarkup').innerHTML = markupHTML;
+    document.getElementById('wfdResultCard').style.display = 'flex';
   }
 
   function renderFlashcard() {
@@ -585,3 +682,10 @@
 
 </body>
 </html>
+```eof
+
+### Summary of Changes:
+- **Clean UI**: Removed the Persian prompt text block completely when in WFD mode.
+- **Instant Local Feedback**: Clicking **Check Answer** calculates your score immediately right in the app.
+- **Word Analysis**: Displays the full original sentence below with correct words in **green** and missing/misspelled words in **red**.
+- **Score Counter**: Displays exact score format (e.g. `8 / 10`).
