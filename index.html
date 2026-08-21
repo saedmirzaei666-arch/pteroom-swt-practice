@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PTE SWT</title>
+  <title>PTE SWT Practice</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -15,7 +15,7 @@
     .passage { background: #fafafa; border: 1px solid #ddd; padding: 10px; font-size: 13px; line-height: 1.5; height: 160px; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; }
     textarea { width: 100%; height: 110px; padding: 8px; font-size: 13px; border: 1px solid #aaa; border-radius: 4px; resize: none; }
     .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-    .btn { background: #0056b3; color: #fff; border: none; padding: 8px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn { background: #0056b3; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -34,14 +34,13 @@
 
   <div class="footer">
     <span id="wordCount" style="font-size: 13px; font-weight: bold;">Total Word Count: 0</span>
-    <button class="btn" onclick="sendResult()">Submit</button>
+    <button class="btn" onclick="sendResult()">Submit Response</button>
   </div>
 </div>
 
 <script>
-  let tg = null;
-  if (window.Telegram && window.Telegram.WebApp) {
-    tg = window.Telegram.WebApp;
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
     tg.ready();
     tg.expand();
   }
@@ -67,17 +66,24 @@
   function sendResult() {
     let ans = document.getElementById('answerInput').value.trim();
     let p = document.getElementById('passageText').innerText.trim();
+
     if (!ans) {
-      alert("Please write something first.");
+      alert("لطفاً ابتدا پاسخ خود را بنویسید.");
       return;
     }
-    
+
+    if (!tg) {
+      alert("خطا: کتابخانه تلگرام شناسایی نشد.");
+      return;
+    }
+
     let payload = JSON.stringify({ passage: p, user_answer: ans });
-    
-    if (tg) {
+
+    try {
       tg.sendData(payload);
-    } else {
-      alert("Telegram context not found. Submit worked locally.");
+      tg.close();
+    } catch (e) {
+      alert("خطا در ارسال: " + e.message);
     }
   }
 </script>
