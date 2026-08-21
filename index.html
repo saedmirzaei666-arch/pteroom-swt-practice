@@ -372,7 +372,7 @@
       <div class="card" id="activeCard">
         <div class="card-face card-front">
           <div class="word-title" id="frontWord">Mitigate</div>
-          <div class="tap-hint">👆 برای دیدن معنی لمس کنید</div>
+          <div class="tap-hint">👆 Tap to view meaning</div>
         </div>
         <div class="card-face card-back">
           <div class="meta-row">
@@ -391,8 +391,8 @@
     </div>
 
     <div class="leitner-actions">
-      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 بلد نبودم (Box 1)</button>
-      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 مسلط بودم (+1 Box)</button>
+      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review (Box 1)</button>
+      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1 Box)</button>
     </div>
   </div>
 </div>
@@ -403,21 +403,21 @@
   let timerInterval = null;
   let sec = 600;
 
-  // ۱. سوالات SWT
+  // 1. SWT Questions Dataset
   const swtQuestions = [
     { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Specialized methods of recovery and interpretation are required." },
     { id: "#39", title: "#39 Malaysia Tourism", text: "Malaysia is launching its biggest ever tourism campaign in an effort to lure 20 million visitors here this year. Tourism is the Southeast Asian nation's second-largest source of foreign exchange after exports." },
     { id: "#40", title: "#40 Small Wars", text: "In such an environment, warfare is no longer purely directed against the military potential of adversarial states. Both governmental and non-governmental actors prefer to use force in a way characterized as small wars." }
   ];
 
-  // ۲. سوالات WE
+  // 2. WE Questions Dataset
   const weQuestions = [
     { id: "#WE1", title: "#1 Mass Media & Public Perception", text: "Mass media has a powerful influence on shaping public opinion and perceptions. Do you agree or disagree with the notion that news outlets manipulate public thinking? Support your position with reasons and relevant examples." },
     { id: "#WE2", title: "#2 Climate Change Responsibility", text: "Some people believe that individual actions are negligible in combating climate change and that only governments and large corporations can solve environmental issues. Discuss both views and give your opinion." },
     { id: "#WE3", title: "#3 Artificial Intelligence & Employment", text: "With advancements in artificial intelligence and automation, many traditional jobs are predicted to disappear. Do the benefits of AI outweigh the societal drawbacks of workforce displacement?" }
   ];
 
-  // ۳. سوالات SST
+  // 3. SST Questions Dataset
   const sstQuestions = [
     {
       id: "#136",
@@ -433,7 +433,7 @@
     }
   ];
 
-  // ۴. بانک سوالات کامل WFD (با دسته‌بندی پیش‌بینی ماهانه)
+  // 4. Complete WFD Questions Dataset (Obfuscated Question Numbers)
   const wfdQuestions = [
     { id: "#WFD1", title: "Question #1", audioUrl: "1.mp3", text: "The artists and conservative politicians follow their own rules in politics.", isPrediction: true },
     { id: "#WFD2", title: "Question #2", audioUrl: "10.mp3", text: "The department will continue to offer three new scholarships next year.", isPrediction: true },
@@ -491,7 +491,7 @@
     { id: "#WFD54", title: "Question #54", audioUrl: "94.mp3", text: "Convincing evidence to support this theory is hard to obtain.", isPrediction: false }
   ];
 
-  // ۵. فلش‌کارت‌ها
+  // 5. Flashcards Academic Vocab
   const academicVocab = [
     { word: "Mitigate", phonetic: "/ˈmɪt.ɪ.ɡeɪt/", pos: "Verb", meaning: "کاهش دادن، تعدیل کردن، تسکین دادن", collocations: ["mitigate the risk", "mitigate environmental damage"], sentence: "Governments must implement stringent policies to mitigate the adverse impacts of pollution." },
     { word: "Detrimental", phonetic: "/ˌdet.rɪˈmen.təl/", pos: "Adjective", meaning: "مضر، زیان‌آور، آسیب‌رسان", collocations: ["detrimental effect", "detrimental impact on health"], sentence: "Excessive screen time can have a detrimental effect on cognitive development." },
@@ -700,7 +700,7 @@
     }
   }
 
-  // ارزیابی دقیق WFD با لحاظ حساسیت حروف بزرگ/کوچک، کلمه اول و نقطه انتهای جمله
+  // WFD Evaluation Engine: Relaxed case sensitivity for non-first words
   function evaluateWfdLocally(originalSentence, userSentence) {
     const origTrimmed = originalSentence.trim();
     const userTrimmed = userSentence.trim();
@@ -720,10 +720,18 @@
 
     origTokens.forEach((origToken, idx) => {
       const targetWord = origCleanWords[idx];
+      const isFirstWord = (idx === 0);
       const isLastWord = (idx === origTokens.length - 1);
 
-      // تطابق دقیق کلمه با رعایت حساسیت حروف کوچک و بزرگ
-      const wordMatch = userCleanWords.includes(targetWord);
+      let wordMatch = false;
+
+      if (isFirstWord) {
+        // First word strictly requires exact case match (Capital letter required)
+        wordMatch = userCleanWords.includes(targetWord);
+      } else {
+        // Non-first words allow flexible case-insensitive matching
+        wordMatch = userCleanWords.some(u => u.toLowerCase() === targetWord.toLowerCase());
+      }
 
       let isCorrect = wordMatch;
       if (isLastWord && periodMissing) {
@@ -742,17 +750,20 @@
 
     let warningNotice = "";
     if (!userTrimmed.length) {
-      warningNotice = "<div style='color:#ef4444; font-size:12px; font-weight:bold; margin-top:6px;'>⚠️ پاسخی وارد نشده است.</div>";
+      warningNotice = "<div style='color:#ef4444; font-size:12px; font-weight:bold; margin-top:6px;'>⚠️ No answer provided.</div>";
     } else {
       let issues = [];
-      if (origCleanWords[0] && userCleanWords[0] && userCleanWords[0][0] !== origCleanWords[0][0]) {
-        issues.push("کلمه اول باید با حرف بزرگ (Capital) شروع شود.");
+      // Check first word capitalization specifically
+      if (origCleanWords[0] && userCleanWords[0]) {
+        if (userCleanWords[0].toLowerCase() === origCleanWords[0].toLowerCase() && userCleanWords[0] !== origCleanWords[0]) {
+          issues.push("The first word of the sentence must start with a capital letter.");
+        }
       }
       if (periodMissing) {
-        issues.push("جمله باید حتماً با نقطه (.) به پایان برسد.");
+        issues.push("The sentence must end with a period (.).");
       }
       if (issues.length > 0) {
-        warningNotice = `<div style='color:#dc2626; font-size:12px; font-weight:700; margin-top:8px; background:#fef2f2; padding:6px 10px; border-radius:6px; border:1px solid #fca5a5;'>⚠️ اشکالات نگارشی:<br>• ${issues.join('<br>• ')}</div>`;
+        warningNotice = `<div style='color:#dc2626; font-size:12px; font-weight:700; margin-top:8px; background:#fef2f2; padding:6px 10px; border-radius:6px; border:1px solid #fca5a5;'>⚠️ Grammar & Formatting Notices:<br>• ${issues.join('<br>• ')}</div>`;
       }
     }
 
@@ -804,12 +815,3 @@
 
 </body>
 </html>
-```eof
-
-### Key Updates:
-1. **Strict Case & Period Grading**:
-   - Exact word matching is now case-sensitive (e.g. `The` vs `the`).
-   - Verifies if sentence ends with a period (`.`).
-   - Adds a red alert box if the first letter is not capitalized or if the period is missing.
-2. **WFD Categories**:
-   - Added `🌐 All Questions` and `🔥 Monthly Prediction` selector tabs above the WFD question dropdown.
