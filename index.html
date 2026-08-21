@@ -68,8 +68,8 @@
       margin-bottom: 10px;
       flex-shrink: 0;
     }
-    .brand { font-weight: 800; color: var(--primary); font-size: 14px; }
-    .timer { font-weight: bold; color: #c00; font-size: 14px; }
+    .brand { font-weight: 800; color: var(--primary); font-size: 13.5px; }
+    .timer { font-weight: bold; color: #c00; font-size: 13.5px; }
     
     .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
     
@@ -321,22 +321,267 @@
 
   // ۱. سوالات SWT
   const swtQuestions = [
-    { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Like many archaeological materials, human remains require distinctive and specialized methods of recovery, analysis, and interpretation, while technological innovations and the accumulation of expertise have enabled archaeologists to extract ever greater amounts of information from assemblages of skeletal material. Alongside analyses of new finds, these advances have consistently thrown new light on existing collections of human remains in museums, universities and other institutions. Given the powerful emotional, social and religious meanings attached to the dead body, it is perhaps unsurprising that human remains pose a distinctive set of ethical questions for archaeologists.\nWith the rise of indigenous rights movements and the emergence of post-colonial nations, the acquisition and ownership of human remains became a divisive and politically loaded issue. It became increasingly clear that many human remains in museum collections around the world represented the traces of colonial exploitation and discredited pseudo-scientific theories of race. In the light of these debates and changing attitudes, some human remains were returned orساختار فایل‌های شما در تصویر ارسالی کاملاً درست و عالی است! پوشه `wfd_audios` دقیقاً در کنار `index.html` قرار دارد.
+    { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Specialized methods of recovery and interpretation are required." },
+    { id: "#39", title: "#39 Malaysia Tourism", text: "Malaysia is launching its biggest ever tourism campaign in an effort to lure 20 million visitors here this year. Tourism is the Southeast Asian nation's second-largest source of foreign exchange after exports." },
+    { id: "#40", title: "#40 Small Wars", text: "In such an environment, warfare is no longer purely directed against the military potential of adversarial states. Both governmental and non-governmental actors prefer to use force in a way characterized as small wars." }
+  ];
 
-تنها دلیلی که قبلاً صدا پخش نمی‌شد این بود که در کدهای جاوااسکریپت، مسیر پیش‌فرض را `115.mp3` زده بودیم در حالی که فایل‌ها داخل پوشه `wfd_audios/115.mp3` قرار دارند.
+  // ۲. سوالات WE
+  const weQuestions = [
+    { id: "#WE1", title: "#1 Mass Media & Public Perception", text: "Mass media has a powerful influence on shaping public opinion and perceptions. Do you agree or disagree with the notion that news outlets manipulate public thinking? Support your position with reasons and relevant examples." },
+    { id: "#WE2", title: "#2 Climate Change Responsibility", text: "Some people believe that individual actions are negligible in combating climate change and that only governments and large corporations can solve environmental issues. Discuss both views and give your opinion." },
+    { id: "#WE3", title: "#3 Artificial Intelligence & Employment", text: "With advancements in artificial intelligence and automation, many traditional jobs are predicted to disappear. Do the benefits of AI outweigh the societal drawbacks of workforce displacement?" }
+  ];
 
----
+  // ۳. سوالات SST
+  const sstQuestions = [
+    {
+      id: "#136",
+      title: "#136 Recycling Water",
+      audioUrl: "sst1.mp3",
+      text: "Why do we need to recycle water? Because we don’t generate much new water. Chemically the process of generating water is not a process that happens a lot anymore."
+    },
+    {
+      id: "#240",
+      title: "#240 Stock Market and Business",
+      audioUrl: "sst2.mp3",
+      text: "The stock market is where investors connect to buy and sell investments, most commonly stocks, which are shares of ownership in a public company."
+    }
+  ];
 
-### تغییر نهایی برای حل مشکل پلیر:
+  // ۴. بانک سوالات کامل WFD
+  const wfdQuestions = [
+    { id: "#WFD1", title: "#1 Politics Rules", audioUrl: "1.mp3", text: "The artists and conservative politicians follow their own rules in politics." },
+    { id: "#WFD2", title: "#2 Scholarships", audioUrl: "10.mp3", text: "The department will continue to offer three new scholarships next year." },
+    { id: "#WFD3", title: "#3 Unemployment", audioUrl: "104.mp3", text: "Economic problems caused a big rise in unemployment." },
+    { id: "#WFD4", title: "#4 Roman Republic", audioUrl: "105.mp3", text: "The economic strength of early Roman Republic will be examined." },
+    { id: "#WFD5", title: "#5 Service Dogs", audioUrl: "11.mp3", text: "Dogs are able to provide assistance to people with disabilities." },
+    { id: "#WFD6", title: "#6 Research Assistant", audioUrl: "113.mp3", text: "A good research assistant is not afraid to ask questions." },
+    { id: "#WFD7", title: "#7 Student Ability", audioUrl: "115.mp3", text: "Every student has both the right and the ability to succeed." },
+    { id: "#WFD8", title: "#8 Weather Forecast", audioUrl: "118.mp3", text: "Experts are now able to forecast weather over much longer periods." },
+    { id: "#WFD9", title: "#9 Popular Culture", audioUrl: "12.mp3", text: "Popular culture is now a serious subject of academic inquiry." },
+    { id: "#WFD10", title: "#10 Research Resources", audioUrl: "124.mp3", text: "Find out how to get your resources before your research." },
+    { id: "#WFD11", title: "#11 Reading List", audioUrl: "13.mp3", text: "The reading list will be available before the course begins." },
+    { id: "#WFD12", title: "#12 Law Firm Job", audioUrl: "136.mp3", text: "He landed his job in a very prestigious law firm." },
+    { id: "#WFD13", title: "#13 Children Books", audioUrl: "14.mp3", text: "Books for children often contain many beautiful illustrations." },
+    { id: "#WFD14", title: "#14 Study of Society", audioUrl: "142.mp3", text: "The typical part of this course involves the study of society." },
+    { id: "#WFD15", title: "#15 Blue Whale", audioUrl: "15.mp3", text: "The blue whale is the largest animal that ever lived." },
+    { id: "#WFD16", title: "#16 Campus Tour", audioUrl: "16.mp3", text: "Free Campus Tour runs daily during summer for prospective students." },
+    { id: "#WFD17", title: "#17 Interim Grades", audioUrl: "17.mp3", text: "Interim grades will be posted on the board outside the student lounge." },
+    { id: "#WFD18", title: "#18 Regional Assembly", audioUrl: "18.mp3", text: "A regional assembly was moved to the devolution of power." },
+    { id: "#WFD19", title: "#19 Best Things", audioUrl: "19.mp3", text: "I think it's one of the best things I've done, really." },
+    { id: "#WFD20", title: "#20 Confirm Textbook", audioUrl: "2.mp3", text: "Please confirm that you have received the textbook." }
+  ];
 
-در فایل `index.html`، در بخش تابع انتخاب سوال (`onSelectQuestion`)، خط تنظیم آدرس صدا برای WFD را به این شکل بنویسید:
+  // ۵. فلش‌کارت‌ها
+  const academicVocab = [
+    { word: "Mitigate", phonetic: "/ˈmɪt.ɪ.ɡeɪt/", pos: "Verb", meaning: "کاهش دادن، تعدیل کردن، تسکین دادن", collocations: ["mitigate the risk", "mitigate environmental damage"], sentence: "Governments must implement stringent policies to mitigate the adverse impacts of pollution." },
+    { word: "Detrimental", phonetic: "/ˌdet.rɪˈmen.təl/", pos: "Adjective", meaning: "مضر، زیان‌آور، آسیب‌رسان", collocations: ["detrimental effect", "detrimental impact on health"], sentence: "Excessive screen time can have a detrimental effect on cognitive development." },
+    { word: "Ubiquitous", phonetic: "/juːˈbɪk.wɪ.təs/", pos: "Adjective", meaning: "همه‌جا حاضر، فراگیر، بسیار متداول", collocations: ["ubiquitous presence", "become ubiquitous"], sentence: "Smartphones have become ubiquitous in almost every aspect of contemporary life." },
+    { word: "Exacerbate", phonetic: "/ɪɡˈzæs.ə.beɪt/", pos: "Verb", meaning: "وخیم‌تر کردن، تشدید کردن (مشکل یا بیماری)", collocations: ["exacerbate the problem", "exacerbate tension"], sentence: "Unplanned urbanization will inevitably exacerbate the existing housing crisis." }
+  ];
 
-```javascript
-} else if (currentTask === 'WFD') {
-  document.getElementById('promptText').innerText = "🎧 به جمله صوتی با دقت گوش دهید و آن را به صورت کامل بنویسید:";
-  const audioPl = document.getElementById('audioPlayer');
-  
-  // اضافه کردن مسیر پوشه به اول اسم فایل
-  audioPl.src = "wfd_audios/" + q.audioUrl;
-  audioPl.load();
-}
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
+  let currentCardIndex = 0;
+
+  academicVocab.forEach((v, idx) => {
+    if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
+  });
+
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (tg.requestFullscreen) tg.requestFullscreen();
+    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+  }
+
+  function startTimer(duration) {
+    if (timerInterval) clearInterval(timerInterval);
+    sec = duration;
+    timerInterval = setInterval(() => {
+      sec--;
+      let m = Math.floor(sec / 60);
+      let s = sec % 60;
+      document.getElementById('timer').innerText = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
+      if (sec <= 0) {
+        clearInterval(timerInterval);
+        sendResult();
+      }
+    }, 1000);
+  }
+
+  function switchTask(task) {
+    currentTask = task;
+    document.getElementById('tabSWT').className = task === 'SWT' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tabWE').className = task === 'WE' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tabSST').className = task === 'SST' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tabWFD').className = task === 'WFD' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tabFlash').className = task === 'FLASH' ? 'tab-btn active' : 'tab-btn';
+    
+    const taskContainer = document.getElementById('taskContainer');
+    const flashContainer = document.getElementById('flashcardContainer');
+    const timerElem = document.getElementById('timer');
+    const audioSec = document.getElementById('audioSection');
+    const audioPl = document.getElementById('audioPlayer');
+
+    if (task === 'FLASH') {
+      taskContainer.style.display = 'none';
+      flashContainer.style.display = 'flex';
+      audioSec.style.display = 'none';
+      audioPl.pause();
+      if (timerInterval) clearInterval(timerInterval);
+      timerElem.innerText = "Study Mode";
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Academic Flashcards";
+      renderFlashcard();
+      return;
+    }
+
+    taskContainer.style.display = 'flex';
+    flashContainer.style.display = 'none';
+
+    if (task === 'SWT') {
+      audioSec.style.display = 'none';
+      audioPl.pause();
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Written Text";
+      document.getElementById('answerInput').placeholder = "Write your single sentence summary (5-75 words)...";
+      startTimer(600);
+      loadOptions(swtQuestions);
+    } else if (task === 'WE') {
+      audioSec.style.display = 'none';
+      audioPl.pause();
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay";
+      document.getElementById('answerInput').placeholder = "Write your 200-300 word academic essay here...";
+      startTimer(1200);
+      loadOptions(weQuestions);
+    } else if (task === 'SST') {
+      audioSec.style.display = 'block';
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Spoken Text";
+      document.getElementById('answerInput').placeholder = "Write your 50-70 word summary based on the lecture...";
+      startTimer(600);
+      loadOptions(sstQuestions);
+    } else if (task === 'WFD') {
+      audioSec.style.display = 'block';
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
+      document.getElementById('answerInput').placeholder = "Listen carefully and type the exact sentence here...";
+      startTimer(60);
+      loadOptions(wfdQuestions);
+    }
+  }
+
+  function loadOptions(list) {
+    const select = document.getElementById('questionSelect');
+    select.innerHTML = "";
+    list.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title;
+      select.appendChild(opt);
+    });
+    onSelectQuestion();
+  }
+
+  function onSelectQuestion() {
+    let list = swtQuestions;
+    if (currentTask === 'WE') list = weQuestions;
+    if (currentTask === 'SST') list = sstQuestions;
+    if (currentTask === 'WFD') list = wfdQuestions;
+
+    const idx = document.getElementById('questionSelect').value;
+    const q = list[idx];
+    
+    if (currentTask === 'SST') {
+      document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Please listen to the recording above and write your summary.";
+      const audioPl = document.getElementById('audioPlayer');
+      audioPl.src = q.audioUrl;
+      audioPl.load();
+    } else if (currentTask === 'WFD') {
+      document.getElementById('promptText').innerText = "🎧 به جمله صوتی با دقت گوش دهید و آن را به صورت کامل بنویسید:";
+      const audioPl = document.getElementById('audioPlayer');
+      audioPl.src = "wfd_audios/" + q.audioUrl;
+      audioPl.load();
+    } else {
+      document.getElementById('promptText').innerText = q.text;
+    }
+    
+    document.getElementById('answerInput').value = "";
+    calcWords();
+  }
+
+  function calcWords() {
+    let t = document.getElementById('answerInput').value.trim();
+    let count = t === "" ? 0 : t.split(/\s+/).filter(Boolean).length;
+    document.getElementById('wordCount').innerText = "Total Word Count: " + count;
+  }
+
+  function sendResult() {
+    let ans = document.getElementById('answerInput').value.trim();
+    let list = swtQuestions;
+    if (currentTask === 'WE') list = weQuestions;
+    if (currentTask === 'SST') list = sstQuestions;
+    if (currentTask === 'WFD') list = wfdQuestions;
+
+    let currentIdx = document.getElementById('questionSelect').value;
+    let q = list[currentIdx];
+
+    if (!ans) {
+      alert("Please write your answer before submitting.");
+      return;
+    }
+
+    let payload = JSON.stringify({
+      task_type: currentTask,
+      question_title: q.title,
+      prompt: q.text,
+      user_answer: ans
+    });
+
+    if (tg && typeof tg.sendData === "function") {
+      tg.sendData(payload);
+      tg.close();
+    }
+  }
+
+  function renderFlashcard() {
+    const cardObj = academicVocab[currentCardIndex];
+    const cardLevel = leitnerData[currentCardIndex]?.box || 1;
+    
+    document.getElementById('activeCard').classList.remove('is-flipped');
+    
+    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
+    document.getElementById('boxLevel').innerText = `📦 Box Level: ${cardLevel}/5`;
+    
+    document.getElementById('frontWord').innerText = cardObj.word;
+    document.getElementById('backPhonetic').innerText = cardObj.phonetic;
+    document.getElementById('backPos').innerText = cardObj.pos;
+    document.getElementById('backMeaning').innerText = cardObj.meaning;
+    document.getElementById('backCollocations').innerHTML = cardObj.collocations.map(c => `• ${c}`).join('<br>');
+    document.getElementById('backSentence').innerText = cardObj.sentence;
+  }
+
+  function flipCard() {
+    document.getElementById('activeCard').classList.toggle('is-flipped');
+  }
+
+  function answerCard(known) {
+    if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
+    
+    if (known) {
+      if (leitnerData[currentCardIndex].box < 5) {
+        leitnerData[currentCardIndex].box += 1;
+      }
+    } else {
+      leitnerData[currentCardIndex].box = 1;
+    }
+    
+    localStorage.setItem('pteroom_leitner_data', JSON.stringify(leitnerData));
+    
+    currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
+    renderFlashcard();
+  }
+
+  window.onload = () => switchTask('SWT');
+</script>
+
+</body>
+</html>
