@@ -1,78 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PTE SWT Practice</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 15px; background: #f4f6f9; color: #333; }
-    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0056b3; padding-bottom: 8px; }
-    .timer { font-weight: bold; color: #d9534f; }
-    .passage-box { background: #fff; padding: 12px; border: 1px solid #ccc; height: 160px; overflow-y: auto; margin: 12px 0; font-size: 14px; line-height: 1.5; }
-    textarea { width: 100%; height: 110px; box-sizing: border-box; padding: 8px; font-size: 14px; border: 1px solid #aaa; border-radius: 4px; resize: none; }
-    .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-    .submit-btn { background: #0056b3; color: white; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-size: 14px; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <strong>Summarize Written Text</strong>
-    <span class="timer" id="timer">Time Left: 10:00</span>
-  </div>
-
-  <div class="passage-box" id="passageText">
-    Loading passage text...
-  </div>
-
-  <textarea id="answerInput" placeholder="Type your summary here (one single sentence)..." oninput="updateWordCount()"></textarea>
-
-  <div class="footer">
-    <span id="wordCount">Total Word Count: 0</span>
-    <button class="submit-btn" onclick="submitAnswer()">Submit</button>
-  </div>
-
-  <script>
-    const tg = window.Telegram.WebApp;
+<script>
+  const tg = window.Telegram ? window.Telegram.WebApp : null;
+  if (tg) {
     tg.ready();
     tg.expand();
+  }
 
-    // دریافت متن سوال از پارامترهای URL یا پیش‌فرض
-    const samplePassage = "Plagiarism is the act of copying another author's work and presenting it as one's own. In academia, it is considered a serious ethical offense that can lead to severe penalties, including expulsion or loss of academic credibility. Researchers must always properly cite references to uphold intellectual honesty.";
-    document.getElementById('passageText').innerText = samplePassage;
+  // تایمر معکوس ۱۰ دقیقه
+  let timeLeft = 600;
+  const timerElem = document.getElementById('timer');
+  const timerInterval = setInterval(() => {
+    timeLeft--;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerElem.innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      submitAnswer();
+    }
+  }, 1000);
 
-    // تایمر معکوس
-    let timeLeft = 600;
-    const timerElem = document.getElementById('timer');
-    const timerInterval = setInterval(() => {
-      timeLeft--;
-      let minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
-      timerElem.innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        submitAnswer();
-      }
-    }, 1000);
+  // شمارش کلمات
+  function updateWordCount() {
+    const text = document.getElementById('answerInput').value.trim();
+    const words = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
+    document.getElementById('wordCount').innerText = `Total Word Count: ${words}`;
+  }
 
-    function updateWordCount() {
-      const text = document.getElementById('answerInput').value.trim();
-      const words = text === "" ? 0 : text.split(/\s+/).length;
-      document.getElementById('wordCount').innerText = `Total Word Count: ${words}`;
+  // تابع ارسال پاسخ
+  function submitAnswer() {
+    const answer = document.getElementById('answerInput').value.trim();
+    const passage = document.getElementById('passageText').innerText.trim();
+
+    if (!answer) {
+      alert("Please write your answer before submitting.");
+      return;
     }
 
-    function submitAnswer() {
-      const answer = document.getElementById('answerInput').value.trim();
-      if (!answer) {
-        alert("Please write your answer before submitting.");
-        return;
+    const payload = JSON.stringify({
+      passage: passage,
+      user_answer: answer
+    });
+
+    if (tg && typeof tg.sendData === "function") {
+      try {
+        tg.sendData(payload);
+        tg.close();
+      } catch (err) {
+        alert("Error sending data: " + err.message);
       }
-      // ارسال پاسخ به بات تلگرام و بستن پنجره
-      tg.sendData(JSON.stringify({
-        passage: samplePassage,
-        user_answer: answer
-      }));
+    } else {
+      alert("Telegram WebApp not detected. Please open from the chat button.");
     }
-  </script>
-</body>
-</html>
+  }
+</script>
