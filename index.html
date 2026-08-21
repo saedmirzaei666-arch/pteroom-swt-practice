@@ -12,10 +12,14 @@
     .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0056b3; padding-bottom: 6px; margin-bottom: 10px; }
     .title { font-weight: bold; color: #0056b3; font-size: 14px; }
     .timer { font-weight: bold; color: #c00; font-size: 13px; }
-    .passage { background: #fafafa; border: 1px solid #ddd; padding: 10px; font-size: 13px; line-height: 1.5; height: 160px; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; }
+    .passage-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 12px; color: #666; }
+    .passage { background: #fafafa; border: 1px solid #ddd; padding: 12px; font-size: 13px; line-height: 1.6; height: 170px; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; text-align: justify; }
+    .change-btn { background: none; border: 1px solid #0056b3; color: #0056b3; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; }
+    .change-btn:hover { background: #eef5fc; }
     textarea { width: 100%; height: 110px; padding: 8px; font-size: 13px; border: 1px solid #aaa; border-radius: 4px; resize: none; }
     .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-    .btn { background: #0056b3; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn { background: #0056b3; color: #fff; border: none; padding: 9px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
+    .btn:hover { background: #004494; }
   </style>
 </head>
 <body>
@@ -23,14 +27,17 @@
 <div class="box">
   <div class="header">
     <span class="title">Summarize Written Text</span>
-    <span class="timer" id="timer">Time: 10:00</span>
+    <span class="timer" id="timer">Time Left: 10:00</span>
   </div>
 
-  <div class="passage" id="passageText">
-    Plagiarism is the act of copying another author's work and presenting it as one's own without appropriate attribution. In academic and professional fields, plagiarism constitutes a serious ethical violation that undermines trust and scholarly integrity. Educational institutions enforce strict penalties for violations, ranging from failing grades to permanent expulsion, making accurate citation and intellectual honesty essential practices for all researchers.
+  <div class="passage-info">
+    <span id="questionTopic">Topic: Loading...</span>
+    <button class="change-btn" onclick="nextQuestion()">Next Question 🔀</button>
   </div>
 
-  <textarea id="answerInput" placeholder="Write your single sentence summary here..." oninput="calcWords()"></textarea>
+  <div class="passage" id="passageText">Loading passage...</div>
+
+  <textarea id="answerInput" placeholder="Write your single sentence summary here (5-75 words)..." oninput="calcWords()"></textarea>
 
   <div class="footer">
     <span id="wordCount" style="font-size: 13px; font-weight: bold;">Total Word Count: 0</span>
@@ -39,18 +46,63 @@
 </div>
 
 <script>
+  // بانک سوالات واقعی و پرتکرار آزمون PTE Academic
+  const questions = [
+    {
+      topic: "Academic Integrity & Plagiarism",
+      text: "Plagiarism is the act of copying another author's work and presenting it as one's own without appropriate attribution. In academic and professional fields, plagiarism constitutes a serious ethical violation that undermines trust and scholarly integrity. Educational institutions enforce strict penalties for violations, ranging from failing grades to permanent expulsion, making accurate citation and intellectual honesty essential practices for all researchers."
+    },
+    {
+      topic: "Renewable Energy Transition",
+      text: "The transition toward renewable energy sources such as solar and wind power has accelerated globally as nations strive to reduce greenhouse gas emissions and combat climate change. While renewable energy infrastructure requires significant initial capital investments, technological advancements and economies of scale have substantially lowered the operational costs over time. Consequently, sustainable energy not only mitigates environmental degradation but also enhances long-term energy security."
+    },
+    {
+      topic: "Artificial Intelligence in Healthcare",
+      text: "Artificial intelligence is revolutionizing the healthcare industry by enhancing diagnostic accuracy, streamlining clinical workflows, and personalizing patient treatment plans. Machine learning algorithms can analyze vast volumes of medical imaging and genetic data far faster than traditional methods, detecting anomalies at early stages. However, integrating AI into medicine presents critical challenges regarding data privacy, algorithmic bias, and the essential need for human physician oversight."
+    },
+    {
+      topic: "Urban Green Spaces",
+      text: "Urban green spaces, including parks, community gardens, and urban forests, play a crucial role in improving the physical and psychological well-being of city residents. Exposure to natural surroundings reduces stress, encourages physical activity, and fosters social interactions within urban communities. Furthermore, urban vegetation helps lower municipal temperatures by reducing the urban heat island effect, while simultaneously filtering airborne pollutants and absorbing excess rainwater."
+    },
+    {
+      topic: "Global Supply Chains & Logistics",
+      text: "Modern international commerce heavily relies on intricate global supply chains that connect manufacturers, suppliers, and consumers across multiple continents. Recent geopolitical tensions, economic volatility, and transport bottlenecks have exposed the inherent vulnerabilities of extended supply networks. To build resilience against future disruptions, logistics companies are increasingly adopting digital tracking technologies and diversifying their sourcing strategies to minimize delivery delays."
+    }
+  ];
+
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
     tg.expand();
   }
 
+  let currentQuestionIndex = 0;
+
+  function loadRandomQuestion() {
+    currentQuestionIndex = Math.floor(Math.random() * questions.length);
+    renderQuestion();
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQuestionIndex];
+    document.getElementById('questionTopic').innerText = `Topic: ${q.topic} (${currentQuestionIndex + 1}/${questions.length})`;
+    document.getElementById('passageText').innerText = q.text;
+    document.getElementById('answerInput').value = "";
+    calcWords();
+  }
+
+  // تایمر معکوس ۱۰ دقیقه
   let sec = 600;
   const timer = setInterval(() => {
     sec--;
     let m = Math.floor(sec / 60);
     let s = sec % 60;
-    document.getElementById('timer').innerText = `Time: ${m}:${s < 10 ? '0' : ''}${s}`;
+    document.getElementById('timer').innerText = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
     if (sec <= 0) {
       clearInterval(timer);
       sendResult();
@@ -68,24 +120,25 @@
     let p = document.getElementById('passageText').innerText.trim();
 
     if (!ans) {
-      alert("لطفاً ابتدا پاسخ خود را بنویسید.");
+      alert("Please write your summary response first.");
       return;
     }
 
-    if (!tg) {
-      alert("خطا: کتابخانه تلگرام شناسایی نشد.");
-      return;
-    }
+    let payload = JSON.stringify({
+      passage: p,
+      user_answer: ans
+    });
 
-    let payload = JSON.stringify({ passage: p, user_answer: ans });
-
-    try {
+    if (tg && typeof tg.sendData === "function") {
       tg.sendData(payload);
       tg.close();
-    } catch (e) {
-      alert("خطا در ارسال: " + e.message);
+    } else {
+      alert("Telegram context not found.");
     }
   }
+
+  // بارگذاری سوال اولیه تصادفی
+  loadRandomQuestion();
 </script>
 
 </body>
