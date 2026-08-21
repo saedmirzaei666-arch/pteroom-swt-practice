@@ -2,35 +2,152 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PTE ROOM - Multi-Task Practice Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { margin: 0; padding: 12px; background: #eef2f5; color: #222; }
-    .box { background: #fff; border-radius: 8px; border: 1px solid #c9d2db; padding: 14px; max-width: 720px; margin: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     
-    .nav-tabs { display: flex; gap: 6px; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; }
-    .tab-btn { flex: 1; background: #edf2f7; border: 1px solid #cbd5e1; padding: 8px 6px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 11.5px; color: #475569; text-align: center; }
-    .tab-btn.active { background: #0056b3; color: #fff; border-color: #0056b3; }
+    html, body {
+      margin: 0;
+      padding: 6px;
+      background: #eef2f5;
+      color: #222;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #0056b3; padding-bottom: 6px; margin-bottom: 10px; }
-    .brand { font-weight: 800; color: #0056b3; font-size: 14px; }
-    .timer { font-weight: bold; color: #c00; font-size: 14px; }
+    .box {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #c9d2db;
+      padding: 10px 12px;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
     
-    .selector-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
-    select { flex: 1; padding: 7px 10px; border-radius: 4px; border: 1px solid #0056b3; font-size: 13px; font-weight: 600; background: #f8fafc; color: #0056b3; outline: none; }
-    
-    .audio-container { display: none; margin-bottom: 10px; background: #f1f5f9; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; }
-    audio { width: 100%; height: 36px; outline: none; }
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      flex-shrink: 0;
+    }
 
-    .prompt-box { background: #fafbfc; border: 1px solid #dbe2e8; padding: 12px; font-size: 13px; line-height: 1.6; height: 165px; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; text-align: justify; white-space: pre-line; }
-    textarea { width: 100%; height: 140px; padding: 10px; font-size: 13.5px; border: 1px solid #a0aec0; border-radius: 4px; resize: none; outline: none; }
+    .tab-btn {
+      flex: 1;
+      background: #edf2f7;
+      border: 1px solid #cbd5e1;
+      padding: 8px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 11.5px;
+      color: #475569;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: #0056b3;
+      color: #fff;
+      border-color: #0056b3;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid #0056b3;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+    .brand { font-weight: 800; color: #0056b3; font-size: 13.5px; }
+    .timer { font-weight: bold; color: #c00; font-size: 13.5px; }
+    
+    .selector-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    select {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #0056b3;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f8fafc;
+      color: #0056b3;
+      outline: none;
+    }
+    
+    .audio-container {
+      display: none;
+      margin-bottom: 8px;
+      background: #f1f5f9;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      flex-shrink: 0;
+    }
+    audio { width: 100%; height: 32px; outline: none; }
+
+    .prompt-box {
+      flex: 1;
+      min-height: 90px;
+      background: #fafbfc;
+      border: 1px solid #dbe2e8;
+      padding: 10px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      text-align: justify;
+      white-space: pre-line;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 100px;
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #a0aec0;
+      border-radius: 4px;
+      resize: none;
+      outline: none;
+      -webkit-overflow-scrolling: touch;
+    }
     textarea:focus { border-color: #0056b3; box-shadow: 0 0 0 1px #0056b3; }
     
-    .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
     .word-count { font-size: 13px; font-weight: bold; color: #333; }
-    .btn { background: #0056b3; color: #fff; border: none; padding: 10px 22px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
+    .btn {
+      background: #0056b3;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+    }
     .btn:hover { background: #004494; }
   </style>
 </head>
@@ -53,9 +170,8 @@
   </div>
 
   <div class="audio-container" id="audioSection">
-    <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #334155;">🎧 Listen to the lecture:</div>
+    <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Listen to the lecture:</div>
     <audio id="audioPlayer" controls>
-      <source id="audioSource" src="" type="audio/mpeg">
       Your browser does not support audio element.
     </audio>
   </div>
@@ -75,7 +191,7 @@
   let timerInterval = null;
   let sec = 600;
 
-  // ۱. بانک سوالات SWT (شامل تمام سوالات پردیکشن)
+  // ۱. بانک سوالات SWT
   const swtQuestions = [
     { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Like many archaeological materials, human remains require distinctive and specialized methods of recovery, analysis, and interpretation, while technological innovations and the accumulation of expertise have enabled archaeologists to extract ever greater amounts of information from assemblages of skeletal material. Alongside analyses of new finds, these advances have consistently thrown new light on existing collections of human remains in museums, universities and other institutions. Given the powerful emotional, social and religious meanings attached to the dead body, it is perhaps unsurprising that human remains pose a distinctive set of ethical questions for archaeologists.\nWith the rise of indigenous rights movements and the emergence of post-colonial nations, the acquisition and ownership of human remains became a divisive and politically loaded issue. It became increasingly clear that many human remains in museum collections around the world represented the traces of colonial exploitation and discredited pseudo-scientific theories of race. In the light of these debates and changing attitudes, some human remains were returned or repatriated to their communities of origin, a process which continues to this day. Recently a new set of challenges to the study of human remains has emerged from a rather unexpected direction: the British government revised its interpretation of nineteenth-century burial legislation in a way that would drastically curtail the ability of archaeologists to study human remains of any age excavated in England and Wales. This paper examines these extraordinary events and the legal, political and ethical questions that they raise." },
     { id: "#39", title: "#39 Malaysia Tourism", text: "Malaysia is also launching its biggest ever tourism campaign in an effort to lure 20 million visitors here this year. Tourism is the Southeast Asian nation's second-largest source of foreign exchange after exports. Malaysia is one of the most pleasant, hassle-free countries to visit in Southeast Asia. Aside from its gleaming 21st century glass towers, it boasts some of the most superb beaches, mountains and national parks in the region.\nAny tourist itinerary would have to begin in the capital, Kuala Lumpur, where you will find the Petronas Twin Towers, which once comprised the world's tallest buildings and now hold the title of second-tallest. Both the 88-story towers soar 1,480 feet high and are connected by a sky-bridge on the 41st floor. The limestone temple Batu Caves, located 9 miles north of the city, have a 328-foot-high ceiling and feature ornate Hindu shrines, including a 141-foot-tall gold-painted statue of a Hindu deity. To reach the caves, visitors have to climb a steep flight of 272 steps. In Sabah state on Borneo island not to be confused with Indonesia's Borneo you'll find the small mushroom-shaped Sipadan island, off the coast of Sabah, rated as one of the top five diving sites in the world. Sipadan is the only oceanic island in Malaysia, rising from a 2,300-foot abyss in the Celebes Sea. You can also climb Mount Kinabalu, the tallest peak in Southeast Asia, visit the Sepilok Orang Utan Sanctuary, go white-water rafting and catch a glimpse of the bizarre proboscis monkey, a primate found only in Borneo with a huge pendulous nose, a characteristic pot belly and strange honking sounds.\nWhile you're in Malaysia, consider a trip to Malacca. In its heyday, this southern state was a powerful Malay sultanate and a booming trading port in the region. Facing the Straits of Malacca, this historical state is now a place of intriguing Chinese streets, antique shops, old temples and reminders of European colonial powers. Another interesting destination is Penang, known as the Pearl of the Orient. This island off the northwest coast of Malaysia boasts of a rich Chinese cultural heritage, good food and beautiful beaches." },
@@ -96,7 +212,7 @@
     { id: "#WE4", title: "#4 Cashless Society Transition", text: "Many developed nations are transitioning toward an entirely cashless economy. What are the major advantages and disadvantages of this transition for individuals and financial institutions?" }
   ];
 
-  // ۳. بانک سوالات جدید SST همراه با فایل‌های صوتی
+  // ۳. بانک سوالات SST همراه با فایل‌های صوتی
   const sstQuestions = [
     {
       id: "#136",
@@ -116,6 +232,16 @@
   if (tg) {
     tg.ready();
     tg.expand();
+    
+    // فعال‌سازی تمام صفحه کامل در تلگرام
+    if (tg.requestFullscreen) {
+      tg.requestFullscreen();
+    }
+    
+    // جلوگیری از بسته شدن با اسکرول به پایین
+    if (tg.disableVerticalSwipes) {
+      tg.disableVerticalSwipes();
+    }
   }
 
   function startTimer(duration) {
@@ -188,8 +314,7 @@
     if (currentTask === 'SST') {
       document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Please listen to the recording above and write your summary.\n\n(Transcript reference loaded for AI grading evaluation)";
       const audioPl = document.getElementById('audioPlayer');
-      const audioSrc = document.getElementById('audioSource');
-      audioSrc.src = q.audioUrl;
+      audioPl.src = q.audioUrl;
       audioPl.load();
     } else {
       document.getElementById('promptText').innerText = q.text;
