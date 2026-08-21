@@ -3,58 +3,240 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PTE ROOM</title>
+  <title>PTE ROOM - Multi-Task Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    :root { --primary: #0056b3; --bg: #eef2f5; --text: #222; }
-    * { box-sizing: border-box; font-family: -apple-system, sans-serif; }
+    :root { --primary: #0056b3; --bg: #eef2f5; --text: #1e293b; }
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     
     html, body {
-      margin: 0; padding: 0; background: var(--bg);
-      width: 100vw; height: 100vh; overflow: hidden;
+      margin: 0;
+      padding: max(12px, env(safe-area-inset-top, 12px)) 10px max(12px, env(safe-area-inset-bottom, 12px)) 10px;
+      background: var(--bg);
+      color: var(--text);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .box {
-      display: flex; flex-direction: column; width: 100%; height: 100%;
-      padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)) 10px;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #c9d2db;
+      padding: 12px 14px;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
     
-    .nav-tabs { display: flex; gap: 4px; margin-bottom: 10px; flex-shrink: 0; }
-    .tab-btn {
-      flex: 1; background: #fff; border: 1px solid #cbd5e1; padding: 8px 2px;
-      border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 11px; color: #475569;
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      flex-shrink: 0;
     }
-    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-    .header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-    .brand { font-weight: 800; color: var(--primary); font-size: 15px; }
-    .timer { font-weight: bold; color: #c00; font-size: 15px; }
+    .tab-btn {
+      flex: 1;
+      background: #edf2f7;
+      border: 1px solid #cbd5e1;
+      padding: 8px 2px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 11px;
+      color: #475569;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid var(--primary);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    .brand { font-weight: 800; color: var(--primary); font-size: 14px; }
+    .timer { font-weight: bold; color: #c00; font-size: 14px; }
     
     .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-    .selector-bar { margin-bottom: 10px; }
-    select { width: 100%; padding: 10px; border-radius: 6px; border: 1.5px solid var(--primary); font-size: 14px; font-weight: 600; color: var(--primary); }
     
-    .audio-container { display: none; margin-bottom: 10px; }
-    audio { width: 100%; height: 40px; }
+    .selector-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
 
-    .prompt-box { flex: 1; background: #fff; padding: 15px; font-size: 15px; line-height: 1.6; overflow-y: auto; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 10px; }
-    textarea { width: 100%; min-height: 140px; padding: 12px; font-size: 16px; border: 1px solid #a0aec0; border-radius: 8px; resize: none; }
+    select {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 6px;
+      border: 1.5px solid var(--primary);
+      font-size: 13.5px;
+      font-weight: 600;
+      background: #f8fafc;
+      color: var(--primary);
+      outline: none;
+    }
     
-    .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-bottom: 10px; }
-    .btn { background: var(--primary); color: #fff; border: none; padding: 14px 24px; border-radius: 8px; font-weight: bold; font-size: 14px; }
+    .audio-container {
+      display: none;
+      margin-bottom: 8px;
+      background: #f1f5f9;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      flex-shrink: 0;
+    }
+    audio { width: 100%; height: 34px; outline: none; }
 
-    /* Flashcard Style */
-    .flashcard-wrapper { display: none; flex-direction: column; flex: 1; align-items: center; }
-    .card-scene { width: 100%; flex: 1; perspective: 1000px; margin: 10px 0; }
-    .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; }
+    .prompt-box {
+      flex: 1;
+      min-height: 90px;
+      background: #fafbfc;
+      border: 1px solid #dbe2e8;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      text-align: justify;
+      white-space: pre-line;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 100px;
+      width: 100%;
+      padding: 10px;
+      font-size: 14.5px;
+      border: 1px solid #a0aec0;
+      border-radius: 6px;
+      resize: none;
+      outline: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+    
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .word-count { font-size: 13.5px; font-weight: bold; color: #333; }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13.5px;
+    }
+    .btn:hover { background: #004494; }
+
+    /* Flashcard Styles */
+    .flashcard-wrapper {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .leitner-progress {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    .card-scene {
+      width: 100%;
+      flex: 1;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 12px;
+    }
     .card.is-flipped { transform: rotateY(180deg); }
-    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; background: #fff; border: 1.5px solid #cbd5e1; overflow-y: auto; }
-    .card-front { background: var(--primary); color: #fff; justify-content: center; align-items: center; text-align: center; }
-    .word-title { font-size: 32px; font-weight: 800; }
-    .persian-meaning { font-size: 20px; font-weight: 800; color: var(--primary); margin: 10px 0; }
-    .example-sentence { font-size: 15px; background: #f1f5f9; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary); }
-    .leitner-actions { display: flex; width: 100%; gap: 10px; padding-bottom: 20px; }
-    .leitner-btn { flex: 1; padding: 16px; border-radius: 8px; font-weight: 800; font-size: 15px; border: none; color: #fff; }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      overflow-y: auto;
+    }
+    .card-front {
+      background: linear-gradient(135deg, var(--primary), #003366);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .card-front .word-title { font-size: 34px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .card-front .tap-hint { font-size: 13.5px; opacity: 0.9; margin-top: 14px; background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 16px; }
+    .card-back {
+      background: #fafbfc;
+      color: var(--text);
+      transform: rotateY(180deg);
+      justify-content: center;
+      align-items: stretch;
+      text-align: left;
+      gap: 10px;
+    }
+    .card-back .meta-row { display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px; }
+    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 16px; font-weight: 600; }
+    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 6px; font-size: 13px; font-weight: 800; text-transform: uppercase; }
+    .card-back .persian-meaning { font-size: 19px; font-weight: 800; color: var(--primary); margin: 4px 0; direction: rtl; text-align: right; width: 100%; }
+    .card-back .section-title { font-size: 14px; font-weight: 800; color: #334155; margin-top: 4px; }
+    .card-back .collocations { font-size: 15px; font-weight: 600; color: #1e293b; line-height: 1.5; }
+    .card-back .example-sentence { font-size: 14.5px; line-height: 1.5; color: #0f172a; background: #f1f5f9; padding: 10px 12px; border-radius: 6px; border-left: 4px solid var(--primary); width: 100%; }
+
+    .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
+    .leitner-btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 14px; border: none; cursor: pointer; color: #fff; }
+    .btn-again { background: #ef4444; }
+    .btn-good { background: #10b981; }
   </style>
 </head>
 <body>
@@ -65,58 +247,96 @@
     <button class="tab-btn" id="tabWE" onclick="switchTask('WE')">WE</button>
     <button class="tab-btn" id="tabSST" onclick="switchTask('SST')">SST</button>
     <button class="tab-btn" id="tabWFD" onclick="switchTask('WFD')">WFD</button>
-    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Flash</button>
+    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Flashcards</button>
   </div>
 
   <div class="header">
-    <span class="brand" id="taskHeading">PTE ROOM</span>
-    <span class="timer" id="timer">Time: 10:00</span>
+    <span class="brand" id="taskHeading">PTE ROOM • Summarize Written Text</span>
+    <span class="timer" id="timer">Time Left: 10:00</span>
   </div>
 
+  <!-- Main Tasks Container -->
   <div class="task-container" id="taskContainer">
-    <div class="selector-bar"><select id="questionSelect" onchange="onSelectQuestion()"></select></div>
-    <div class="audio-container" id="audioSection"><audio id="audioPlayer" controls></audio></div>
-    <div class="prompt-box" id="promptText">Loading...</div>
-    <textarea id="answerInput" placeholder="Write here..."></textarea>
+    <div class="selector-bar">
+      <select id="questionSelect" onchange="onSelectQuestion()"></select>
+    </div>
+
+    <div class="audio-container" id="audioSection">
+      <div style="font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Audio Player:</div>
+      <audio id="audioPlayer" controls>
+        Your browser does not support audio element.
+      </audio>
+    </div>
+
+    <div class="prompt-box" id="promptText">Loading prompt...</div>
+
+    <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
+
     <div class="footer">
-      <span class="word-count" id="wordCount">Words: 0</span>
-      <button class="btn" onclick="sendResult()">Submit</button>
+      <span class="word-count" id="wordCount">Total Word Count: 0</span>
+      <button class="btn" onclick="sendResult()">Submit Response</button>
     </div>
   </div>
 
+  <!-- Flashcards Container -->
   <div class="flashcard-wrapper" id="flashcardContainer">
+    <div class="leitner-progress">
+      <span id="cardCounter">Card 1 of 8</span>
+      <span id="boxLevel">📦 Box Level: 1/5</span>
+    </div>
+
     <div class="card-scene" onclick="flipCard()">
       <div class="card" id="activeCard">
-        <div class="card-face card-front"><div class="word-title" id="frontWord">...</div></div>
+        <div class="card-face card-front">
+          <div class="word-title" id="frontWord">Mitigate</div>
+          <div class="tap-hint">👆 برای دیدن معنی لمس کنید</div>
+        </div>
         <div class="card-face card-back">
-          <div class="persian-meaning" id="backMeaning">...</div>
-          <div id="backCollocations" style="font-size:14px; margin:5px 0;"></div>
-          <div class="example-sentence" id="backSentence">...</div>
+          <div class="meta-row">
+            <span class="pronunciation" id="backPhonetic">/ˈmɪt.ɪ.ɡeɪt/</span>
+            <span class="pos" id="backPos">verb</span>
+          </div>
+          <div class="persian-meaning" id="backMeaning">کاهش دادن، تعدیل کردن، تسکین دادن</div>
+          
+          <div class="section-title">Collocations:</div>
+          <div class="collocations" id="backCollocations">• mitigate the risk<br>• mitigate environmental damage</div>
+          
+          <div class="section-title">Example Sentence:</div>
+          <div class="example-sentence" id="backSentence">Governments must implement stringent policies to mitigate the adverse impacts of pollution.</div>
         </div>
       </div>
     </div>
+
     <div class="leitner-actions">
-      <button class="leitner-btn" style="background:#ef4444" onclick="answerCard(false)">🔴 بلد نبودم</button>
-      <button class="leitner-btn" style="background:#10b981" onclick="answerCard(true)">🟢 مسلط بودم</button>
+      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 بلد نبودم (Box 1)</button>
+      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 مسلط بودم (+1 Box)</button>
     </div>
   </div>
 </div>
 
 <script>
-  // لود اولیه و تنظیمات تلگرام
-  const tg = window.Telegram?.WebApp;
-  if(tg) { tg.ready(); tg.expand(); if(tg.requestFullscreen) tg.requestFullscreen(); }
+  let currentTask = "SWT";
+  let timerInterval = null;
+  let sec = 600;
 
-  // [دیتاها را در اینجا قرار دهید]
-  // متغیرهای wfdQuestions، swtQuestions، academicVocab و غیره...
+  // ۱. سوالات SWT
+  const swtQuestions = [
+    { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Like many archaeological materials, human remains require distinctive and specialized methods of recovery, analysis, and interpretation, while technological innovations and the accumulation of expertise have enabled archaeologists to extract ever greater amounts of information from assemblages of skeletal material. Alongside analyses of new finds, these advances have consistently thrown new light on existing collections of human remains in museums, universities and other institutions. Given the powerful emotional, social and religious meanings attached to the dead body, it is perhaps unsurprising that human remains pose a distinctive set of ethical questions for archaeologists.\nWith the rise of indigenous rights movements and the emergence of post-colonial nations, the acquisition and ownership of human remains became a divisive and politically loaded issue. It became increasingly clear that many human remains in museum collections around the world represented the traces of colonial exploitation and discredited pseudo-scientific theories of race. In the light of these debates and changing attitudes, some human remains were returned orساختار فایل‌های شما در تصویر ارسالی کاملاً درست و عالی است! پوشه `wfd_audios` دقیقاً در کنار `index.html` قرار دارد.
 
-  function switchTask(task) {
-    // منطق تغییر تب‌ها
-    // اگر task === 'FLASH' نمایش flashcardContainer و مخفی کردن taskContainer
-    // اگر WFD بود، مسیر آدرس فایل صوتی را 'wfd_audios/' + q.audioUrl بگذارید
-  }
+تنها دلیلی که قبلاً صدا پخش نمی‌شد این بود که در کدهای جاوااسکریپت، مسیر پیش‌فرض را `115.mp3` زده بودیم در حالی که فایل‌ها داخل پوشه `wfd_audios/115.mp3` قرار دارند.
 
-  // سایر توابع (onSelectQuestion, calcWords, renderFlashcard, ...)
-</script>
-</body>
-</html>
+---
+
+### تغییر نهایی برای حل مشکل پلیر:
+
+در فایل `index.html`، در بخش تابع انتخاب سوال (`onSelectQuestion`)، خط تنظیم آدرس صدا برای WFD را به این شکل بنویسید:
+
+```javascript
+} else if (currentTask === 'WFD') {
+  document.getElementById('promptText').innerText = "🎧 به جمله صوتی با دقت گوش دهید و آن را به صورت کامل بنویسید:";
+  const audioPl = document.getElementById('audioPlayer');
+  
+  // اضافه کردن مسیر پوشه به اول اسم فایل
+  audioPl.src = "wfd_audios/" + q.audioUrl;
+  audioPl.load();
+}
