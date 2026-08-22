@@ -23,6 +23,7 @@
       color: var(--text);
       width: 100vw;
       height: 100vh;
+      min-height: 100vh;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -53,9 +54,9 @@
       background: #e2e8f0;
       color: #334155;
       border: none;
-      padding: 5px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       display: none;
@@ -106,7 +107,7 @@
     .hub-text h3 { font-size: 16px; color: var(--primary-dark); margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* Courses View */
+    /* Courses List */
     .courses-list {
       display: flex;
       flex-direction: column;
@@ -115,16 +116,24 @@
       flex: 1;
       padding-bottom: 8px;
     }
-    .course-card {
+    .course-item-card {
       background: var(--card-bg);
       border: 1.5px solid #cbd5e1;
       border-radius: 12px;
-      padding: 14px;
+      padding: 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
+    .course-item-card:active {
+      transform: scale(0.98);
+      border-color: var(--primary);
+      background: #f8fafc;
+    }
+    .course-info { display: flex; flex-direction: column; gap: 4px; }
     .course-badge {
       align-self: flex-start;
       background: #e0f2fe;
@@ -135,19 +144,59 @@
       border-radius: 4px;
     }
     .course-title { font-size: 15px; font-weight: 800; color: var(--text); }
-    .course-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-    .course-action-btn {
-      margin-top: 4px;
-      background: var(--primary);
-      color: #fff;
+    .arrow-icon { font-size: 20px; color: var(--primary); font-weight: bold; }
+
+    /* Modal / Bottom Sheet for Course Detail */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      background: #ffffff;
+      width: 100%;
+      max-height: 85vh;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 18px max(20px, env(safe-area-inset-bottom, 20px)) 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.15);
+      animation: slideUp 0.25s ease-out;
+      overflow-y: auto;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 10px; }
+    .modal-title { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .close-btn { background: #f1f5f9; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; color: #64748b; }
+    .modal-body { font-size: 13.5px; line-height: 1.8; color: #334155; text-align: justify; white-space: pre-line; }
+    .modal-action-btn {
+      background: #229ED9;
+      color: #ffffff;
       border: none;
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 12px;
+      padding: 13px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
       cursor: pointer;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       text-decoration: none;
+      margin-top: 6px;
     }
 
     /* Practice View Tabs & Layout */
@@ -385,16 +434,16 @@
       <div class="hub-card" onclick="navTo('courses')">
         <div class="hub-icon">🎓</div>
         <div class="hub-text">
-          <h3>دوره‌های آموزشی PTE ROOM</h3>
-          <p>مشاهده و ثبت‌نام در دوره‌های تخصصی، منتورینگ و کلاس‌های خصوصی</p>
+          <h3>دوره‌های موجود در PTE ROOM</h3>
+          <p>مشاهده جزئیات ۴ دوره تخصصی، دریافت مشاوره و ثبت‌نام</p>
         </div>
       </div>
 
       <div class="hub-card" onclick="navTo('practice')">
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
-          <h3>تمرین روزانه (Daily Practice)</h3>
-          <p>شبیه‌ساز هوشمند Write From Dictation و جعبه لایتنر لغات آکادمیک</p>
+          <h3>تمرین روزانه</h3>
+          <p>شبیه‌ساز هوشمند Write From Dictation و جعبه لایتنر واژگان</p>
         </div>
       </div>
     </div>
@@ -403,41 +452,61 @@
   <!-- 2. Courses Screen -->
   <div class="view-screen" id="viewCourses">
     <div class="courses-list">
-      <div class="course-card">
-        <span class="course-badge">VIP MENTORSHIP</span>
-        <div class="course-title">1. PTE Personal Mentoring</div>
-        <div class="course-desc">برنامه‌ریزی کاملاً شخصی‌سازی‌شده، پیگیری روزانه تکالیف، فیدبک مستقیم اسپیکینگ و رایتینگ تا کسب نمره هدف (+79).</div>
-        <button class="course-action-btn" onclick="requestCourse('PTE Personal Mentoring')">دریافت مشاوره و ثبت‌نام</button>
+      <div class="course-item-card" onclick="openCourseModal(0)">
+        <div class="course-info">
+          <span class="course-badge">VIP MENTORSHIP</span>
+          <div class="course-title">1. PTE Personal Mentoring</div>
+        </div>
+        <div class="arrow-icon">‹</div>
       </div>
 
-      <div class="course-card">
-        <span class="course-badge">SPECIALIZED MASTERCLASS</span>
-        <div class="course-title">2. PTE Write Essay Mastery</div>
-        <div class="course-desc">تسلط بر تمپلیت‌های استاندارد 90، ساختارهای گرامری نمره‌آور و تکنیک‌های پوشش حداکثری ایده و ایده‌پردازی برای تمام تاپیک‌های پیش‌بینی.</div>
-        <button class="course-action-btn" onclick="requestCourse('PTE Write Essay Mastery')">دریافت مشاوره و ثبت‌نام</button>
+      <div class="course-item-card" onclick="openCourseModal(1)">
+        <div class="course-info">
+          <span class="course-badge">SPECIALIZED MASTERCLASS</span>
+          <div class="course-title">2. PTE Write Essay Mastery</div>
+        </div>
+        <div class="arrow-icon">‹</div>
       </div>
 
-      <div class="course-card">
-        <span class="course-badge">1-ON-1 SESSIONS</span>
-        <div class="course-title">3. PTE Private Lessons</div>
-        <div class="course-desc">کلاس‌های تک‌نفره و فشرده برای رفع اشکال سریع در مهارت‌های اسپیکینگ، ریدینگ و لیسنینگ تحت نظارت مستقیم استاد.</div>
-        <button class="course-action-btn" onclick="requestCourse('PTE Private Lessons')">دریافت مشاوره و ثبت‌نام</button>
+      <div class="course-item-card" onclick="openCourseModal(2)">
+        <div class="course-info">
+          <span class="course-badge">1-ON-1 SESSIONS</span>
+          <div class="course-title">3. PTE Private Lessons</div>
+        </div>
+        <div class="arrow-icon">‹</div>
       </div>
 
-      <div class="course-card">
-        <span class="course-badge">FOUNDATION & FLUENCY</span>
-        <div class="course-title">4. General English</div>
-        <div class="course-desc">تقویت پایه‌ای دایره واژگان، کالوکیشن‌های کاربردی، گرامر دقیق و روانی کلام جهت آمادگی برای آزمون‌های بین‌المللی.</div>
-        <button class="course-action-btn" onclick="requestCourse('General English')">دریافت مشاوره و ثبت‌نام</button>
+      <div class="course-item-card" onclick="openCourseModal(3)">
+        <div class="course-info">
+          <span class="course-badge">FOUNDATION & FLUENCY</span>
+          <div class="course-title">4. General English</div>
+        </div>
+        <div class="arrow-icon">‹</div>
       </div>
     </div>
   </div>
 
-  <!-- 3. Daily Practice Screen (WFD & Flashcards only) -->
+  <!-- Course Detail Modal -->
+  <div class="modal-overlay" id="courseModal" onclick="closeCourseModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title" id="modalCourseTitle">عنوان دوره</span>
+        <button class="close-btn" onclick="closeCourseModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modalCourseDesc">
+        توضیحات دوره...
+      </div>
+      <button class="modal-action-btn" onclick="redirectToSupport()">
+        💬 دریافت مشاوره و ثبت‌نام در تلگرام
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Daily Practice Screen -->
   <div class="view-screen" id="viewPractice">
     <div class="practice-tabs">
       <button class="ptab-btn active" id="ptabWFD" onclick="switchPractice('WFD')">✍️ Write From Dictation</button>
-      <button class="ptab-btn" id="ptabFlash" onclick="switchPractice('FLASH')">🗂 Academic Flashcards</button>
+      <button class="ptab-btn" id="ptabFlash" onclick="switchPractice('FLASH')">🗂 Flash Cards</button>
     </div>
 
     <div class="practice-box">
@@ -507,6 +576,26 @@
 </div>
 
 <script>
+  const coursesData = [
+    {
+      title: "1. PTE Personal Mentoring",
+      desc: "🌟 کامل‌ترین و تضمینی‌ترین پکیج آمادگی آزمون PTE:\n\n• ارزیابی دقیق سطح زبان و تعیین نقشه راه اختصاصی تا نمره هدف (+65 یا +79)\n• برنامه‌ریزی روزانه بر اساس تایم آزاد شما\n• تصحیح، آنالیز و فیدبک مستقیم روی تمرینات رایتینگ و وویس‌های اسپیکینگ\n• پشتیبانی و رفع اشکال مستمر تا روز آزمون رسمی."
+    },
+    {
+      title: "2. PTE Write Essay Mastery",
+      desc: "✍️ مسترکلاس تخصصی رایتینگ اسه (Write Essay):\n\n• آموزش تمپلیت استاندارد و تست‌شده نمره ۹۰\n• اصول پاراگراف‌بندی، ایده‌پردازی سریع و پوشش کامل تاپیک\n• تکنیک‌های ارتقای نمره Grammar و Vocabulary بدون خطا در املا (Spelling)\n• بررسی و تحلیل تمام موضوعات پرتکرار و پیش‌بینی‌های جدید آزمون."
+    },
+    {
+      title: "3. PTE Private Lessons",
+      desc: "🎯 کلاس‌های خصوصی و تک‌نفره آنلاین:\n\n• رفع اشکال فوری و فشرده روی تسک‌های کلیدی (RA, RS, DI, WFD, FIB)\n• آموزش تکنیک‌های میانبر و نحوه برخورد با تست سنتر\n• شبیه‌سازی ماک تست و تحلیل کارنامه آزمون‌های قبلی شما\n• زمان‌بندی منعطف و کاملاً هماهنگ با تایم شما."
+    },
+    {
+      title: "4. General English",
+      desc: "🚀 تقویت پایه‌ای زبان انگلیسی:\n\n• ارتقای دایره لغات آکادمیک و اصطلاحات روزمره\n• تسلط بر ساختارهای گرامری کاربردی و روانی کلام در مکالمه\n• پایه‌ریزی اصولی برای داوطلبانی که نیاز به تقویت پایه قبل از شروع PTE دارند."
+    }
+  ];
+
+  let selectedCourseIndex = 0;
   let wfdQuestions = [];
   let academicVocab = [];
   let currentWfdCat = "all";
@@ -517,6 +606,8 @@
   if (tg) {
     tg.ready();
     tg.expand();
+    if (tg.requestFullscreen) tg.requestFullscreen();
+    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
   async function initApp() {
@@ -559,16 +650,28 @@
     }
   }
 
-  function requestCourse(courseName) {
-    const payload = JSON.stringify({
-      task_type: "COURSE_INQUIRY",
-      course_name: courseName
-    });
-    if (tg && typeof tg.sendData === "function") {
-      tg.sendData(payload);
-      tg.close();
+  function openCourseModal(index) {
+    selectedCourseIndex = index;
+    const course = coursesData[index];
+    document.getElementById('modalCourseTitle').innerText = course.title;
+    document.getElementById('modalCourseDesc').innerText = course.desc;
+    document.getElementById('courseModal').classList.add('active');
+  }
+
+  function closeCourseModal(e) {
+    if (!e || e.target.id === 'courseModal' || e.target.className === 'close-btn') {
+      document.getElementById('courseModal').classList.remove('active');
+    }
+  }
+
+  function redirectToSupport() {
+    const courseTitle = coursesData[selectedCourseIndex].title;
+    const supportUrl = `https://t.me/pte_room_support?text=${encodeURIComponent('سلام، من برای ثبت‌نام و دریافت مشاوره دوره "' + courseTitle + '" پیام می‌دهم.')}`;
+    
+    if (tg && typeof tg.openTelegramLink === "function") {
+      tg.openTelegramLink(supportUrl);
     } else {
-      alert(`درخواست مشاوره برای دوره "${courseName}" ثبت شد. کارشناسان ما به زودی با شما ارتباط برقرار می‌کنند.`);
+      window.open(supportUrl, '_blank');
     }
   }
 
