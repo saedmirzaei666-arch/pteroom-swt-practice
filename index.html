@@ -36,7 +36,6 @@
       padding: max(12px, env(safe-area-inset-top, 12px)) 12px max(12px, env(safe-area-inset-bottom, 12px)) 12px;
     }
 
-    /* Top Global Header */
     .global-header {
       display: flex;
       justify-content: space-between;
@@ -62,7 +61,6 @@
       display: none;
     }
 
-    /* Views */
     .view-screen {
       display: none;
       flex-direction: column;
@@ -71,7 +69,6 @@
     }
     .view-screen.active { display: flex; }
 
-    /* Home & Practice Hub Menu Grid */
     .hub-grid {
       display: flex;
       flex-direction: column;
@@ -107,7 +104,6 @@
     .hub-text h3 { font-size: 16.5px; color: var(--primary-dark); margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* Courses List */
     .courses-list {
       display: flex;
       flex-direction: column;
@@ -146,7 +142,6 @@
     .course-title { font-size: 15px; font-weight: 800; color: var(--text); }
     .arrow-icon { font-size: 20px; color: var(--primary); font-weight: bold; }
 
-    /* Modals */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -210,7 +205,6 @@
       margin-top: 6px;
     }
 
-    /* WFD Dedicated Screen */
     .wfd-box {
       display: flex;
       flex-direction: column;
@@ -303,7 +297,6 @@
     .wfd-word-correct { background: #d1fae5; color: #065f46; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: #fee2e2; color: #991b1b; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
 
-    /* Flashcard Dedicated Screen */
     .flashcard-box {
       display: flex;
       flex-direction: column;
@@ -332,7 +325,7 @@
       margin-bottom: 8px;
       flex-shrink: 0;
     }
-    .guide-btn {
+    .action-top-btn {
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       color: var(--primary);
@@ -417,7 +410,6 @@
 <body>
 
 <div class="app-wrapper">
-  <!-- Top Navigation Header -->
   <div class="global-header">
     <span class="brand-title" id="pageTitle">PTE ROOM • پلتفرم جامع</span>
     <button class="back-home-btn" id="backHomeBtn" onclick="navBack()">بازگشت ‹</button>
@@ -590,9 +582,12 @@
       <div class="leitner-progress">
         <div>
           <span id="cardCounter">Card 1</span>
-          <span id="boxLevel" style="margin-right:8px;">📦 Box Level: 1/5</span>
+          <span id="boxLevel" style="margin-right:8px;">📦 Box: 1/5</span>
         </div>
-        <button class="guide-btn" onclick="openModal('flashGuideModal')">💡 راهنما</button>
+        <div style="display:flex; gap:4px;">
+          <button class="action-top-btn" onclick="forceHardSync()" title="همگام‌سازی اجباری">🔄 همگام‌سازی</button>
+          <button class="action-top-btn" onclick="openModal('flashGuideModal')">💡 راهنما</button>
+        </div>
       </div>
 
       <div class="card-scene" onclick="flipCard()">
@@ -649,7 +644,7 @@
   let academicVocab = [];
   let currentWfdCat = "all";
   let currentCardIndex = 0;
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v2')) || {};
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v3')) || {};
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -661,10 +656,10 @@
 
   async function initApp() {
     try {
-      const timestamp = new Date().getTime();
+      const ts = Date.now();
       const [resWFD, resFlash] = await Promise.all([
-        fetch(`data/wfd_questions.json?v=${timestamp}`).then(r => r.json()),
-        fetch(`data/flashcards.json?v=${timestamp}`).then(r => r.json())
+        fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" }).then(r => r.json()),
+        fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" }).then(r => r.json())
       ]);
       wfdQuestions = resWFD;
       academicVocab = resFlash;
@@ -677,6 +672,16 @@
     } catch (err) {
       console.error("Data load error:", err);
     }
+  }
+
+  function forceHardSync() {
+    localStorage.removeItem('pteroom_leitner_v3');
+    leitnerData = {};
+    currentCardIndex = 0;
+    initApp().then(() => {
+      renderFlashcard();
+      alert(`✅ دیتابیس با موفقیت همگام شد. تعداد کارت‌ها: ${academicVocab.length}`);
+    });
   }
 
   function navTo(screen) {
@@ -715,11 +720,6 @@
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • Academic Flashcards";
       renderFlashcard();
-      
-      if (!localStorage.getItem('pteroom_seen_flash_guide')) {
-        openModal('flashGuideModal');
-        localStorage.setItem('pteroom_seen_flash_guide', 'true');
-      }
     }
   }
 
@@ -839,7 +839,7 @@
 
     document.getElementById('activeCard').classList.remove('is-flipped');
     document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
-    document.getElementById('boxLevel').innerText = `📦 Box Level: ${box}/5`;
+    document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
     document.getElementById('frontWord').innerText = cardObj.word;
     document.getElementById('backPhonetic').innerText = cardObj.phonetic;
     document.getElementById('backPos').innerText = cardObj.pos;
@@ -855,7 +855,7 @@
   function answerCard(known) {
     if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
     leitnerData[currentCardIndex].box = known ? Math.min(5, leitnerData[currentCardIndex].box + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v2', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v3', JSON.stringify(leitnerData));
     currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
     renderFlashcard();
   }
