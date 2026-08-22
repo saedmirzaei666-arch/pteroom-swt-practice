@@ -80,13 +80,14 @@
       gap: 12px;
       justify-content: center;
       flex: 1;
+      overflow-y: auto;
     }
     .hub-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       backdrop-filter: blur(14px);
       border-radius: 16px;
-      padding: 18px 16px;
+      padding: 16px;
       display: flex;
       align-items: center;
       gap: 14px;
@@ -94,21 +95,97 @@
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
       transition: all 0.2s ease;
     }
+    .hub-card.placement-highlight {
+      border-color: #0284c7;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%);
+    }
     .hub-card:active { transform: scale(0.98); border-color: #38bdf8; background: rgba(30, 41, 59, 0.95); }
     .hub-icon {
-      font-size: 28px;
+      font-size: 26px;
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 12px;
       flex-shrink: 0;
     }
-    .hub-text h3 { font-size: 15.5px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
+    .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Placement Test Container */
+    .placement-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 12px;
+    }
+    .quiz-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .quiz-q-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f8fafc;
+      direction: ltr;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      direction: ltr;
+      color: #cbd5e1;
+      transition: all 0.2s;
+    }
+    .opt-label:has(input:checked) {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      color: #fff;
+    }
+    .opt-label input { accent-color: #38bdf8; }
+
+    .user-info-field {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+    }
+    .user-info-field:focus { border-color: #38bdf8; }
 
     /* Schedule View Styles */
     .schedule-container {
@@ -154,16 +231,8 @@
       align-items: center;
       gap: 6px;
     }
-    .day-date {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .day-events {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .day-date { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+    .day-events { display: flex; flex-direction: column; gap: 6px; }
     .event-row {
       display: flex;
       justify-content: space-between;
@@ -174,13 +243,7 @@
       border-radius: 8px;
       font-size: 12.5px;
     }
-    .event-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      color: #e2e8f0;
-    }
+    .event-info { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #e2e8f0; }
     .event-time {
       font-weight: 800;
       color: #38bdf8;
@@ -276,7 +339,6 @@
     .modal-title { font-size: 16.5px; font-weight: 800; color: #38bdf8; }
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
     
-    /* Typography formatting */
     .modal-body { 
       font-size: 14.5px; 
       line-height: 1.9; 
@@ -376,21 +438,9 @@
       border: 1px solid #0284c7;
       transition: all 0.3s;
     }
-    .wfd-timer-badge.warning {
-      background: rgba(234, 179, 8, 0.2);
-      color: #facc15;
-      border-color: #eab308;
-    }
-    .wfd-timer-badge.danger {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-      border-color: #ef4444;
-      animation: pulse 1s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
+    .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
+    .wfd-timer-badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     textarea {
       height: 75px;
@@ -438,12 +488,7 @@
     .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
     
-    .wfd-tips-container {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-    }
+    .wfd-tips-container { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
     .wfd-warning-tip {
       font-size: 11px;
       font-weight: 700;
@@ -456,13 +501,7 @@
       text-align: left;
     }
 
-    .wfd-action-buttons {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-      flex-shrink: 0;
-    }
-
+    .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
     .btn-secondary {
       background: #1e293b;
       color: #38bdf8;
@@ -494,7 +533,6 @@
       justify-content: space-between;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    
     .leitner-progress {
       width: 100%;
       display: flex;
@@ -510,7 +548,6 @@
       margin-bottom: 10px;
       flex-shrink: 0;
     }
-    
     .stats-info {
       font-size: 11px;
       color: #38bdf8;
@@ -519,7 +556,6 @@
       border-radius: 6px;
       margin-left: 6px;
     }
-
     .action-top-btn {
       background: #1e293b;
       border: 1px solid #334155;
@@ -530,13 +566,7 @@
       font-weight: 800;
       cursor: pointer;
     }
-    
-    .card-scene {
-      width: 100%;
-      flex: 1;
-      perspective: 1000px;
-      cursor: pointer;
-    }
+    .card-scene { width: 100%; flex: 1; perspective: 1000px; cursor: pointer; }
     .card {
       width: 100%;
       height: 100%;
@@ -594,11 +624,11 @@
       background: #0284c7;
       color: #fff;
       border: none;
-      padding: 10px 16px;
-      border-radius: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
       cursor: pointer;
       font-weight: 800;
-      font-size: 13px;
+      font-size: 14px;
       transition: all 0.2s;
     }
     .btn-primary:active { transform: scale(0.98); background: #0369a1; }
@@ -611,24 +641,9 @@
       margin-bottom: 14px;
       width: 100%;
     }
-    .settings-panel label {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #38bdf8;
-      display: block;
-      margin-bottom: 8px;
-    }
-    .quota-info {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-bottom: 14px;
-      line-height: 1.6;
-    }
-    .quota-options {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
+    .settings-panel label { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: block; margin-bottom: 8px; }
+    .quota-info { font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.6; }
+    .quota-options { display: flex; gap: 8px; margin-bottom: 4px; }
     .quota-btn {
       flex: 1;
       padding: 11px 0;
@@ -641,11 +656,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .quota-btn.selected {
-      background: #0284c7;
-      color: #fff;
-      border-color: #38bdf8;
-    }
+    .quota-btn.selected { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
     .done-message {
       display: none;
@@ -681,10 +692,7 @@
       z-index: 2000;
       white-space: nowrap;
     }
-    .app-toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -698,6 +706,15 @@
   <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
+      <!-- Placement Test Action Card -->
+      <div class="hub-card placement-highlight" onclick="navTo('placement')">
+        <div class="hub-icon">📋</div>
+        <div class="hub-text">
+          <h3 style="color:#38bdf8;">آزمون تعیین سطح هوشمند</h3>
+          <p>ارزیابی سریع سطح زبان (۷ سوال)، پیشنهاد دوره و نقشه راه</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('schedule')">
         <div class="hub-icon">📅</div>
         <div class="hub-text">
@@ -724,6 +741,136 @@
     </div>
   </div>
 
+  <!-- Placement Test Screen -->
+  <div class="view-screen" id="viewPlacement">
+    <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
+      
+      <!-- Grammar Section -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>۱. گرامر و ساختار</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۱ از ۷</span>
+        </div>
+        <div class="quiz-q-text">She has lived in Rome _______ over five years.</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q1" value="for" required> for</label>
+          <label class="opt-label"><input type="radio" name="q1" value="since"> since</label>
+          <label class="opt-label"><input type="radio" name="q1" value="during"> during</label>
+          <label class="opt-label"><input type="radio" name="q1" value="from"> from</label>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>۲. گرامر و ساختار</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۲ از ۷</span>
+        </div>
+        <div class="quiz-q-text">If the results _______ positive, we will schedule the mock test.</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q2" value="are" required> are</label>
+          <label class="opt-label"><input type="radio" name="q2" value="will be"> will be</label>
+          <label class="opt-label"><input type="radio" name="q2" value="were"> were</label>
+          <label class="opt-label"><input type="radio" name="q2" value="had been"> had been</label>
+        </div>
+      </div>
+
+      <!-- Vocab Section -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>۳. واژگان آکادمیک</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۳ از ۷</span>
+        </div>
+        <div class="quiz-q-text">The mentor provided helpful _______ to improve my essay structure.</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q3" value="feedback" required> feedback</label>
+          <label class="opt-label"><input type="radio" name="q3" value="theories"> theories</label>
+          <label class="opt-label"><input type="radio" name="q3" value="obstacles"> obstacles</label>
+          <label class="opt-label"><input type="radio" name="q3" value="accents"> accents</label>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>۴. واژگان آکادمیک</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۴ از ۷</span>
+        </div>
+        <div class="quiz-q-text">The primary _______ of this course is to achieve a +79 score.</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q4" value="objective" required> objective</label>
+          <label class="opt-label"><input type="radio" name="q4" value="consequence"> consequence</label>
+          <label class="opt-label"><input type="radio" name="q4" value="dimension"> dimension</label>
+          <label class="opt-label"><input type="radio" name="q4" value="substance"> substance</label>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>۵. جای خالی (Collocation)</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۵ از ۷</span>
+        </div>
+        <div class="quiz-q-text">Students are required to _______ their assignments before Friday.</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q5" value="submit" required> submit</label>
+          <label class="opt-label"><input type="radio" name="q5" value="emit"> emit</label>
+          <label class="opt-label"><input type="radio" name="q5" value="permit"> permit</label>
+          <label class="opt-label"><input type="radio" name="q5" value="admit"> admit</label>
+        </div>
+      </div>
+
+      <!-- Listening Section -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎧 ۶. مهارت شنیداری</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۶ از ۷</span>
+        </div>
+        <div class="audio-wrapper">
+          <audio controls src="wfd_audios/sample1.mp3"></audio>
+        </div>
+        <div class="quiz-q-text">کدام کلمه را در فایل صوتی شنیدید؟</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q6" value="maintenance" required> maintenance</label>
+          <label class="opt-label"><input type="radio" name="q6" value="renovations"> renovations</label>
+          <label class="opt-label"><input type="radio" name="q6" value="holidays"> holidays</label>
+          <label class="opt-label"><input type="radio" name="q6" value="registration"> registration</label>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎧 ۷. درک مطلب شنیداری</span>
+          <span style="font-size:11px; color:#94a3b8;">سوال ۷ از ۷</span>
+        </div>
+        <div class="audio-wrapper">
+          <audio controls src="wfd_audios/sample2.mp3"></audio>
+        </div>
+        <div class="quiz-q-text">بر اساس وویس، ددلاین ارسال فایل چه روزی اعلام شد؟</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="q7" value="Friday" required> Friday</label>
+          <label class="opt-label"><input type="radio" name="q7" value="Thursday"> Thursday</label>
+          <label class="opt-label"><input type="radio" name="q7" value="Monday"> Monday</label>
+          <label class="opt-label"><input type="radio" name="q7" value="Next week"> Next week</label>
+        </div>
+      </div>
+
+      <!-- Contact & Goal Info -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>👤 مشخصات و هدف آزمون</span>
+        </div>
+        <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا آیدی تلگرام جهت ارتباط *" required>
+        <select id="userTarget" class="user-info-field" style="direction:rtl;">
+          <option value="PTE Target +65">هدف نمره: +65 (معادل 7 آیلتس)</option>
+          <option value="PTE Target +79">هدف نمره: +79 (معادل 8 آیلتس)</option>
+          <option value="General English">تقویت زبان عمومی و پایه</option>
+        </select>
+      </div>
+
+      <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
+        🚀 ثبت نهایی و ارسال نتیجه تعیین سطح
+      </button>
+    </form>
+  </div>
+
   <!-- Weekly Schedule Screen -->
   <div class="view-screen" id="viewSchedule">
     <div class="schedule-container">
@@ -732,7 +879,6 @@
         <span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span>
       </div>
 
-      <!-- شنبه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 شنبه</span>
@@ -750,7 +896,6 @@
         </div>
       </div>
 
-      <!-- یکشنبه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 یکشنبه</span>
@@ -772,7 +917,6 @@
         </div>
       </div>
 
-      <!-- دوشنبه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 دوشنبه</span>
@@ -786,7 +930,6 @@
         </div>
       </div>
 
-      <!-- سه‌شنبه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 سه‌شنبه</span>
@@ -808,7 +951,6 @@
         </div>
       </div>
 
-      <!-- چهارشنبه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 چهارشنبه</span>
@@ -822,7 +964,6 @@
         </div>
       </div>
 
-      <!-- پنج‌شنبه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 پنج‌شنبه</span>
@@ -836,7 +977,6 @@
         </div>
       </div>
 
-      <!-- جمعه -->
       <div class="schedule-day-card">
         <div class="day-header">
           <span class="day-title">📌 جمعه</span>
@@ -1067,6 +1207,10 @@
 </div>
 
 <script>
+  // تنظیمات ربات برای ارسال مستقیم تعیین سطح به پشتیبانی
+  const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // توکن ربات از BotFather
+  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE"; // آیدی عددی ادمین یا گروه پشتیبانی
+
   const coursesData = [
     {
       title: "1. PTE Personal Mentoring",
@@ -1170,6 +1314,10 @@
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
       stopWfdTimer();
+    } else if (current === 'placement') {
+      document.getElementById('viewPlacement').classList.add('active');
+      title.innerText = "PTE ROOM • آزمون تعیین سطح";
+      stopWfdTimer();
     } else if (current === 'schedule') {
       document.getElementById('viewSchedule').classList.add('active');
       title.innerText = "PTE ROOM • برنامه تمرینی هفته";
@@ -1194,6 +1342,91 @@
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • Academic Flashcards";
       stopWfdTimer();
+    }
+  }
+
+  /* Placement Test Submission Engine */
+  async function handlePlacementSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitPlacementBtn');
+    btn.disabled = true;
+    btn.innerText = "⏳ در حال ارسال اطلاعات...";
+
+    // پاسخ‌های صحیح
+    const answers = {
+      q1: "for",
+      q2: "are",
+      q3: "feedback",
+      q4: "objective",
+      q5: "submit",
+      q6: "maintenance",
+      q7: "Friday"
+    };
+
+    const formData = new FormData(document.getElementById('placementForm'));
+    let score = 0;
+    for (let key in answers) {
+      if (formData.get(key) === answers[key]) {
+        score++;
+      }
+    }
+
+    const contact = document.getElementById('userContact').value.trim();
+    const target = document.getElementById('userTarget').value;
+
+    const tgUser = tg?.initDataUnsafe?.user;
+    const userName = tgUser ? `${tgUser.first_name || ''} ${tgUser.last_name || ''} (@${tgUser.username || 'ندارد'})` : "نامشخص";
+    const userId = tgUser ? tgUser.id : "نامشخص";
+
+    let levelEstimate = "مقدماتی (General English)";
+    if (score >= 6) levelEstimate = "پیشرفته (+79 VIP Mentorship)";
+    else if (score >= 4) levelEstimate = "متوسط (+65 Preparation)";
+
+    const report = `
+📥 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
+━━━━━━━━━━━━━━━━━━━━
+👤 <b>کاربر:</b> ${userName}
+🆔 <b>شناسه عددی:</b> <code>${userId}</code>
+📞 <b>راه‌ ارتباطی:</b> <code>${contact}</code>
+🎯 <b>هدف داوطلب:</b> ${target}
+━━━━━━━━━━━━━━━━━━━━
+📊 <b>نمره کسب‌شده:</b> ${score} از ۷
+📈 <b>سطح برآوردی:</b> <b>${levelEstimate}</b>
+    `.trim();
+
+    try {
+      if (BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE" && ADMIN_CHAT_ID !== "YOUR_ADMIN_CHAT_ID_HERE") {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: ADMIN_CHAT_ID,
+            text: report,
+            parse_mode: "HTML"
+          })
+        });
+      }
+
+      if (tg && typeof tg.showAlert === "function") {
+        tg.showAlert(
+          "✅ پاسخ‌های تعیین سطح شما با موفقیت دریافت شد.\n\nبه زودی از طریق پشتیبانان PTE ROOM جهت بررسی نتیجه و ارائه نقشه راه با شما تماس گرفته خواهد شد.",
+          () => {
+            navTo('home');
+            btn.disabled = false;
+            btn.innerText = "🚀 ثبت نهایی و ارسال نتیجه تعیین سطح";
+          }
+        );
+      } else {
+        alert("✅ پاسخ‌های تعیین سطح شما با موفقیت دریافت شد.\nبه زودی با شما تماس گرفته خواهد شد.");
+        navTo('home');
+        btn.disabled = false;
+        btn.innerText = "🚀 ثبت نهایی و ارسال نتیجه تعیین سطح";
+      }
+    } catch (err) {
+      console.error(err);
+      alert("⚠️ ارسال با خطا مواجه شد، لطفاً اتصال اینترنت خود را بررسی کنید.");
+      btn.disabled = false;
+      btn.innerText = "🚀 ثبت نهایی و ارسال نتیجه تعیین سطح";
     }
   }
 
