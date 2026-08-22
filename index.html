@@ -527,7 +527,7 @@
         <div class="hub-icon">🗂</div>
         <div class="hub-text">
           <h3>Academic Flashcards</h3>
-          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک، فونتیک، کالوکیشن و مثال کاربردی</p>
+          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (چینش رندوم و هوشمند)</p>
         </div>
       </div>
     </div>
@@ -621,90 +621,13 @@
     }
   ];
 
-  // Base 80 Core Academic Families
-  const SEED_VOCAB = [
-    ["analyse", "/ˈæn.əl.aɪz/", "v.", "تجزیه و تحلیل کردن", ["data analysis", "critical analysis"], "Researchers must analyse the collected data carefully before publishing the report."],
-    ["approach", "/əˈproʊtʃ/", "n. / v.", "رویکرد، روش، نزدیک شدن", ["holistic approach", "methodological approach"], "An interdisciplinary approach is required to tackle environmental problems effectively."],
-    ["area", "/ˈer.i.ə/", "n.", "حوزه، بخش، منطقه", ["research area", "rural area"], "The university specializes in the area of international trade law and development."],
-    ["assess", "/əˈses/", "v.", "ارزیابی و سنجش کردن", ["assess the impact", "continuous assessment"], "Examiners assess candidate performance based on standardized criteria."],
-    ["assume", "/əˈsuːm/", "v.", "فرض کردن، پنداشتن", ["assume responsibility", "underlying assumption"], "Scientists assume that current temperature trends will continue for the next decade."],
-    ["authority", "/əˈθɔːr.ə.t̬i/", "n.", "مرجع رسمی، اقتدار", ["regulatory authority", "competent authority"], "The civil aviation authority implemented stricter safety guidelines for commercial flights."],
-    ["available", "/əˈveɪ.lə.bəl/", "adj.", "در دسترس، موجود", ["readily available", "available resources"], "Supplementary study materials are available for candidates via the digital platform."],
-    ["benefit", "/ˈben.ə.fɪt/", "n. / v.", "فایده، مزیت، سود بردن", ["mutual benefit", "financial benefit"], "The main benefit of automated vocabulary tools is long-term memory retention."],
-    ["concept", "/ˈkɑːn.sept/", "n.", "مفهوم، نظریه", ["basic concept", "theoretical concept"], "The fundamental concept of relativity transformed modern theoretical physics."],
-    ["consist", "/kənˈsɪst/", "v.", "تشکیل شدن از", ["consist of", "consistently maintain"], "The Pearson PTE Academic test consists of speaking, writing, reading, and listening modules."],
-    ["constitute", "/ˈkɑːn.stə.tuːt/", "v.", "تشکیل دادن، ترکیب کردن", ["constitute a threat", "constitute a majority"], "International students constitute a significant portion of university enrollments."],
-    ["context", "/ˈkɑːn.tekst/", "n.", "بستر، زمینه، بافتار", ["historical context", "in the context of"], "Students must understand vocabulary items within their authentic academic context."],
-    ["contract", "/ˈkɑːn.trækt/", "n. / v.", "قرارداد، منقبض شدن", ["enter into a contract", "breach of contract"], "Both parties agreed to sign the bilateral commercial contract without amendments."],
-    ["create", "/kriˈeɪt/", "v.", "ایجاد کردن، خلق کردن", ["create opportunities", "artistic creation"], "Urban planners aim to create sustainable living environments in developing cities."],
-    ["data", "/ˈdeɪ.t̬ə/", "n.", "داده‌ها، اطلاعات آماری", ["empirical data", "data collection"], "Accurate data collection is paramount for rigorous qualitative research."],
-    ["define", "/dɪˈfaɪn/", "v.", "تعریف کردن، تعیین کردن", ["clearly define", "operational definition"], "The curriculum guidelines explicitly define required competencies for graduation."],
-    ["derive", "/dɪˈraɪv/", "v.", "گرفتن، مشتق شدن", ["derive from", "derive satisfaction"], "Many technical English terms derive from ancient Latin and Greek origins."],
-    ["distribute", "/dɪˈstrɪb.juːt/", "v.", "توزیع کردن، پخش کردن", ["equally distribute", "distribution network"], "The organization established a network to distribute medical supplies efficiently."],
-    ["economy", "/iˈkɑː.nə.mi/", "n.", "اقتصاد، صرفه‌جویی", ["global economy", "economic growth"], "Emerging economies require foreign direct investment to maintain industrial growth."],
-    ["environment", "/ɪnˈvaɪ.rən.mənt/", "n.", "محیط زیست، شرایط", ["natural environment", "environmental impact"], "Creating an interactive learning environment significantly enhances student engagement."],
-    ["establish", "/ɪˈstæb.lɪʃ/", "v.", "بنا نهادن، ثابت کردن", ["establish a link", "well established"], "Researchers sought to establish a definitive correlation between sleep and memory."],
-    ["estimate", "/ˈes.tə.meɪt/", "v. / n.", "تخمین زدن، برآورد", ["conservative estimate", "roughly estimate"], "Economists estimate that renewable energy production will double this decade."],
-    ["evident", "/ˈev.ə.dənt/", "adj.", "آشکار، مشهود", ["readily evident", "scientific evidence"], "It is evident that regular structured practice yields substantial score improvements."],
-    ["factor", "/ˈfæk.tɚ/", "n.", "عامل، مولفه اصلی", ["crucial factor", "contributing factor"], "Time management remains a decisive factor in achieving high scores in exams."],
-    ["finance", "/ˈfaɪ.næns/", "n. / v.", "امور مالی، تامین بودجه", ["corporate finance", "financial stability"], "The government agreed to finance public transport infrastructure projects."],
-    ["formula", "/ˈfɔːr.mjə.lə/", "n.", "فرمول، دستورالعمل", ["mathematical formula", "formulate a strategy"], "Chemists applied the standardized formula to balance complex molecular reactions."],
-    ["function", "/ˈfʌŋk.ʃən/", "n. / v.", "عملکرد، نقش، کارکرد", ["vital function", "primary function"], "The primary function of the nervous system is to regulate physiological activity."],
-    ["identify", "/aɪˈden.t̬ə.faɪ/", "v.", "شناسایی کردن، تشخیص دادن", ["identify key issues", "clearly identify"], "Linguistic models identify distinct speech variations to assess phonetic accuracy."],
-    ["income", "/ˈɪn.kʌm/", "n.", "درآمد، عایدی", ["annual income", "income inequality"], "Household disposable income directly influences regional consumer spending patterns."],
-    ["indicate", "/ˈɪn.də.keɪt/", "v.", "نشان دادن، حاکی بودن", ["indicate a trend", "strongly indicate"], "Recent statistical surveys indicate a notable shift toward remote learning models."],
-    ["individual", "/ˌɪn.dəˈvɪdʒ.u.əl/", "adj. / n.", "فرد، شخصی، اختصاصی", ["individual needs", "talented individual"], "Mentorship plans cater specifically to individual learning curves and target bands."],
-    ["interpret", "/ɪnˈtɜːr.prət/", "v.", "تفسیر کردن، ترجمه شفاهی", ["interpret data", "accurately interpret"], "Candidates must interpret graphical trends quickly during the Describe Image task."],
-    ["involve", "/ɪnˈvɑːlv/", "v.", "شامل شدن، درگیر کردن", ["actively involve", "involve risk"], "Advanced academic projects involve extensive collaborative field research."],
-    ["issue", "/ˈɪʃ.uː/", "n. / v.", "موضوع، مسئله، انتشار", ["address the issue", "contentious issue"], "The academic panel met to address critical issues concerning publication ethics."],
-    ["labor", "/ˈleɪ.bɚ/", "n. / v.", "نیروی کار، زحمت", ["skilled labor", "labor market"], "Technological automation has altered the structure of the international labor market."],
-    ["legal", "/ˈliː.ɡəl/", "adj.", "قانونی، حقوقی", ["legal framework", "legal obligation"], "Corporations must comply with national legal frameworks regarding data privacy."],
-    ["major", "/ˈmeɪ.dʒɚ/", "adj. / n.", "عمده، اصلی، رشته", ["major breakthrough", "major factor"], "Artificial intelligence represents a major breakthrough in modern educational tools."],
-    ["method", "/ˈmeθ.əd/", "n.", "روش، متد پژوهش", ["scientific method", "effective method"], "Employing the active recall method significantly enhances vocabulary retention."],
-    ["occur", "/əˈkɜːr/", "v.", "رخ دادن، پدیدار شدن", ["naturally occur", "frequent occurrence"], "Significant morphological shifts occur gradually over extended evolutionary epochs."],
-    ["percent", "/pɚˈsent/", "n.", "درصد", ["high percentage", "percentage points"], "Over eighty percent of test-takers achieved target scores through regular practice."],
-    ["period", "/ˈpɪr.i.əd/", "n.", "دوره، بازه زمانی", ["extended period", "probationary period"], "Candidates are evaluated across an intensive four-week preparation period."],
-    ["policy", "/ˈpɑː.lə.si/", "n.", "خط‌مشی، سیاست", ["public policy", "implement a policy"], "The institution introduced a revised policy regarding academic integrity and citation."],
-    ["principle", "/ˈprɪn.sə.pəl/", "n.", "اصل، قاعده اساسی", ["fundamental principle", "guiding principle"], "Ethical principles must govern all scientific experimentation with human subjects."],
-    ["proceed", "/proʊˈsiːd/", "v.", "پیش رفتن، ادامه دادن", ["proceed with caution", "legal proceedings"], "After passing the preliminary test, applicants may proceed to the interview stage."],
-    ["process", "/ˈprɑː.ses/", "n. / v.", "فرایند، پردازش کردن", ["decision-making process", "process information"], "Memory consolidation is a gradual biological process occurring during restful sleep."],
-    ["require", "/rɪˈkwaɪr/", "v.", "نیاز داشتن، الزام کردن", ["mandatory requirement", "meet requirements"], "Academic master programs require verified proof of English language proficiency."],
-    ["research", "/ˈriː.sɝːtʃ/", "n. / v.", "پژوهش، تحقیق کردن", ["empirical research", "conduct research"], "Scholars conduct thorough research to substantiate their core academic hypotheses."],
-    ["respond", "/rɪˈspɑːnd/", "v.", "پاسخ دادن، واکنش دادن", ["respond promptly", "favorable response"], "Neural pathways respond adaptively to repeated auditory and visual stimuli."],
-    ["role", "/roʊl/", "n.", "نقش، وظیفه کلیدی", ["play a role", "pivotal role"], "Collocations play a pivotal role in boosting PTE Reading and Writing scores."],
-    ["section", "/ˈsek.ʃən/", "n.", "بخش، قسمت", ["cross section", "introductory section"], "The examination paper is divided into three distinct operational sections."],
-    ["sector", "/ˈsek.tɚ/", "n.", "بخش اقتصادی/صنعتی", ["public sector", "private sector"], "Investments across the renewable energy sector have surged considerably this decade."],
-    ["significant", "/sɪɡˈnɪf.ə.kənt/", "adj.", "چشمگیر، معنادار", ["significant difference", "statistically significant"], "Researchers recorded a statistically significant improvement in retention rates."],
-    ["similar", "/ˈsɪm.ə.lɚ/", "adj.", "مشابه، یکسان", ["strikingly similar", "similar characteristics"], "Both grammatical templates share similar structural conventions for essay scoring."],
-    ["source", "/sɔːrs/", "n. / v.", "منبع، سرچشمه", ["reliable source", "primary source"], "Scholarly publications must cite reliable academic sources in their bibliographies."],
-    ["specific", "/spəˈsɪf.ɪk/", "adj.", "خاص، مشخص، دقیق", ["specific details", "domain-specific"], "The training platform offers domain-specific modules tailored for Pearson test formats."],
-    ["structure", "/ˈstrʌk.tʃɚ/", "n. / v.", "ساختار، سازمان‌دهی", ["organizational structure", "sentence structure"], "Maintaining a coherent essay structure guarantees maximum points in written discourse."],
-    ["theory", "/ˈθɪr.i/", "n.", "نظریه، تئوری علمی", ["theoretical framework", "formulate a theory"], "Empirical observations provided robust verification for the prevailing astronomical theory."],
-    ["vary", "/ˈver.i/", "v.", "تغییر کردن، متنوع بودن", ["widely vary", "vary depending on"], "Speaking accents vary widely across native English-speaking geographic regions."]
-  ];
-
-  // Generate 800 Flashcards directly inside client without any external dependencies
-  const academicVocab = [];
-  for (let i = 0; i < 800; i++) {
-    const seed = SEED_VOCAB[i % SEED_VOCAB.length];
-    const cycle = Math.floor(i / SEED_VOCAB.length) + 1;
-    academicVocab.push({
-      id: i + 1,
-      word: cycle === 1 ? seed[0] : `${seed[0]} (Set ${cycle})`,
-      phonetic: seed[1],
-      pos: seed[2],
-      meaning: seed[3],
-      collocations: seed[4],
-      sentence: seed[5]
-    });
-  }
-
   let navHistory = ['home'];
   let selectedCourseIndex = 0;
   let wfdQuestions = [];
+  let academicVocab = [];
   let currentWfdCat = "all";
   let currentCardIndex = 0;
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v4')) || {};
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v6')) || {};
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -714,31 +637,43 @@
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
+  // Fisher-Yates Clean In-Memory Shuffle
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   async function initApp() {
-    // 1. Initialize Flashcards immediately
+    const ts = Date.now();
+
+    // 1. Fetch Flashcards from JSON file with Cache-busting
+    try {
+      const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
+      if (resFlash.ok) {
+        let loadedCards = await resFlash.json();
+        academicVocab = shuffleArray(loadedCards);
+      }
+    } catch (e) {
+      console.warn("Flashcards load error:", e);
+    }
+
+    // 2. Fetch WFD from JSON file
+    try {
+      const resWFD = await fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" });
+      if (resWFD.ok) {
+        wfdQuestions = await resWFD.json();
+        filterWfdCategory('all');
+      }
+    } catch (e) {
+      console.warn("WFD load error:", e);
+    }
+
     academicVocab.forEach((_, idx) => {
       if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
     });
-
-    // 2. Fetch WFD independently with fallback
-    try {
-      const ts = Date.now();
-      const res = await fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" });
-      if (res.ok) {
-        wfdQuestions = await res.json();
-        filterWfdCategory('all');
-      } else {
-        throw new Error("WFD fetch failed");
-      }
-    } catch (e) {
-      console.warn("Using fallback WFD data:", e);
-      wfdQuestions = [
-        { title: "WFD #01 - Academic Library", text: "The university library provides access to international research journals.", audioUrl: "wfd_1.mp3", isPrediction: true },
-        { title: "WFD #02 - Scientific Method", text: "Empirical evidence is required to validate every scientific hypothesis.", audioUrl: "wfd_2.mp3", isPrediction: true },
-        { title: "WFD #03 - Climate Study", text: "Rising global temperatures have a direct impact on biodiversity.", audioUrl: "wfd_3.mp3", isPrediction: false }
-      ];
-      filterWfdCategory('all');
-    }
   }
 
   function navTo(screen) {
@@ -820,7 +755,7 @@
     list.forEach((q, idx) => {
       const opt = document.createElement('option');
       opt.value = idx;
-      opt.innerText = q.title;
+      opt.innerText = q.title || `WFD #${q.id}`;
       select.appendChild(opt);
     });
     onSelectWfd();
@@ -911,7 +846,7 @@
   function answerCard(known) {
     if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
     leitnerData[currentCardIndex].box = known ? Math.min(5, leitnerData[currentCardIndex].box + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v4', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v6', JSON.stringify(leitnerData));
     currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
     renderFlashcard();
   }
