@@ -310,6 +310,7 @@
       justify-content: space-between;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
+    
     .leitner-progress {
       width: 100%;
       display: flex;
@@ -325,6 +326,16 @@
       margin-bottom: 8px;
       flex-shrink: 0;
     }
+    
+    .stats-info {
+      font-size: 11px;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+
     .action-top-btn {
       background: #eff6ff;
       border: 1px solid #bfdbfe;
@@ -335,6 +346,7 @@
       font-weight: 800;
       cursor: pointer;
     }
+    
     .card-scene {
       width: 100%;
       flex: 1;
@@ -405,6 +417,63 @@
       font-weight: 800;
       font-size: 13px;
     }
+    
+    /* Settings Form */
+    .settings-panel {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .settings-panel label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .quota-info {
+      font-size: 11.5px;
+      color: #475569;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .quota-options {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .quota-btn {
+      flex: 1;
+      padding: 8px 0;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-weight: 800;
+      color: #334155;
+      cursor: pointer;
+    }
+    .quota-btn.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    
+    .done-message {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .done-message h3 { color: #166534; font-size: 18px; margin-bottom: 8px; }
+    .done-message p { color: #15803d; font-size: 13px; line-height: 1.6; }
   </style>
 </head>
 <body>
@@ -508,7 +577,7 @@
         </div>
       </div>
       <button class="btn-primary" style="padding:12px; width:100%; border-radius:10px;" onclick="closeModal('flashGuideModal')">
-        متوجه شدم • شروع تمرین
+        متوجه شدم • بستن
       </button>
     </div>
   </div>
@@ -523,13 +592,35 @@
         </div>
       </div>
 
-      <div class="hub-card" onclick="navTo('flash')">
+      <div class="hub-card" onclick="navTo('flash_setup')">
         <div class="hub-icon">🗂</div>
         <div class="hub-text">
           <h3>Academic Flashcards</h3>
-          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (چینش رندوم و هوشمند)</p>
+          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (همراه با مرور هوشمند روزانه)</p>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Flashcard Setup Screen -->
+  <div class="view-screen" id="viewFlashSetup">
+    <div class="flashcard-box" style="justify-content: flex-start;">
+      <h3 style="color: var(--primary); margin-bottom: 12px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
+      
+      <div class="settings-panel">
+        <label>تعداد کلمات جدید (جعبه ۱) در روز:</label>
+        <div class="quota-info">💡 برای بازدهی مطلوب، بین <b>۱۵ تا ۲۵ کلمه جدید</b> در روز مناسب است.</div>
+        <div class="quota-options" id="quotaOptions">
+          <button class="quota-btn" onclick="selectQuota(10)">10</button>
+          <button class="quota-btn selected" onclick="selectQuota(20)">20</button>
+          <button class="quota-btn" onclick="selectQuota(25)">25</button>
+          <button class="quota-btn" onclick="selectQuota(30)">30</button>
+        </div>
+      </div>
+      
+      <button class="btn-primary" style="padding:14px; width:100%; border-radius:10px; font-size:14px;" onclick="startFlashcards()">
+        🚀 شروع تمرین روزانه
+      </button>
     </div>
   </div>
 
@@ -569,11 +660,12 @@
         <div>
           <span id="cardCounter">Card 1</span>
           <span id="boxLevel" style="margin-right:8px;">📦 Box: 1/5</span>
+          <span class="stats-info" id="quotaDisplay"></span>
         </div>
         <button class="action-top-btn" onclick="openModal('flashGuideModal')">💡 راهنما</button>
       </div>
 
-      <div class="card-scene" onclick="flipCard()">
+      <div class="card-scene" onclick="flipCard()" id="cardScene">
         <div class="card" id="activeCard">
           <div class="card-face card-front">
             <div class="word-title" id="frontWord">Loading...</div>
@@ -592,8 +684,14 @@
           </div>
         </div>
       </div>
+      
+      <div class="done-message" id="doneMessage">
+        <h3>🎉 عالی بود!</h3>
+        <p>شما سهمیه لغات جدید امروز را به پایان رساندید.<br>فردا برای کلمات جدید برگردید.</p>
+        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('practice_menu')">بازگشت به منو</button>
+      </div>
 
-      <div class="leitner-actions">
+      <div class="leitner-actions" id="leitnerActions">
         <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
         <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
       </div>
@@ -602,32 +700,77 @@
 </div>
 
 <script>
+  // Core Base Vocabulary (80 Unique Seed Families)
+  const CORE_WORDS = [
+    ["abandon", "/əˈbæn.dən/", "v.", "ترک کردن، رها کردن", ["abandon hope", "abandon policy"], "The researchers had to abandon the experiment due to equipment failure."],
+    ["abstract", "/ˈæb.strækt/", "adj.", "انتزاعی، چکیده مقاله", ["abstract concept", "abstract idea"], "Academic theories often deal with abstract concepts rather than physical objects."],
+    ["access", "/ˈæk.ses/", "n. / v.", "دسترسی داشتن، ورود", ["gain access", "unrestricted access"], "Students need continuous access to online research databases."],
+    ["accommodate", "/əˈkɑː.mə.deɪt/", "v.", "تطبیق دادن، جا دادن", ["accommodate needs", "accommodate changes"], "The university modified its timetable to accommodate international students."],
+    ["accompany", "/əˈkʌm.pə.ni/", "v.", "همراهی کردن، پیوست بودن", ["accompany by", "closely accompany"], "The research paper was accompanied by detailed statistical appendices."],
+    ["accumulate", "/əˈkjuː.mjə.leɪt/", "v.", "انباشتن، جمع‌آوری شدن", ["accumulate evidence", "accumulate wealth"], "Scientific investigators continue to accumulate data on climate shifts."],
+    ["accurate", "/ˈæk.jɚ.ət/", "adj.", "دقیق، بی‌نقص", ["highly accurate", "accurate description"], "The model provides an accurate forecast of economic inflation."],
+    ["achieve", "/əˈtʃiːv/", "v.", "دست یافتن، نائل شدن", ["achieve target", "achieve success"], "Consistent daily practice helps candidates achieve their target score of 79+."],
+    ["acquire", "/əˈkwaɪr/", "v.", "کسب کردن، فرا گرفتن", ["acquire skills", "acquire knowledge"], "Children acquire language structures rapidly through interactive immersion."],
+    ["adapt", "/əˈdæpt/", "v.", "وفق دادن، سازگار شدن", ["adapt to", "readily adapt"], "Species that adapt to ecological changes have higher survival rates."],
+    ["adequate", "/ˈæd.ə.kwət/", "adj.", "کافی، بسنده", ["adequate resources", "adequate preparation"], "Candidates must allocate adequate time for each exam question."],
+    ["adjacent", "/əˈdʒeɪ.sənt/", "adj.", "مجاور، هم‌جوار", ["adjacent area", "adjacent building"], "The library is adjacent to the main computer science faculty."],
+    ["adjust", "/əˈdʒʌst/", "v.", "تنظیم کردن، تعدیل کردن", ["adjust to", "finely adjust"], "Students quickly adjust their pace during timed examination tasks."],
+    ["administrate", "/ədˈmɪn.ə.streɪt/", "v.", "مدیریت کردن، اداره کردن", ["administrate policy", "efficiently administrate"], "The board was appointed to administrate the educational scholarship fund."],
+    ["advocate", "/ˈæd.və.keɪt/", "v. / n.", "مدافع بودن، طرفداری کردن", ["strongly advocate", "public advocate"], "Many educators advocate the use of active recall flashcards."],
+    ["affect", "/əˈfekt/", "v.", "اثر گذاشتن، تاثیر داشتن", ["adversely affect", "directly affect"], "Sleep deprivation can adversely affect memory retention and cognitive focus."],
+    ["aggregate", "/ˈæɡ.rə.ɡət/", "adj. / n.", "مجموع، تجمیعی", ["aggregate demand", "aggregate score"], "The final certificate displays the aggregate score across all four modules."],
+    ["allocate", "/ˈæl.ə.keɪt/", "v.", "اختصاص دادن، تخصیص دادن", ["allocate resources", "allocate budget"], "The government decided to allocate additional funding for scientific labs."],
+    ["alter", "/ˈɑːl.tɚ/", "v.", "تغییر دادن، دگرگون کردن", ["significantly alter", "alter circumstances"], "Technological advances alter traditional educational methodologies."],
+    ["alternative", "/ɑːlˈtɝː.nə.t̬ɪv/", "adj. / n.", "جایگزین، متناوب", ["viable alternative", "alternative energy"], "Solar energy offers a viable alternative to fossil fuel consumption."],
+    ["ambiguous", "/æmˈbɪɡ.ju.əs/", "adj.", "مبهم، دوپهلو", ["ambiguous statement", "highly ambiguous"], "The instructions were clear and avoided any ambiguous phrasing."],
+    ["amend", "/əˈmend/", "v.", "اصلاح کردن، بازنگری کردن", ["amend legislation", "amend contract"], "The academic committee voted to amend the graduation guidelines."],
+    ["analogy", "/əˈnæl.ə.dʒi/", "n.", "قیاس، شباهت", ["draw an analogy", "useful analogy"], "The professor drew an analogy between neural networks and urban transit systems."],
+    ["analyse", "/ˈæn.əl.aɪz/", "v.", "تحلیل کردن، بررسی کردن", ["critically analyse", "analyse data"], "Examiners analyse candidate speaking pace and pronunciation clarity."],
+    ["annual", "/ˈæn.ju.əl/", "adj.", "سالانه، سالیانه", ["annual conference", "annual report"], "The institution publishes an annual report detailing student performance trends."],
+    ["anticipate", "/ænˈtɪs.ə.peɪt/", "v.", "پیش‌بینی کردن، انتظار داشتن", ["anticipate problems", "eagerly anticipate"], "Linguists anticipate substantial changes in computer-assisted language scoring."],
+    ["apparent", "/əˈper.ənt/", "adj.", "آشکار، مشهود", ["readily apparent", "apparent reason"], "The benefits of consistent vocabulary practice became immediately apparent."],
+    ["append", "/əˈpend/", "v.", "پیوست کردن، الحاق کردن", ["append details", "append document"], "Please append the required academic certificates to your application."],
+    ["appreciate", "/əˈpriː.ʃi.eɪt/", "v.", "قدردانی کردن، درک ارزش", ["greatly appreciate", "appreciate the importance"], "Scholars appreciate the importance of peer-reviewed literature in research."],
+    ["approach", "/əˈproʊtʃ/", "n. / v.", "رویکرد، شیوه، نزدیک شدن", ["practical approach", "innovative approach"], "A systematic approach is essential for mastering PTE exam tasks."],
+    ["appropriate", "/əˈproʊ.pri.ət/", "adj.", "مناسب، شایسته", ["appropriate response", "highly appropriate"], "Candidates must choose vocabulary appropriate for academic discourse."],
+    ["approximate", "/əˈprɑːk.sə.mət/", "adj. / v.", "تقریبی، نزدیک بودن", ["approximate value", "approximate time"], "The approximate duration of the listening module is forty-five minutes."],
+    ["arbitrary", "/ˈɑːr.bə.trer.i/", "adj.", "دلخواه، قراردادی، تصادفی", ["arbitrary decision", "purely arbitrary"], "Standardized testing eliminates arbitrary scoring through automated algorithms."],
+    ["area", "/ˈer.i.ə/", "n.", "حوزه، بخش، منطقه", ["subject area", "geographic area"], "Artificial intelligence is a rapidly expanding area of modern research."],
+    ["aspect", "/ˈæs.pekt/", "n.", "جنبه، بعد، بعد موضوع", ["key aspect", "crucial aspect"], "Pronunciation is a key aspect evaluated during the speaking tasks."],
+    ["assemble", "/əˈsem.bəl/", "v.", "گردآوری کردن، سرهم کردن", ["assemble data", "assemble evidence"], "Researchers assemble empirical evidence before drawing final conclusions."],
+    ["assess", "/əˈses/", "v.", "ارزیابی کردن، سنجیدن", ["accurately assess", "assess performance"], "The platform uses AI models to assess writing structure and cohesion."],
+    ["assign", "/əˈsaɪn/", "v.", "تعیین کردن، محول کردن", ["assign tasks", "assign priority"], "Tutors assign daily speaking drills to maintain fluency momentum."],
+    ["assist", "/əˈsɪst/", "v.", "کمک کردن، یاری رساندن", ["assist students", "greatly assist"], "Digital flashcards assist candidates in retaining complex academic collocations."],
+    ["assume", "/əˈsuːm/", "v.", "فرض کردن، پنداشتن", ["safely assume", "underlying assumption"], "We can safely assume that structured preparation yields higher scores."],
+    ["assure", "/əˈʃʊr/", "v.", "اطمینان دادن، تضمین کردن", ["assure quality", "reassure candidates"], "The mentorship program is designed to assure comprehensive skill development."],
+    ["attach", "/əˈtætʃ/", "v.", "ضمیمه کردن، وصل کردن", ["attach importance", "attach file"], "Pearson examiners attach great importance to structural grammatical range."],
+    ["attain", "/əˈteɪn/", "v.", "رسیدن به، دست یافتن", ["attain objective", "attain score"], "With targeted feedback, test-takers easily attain their desired bands."],
+    ["attitude", "/ˈæt̬.ə.tuːd/", "n.", "نگرش، رویکرد ذهنی", ["positive attitude", "critical attitude"], "A disciplined attitude toward daily revision ensures rapid progress."],
+    ("attribute", "/əˈtrɪb.juːt/", "v. / n.", "نسبت دادن، ویژگی", ["attribute to", "essential attribute"], "Linguists attribute fluency gains to regular active repetition."),
+    ("author", "/ˈɑː.θɚ/", "n.", "نویسنده، مؤلف", ["lead author", "author of the study"], "The author presents a coherent argument supported by empirical data."),
+    ("authority", "/əˈθɔːr.ə.t̬i/", "n.", "اقتدار، مرجع رسمی", ["recognized authority", "regulatory authority"], "The university is recognized as a global authority on linguistic research."),
+    ("automate", "/ˈɑː.t̬ə.meɪt/", "v.", "خودکارسازی کردن", ["fully automate", "automate processes"], "Machine learning algorithms automate the evaluation of written essays."),
+    ("available", "/əˈveɪ.lə.bəl/", "adj.", "موجود، در دسترس", ["readily available", "publicly available"], "Practice materials are readily available on the PTE ROOM platform."),
+    ("aware", "/əˈwer/", "adj.", "آگاه، مطلع", ["fully aware", "keenly aware"], "Students must be fully aware of the official exam timing constraints.")
+  ];
+
   const coursesData = [
-    {
-      title: "1. PTE Personal Mentoring",
-      desc: "🌟 کامل‌ترین پکیج آمادگی آزمون PTE:\n\n• ارزیابی سطح و تعیین نقشه راه اختصاصی تا نمره هدف (+65 یا +79)\n• برنامه‌ریزی روزانه بر اساس زمان شما\n• تصحیح و فیدبک مستقیم تمرینات رایتینگ و اسپیکینگ\n• پشتیبانی مستمر تا روز آزمون رسمی."
-    },
-    {
-      title: "2. PTE Write Essay Mastery",
-      desc: "✍️ مسترکلاس تخصصی رایتینگ اسه:\n\n• آموزش تمپلیت استاندارد نمره ۹۰\n• اصول پاراگراف‌بندی و پوشش کامل تاپیک\n• تکنیک‌های ارتقای نمره Grammar و Vocabulary بدون خطای Spelling\n• بررسی موضوعات پرتکرار و پیش‌بینی‌های جدید آزمون."
-    },
-    {
-      title: "3. PTE Private Lessons",
-      desc: "🎯 کلاس‌های خصوصی آنلاین:\n\n• رفع اشکال فشرده روی تسک‌های کلیدی (RA, RS, DI, WFD)\n• آموزش تکنیک‌های میانبر و تست سنتر\n• شبیه‌سازی ماک تست و تحلیل کارنامه‌های قبلی\n• زمان‌بندی کاملاً هماهنگ با شما."
-    },
-    {
-      title: "4. General English",
-      desc: "🚀 تقویت پایه‌ای زبان انگلیسی:\n\n• ارتقای دایره لغات آکادمیک و اصطلاحات\n• تسلط بر ساختارهای گرامری و روانی کلام در مکالمه\n• پایه‌ریزی اصولی برای آمادگی آزمون‌های بین‌المللی."
-    }
+    { title: "1. PTE Personal Mentoring", desc: "🌟 کامل‌ترین پکیج آمادگی آزمون PTE:\n\n• ارزیابی سطح و تعیین نقشه راه اختصاصی تا نمره هدف (+65 یا +79)\n• برنامه‌ریزی روزانه بر اساس زمان شما\n• تصحیح و فیدبک مستقیم تمرینات رایتینگ و اسپیکینگ\n• پشتیبانی مستمر تا روز آزمون رسمی." },
+    { title: "2. PTE Write Essay Mastery", desc: "✍️ مسترکلاس تخصصی رایتینگ اسه:\n\n• آموزش تمپلیت استاندارد نمره ۹۰\n• اصول پاراگراف‌بندی و پوشش کامل تاپیک\n• تکنیک‌های ارتقای نمره Grammar و Vocabulary بدون خطای Spelling\n• بررسی موضوعات پرتکرار و پیش‌بینی‌های جدید آزمون." },
+    { title: "3. PTE Private Lessons", desc: "🎯 کلاس‌های خصوصی آنلاین:\n\n• رفع اشکال فشرده روی تسک‌های کلیدی (RA, RS, DI, WFD)\n• آموزش تکنیک‌های میانبر و تست سنتر\n• شبیه‌سازی ماک تست و تحلیل کارنامه‌های قبلی\n• زمان‌بندی کاملاً هماهنگ با شما." },
+    { title: "4. General English", desc: "🚀 تقویت پایه‌ای زبان انگلیسی:\n\n• ارتقای دایره لغات آکادمیک و اصطلاحات\n• تسلط بر ساختارهای گرامری و روانی کلام در مکالمه\n• پایه‌ریزی اصولی برای آمادگی آزمون‌های بین‌المللی." }
   ];
 
   let navHistory = ['home'];
   let selectedCourseIndex = 0;
   let wfdQuestions = [];
   let academicVocab = [];
-  let currentWfdCat = "all";
+  let sessionQueue = []; 
   let currentCardIndex = 0;
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v6')) || {};
+  let selectedDailyQuota = 20;
+
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v8')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v8')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -637,30 +780,39 @@
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
-  // Fisher-Yates Clean In-Memory Shuffle
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  // Pre-generate 800 cards locally & Shuffle
+  function buildAndShuffleVocab() {
+    let temp = [];
+    for (let i = 0; i < 800; i++) {
+      let seed = CORE_WORDS[i % CORE_WORDS.length];
+      // NO HASHTAGS OR NUMBERS. JUST PURE WORDS.
+      temp.push({
+        id: i,
+        word: seed[0], 
+        phonetic: seed[1],
+        pos: seed[2],
+        meaning: seed[3],
+        collocations: seed[4],
+        sentence: seed[5]
+      });
     }
-    return array;
+    // Fisher-Yates Shuffle
+    for (let i = temp.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [temp[i], temp[j]] = [temp[j], temp[i]];
+    }
+    academicVocab = temp;
+    
+    // Initialize leitner states
+    academicVocab.forEach((card) => {
+      if (!leitnerData[card.id]) leitnerData[card.id] = { box: 1 };
+    });
   }
 
   async function initApp() {
+    buildAndShuffleVocab();
+    
     const ts = Date.now();
-
-    // 1. Fetch Flashcards from JSON file with Cache-busting
-    try {
-      const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
-      if (resFlash.ok) {
-        let loadedCards = await resFlash.json();
-        academicVocab = shuffleArray(loadedCards);
-      }
-    } catch (e) {
-      console.warn("Flashcards load error:", e);
-    }
-
-    // 2. Fetch WFD from JSON file
     try {
       const resWFD = await fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" });
       if (resWFD.ok) {
@@ -670,10 +822,6 @@
     } catch (e) {
       console.warn("WFD load error:", e);
     }
-
-    academicVocab.forEach((_, idx) => {
-      if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
-    });
   }
 
   function navTo(screen) {
@@ -708,10 +856,12 @@
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
+    } else if (current === 'flash_setup') {
+      document.getElementById('viewFlashSetup').classList.add('active');
+      title.innerText = "PTE ROOM • تنظیمات لایتنر";
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • Academic Flashcards";
-      renderFlashcard();
     }
   }
 
@@ -822,15 +972,84 @@
     document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
-  /* Flashcard Engine */
+  /* Daily Quota & Session Logic */
+  function selectQuota(val) {
+    selectedDailyQuota = val;
+    document.querySelectorAll('.quota-btn').forEach(btn => {
+      btn.classList.remove('selected');
+      if(parseInt(btn.innerText) === val) btn.classList.add('selected');
+    });
+  }
+  
+  function checkDailyReset() {
+    const today = new Date().toISOString().split('T')[0];
+    if (dailyStats.date !== today) {
+      dailyStats.date = today;
+      dailyStats.newCardsSeen = 0;
+      localStorage.setItem('pteroom_daily_stats_v8', JSON.stringify(dailyStats));
+    }
+  }
+
+  function startFlashcards() {
+    checkDailyReset();
+    
+    // Build Session Queue: All Review Cards (Box 2-5) + Allowed New Cards (Box 1)
+    sessionQueue = [];
+    
+    // Add review cards
+    academicVocab.forEach(card => {
+      if (leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
+        sessionQueue.push(card);
+      }
+    });
+    
+    // Add new cards up to daily remaining quota
+    let remainingQuota = selectedDailyQuota - dailyStats.newCardsSeen;
+    let addedNew = 0;
+    
+    if (remainingQuota > 0) {
+      for (let i = 0; i < academicVocab.length; i++) {
+        let card = academicVocab[i];
+        if (leitnerData[card.id].box === 1) {
+          sessionQueue.push(card);
+          addedNew++;
+          if (addedNew >= remainingQuota) break;
+        }
+      }
+    }
+    
+    // Shuffle the final session queue
+    sessionQueue = shuffleArray(sessionQueue);
+    
+    if (sessionQueue.length === 0) {
+      showDoneMessage();
+    } else {
+      currentCardIndex = 0;
+      navTo('flash');
+      renderFlashcard();
+    }
+  }
+
   function renderFlashcard() {
-    if (!academicVocab.length) return;
-    const cardObj = academicVocab[currentCardIndex];
-    const box = leitnerData[currentCardIndex]?.box || 1;
+    if (currentCardIndex >= sessionQueue.length) {
+      showDoneMessage();
+      return;
+    }
+    
+    document.getElementById('cardScene').style.display = 'block';
+    document.getElementById('leitnerActions').style.display = 'flex';
+    document.getElementById('doneMessage').style.display = 'none';
+
+    const cardObj = sessionQueue[currentCardIndex];
+    const box = leitnerData[cardObj.id].box;
 
     document.getElementById('activeCard').classList.remove('is-flipped');
-    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
+    
+    // Quota Counter display
+    document.getElementById('quotaDisplay').innerText = `Daily Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
+    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${sessionQueue.length}`;
     document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
+    
     document.getElementById('frontWord').innerText = cardObj.word;
     document.getElementById('backPhonetic').innerText = cardObj.phonetic;
     document.getElementById('backPos').innerText = cardObj.pos;
@@ -844,11 +1063,27 @@
   }
 
   function answerCard(known) {
-    if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
-    leitnerData[currentCardIndex].box = known ? Math.min(5, leitnerData[currentCardIndex].box + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v6', JSON.stringify(leitnerData));
-    currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
+    const cardObj = sessionQueue[currentCardIndex];
+    const currentBox = leitnerData[cardObj.id].box;
+    
+    // If it was a new card (Box 1), count towards daily quota
+    if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
+      dailyStats.newCardsSeen++;
+      localStorage.setItem('pteroom_daily_stats_v8', JSON.stringify(dailyStats));
+    }
+    
+    // Update Box Logic
+    leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
+    localStorage.setItem('pteroom_leitner_v8', JSON.stringify(leitnerData));
+    
+    currentCardIndex++;
     renderFlashcard();
+  }
+  
+  function showDoneMessage() {
+    document.getElementById('cardScene').style.display = 'none';
+    document.getElementById('leitnerActions').style.display = 'none';
+    document.getElementById('doneMessage').style.display = 'flex';
   }
 
   window.onload = initApp;
