@@ -1133,9 +1133,9 @@
 </div>
 
 <script>
-  // تنظیمات ربات برای ارسال مستقیم تعیین سطح به پشتیبانی
-  const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // توکن ربات از BotFather
-  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE"; // آیدی عددی ادمین یا گروه پشتیبانی
+  // توکن ربات از BotFather و شناسه عددی شما
+  const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // توکن ربات خود را اینجا وارد کنید
+  const ADMIN_CHAT_ID = "600029017"; // شناسه عددی اکانت تلگرام شما
 
   const coursesData = [
     {
@@ -1173,7 +1173,6 @@
       chip.draggable = true;
       chip.id = `chip_${w}`;
 
-      // Touch / Click Support
       chip.onclick = () => {
         if (chip.classList.contains('used')) return;
         document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('selected'));
@@ -1185,7 +1184,6 @@
         }
       };
 
-      // Desktop HTML5 Drag Support
       chip.ondragstart = (e) => {
         e.dataTransfer.setData("text/plain", w);
       };
@@ -1193,7 +1191,6 @@
       bankContainer.appendChild(chip);
     });
 
-    // Dropzone listeners
     ['A', 'B', 'C', 'D'].forEach(zoneKey => {
       const zone = document.getElementById(`drop${zoneKey}`);
       if (!zone) return;
@@ -1209,7 +1206,6 @@
 
   function handleZoneClick(zoneKey) {
     const zone = document.getElementById(`drop${zoneKey}`);
-    // If clicking on a filled zone -> return word to bank
     if (rfibUserAnswers[zoneKey]) {
       const prevWord = rfibUserAnswers[zoneKey];
       rfibUserAnswers[zoneKey] = null;
@@ -1220,7 +1216,6 @@
       return;
     }
 
-    // If an active word was selected -> drop it
     if (activeSelectedWord) {
       placeWordInZone(zoneKey, activeSelectedWord);
       activeSelectedWord = null;
@@ -1231,14 +1226,12 @@
   function placeWordInZone(zoneKey, word) {
     const zone = document.getElementById(`drop${zoneKey}`);
     
-    // Clear previously placed word if exists
     if (rfibUserAnswers[zoneKey]) {
       const oldWord = rfibUserAnswers[zoneKey];
       const oldChip = document.getElementById(`chip_${oldWord}`);
       if (oldChip) oldChip.classList.remove('used');
     }
 
-    // If word was in another zone, clear that zone
     for (let k in rfibUserAnswers) {
       if (rfibUserAnswers[k] === word) {
         rfibUserAnswers[k] = null;
@@ -1407,7 +1400,7 @@
     if (formData.get('spell_q') === "Accommodation") vocabScore++;
     if (formData.get('vocab_q') === "curb") vocabScore++;
 
-    const totalScore = rwScore + rfibScore + lfibScore + vocabScore; // از ۱۷ نمره
+    const totalScore = rwScore + rfibScore + lfibScore + vocabScore;
 
     const tgUser = tg?.initDataUnsafe?.user;
     const firstName = tgUser?.first_name || "نامشخص";
@@ -1442,7 +1435,7 @@
     `.trim();
 
     try {
-      if (BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE" && ADMIN_CHAT_ID !== "YOUR_ADMIN_CHAT_ID_HERE") {
+      if (BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE") {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1464,7 +1457,7 @@
           }
         );
       } else {
-        alert("✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\nبه زودی با شما تماس خواهیم گرفت.");
+        alert("✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\nبه زودی با شما تماس گرفته خواهد شد.");
         navTo('home');
         btn.disabled = false;
         btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
