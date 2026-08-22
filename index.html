@@ -35,6 +35,7 @@
       flex-direction: column;
       height: 100%;
       padding: max(12px, env(safe-area-inset-top, 12px)) 14px max(12px, env(safe-area-inset-bottom, 12px)) 14px;
+      position: relative;
     }
 
     .global-header {
@@ -217,7 +218,7 @@
       padding: 14px;
       flex: 1;
       min-height: 0;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .wfd-category-bar {
@@ -229,7 +230,7 @@
       flex: 1;
       background: #1e293b;
       border: 1px solid #334155;
-      padding: 9px 4px;
+      padding: 8px 4px;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 700;
@@ -244,10 +245,10 @@
     }
     select {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
       border: 1.5px solid #0284c7;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       background: #0f172a;
       color: #38bdf8;
@@ -257,23 +258,23 @@
     .audio-wrapper {
       background: #0f172a;
       border: 1px solid var(--card-border);
-      padding: 8px 12px;
-      border-radius: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
       flex-shrink: 0;
     }
-    audio { width: 100%; height: 34px; outline: none; }
+    audio { width: 100%; height: 32px; outline: none; }
 
     .wfd-status-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 4px;
+      padding: 0 2px;
       flex-shrink: 0;
     }
     .wfd-timer-badge {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 800;
-      padding: 3px 10px;
+      padding: 2px 8px;
       border-radius: 6px;
       background: rgba(56, 189, 248, 0.15);
       color: #38bdf8;
@@ -297,11 +298,13 @@
     }
 
     textarea {
-      flex: 1;
-      min-height: 85px;
+      height: 75px;
+      min-height: 75px;
+      max-height: 85px;
       width: 100%;
-      padding: 12px;
-      font-size: 14.5px;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.4;
       background: #0f172a;
       color: #f8fafc;
       border: 1.5px solid #334155;
@@ -310,6 +313,7 @@
       outline: none;
       direction: ltr;
       text-align: left;
+      flex-shrink: 0;
     }
     textarea:focus { border-color: #38bdf8; }
 
@@ -322,21 +326,22 @@
       padding: 10px 12px;
       border-radius: 10px;
       overflow-y: auto;
-      max-height: 140px;
+      flex: 1;
+      min-height: 0;
     }
     .wfd-score-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 800;
-      font-size: 13.5px;
+      font-size: 13px;
       color: #38bdf8;
       border-bottom: 1px solid #1e293b;
-      padding-bottom: 6px;
+      padding-bottom: 4px;
     }
-    .wfd-sentence-display { font-size: 14px; line-height: 1.7; font-weight: 600; direction: ltr; text-align: left; }
-    .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 6px; border-radius: 4px; border: 1px solid #10b981; }
-    .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 6px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
+    .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
+    .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
+    .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
     
     .wfd-tips-container {
       display: flex;
@@ -345,7 +350,7 @@
       margin-top: 4px;
     }
     .wfd-warning-tip {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #facc15;
       background: rgba(234, 179, 8, 0.12);
@@ -359,18 +364,19 @@
     .wfd-action-buttons {
       display: flex;
       gap: 8px;
-      margin-top: 2px;
+      margin-top: auto;
+      flex-shrink: 0;
     }
 
     .btn-secondary {
       background: #1e293b;
       color: #38bdf8;
       border: 1px solid #334155;
-      padding: 12px 14px;
+      padding: 10px 14px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: 800;
-      font-size: 13.5px;
+      font-size: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -492,11 +498,11 @@
       background: #0284c7;
       color: #fff;
       border: none;
-      padding: 12px 18px;
+      padding: 10px 16px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: 800;
-      font-size: 13.5px;
+      font-size: 13px;
       transition: all 0.2s;
     }
     .btn-primary:active { transform: scale(0.98); background: #0369a1; }
@@ -559,6 +565,31 @@
     }
     .done-message h3 { color: #34d399; font-size: 19px; margin-bottom: 10px; }
     .done-message p { color: #cbd5e1; font-size: 13.5px; line-height: 1.7; }
+
+    /* Elegant In-App Toast Notification (Zero browser alerts/URLs) */
+    .app-toast {
+      position: absolute;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8;
+      color: #f8fafc;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease-out;
+      z-index: 2000;
+      white-space: nowrap;
+    }
+    .app-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -739,7 +770,7 @@
       </div>
 
       <div class="wfd-action-buttons">
-        <button class="btn-primary" style="flex: 2; padding: 12px;" onclick="evaluateWfdAnswer()">Check Answer</button>
+        <button class="btn-primary" style="flex: 2;" onclick="evaluateWfdAnswer()">Check Answer</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextWfdQuestion()">Next ⏭</button>
       </div>
     </div>
@@ -788,6 +819,9 @@
       </div>
     </div>
   </div>
+
+  <!-- In-App Notification Element -->
+  <div class="app-toast" id="appToast">Please type your answer first!</div>
 </div>
 
 <script>
@@ -809,9 +843,10 @@
 
   let wfdTimerInterval = null;
   let wfdElapsedSeconds = 0;
+  let toastTimeout = null;
 
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v13')) || {};
-  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v13')) || { date: "", newCardsSeen: 0 };
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v14')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v14')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -819,6 +854,16 @@
     tg.expand();
     if (tg.requestFullscreen) tg.requestFullscreen();
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('appToast');
+    toast.innerText = msg;
+    toast.classList.add('show');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2400);
   }
 
   async function initApp() {
@@ -1013,7 +1058,7 @@
     const userRawText = document.getElementById('wfdInput').value.trim();
 
     if (!userRawText) {
-      alert("Please type your answer before checking.");
+      showToast("⚠️ Please type your answer before checking.");
       return;
     }
 
@@ -1088,7 +1133,7 @@
     if (dailyStats.date !== today) {
       dailyStats.date = today;
       dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v13', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v14', JSON.stringify(dailyStats));
     }
   }
 
@@ -1164,11 +1209,11 @@
     
     if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
       dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v13', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v14', JSON.stringify(dailyStats));
     }
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v13', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v14', JSON.stringify(leitnerData));
     
     currentCardIndex++;
     renderFlashcard();
