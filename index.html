@@ -661,9 +661,10 @@
 
   async function initApp() {
     try {
+      const timestamp = new Date().getTime();
       const [resWFD, resFlash] = await Promise.all([
-        fetch('data/wfd_questions.json').then(r => r.json()),
-        fetch('data/flashcards.json').then(r => r.json())
+        fetch(`data/wfd_questions.json?v=${timestamp}`).then(r => r.json()),
+        fetch(`data/flashcards.json?v=${timestamp}`).then(r => r.json())
       ]);
       wfdQuestions = resWFD;
       academicVocab = resFlash;
@@ -715,7 +716,6 @@
       title.innerText = "PTE ROOM • Academic Flashcards";
       renderFlashcard();
       
-      // Open Guide automatically on first visit
       if (!localStorage.getItem('pteroom_seen_flash_guide')) {
         openModal('flashGuideModal');
         localStorage.setItem('pteroom_seen_flash_guide', 'true');
