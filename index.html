@@ -6,12 +6,12 @@
   <title>PTE ROOM - Multi-Task Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    :root { --primary: #0056b3; --bg: #eef2f5; --text: #1e293b; }
+    :root { --primary: #0056b3; --bg: #eef2f5; --text: #1e293b; --danger: #dc2626; --success: #16a34a; }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     
     html, body {
       margin: 0;
-      padding: max(12px, env(safe-area-inset-top, 12px)) 10px max(12px, env(safe-area-inset-bottom, 12px)) 10px;
+      padding: max(10px, env(safe-area-inset-top, 10px)) 8px max(10px, env(safe-area-inset-bottom, 10px)) 8px;
       background: var(--bg);
       color: var(--text);
       width: 100vw;
@@ -25,7 +25,7 @@
       background: #fff;
       border-radius: 12px;
       border: 1px solid #c9d2db;
-      padding: 12px 14px;
+      padding: 10px 12px;
       width: 100%;
       height: 100%;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
@@ -34,10 +34,9 @@
     .nav-tabs {
       display: flex;
       gap: 4px;
-      margin-top: 4px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
       flex-shrink: 0;
     }
 
@@ -45,7 +44,7 @@
       flex: 1;
       background: #edf2f7;
       border: 1px solid #cbd5e1;
-      padding: 8px 2px;
+      padding: 7px 2px;
       border-radius: 6px;
       font-weight: 700;
       cursor: pointer;
@@ -64,28 +63,28 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1.5px solid var(--primary);
-      padding-bottom: 6px;
-      margin-bottom: 10px;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
       flex-shrink: 0;
     }
-    .brand { font-weight: 800; color: var(--primary); font-size: 13.5px; }
-    .timer { font-weight: bold; color: #c00; font-size: 13.5px; }
+    .brand { font-weight: 800; color: var(--primary); font-size: 13px; }
+    .timer { font-weight: bold; color: #c00; font-size: 13px; }
     
     .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
     
     .wfd-category-bar {
       display: none;
       gap: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       flex-shrink: 0;
     }
     .cat-btn {
       flex: 1;
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 6px 10px;
+      padding: 6px 8px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: #475569;
       cursor: pointer;
@@ -98,18 +97,18 @@
 
     .selector-bar {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       flex-shrink: 0;
     }
 
     select {
       flex: 1;
-      padding: 9px 10px;
+      padding: 8px 10px;
       border-radius: 6px;
       border: 1.5px solid var(--primary);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       background: #f8fafc;
       color: var(--primary);
@@ -118,69 +117,123 @@
     
     .audio-container {
       display: none;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       background: #f1f5f9;
-      padding: 8px 10px;
+      padding: 6px 8px;
       border-radius: 6px;
       border: 1px solid #cbd5e1;
       flex-shrink: 0;
     }
-    audio { width: 100%; height: 34px; outline: none; }
+    audio { width: 100%; height: 32px; outline: none; }
 
     .prompt-box {
       flex: 1;
-      min-height: 90px;
+      min-height: 80px;
       background: #fafbfc;
       border: 1px solid #dbe2e8;
-      padding: 12px;
-      font-size: 14px;
-      line-height: 1.6;
+      padding: 10px;
+      font-size: 13.5px;
+      line-height: 1.5;
       overflow-y: auto;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       border-radius: 6px;
       text-align: justify;
       white-space: pre-line;
       -webkit-overflow-scrolling: touch;
     }
 
-    .di-image-box {
+    /* DI Speaking View */
+    .di-container {
       display: none;
+      flex-direction: column;
       flex: 1;
-      min-height: 140px;
-      background: #fafbfc;
-      border: 1px solid #dbe2e8;
-      padding: 8px;
-      margin-bottom: 8px;
-      border-radius: 6px;
+      min-height: 0;
+      gap: 6px;
+    }
+    .di-image-box {
+      flex: 1;
+      min-height: 160px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      padding: 4px;
     }
     .di-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
+    .di-recorder-panel {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .di-status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .status-badge {
+      padding: 3px 8px;
+      border-radius: 12px;
+      color: #fff;
+      background: #64748b;
+    }
+    .status-badge.prep { background: #d97706; }
+    .status-badge.rec { background: var(--danger); animation: pulse 1.2s infinite; }
+    .status-badge.done { background: var(--success); }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.2s linear;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
     textarea {
       flex: 1;
-      min-height: 100px;
+      min-height: 90px;
       width: 100%;
-      padding: 12px;
-      font-size: 15px;
+      padding: 10px;
+      font-size: 14px;
       border: 1px solid #a0aec0;
       border-radius: 6px;
       resize: none;
       outline: none;
       -webkit-overflow-scrolling: touch;
     }
-    textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+    textarea:focus { border-color: var(--primary); }
     
     .wfd-result-card {
       display: none;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
-      margin-top: 8px;
+      margin-top: 6px;
       overflow-y: auto;
     }
     .wfd-score-header {
@@ -188,53 +241,35 @@
       justify-content: space-between;
       align-items: center;
       font-weight: 800;
-      font-size: 16px;
+      font-size: 14px;
       color: var(--primary);
       border-bottom: 1px solid #e2e8f0;
-      padding-bottom: 6px;
+      padding-bottom: 4px;
     }
-    .wfd-sentence-display {
-      font-size: 15px;
-      line-height: 1.8;
-      font-weight: 600;
-      word-spacing: 2px;
-    }
-    .wfd-word-correct {
-      background: #d1fae5;
-      color: #065f46;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #10b981;
-    }
-    .wfd-word-missing {
-      background: #fee2e2;
-      color: #991b1b;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #ef4444;
-      text-decoration: line-through;
-    }
+    .wfd-sentence-display { font-size: 14px; line-height: 1.7; font-weight: 600; }
+    .wfd-word-correct { background: #d1fae5; color: #065f46; padding: 2px 5px; border-radius: 4px; }
+    .wfd-word-missing { background: #fee2e2; color: #991b1b; padding: 2px 5px; border-radius: 4px; text-decoration: line-through; }
 
     .footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 8px;
+      margin-top: 6px;
       flex-shrink: 0;
     }
-    .word-count { font-size: 13.5px; font-weight: bold; color: #333; }
+    .word-count { font-size: 12.5px; font-weight: bold; color: #333; }
     .btn {
       background: var(--primary);
       color: #fff;
       border: none;
-      padding: 11px 22px;
+      padding: 9px 18px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 13.5px;
+      font-size: 13px;
     }
-    .btn:hover { background: #004494; }
 
+    /* Flashcard Styles */
     .flashcard-wrapper {
       display: none;
       flex-direction: column;
@@ -249,12 +284,12 @@
       justify-content: space-between;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #475569;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-shrink: 0;
     }
     .card-scene {
@@ -277,12 +312,11 @@
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
       border-radius: 12px;
-      padding: 20px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       border: 1.5px solid #cbd5e1;
       background: #ffffff;
       overflow-y: auto;
@@ -294,27 +328,24 @@
       align-items: center;
       text-align: center;
     }
-    .card-front .word-title { font-size: 34px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 10px; }
-    .card-front .tap-hint { font-size: 13.5px; opacity: 0.9; margin-top: 14px; background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 16px; }
+    .card-front .word-title { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+    .card-front .tap-hint { font-size: 12px; opacity: 0.9; background: rgba(255,255,255,0.18); padding: 5px 12px; border-radius: 16px; }
     .card-back {
       background: #fafbfc;
-      color: var(--text);
       transform: rotateY(180deg);
       justify-content: center;
-      align-items: stretch;
-      text-align: left;
-      gap: 10px;
+      gap: 8px;
     }
-    .card-back .meta-row { display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px; }
-    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 16px; font-weight: 600; }
-    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 6px; font-size: 13px; font-weight: 800; text-transform: uppercase; }
-    .card-back .persian-meaning { font-size: 19px; font-weight: 800; color: var(--primary); margin: 4px 0; direction: rtl; text-align: right; width: 100%; }
-    .card-back .section-title { font-size: 14px; font-weight: 800; color: #334155; margin-top: 4px; }
-    .card-back .collocations { font-size: 15px; font-weight: 600; color: #1e293b; line-height: 1.5; }
-    .card-back .example-sentence { font-size: 14.5px; line-height: 1.5; color: #0f172a; background: #f1f5f9; padding: 10px 12px; border-radius: 6px; border-left: 4px solid var(--primary); width: 100%; }
+    .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; }
+    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 14px; font-weight: 600; }
+    .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .card-back .persian-meaning { font-size: 16px; font-weight: 800; color: var(--primary); direction: rtl; text-align: right; }
+    .card-back .section-title { font-size: 12px; font-weight: 800; color: #334155; margin-top: 2px; }
+    .card-back .collocations { font-size: 13px; font-weight: 600; color: #1e293b; }
+    .card-back .example-sentence { font-size: 12.5px; line-height: 1.4; color: #0f172a; background: #f1f5f9; padding: 8px 10px; border-radius: 6px; border-left: 3px solid var(--primary); }
 
-    .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
-    .leitner-btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 14px; border: none; cursor: pointer; color: #fff; }
+    .leitner-actions { display: flex; width: 100%; gap: 8px; margin-top: 8px; flex-shrink: 0; }
+    .leitner-btn { flex: 1; padding: 10px; border-radius: 6px; font-weight: 800; font-size: 13px; border: none; cursor: pointer; color: #fff; }
     .btn-again { background: #ef4444; }
     .btn-good { background: #10b981; }
   </style>
@@ -347,16 +378,30 @@
     </div>
 
     <div class="audio-container" id="audioSection">
-      <div style="font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Audio Player:</div>
-      <audio id="audioPlayer" controls>
-        Your browser does not support audio element.
-      </audio>
+      <div style="font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Audio Lecture:</div>
+      <audio id="audioPlayer" controls>Your browser does not support audio element.</audio>
     </div>
 
-    <div class="prompt-box" id="promptText">Loading questions...</div>
+    <div class="prompt-box" id="promptText">Loading prompt...</div>
 
-    <div class="di-image-box" id="diImageBox">
-      <img id="diImageElem" src="" alt="Describe Image">
+    <!-- DI Dedicated Container -->
+    <div class="di-container" id="diContainer">
+      <div class="di-image-box">
+        <img id="diImageElem" src="" alt="Describe Image">
+      </div>
+      <div class="di-recorder-panel">
+        <div class="di-status-row">
+          <span id="diStatusLabel">⏳ Preparation Time:</span>
+          <span class="status-badge prep" id="diStatusBadge">25s Left</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="diProgressFill"></div>
+        </div>
+        <div style="display: flex; gap: 6px; margin-top: 4px;">
+          <button class="btn" id="diStartRecBtn" style="flex:1; background:#0284c7; padding:7px;" onclick="startDiRecordingManual()">🎙 Record Now</button>
+          <button class="btn" id="diStopRecBtn" style="flex:1; background:#dc2626; padding:7px; display:none;" onclick="stopDiRecording()">⏹ Stop & Submit</button>
+        </div>
+      </div>
     </div>
 
     <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
@@ -364,21 +409,22 @@
     <div class="wfd-result-card" id="wfdResultCard">
       <div class="wfd-score-header">
         <span>📊 Score Evaluation:</span>
-        <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:3px 10px; border-radius:12px;">0 / 0</span>
+        <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:2px 8px; border-radius:10px;">0 / 0</span>
       </div>
-      <div style="font-size:12px; color:#64748b; font-weight:700; margin-top:4px;">Original Sentence Analysis:</div>
+      <div style="font-size:11px; color:#64748b; font-weight:700; margin-top:2px;">Original Sentence Analysis:</div>
       <div class="wfd-sentence-display" id="wfdSentenceMarkup"></div>
     </div>
 
-    <div class="footer">
+    <div class="footer" id="mainFooter">
       <span class="word-count" id="wordCount">Total Word Count: 0</span>
       <button class="btn" id="submitBtn" onclick="sendResult()">Submit Response</button>
     </div>
   </div>
 
+  <!-- Flashcards View -->
   <div class="flashcard-wrapper" id="flashcardContainer">
     <div class="leitner-progress">
-      <span id="cardCounter">Loading cards...</span>
+      <span id="cardCounter">Card 1</span>
       <span id="boxLevel">📦 Box Level: 1/5</span>
     </div>
 
@@ -394,10 +440,8 @@
             <span class="pos" id="backPos"></span>
           </div>
           <div class="persian-meaning" id="backMeaning"></div>
-          
           <div class="section-title">Collocations:</div>
           <div class="collocations" id="backCollocations"></div>
-          
           <div class="section-title">Example Sentence:</div>
           <div class="example-sentence" id="backSentence"></div>
         </div>
@@ -405,8 +449,8 @@
     </div>
 
     <div class="leitner-actions">
-      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review (Box 1)</button>
-      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1 Box)</button>
+      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
+      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
     </div>
   </div>
 </div>
@@ -426,6 +470,12 @@
 
   let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
   let currentCardIndex = 0;
+
+  // DI Recorder Variables
+  let diMediaRecorder = null;
+  let diAudioChunks = [];
+  let diTimerInterval = null;
+  let diPhase = "idle"; // idle, prep, rec, done
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -459,7 +509,7 @@
 
       switchTask('SWT');
     } catch (err) {
-      document.getElementById('promptText').innerText = "⚠️ Error loading datasets. Please verify JSON files in /data.";
+      document.getElementById('promptText').innerText = "⚠️ Error loading datasets. Verify JSON files in /data folder.";
     }
   }
 
@@ -480,6 +530,8 @@
 
   function switchTask(task) {
     currentTask = task;
+    resetDiEngine();
+
     ['SWT', 'WE', 'DI', 'SST', 'WFD', 'Flash'].forEach(t => {
       const btn = document.getElementById('tab' + t);
       if (btn) btn.className = (task === t.toUpperCase()) ? 'tab-btn active' : 'tab-btn';
@@ -491,8 +543,9 @@
     const audioSec = document.getElementById('audioSection');
     const audioPl = document.getElementById('audioPlayer');
     const promptBox = document.getElementById('promptText');
-    const diImgBox = document.getElementById('diImageBox');
+    const diContainer = document.getElementById('diContainer');
     const answerInput = document.getElementById('answerInput');
+    const mainFooter = document.getElementById('mainFooter');
     const wfdResultCard = document.getElementById('wfdResultCard');
     const wfdCategoryBar = document.getElementById('wfdCategoryBar');
     const submitBtn = document.getElementById('submitBtn');
@@ -504,7 +557,7 @@
       flashContainer.style.display = 'flex';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
-      diImgBox.style.display = 'none';
+      diContainer.style.display = 'none';
       audioPl.pause();
       if (timerInterval) clearInterval(timerInterval);
       timerElem.innerText = "Study Mode";
@@ -518,8 +571,9 @@
 
     if (task === 'SWT') {
       promptBox.style.display = 'block';
-      diImgBox.style.display = 'none';
+      diContainer.style.display = 'none';
       answerInput.style.display = 'block';
+      mainFooter.style.display = 'flex';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
       audioPl.pause();
@@ -530,32 +584,35 @@
       loadOptions(swtQuestions);
     } else if (task === 'WE') {
       promptBox.style.display = 'block';
-      diImgBox.style.display = 'none';
+      diContainer.style.display = 'none';
       answerInput.style.display = 'block';
+      mainFooter.style.display = 'flex';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
       audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay (August 2026)";
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay";
       answerInput.placeholder = "Write your 200-300 word academic essay here...";
       submitBtn.innerText = "Submit Response";
       startTimer(1200);
       loadOptions(weQuestions);
     } else if (task === 'DI') {
       promptBox.style.display = 'none';
-      diImgBox.style.display = 'flex';
-      answerInput.style.display = 'block';
+      diContainer.style.display = 'flex';
+      answerInput.style.display = 'none';
+      mainFooter.style.display = 'none';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
       audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Describe Image (August 2026)";
-      answerInput.placeholder = "Type your transcription or describe the key features of the image here...";
-      submitBtn.innerText = "Submit Response";
-      startTimer(40);
+      if (timerInterval) clearInterval(timerInterval);
+      timerElem.innerText = "Speaking Task";
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Describe Image";
       loadOptions(diQuestions);
+      startDiFlow();
     } else if (task === 'SST') {
       promptBox.style.display = 'block';
-      diImgBox.style.display = 'none';
+      diContainer.style.display = 'none';
       answerInput.style.display = 'block';
+      mainFooter.style.display = 'flex';
       audioSec.style.display = 'block';
       wfdCategoryBar.style.display = 'none';
       document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Spoken Text";
@@ -565,8 +622,9 @@
       loadOptions(sstQuestions);
     } else if (task === 'WFD') {
       promptBox.style.display = 'none';
-      diImgBox.style.display = 'none';
+      diContainer.style.display = 'none';
       answerInput.style.display = 'block';
+      mainFooter.style.display = 'flex';
       audioSec.style.display = 'block';
       wfdCategoryBar.style.display = 'flex';
       document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
@@ -618,8 +676,9 @@
 
     if (currentTask === 'DI') {
       document.getElementById('diImageElem').src = "di_images/" + q.image;
+      startDiFlow();
     } else if (currentTask === 'SST') {
-      document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Please listen to the recording above and write your summary.";
+      document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Listen to the recording above and write your summary.";
       const audioPl = document.getElementById('audioPlayer');
       audioPl.src = q.audioUrl;
       audioPl.load();
@@ -635,6 +694,136 @@
     calcWords();
   }
 
+  /* DI Pearson Flow & Voice Recording */
+  function resetDiEngine() {
+    if (diTimerInterval) clearInterval(diTimerInterval);
+    if (diMediaRecorder && diMediaRecorder.state === "recording") {
+      diMediaRecorder.stop();
+    }
+    diPhase = "idle";
+    document.getElementById('diStartRecBtn').style.display = "block";
+    document.getElementById('diStopRecBtn').style.display = "none";
+    document.getElementById('diProgressFill').style.width = "0%";
+  }
+
+  function startDiFlow() {
+    resetDiEngine();
+    let prepSec = 25;
+    diPhase = "prep";
+    
+    const label = document.getElementById('diStatusLabel');
+    const badge = document.getElementById('diStatusBadge');
+    const fill = document.getElementById('diProgressFill');
+    
+    label.innerText = "⏳ Preparation Time:";
+    badge.className = "status-badge prep";
+    badge.innerText = `${prepSec}s Left`;
+    fill.style.background = "#d97706";
+
+    diTimerInterval = setInterval(() => {
+      prepSec--;
+      let pct = ((25 - prepSec) / 25) * 100;
+      fill.style.width = `${pct}%`;
+      badge.innerText = `${prepSec}s Left`;
+
+      if (prepSec <= 0) {
+        clearInterval(diTimerInterval);
+        playBeepAndRecord();
+      }
+    }, 1000);
+  }
+
+  function startDiRecordingManual() {
+    if (diTimerInterval) clearInterval(diTimerInterval);
+    playBeepAndRecord();
+  }
+
+  async function playBeepAndRecord() {
+    diPhase = "rec";
+    const label = document.getElementById('diStatusLabel');
+    const badge = document.getElementById('diStatusBadge');
+    const fill = document.getElementById('diProgressFill');
+    const startBtn = document.getElementById('diStartRecBtn');
+    const stopBtn = document.getElementById('diStopRecBtn');
+
+    label.innerText = "🔴 Recording Speech:";
+    badge.className = "status-badge rec";
+    badge.innerText = "40s Left";
+    fill.style.background = "#dc2626";
+    fill.style.width = "0%";
+    startBtn.style.display = "none";
+    stopBtn.style.display = "block";
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      diAudioChunks = [];
+      diMediaRecorder = new MediaRecorder(stream);
+
+      diMediaRecorder.ondataavailable = e => {
+        if (e.data.size > 0) diAudioChunks.push(e.data);
+      };
+
+      diMediaRecorder.onstop = () => {
+        const audioBlob = new Blob(diAudioChunks, { type: 'audio/webm' });
+        submitDiVoiceResponse(audioBlob);
+      };
+
+      diMediaRecorder.start();
+
+      let recSec = 40;
+      diTimerInterval = setInterval(() => {
+        recSec--;
+        let pct = ((40 - recSec) / 40) * 100;
+        fill.style.width = `${pct}%`;
+        badge.innerText = `${recSec}s Left`;
+
+        if (recSec <= 0) {
+          stopDiRecording();
+        }
+      }, 1000);
+
+    } catch (err) {
+      alert("Microphone permission is required for Describe Image speaking task.");
+      resetDiEngine();
+    }
+  }
+
+  function stopDiRecording() {
+    if (diTimerInterval) clearInterval(diTimerInterval);
+    if (diMediaRecorder && diMediaRecorder.state === "recording") {
+      diMediaRecorder.stop();
+    }
+    diPhase = "done";
+    document.getElementById('diStatusLabel').innerText = "✅ Response Finished:";
+    document.getElementById('diStatusBadge').className = "status-badge done";
+    document.getElementById('diStatusBadge').innerText = "Analyzing...";
+    document.getElementById('diStopRecBtn').style.display = "none";
+  }
+
+  function submitDiVoiceResponse(audioBlob) {
+    const idx = document.getElementById('questionSelect').value;
+    const q = diQuestions[idx];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(audioBlob);
+    reader.onloadend = () => {
+      const base64Audio = reader.result.split(',')[1];
+      const payload = JSON.stringify({
+        task_type: "DI",
+        question_title: q.title,
+        prompt: q.keywords.join(', '),
+        audio_base64: base64Audio
+      });
+
+      if (tg && typeof tg.sendData === "function") {
+        tg.sendData(payload);
+        tg.close();
+      } else {
+        alert("Audio recorded successfully. In Telegram, this sends directly to AI examiner.");
+      }
+    };
+  }
+
   function calcWords() {
     let t = document.getElementById('answerInput').value.trim();
     let count = t === "" ? 0 : t.split(/\s+/).filter(Boolean).length;
@@ -645,7 +834,6 @@
     let ans = document.getElementById('answerInput').value.trim();
     let list = swtQuestions;
     if (currentTask === 'WE') list = weQuestions;
-    if (currentTask === 'DI') list = diQuestions;
     if (currentTask === 'SST') list = sstQuestions;
     if (currentTask === 'WFD') {
       list = currentWfdCategory === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
@@ -667,7 +855,7 @@
     let payload = JSON.stringify({
       task_type: currentTask,
       question_title: q.title,
-      prompt: currentTask === 'DI' ? q.keywords.join(', ') : q.text,
+      prompt: q.text,
       user_answer: ans
     });
 
@@ -687,30 +875,18 @@
 
     const origTokens = origTrimmed.split(/\s+/);
     const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:]/g, ''));
-    
-    const userTokensRaw = userTrimmed.split(/\s+/);
-    const userCleanWords = userTokensRaw.map(w => w.replace(/[.,!?;:]/g, ''));
+    const userCleanWords = userTrimmed.split(/\s+/).map(w => w.replace(/[.,!?;:]/g, ''));
 
     let score = 0;
     let markupHTML = "";
 
     origTokens.forEach((origToken, idx) => {
       const targetWord = origCleanWords[idx];
-      const isFirstWord = (idx === 0);
-      const isLastWord = (idx === origTokens.length - 1);
+      let isCorrect = (idx === 0) 
+        ? userCleanWords.includes(targetWord) 
+        : userCleanWords.some(u => u.toLowerCase() === targetWord.toLowerCase());
 
-      let wordMatch = false;
-
-      if (isFirstWord) {
-        wordMatch = userCleanWords.includes(targetWord);
-      } else {
-        wordMatch = userCleanWords.some(u => u.toLowerCase() === targetWord.toLowerCase());
-      }
-
-      let isCorrect = wordMatch;
-      if (isLastWord && periodMissing) {
-        isCorrect = false;
-      }
+      if (idx === origTokens.length - 1 && periodMissing) isCorrect = false;
 
       if (isCorrect) {
         score++;
@@ -720,28 +896,8 @@
       }
     });
 
-    const totalWords = origTokens.length;
-
-    let warningNotice = "";
-    if (!userTrimmed.length) {
-      warningNotice = "<div style='color:#ef4444; font-size:12px; font-weight:bold; margin-top:6px;'>⚠️ No answer provided.</div>";
-    } else {
-      let issues = [];
-      if (origCleanWords[0] && userCleanWords[0]) {
-        if (userCleanWords[0].toLowerCase() === origCleanWords[0].toLowerCase() && userCleanWords[0] !== origCleanWords[0]) {
-          issues.push("The first word of the sentence must start with a capital letter.");
-        }
-      }
-      if (periodMissing) {
-        issues.push("The sentence must end with a period (.).");
-      }
-      if (issues.length > 0) {
-        warningNotice = `<div style='color:#dc2626; font-size:12px; font-weight:700; margin-top:8px; background:#fef2f2; padding:6px 10px; border-radius:6px; border:1px solid #fca5a5;'>⚠️ Grammar & Formatting Notices:<br>• ${issues.join('<br>• ')}</div>`;
-      }
-    }
-
-    document.getElementById('wfdScoreBadge').innerText = `${score} / ${totalWords}`;
-    document.getElementById('wfdSentenceMarkup').innerHTML = markupHTML + warningNotice;
+    document.getElementById('wfdScoreBadge').innerText = `${score} / ${origTokens.length}`;
+    document.getElementById('wfdSentenceMarkup').innerHTML = markupHTML;
     document.getElementById('wfdResultCard').style.display = 'flex';
   }
 
@@ -751,7 +907,6 @@
     const cardLevel = leitnerData[currentCardIndex]?.box || 1;
     
     document.getElementById('activeCard').classList.remove('is-flipped');
-    
     document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
     document.getElementById('boxLevel').innerText = `📦 Box Level: ${cardLevel}/5`;
     
@@ -769,17 +924,8 @@
 
   function answerCard(known) {
     if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
-    
-    if (known) {
-      if (leitnerData[currentCardIndex].box < 5) {
-        leitnerData[currentCardIndex].box += 1;
-      }
-    } else {
-      leitnerData[currentCardIndex].box = 1;
-    }
-    
+    leitnerData[currentCardIndex].box = known ? Math.min(5, leitnerData[currentCardIndex].box + 1) : 1;
     localStorage.setItem('pteroom_leitner_data', JSON.stringify(leitnerData));
-    
     currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
     renderFlashcard();
   }
