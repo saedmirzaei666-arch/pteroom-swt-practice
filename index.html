@@ -418,7 +418,6 @@
       font-size: 13px;
     }
     
-    /* Settings Form */
     .settings-panel {
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
@@ -704,59 +703,6 @@
 </div>
 
 <script>
-  const CORE_WORDS = [
-    ["abandon", "/əˈbæn.dən/", "v.", "ترک کردن، رها کردن", ["abandon hope", "abandon policy"], "The researchers had to abandon the experiment due to equipment failure."],
-    ["abstract", "/ˈæb.strækt/", "adj.", "انتزاعی، چکیده مقاله", ["abstract concept", "abstract idea"], "Academic theories often deal with abstract concepts rather than physical objects."],
-    ["access", "/ˈæk.ses/", "n. / v.", "دسترسی داشتن، ورود", ["gain access", "unrestricted access"], "Students need continuous access to online research databases."],
-    ["accommodate", "/əˈkɑː.mə.deɪt/", "v.", "تطبیق دادن، جا دادن", ["accommodate needs", "accommodate changes"], "The university modified its timetable to accommodate international students."],
-    ["accompany", "/əˈkʌm.pə.ni/", "v.", "همراهی کردن، پیوست بودن", ["accompany by", "closely accompany"], "The research paper was accompanied by detailed statistical appendices."],
-    ["accumulate", "/əˈkjuː.mjə.leɪt/", "v.", "انباشتن، جمع‌آوری شدن", ["accumulate evidence", "accumulate wealth"], "Scientific investigators continue to accumulate data on climate shifts."],
-    ["accurate", "/ˈæk.jɚ.ət/", "adj.", "دقیق، بی‌نقص", ["highly accurate", "accurate description"], "The model provides an accurate forecast of economic inflation."],
-    ["achieve", "/əˈtʃiːv/", "v.", "دست یافتن، نائل شدن", ["achieve target", "achieve success"], "Consistent daily practice helps candidates achieve their target score of 79+."],
-    ["acquire", "/əˈkwaɪr/", "v.", "کسب کردن، فرا گرفتن", ["acquire skills", "acquire knowledge"], "Children acquire language structures rapidly through interactive immersion."],
-    ["adapt", "/əˈdæpt/", "v.", "وفق دادن، سازگار شدن", ["adapt to", "readily adapt"], "Species that adapt to ecological changes have higher survival rates."],
-    ["adequate", "/ˈæd.ə.kwət/", "adj.", "کافی، بسنده", ["adequate resources", "adequate preparation"], "Candidates must allocate adequate time for each exam question."],
-    ["adjacent", "/əˈdʒeɪ.sənt/", "adj.", "مجاور، هم‌جوار", ["adjacent area", "adjacent building"], "The library is adjacent to the main computer science faculty."],
-    ["adjust", "/əˈdʒʌst/", "v.", "تنظیم کردن، تعدیل کردن", ["adjust to", "finely adjust"], "Students quickly adjust their pace during timed examination tasks."],
-    ["administrate", "/ədˈmɪn.ə.streɪt/", "v.", "مدیریت کردن، اداره کردن", ["administrate policy", "efficiently administrate"], "The board was appointed to administrate the educational scholarship fund."],
-    ["advocate", "/ˈæd.və.keɪt/", "v. / n.", "مدافع بودن، طرفداری کردن", ["strongly advocate", "public advocate"], "Many educators advocate the use of active recall flashcards."],
-    ["affect", "/əˈfekt/", "v.", "اثر گذاشتن، تاثیر داشتن", ["adversely affect", "directly affect"], "Sleep deprivation can adversely affect memory retention and cognitive focus."],
-    ["aggregate", "/ˈæɡ.rə.ɡət/", "adj. / n.", "مجموع، تجمیعی", ["aggregate demand", "aggregate score"], "The final certificate displays the aggregate score across all four modules."],
-    ["allocate", "/ˈæl.ə.keɪt/", "v.", "اختصاص دادن، تخصیص دادن", ["allocate resources", "allocate budget"], "The government decided to allocate additional funding for scientific labs."],
-    ["alter", "/ˈɑːl.tɚ/", "v.", "تغییر دادن، دگرگون کردن", ["significantly alter", "alter circumstances"], "Technological advances alter traditional educational methodologies."],
-    ["alternative", "/ɑːlˈtɝː.nə.t̬ɪv/", "adj. / n.", "جایگزین، متناوب", ["viable alternative", "alternative energy"], "Solar energy offers a viable alternative to fossil fuel consumption."],
-    ["ambiguous", "/æmˈbɪɡ.ju.əs/", "adj.", "مبهم، دوپهلو", ["ambiguous statement", "highly ambiguous"], "The instructions were clear and avoided any ambiguous phrasing."],
-    ["amend", "/əˈmend/", "v.", "اصلاح کردن، بازنگری کردن", ["amend legislation", "amend contract"], "The academic committee voted to amend the graduation guidelines."],
-    ["analogy", "/əˈnæl.ə.dʒi/", "n.", "قیاس، شباهت", ["draw an analogy", "useful analogy"], "The professor drew an analogy between neural networks and urban transit systems."],
-    ["analyse", "/ˈæn.əl.aɪz/", "v.", "تحلیل کردن، بررسی کردن", ["critically analyse", "analyse data"], "Examiners analyse candidate speaking pace and pronunciation clarity."],
-    ["annual", "/ˈæn.ju.əl/", "adj.", "سالانه، سالیانه", ["annual conference", "annual report"], "The institution publishes an annual report detailing student performance trends."],
-    ["anticipate", "/ænˈtɪs.ə.peɪt/", "v.", "پیش‌بینی کردن، انتظار داشتن", ["anticipate problems", "eagerly anticipate"], "Linguists anticipate substantial changes in computer-assisted language scoring."],
-    ["apparent", "/əˈper.ənt/", "adj.", "آشکار، مشهود", ["readily apparent", "apparent reason"], "The benefits of consistent vocabulary practice became immediately apparent."],
-    ["append", "/əˈpend/", "v.", "پیوست کردن، الحاق کردن", ["append details", "append document"], "Please append the required academic certificates to your application."],
-    ["appreciate", "/əˈpriː.ʃi.eɪt/", "v.", "قدردانی کردن، درک ارزش", ["greatly appreciate", "appreciate the importance"], "Scholars appreciate the importance of peer-reviewed literature in research."],
-    ["approach", "/əˈproʊtʃ/", "n. / v.", "رویکرد، شیوه، نزدیک شدن", ["practical approach", "innovative approach"], "A systematic approach is essential for mastering PTE exam tasks."],
-    ["appropriate", "/əˈproʊ.pri.ət/", "adj.", "مناسب، شایسته", ["appropriate response", "highly appropriate"], "Candidates must choose vocabulary appropriate for academic discourse."],
-    ["approximate", "/əˈprɑːk.sə.mət/", "adj. / v.", "تقریبی، نزدیک بودن", ["approximate value", "approximate time"], "The approximate duration of the listening module is forty-five minutes."],
-    ["arbitrary", "/ˈɑːr.bə.trer.i/", "adj.", "دلخواه، قراردادی، تصادفی", ["arbitrary decision", "purely arbitrary"], "Standardized testing eliminates arbitrary scoring through automated algorithms."],
-    ["area", "/ˈer.i.ə/", "n.", "حوزه، بخش، منطقه", ["subject area", "geographic area"], "Artificial intelligence is a rapidly expanding area of modern research."],
-    ["aspect", "/ˈæs.pekt/", "n.", "جنبه، بعد، بعد موضوع", ["key aspect", "crucial aspect"], "Pronunciation is a key aspect evaluated during the speaking tasks."],
-    ["assemble", "/əˈsem.bəl/", "v.", "گردآوری کردن، سرهم کردن", ["assemble data", "assemble evidence"], "Researchers assemble empirical evidence before drawing final conclusions."],
-    ["assess", "/əˈses/", "v.", "ارزیابی کردن، سنجیدن", ["accurately assess", "assess performance"], "The platform uses AI models to assess writing structure and cohesion."],
-    ["assign", "/əˈsaɪn/", "v.", "تعیین کردن، محول کردن", ["assign tasks", "assign priority"], "Tutors assign daily speaking drills to maintain fluency momentum."],
-    ["assist", "/əˈsɪst/", "v.", "کمک کردن، یاری رساندن", ["assist students", "greatly assist"], "Digital flashcards assist candidates in retaining complex academic collocations."],
-    ["assume", "/əˈsuːm/", "v.", "فرض کردن، پنداشتن", ["safely assume", "underlying assumption"], "We can safely assume that structured preparation yields higher scores."],
-    ["assure", "/əˈʃʊr/", "v.", "اطمینان دادن، تضمین کردن", ["assure quality", "reassure candidates"], "The mentorship program is designed to assure comprehensive skill development."],
-    ["attach", "/əˈtætʃ/", "v.", "ضمیمه کردن، وصل کردن", ["attach importance", "attach file"], "Pearson examiners attach great importance to structural grammatical range."],
-    ["attain", "/əˈteɪn/", "v.", "رسیدن به، دست یافتن", ["attain objective", "attain score"], "With targeted feedback, test-takers easily attain their desired bands."],
-    ["attitude", "/ˈæt̬.ə.tuːd/", "n.", "نگرش، رویکرد ذهنی", ["positive attitude", "critical attitude"], "A disciplined attitude toward daily revision ensures rapid progress."],
-    ["attribute", "/əˈtrɪb.juːt/", "v. / n.", "نسبت دادن، ویژگی", ["attribute to", "essential attribute"], "Linguists attribute fluency gains to regular active repetition."],
-    ["author", "/ˈɑː.θɚ/", "n.", "نویسنده، مؤلف", ["lead author", "author of the study"], "The author presents a coherent argument supported by empirical data."],
-    ["authority", "/əˈθɔːr.ə.t̬i/", "n.", "اقتدار، مرجع رسمی", ["recognized authority", "regulatory authority"], "The university is recognized as a global authority on linguistic research."],
-    ["automate", "/ˈɑː.t̬ə.meɪt/", "v.", "خودکارسازی کردن", ["fully automate", "automate processes"], "Machine learning algorithms automate the evaluation of written essays."],
-    ["available", "/əˈveɪ.lə.bəl/", "adj.", "موجود، در دسترس", ["readily available", "publicly available"], "Practice materials are readily available on the PTE ROOM platform."],
-    ["aware", "/əˈwer/", "adj.", "آگاه، مطلع", ["fully aware", "keenly aware"], "Students must be fully aware of the official exam timing constraints."]
-  ];
-
   const coursesData = [
     { title: "1. PTE Personal Mentoring", desc: "🌟 کامل‌ترین پکیج آمادگی آزمون PTE:\n\n• ارزیابی سطح و تعیین نقشه راه اختصاصی تا نمره هدف (+65 یا +79)\n• برنامه‌ریزی روزانه بر اساس زمان شما\n• تصحیح و فیدبک مستقیم تمرینات رایتینگ و اسپیکینگ\n• پشتیبانی مستمر تا روز آزمون رسمی." },
     { title: "2. PTE Write Essay Mastery", desc: "✍️ مسترکلاس تخصصی رایتینگ اسه:\n\n• آموزش تمپلیت استاندارد نمره ۹۰\n• اصول پاراگراف‌بندی و پوشش کامل تاپیک\n• تکنیک‌های ارتقای نمره Grammar و Vocabulary بدون خطای Spelling\n• بررسی موضوعات پرتکرار و پیش‌بینی‌های جدید آزمون." },
@@ -772,8 +718,9 @@
   let currentCardIndex = 0;
   let selectedDailyQuota = 20;
 
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v9')) || {};
-  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v9')) || { date: "", newCardsSeen: 0 };
+  // Fresh localStorage key to force clean load
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v10')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v10')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -783,40 +730,23 @@
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
-  function shuffleArray(array) {
-    let arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-
-  function buildAndShuffleVocab() {
-    let temp = [];
-    for (let i = 0; i < 800; i++) {
-      let seed = CORE_WORDS[i % CORE_WORDS.length];
-      temp.push({
-        id: i,
-        word: seed[0], 
-        phonetic: seed[1],
-        pos: seed[2],
-        meaning: seed[3],
-        collocations: seed[4],
-        sentence: seed[5]
-      });
-    }
-    academicVocab = shuffleArray(temp);
-    
-    academicVocab.forEach((card) => {
-      if (!leitnerData[card.id]) leitnerData[card.id] = { box: 1 };
-    });
-  }
-
   async function initApp() {
-    buildAndShuffleVocab();
-    
     const ts = Date.now();
+
+    // 1. Fetch Shuffled Flashcards directly from data/flashcards.json
+    try {
+      const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
+      if (resFlash.ok) {
+        academicVocab = await resFlash.json();
+        academicVocab.forEach((card) => {
+          if (!leitnerData[card.id]) leitnerData[card.id] = { box: 1 };
+        });
+      }
+    } catch (e) {
+      console.warn("Flashcards load error:", e);
+    }
+
+    // 2. Fetch WFD
     try {
       const resWFD = await fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" });
       if (resWFD.ok) {
@@ -994,7 +924,7 @@
     if (dailyStats.date !== today) {
       dailyStats.date = today;
       dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v9', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v10', JSON.stringify(dailyStats));
     }
   }
 
@@ -1003,9 +933,9 @@
     
     sessionQueue = [];
     
-    // Add review cards from Box 2, 3, 4
+    // Add review cards from Box 2-5
     academicVocab.forEach(card => {
-      if (leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
+      if (leitnerData[card.id] && leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
         sessionQueue.push(card);
       }
     });
@@ -1017,15 +947,13 @@
     if (remainingQuota > 0) {
       for (let i = 0; i < academicVocab.length; i++) {
         let card = academicVocab[i];
-        if (leitnerData[card.id].box === 1) {
+        if (leitnerData[card.id] && leitnerData[card.id].box === 1) {
           sessionQueue.push(card);
           addedNew++;
           if (addedNew >= remainingQuota) break;
         }
       }
     }
-    
-    sessionQueue = shuffleArray(sessionQueue);
     
     if (sessionQueue.length === 0) {
       navTo('flash');
@@ -1048,11 +976,11 @@
     document.getElementById('doneMessage').style.display = 'none';
 
     const cardObj = sessionQueue[currentCardIndex];
-    const box = leitnerData[cardObj.id].box;
+    const box = leitnerData[cardObj.id]?.box || 1;
 
     document.getElementById('activeCard').classList.remove('is-flipped');
     
-    document.getElementById('quotaDisplay').innerText = `Daily Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
+    document.getElementById('quotaDisplay').innerText = `Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
     document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${sessionQueue.length}`;
     document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
     
@@ -1060,7 +988,7 @@
     document.getElementById('backPhonetic').innerText = cardObj.phonetic;
     document.getElementById('backPos').innerText = cardObj.pos;
     document.getElementById('backMeaning').innerText = cardObj.meaning;
-    document.getElementById('backCollocations').innerHTML = cardObj.collocations.map(c => `• ${c}`).join('<br>');
+    document.getElementById('backCollocations').innerHTML = (cardObj.collocations || []).map(c => `• ${c}`).join('<br>');
     document.getElementById('backSentence').innerText = cardObj.sentence;
   }
 
@@ -1070,15 +998,15 @@
 
   function answerCard(known) {
     const cardObj = sessionQueue[currentCardIndex];
-    const currentBox = leitnerData[cardObj.id].box;
+    const currentBox = leitnerData[cardObj.id]?.box || 1;
     
     if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
       dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v9', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v10', JSON.stringify(dailyStats));
     }
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v9', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v10', JSON.stringify(leitnerData));
     
     currentCardIndex++;
     renderFlashcard();
