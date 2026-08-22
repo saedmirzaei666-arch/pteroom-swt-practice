@@ -425,6 +425,7 @@
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 12px;
+      width: 100%;
     }
     .settings-panel label {
       font-size: 13px;
@@ -442,17 +443,19 @@
     .quota-options {
       display: flex;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
     .quota-btn {
       flex: 1;
-      padding: 8px 0;
+      padding: 10px 0;
       background: #fff;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
       font-weight: 800;
+      font-size: 13.5px;
       color: #334155;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .quota-btn.selected {
       background: var(--primary);
@@ -611,14 +614,15 @@
         <label>تعداد کلمات جدید (جعبه ۱) در روز:</label>
         <div class="quota-info">💡 برای بازدهی مطلوب، بین <b>۱۵ تا ۲۵ کلمه جدید</b> در روز مناسب است.</div>
         <div class="quota-options" id="quotaOptions">
-          <button class="quota-btn" onclick="selectQuota(10)">10</button>
-          <button class="quota-btn selected" onclick="selectQuota(20)">20</button>
-          <button class="quota-btn" onclick="selectQuota(25)">25</button>
-          <button class="quota-btn" onclick="selectQuota(30)">30</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(10)">10</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(15)">15</button>
+          <button type="button" class="quota-btn selected" onclick="selectQuota(20)">20</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(25)">25</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(30)">30</button>
         </div>
       </div>
       
-      <button class="btn-primary" style="padding:14px; width:100%; border-radius:10px; font-size:14px;" onclick="startFlashcards()">
+      <button type="button" class="btn-primary" style="padding:14px; width:100%; border-radius:10px; font-size:14px;" onclick="startFlashcards()">
         🚀 شروع تمرین روزانه
       </button>
     </div>
@@ -700,7 +704,6 @@
 </div>
 
 <script>
-  // Core Base Vocabulary (80 Unique Seed Families)
   const CORE_WORDS = [
     ["abandon", "/əˈbæn.dən/", "v.", "ترک کردن، رها کردن", ["abandon hope", "abandon policy"], "The researchers had to abandon the experiment due to equipment failure."],
     ["abstract", "/ˈæb.strækt/", "adj.", "انتزاعی، چکیده مقاله", ["abstract concept", "abstract idea"], "Academic theories often deal with abstract concepts rather than physical objects."],
@@ -746,12 +749,12 @@
     ["attach", "/əˈtætʃ/", "v.", "ضمیمه کردن، وصل کردن", ["attach importance", "attach file"], "Pearson examiners attach great importance to structural grammatical range."],
     ["attain", "/əˈteɪn/", "v.", "رسیدن به، دست یافتن", ["attain objective", "attain score"], "With targeted feedback, test-takers easily attain their desired bands."],
     ["attitude", "/ˈæt̬.ə.tuːd/", "n.", "نگرش، رویکرد ذهنی", ["positive attitude", "critical attitude"], "A disciplined attitude toward daily revision ensures rapid progress."],
-    ("attribute", "/əˈtrɪb.juːt/", "v. / n.", "نسبت دادن، ویژگی", ["attribute to", "essential attribute"], "Linguists attribute fluency gains to regular active repetition."),
-    ("author", "/ˈɑː.θɚ/", "n.", "نویسنده، مؤلف", ["lead author", "author of the study"], "The author presents a coherent argument supported by empirical data."),
-    ("authority", "/əˈθɔːr.ə.t̬i/", "n.", "اقتدار، مرجع رسمی", ["recognized authority", "regulatory authority"], "The university is recognized as a global authority on linguistic research."),
-    ("automate", "/ˈɑː.t̬ə.meɪt/", "v.", "خودکارسازی کردن", ["fully automate", "automate processes"], "Machine learning algorithms automate the evaluation of written essays."),
-    ("available", "/əˈveɪ.lə.bəl/", "adj.", "موجود، در دسترس", ["readily available", "publicly available"], "Practice materials are readily available on the PTE ROOM platform."),
-    ("aware", "/əˈwer/", "adj.", "آگاه، مطلع", ["fully aware", "keenly aware"], "Students must be fully aware of the official exam timing constraints.")
+    ["attribute", "/əˈtrɪb.juːt/", "v. / n.", "نسبت دادن، ویژگی", ["attribute to", "essential attribute"], "Linguists attribute fluency gains to regular active repetition."],
+    ["author", "/ˈɑː.θɚ/", "n.", "نویسنده، مؤلف", ["lead author", "author of the study"], "The author presents a coherent argument supported by empirical data."],
+    ["authority", "/əˈθɔːr.ə.t̬i/", "n.", "اقتدار، مرجع رسمی", ["recognized authority", "regulatory authority"], "The university is recognized as a global authority on linguistic research."],
+    ["automate", "/ˈɑː.t̬ə.meɪt/", "v.", "خودکارسازی کردن", ["fully automate", "automate processes"], "Machine learning algorithms automate the evaluation of written essays."],
+    ["available", "/əˈveɪ.lə.bəl/", "adj.", "موجود، در دسترس", ["readily available", "publicly available"], "Practice materials are readily available on the PTE ROOM platform."],
+    ["aware", "/əˈwer/", "adj.", "آگاه، مطلع", ["fully aware", "keenly aware"], "Students must be fully aware of the official exam timing constraints."]
   ];
 
   const coursesData = [
@@ -769,8 +772,8 @@
   let currentCardIndex = 0;
   let selectedDailyQuota = 20;
 
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v8')) || {};
-  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v8')) || { date: "", newCardsSeen: 0 };
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v9')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v9')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -780,12 +783,19 @@
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
-  // Pre-generate 800 cards locally & Shuffle
+  function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
   function buildAndShuffleVocab() {
     let temp = [];
     for (let i = 0; i < 800; i++) {
       let seed = CORE_WORDS[i % CORE_WORDS.length];
-      // NO HASHTAGS OR NUMBERS. JUST PURE WORDS.
       temp.push({
         id: i,
         word: seed[0], 
@@ -796,14 +806,8 @@
         sentence: seed[5]
       });
     }
-    // Fisher-Yates Shuffle
-    for (let i = temp.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [temp[i], temp[j]] = [temp[j], temp[i]];
-    }
-    academicVocab = temp;
+    academicVocab = shuffleArray(temp);
     
-    // Initialize leitner states
     academicVocab.forEach((card) => {
       if (!leitnerData[card.id]) leitnerData[card.id] = { box: 1 };
     });
@@ -972,13 +976,17 @@
     document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
-  /* Daily Quota & Session Logic */
+  /* Quota & Session Logic */
   function selectQuota(val) {
     selectedDailyQuota = val;
-    document.querySelectorAll('.quota-btn').forEach(btn => {
+    const container = document.getElementById('quotaOptions');
+    const buttons = container.getElementsByTagName('button');
+    for (let btn of buttons) {
       btn.classList.remove('selected');
-      if(parseInt(btn.innerText) === val) btn.classList.add('selected');
-    });
+      if (parseInt(btn.innerText) === val) {
+        btn.classList.add('selected');
+      }
+    }
   }
   
   function checkDailyReset() {
@@ -986,24 +994,23 @@
     if (dailyStats.date !== today) {
       dailyStats.date = today;
       dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v8', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v9', JSON.stringify(dailyStats));
     }
   }
 
   function startFlashcards() {
     checkDailyReset();
     
-    // Build Session Queue: All Review Cards (Box 2-5) + Allowed New Cards (Box 1)
     sessionQueue = [];
     
-    // Add review cards
+    // Add review cards from Box 2, 3, 4
     academicVocab.forEach(card => {
       if (leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
         sessionQueue.push(card);
       }
     });
     
-    // Add new cards up to daily remaining quota
+    // Add new Box 1 cards up to remaining daily quota
     let remainingQuota = selectedDailyQuota - dailyStats.newCardsSeen;
     let addedNew = 0;
     
@@ -1018,10 +1025,10 @@
       }
     }
     
-    // Shuffle the final session queue
     sessionQueue = shuffleArray(sessionQueue);
     
     if (sessionQueue.length === 0) {
+      navTo('flash');
       showDoneMessage();
     } else {
       currentCardIndex = 0;
@@ -1045,7 +1052,6 @@
 
     document.getElementById('activeCard').classList.remove('is-flipped');
     
-    // Quota Counter display
     document.getElementById('quotaDisplay').innerText = `Daily Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
     document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${sessionQueue.length}`;
     document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
@@ -1066,15 +1072,13 @@
     const cardObj = sessionQueue[currentCardIndex];
     const currentBox = leitnerData[cardObj.id].box;
     
-    // If it was a new card (Box 1), count towards daily quota
     if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
       dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v8', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v9', JSON.stringify(dailyStats));
     }
     
-    // Update Box Logic
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v8', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v9', JSON.stringify(leitnerData));
     
     currentCardIndex++;
     renderFlashcard();
