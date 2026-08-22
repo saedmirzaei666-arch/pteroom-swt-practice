@@ -262,9 +262,43 @@
       flex-shrink: 0;
     }
     audio { width: 100%; height: 34px; outline: none; }
+
+    .wfd-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+    .wfd-timer-badge {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid #0284c7;
+      transition: all 0.3s;
+    }
+    .wfd-timer-badge.warning {
+      background: rgba(234, 179, 8, 0.2);
+      color: #facc15;
+      border-color: #eab308;
+    }
+    .wfd-timer-badge.danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border-color: #ef4444;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
     textarea {
       flex: 1;
-      min-height: 90px;
+      min-height: 85px;
       width: 100%;
       padding: 12px;
       font-size: 14.5px;
@@ -288,6 +322,7 @@
       padding: 10px 12px;
       border-radius: 10px;
       overflow-y: auto;
+      max-height: 140px;
     }
     .wfd-score-header {
       display: flex;
@@ -302,6 +337,24 @@
     .wfd-sentence-display { font-size: 14px; line-height: 1.7; font-weight: 600; direction: ltr; text-align: left; }
     .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 6px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 6px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
+    
+    .wfd-tips-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .wfd-warning-tip {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #facc15;
+      background: rgba(234, 179, 8, 0.12);
+      border: 1px solid rgba(234, 179, 8, 0.3);
+      padding: 4px 8px;
+      border-radius: 6px;
+      direction: ltr;
+      text-align: left;
+    }
 
     .flashcard-box {
       display: flex;
@@ -611,7 +664,6 @@
     </div>
   </div>
 
-  <!-- Flashcard Setup Screen -->
   <div class="view-screen" id="viewFlashSetup">
     <div class="flashcard-box" style="justify-content: flex-start;">
       <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
@@ -647,6 +699,11 @@
         <audio id="wfdAudioPlayer" controls></audio>
       </div>
 
+      <div class="wfd-status-bar">
+        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="wfdWordCount">Word Count: 0</span>
+        <span class="wfd-timer-badge" id="wfdTimerBadge">⏱ 00:00</span>
+      </div>
+
       <textarea id="wfdInput" placeholder="Type the exact sentence you heard here..." oninput="calcWfdWords()"></textarea>
 
       <div class="wfd-result-card" id="wfdResultBox">
@@ -655,11 +712,11 @@
           <span id="wfdScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
         </div>
         <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
+        <div class="wfd-tips-container" id="wfdTipsContainer"></div>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="wfdWordCount">Word Count: 0</span>
-        <button class="btn-primary" onclick="evaluateWfdAnswer()">Check Answer</button>
+      <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:2px;">
+        <button class="btn-primary" style="width:100%; padding:12px;" onclick="evaluateWfdAnswer()">Check Answer</button>
       </div>
     </div>
   </div>
@@ -720,13 +777,17 @@
   let navHistory = ['home'];
   let selectedCourseIndex = 0;
   let wfdQuestions = [];
+  let currentWfdCat = 'all';
   let academicVocab = [];
   let sessionQueue = []; 
   let currentCardIndex = 0;
   let selectedDailyQuota = 20;
 
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v11')) || {};
-  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v11')) || { date: "", newCardsSeen: 0 };
+  let wfdTimerInterval = null;
+  let wfdElapsedSeconds = 0;
+
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v12')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v12')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -785,21 +846,27 @@
     if (current === 'home') {
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
+      stopWfdTimer();
     } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
       title.innerText = "PTE ROOM • دوره‌های آموزشی";
+      stopWfdTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
       title.innerText = "PTE ROOM • تمرین روزانه";
+      stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
+      startWfdTimer();
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
+      stopWfdTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • Academic Flashcards";
+      stopWfdTimer();
     }
   }
 
@@ -831,6 +898,39 @@
     }
   }
 
+  /* WFD Timer */
+  function startWfdTimer() {
+    stopWfdTimer();
+    wfdElapsedSeconds = 0;
+    updateTimerDisplay();
+    wfdTimerInterval = setInterval(() => {
+      wfdElapsedSeconds++;
+      updateTimerDisplay();
+    }, 1000);
+  }
+
+  function stopWfdTimer() {
+    if (wfdTimerInterval) {
+      clearInterval(wfdTimerInterval);
+      wfdTimerInterval = null;
+    }
+  }
+
+  function updateTimerDisplay() {
+    const badge = document.getElementById('wfdTimerBadge');
+    const mins = Math.floor(wfdElapsedSeconds / 60);
+    const secs = wfdElapsedSeconds % 60;
+    const formatted = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    badge.innerText = formatted;
+
+    badge.classList.remove('warning', 'danger');
+    if (wfdElapsedSeconds >= 120) {
+      badge.classList.add('danger');
+    } else if (wfdElapsedSeconds >= 90) {
+      badge.classList.add('warning');
+    }
+  }
+
   /* WFD Engine */
   function filterWfdCategory(cat) {
     currentWfdCat = cat;
@@ -858,6 +958,7 @@
     document.getElementById('wfdResultBox').style.display = 'none';
     document.getElementById('wfdInput').value = "";
     calcWfdWords();
+    startWfdTimer();
 
     const audio = document.getElementById('wfdAudioPlayer');
     audio.src = "wfd_audios/" + q.audioUrl;
@@ -874,39 +975,66 @@
     let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
     const idx = document.getElementById('wfdSelect').value;
     const q = list[idx];
-    const userText = document.getElementById('wfdInput').value.trim();
+    const userRawText = document.getElementById('wfdInput').value.trim();
 
-    if (!userText) {
-      alert("Please write your answer before checking.");
+    if (!userRawText) {
+      alert("Please type your answer before checking.");
       return;
     }
 
     const origTokens = q.text.trim().split(/\s+/);
-    const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:]/g, ''));
-    const userCleanWords = userText.split(/\s+/).map(w => w.replace(/[.,!?;:]/g, ''));
-    const periodMissing = q.text.trim().endsWith('.') && !userText.endsWith('.');
+    const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
+    
+    const userTokens = userRawText.split(/\s+/).filter(Boolean);
+    const userCleanWords = userTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
 
+    // Accurate Multi-occurrence Frequency Tracker
+    let userPool = [...userCleanWords.map(w => w.toLowerCase())];
     let score = 0;
     let markup = "";
 
     origTokens.forEach((token, i) => {
-      const target = origCleanWords[i];
-      let isCorrect = (i === 0) 
-        ? userCleanWords.includes(target) 
-        : userCleanWords.some(u => u.toLowerCase() === target.toLowerCase());
+      const targetLower = origCleanWords[i].toLowerCase();
+      const matchIdx = userPool.indexOf(targetLower);
 
-      if (i === origTokens.length - 1 && periodMissing) isCorrect = false;
-
-      if (isCorrect) {
+      if (matchIdx !== -1) {
         score++;
+        userPool.splice(matchIdx, 1);
         markup += `<span class="wfd-word-correct">${token}</span> `;
       } else {
         markup += `<span class="wfd-word-missing">${token}</span> `;
       }
     });
 
+    // Formatting Warnings
+    let tips = [];
+
+    // 1. Capitalization check
+    const firstOrigChar = origCleanWords[0].charAt(0);
+    const firstUserChar = userCleanWords[0] ? userCleanWords[0].charAt(0) : "";
+    if (firstOrigChar === firstOrigChar.toUpperCase() && firstUserChar !== firstUserChar.toUpperCase()) {
+      tips.push("⚠️ <b>Capitalization Tip:</b> Remember to capitalize the first letter of the sentence.");
+    }
+
+    // 2. Full stop / period check
+    const endsWithPeriod = userRawText.endsWith('.');
+    if (!endsWithPeriod) {
+      tips.push("⚠️ <b>Punctuation Tip:</b> Don't forget to put a full stop (<b>.</b>) at the end of the sentence.");
+    }
+
+    // Render Results
     document.getElementById('wfdScoreBadge').innerText = `${score} / ${origTokens.length}`;
     document.getElementById('wfdSentenceDisplay').innerHTML = markup;
+    
+    const tipsContainer = document.getElementById('wfdTipsContainer');
+    if (tips.length > 0) {
+      tipsContainer.innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
+      tipsContainer.style.display = 'flex';
+    } else {
+      tipsContainer.innerHTML = '';
+      tipsContainer.style.display = 'none';
+    }
+
     document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
@@ -928,7 +1056,7 @@
     if (dailyStats.date !== today) {
       dailyStats.date = today;
       dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v11', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v12', JSON.stringify(dailyStats));
     }
   }
 
@@ -1006,11 +1134,11 @@
     
     if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
       dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v11', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v12', JSON.stringify(dailyStats));
     }
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v11', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v12', JSON.stringify(leitnerData));
     
     currentCardIndex++;
     renderFlashcard();
