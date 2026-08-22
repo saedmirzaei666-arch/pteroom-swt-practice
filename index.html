@@ -201,6 +201,7 @@
       flex-shrink: 0;
     }
 
+    /* Courses View Styles */
     .courses-list {
       display: flex;
       flex-direction: column;
@@ -236,6 +237,7 @@
     .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
+    /* Modal Styles */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -273,16 +275,6 @@
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; color: #94a3b8; }
     .modal-body { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; text-align: justify; white-space: pre-line; }
 
-    .guide-section {
-      background: #1e293b;
-      border: 1px solid #334155;
-      padding: 12px 14px;
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-    .guide-title { font-weight: 800; color: #38bdf8; font-size: 14px; margin-bottom: 6px; }
-    .guide-desc { font-size: 13px; line-height: 1.7; color: #cbd5e1; }
-
     .modal-action-btn {
       background: #0284c7;
       color: #ffffff;
@@ -300,6 +292,7 @@
       margin-top: 6px;
     }
 
+    /* WFD Simulator Styles */
     .wfd-box {
       display: flex;
       flex-direction: column;
@@ -476,6 +469,7 @@
     }
     .btn-secondary:active { background: #334155; }
 
+    /* Flashcard Styles */
     .flashcard-box {
       display: flex;
       flex-direction: column;
@@ -690,6 +684,7 @@
     <button class="back-home-btn" id="backHomeBtn" onclick="navBack()">بازگشت ‹</button>
   </div>
 
+  <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('schedule')">
@@ -850,6 +845,7 @@
     </div>
   </div>
 
+  <!-- Courses View Screen -->
   <div class="view-screen" id="viewCourses">
     <div class="courses-list">
       <div class="course-item-card" onclick="openCourseModal(0)">
@@ -886,6 +882,7 @@
     </div>
   </div>
 
+  <!-- Course Details Modal -->
   <div class="modal-overlay" id="courseModal" onclick="closeModal('courseModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
@@ -899,6 +896,7 @@
     </div>
   </div>
 
+  <!-- Flashcards Guide Modal -->
   <div class="modal-overlay" id="flashGuideModal" onclick="closeModal('flashGuideModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
@@ -906,16 +904,16 @@
         <button class="close-btn" onclick="closeModal('flashGuideModal')">✕</button>
       </div>
       <div class="modal-body">
-        <div class="guide-section">
-          <div class="guide-title">🧠 جعبه لایتنر هوشمند چیست؟</div>
-          <div class="guide-desc">
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
+          <div style="font-size:13px; line-height:1.7; color:#cbd5e1;">
             سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.
           </div>
         </div>
 
-        <div class="guide-section">
-          <div class="guide-title">📦 نحوه پیشرفت در ۵ جعبه:</div>
-          <div class="guide-desc">
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
+          <div style="font-size:13px; line-height:1.7; color:#cbd5e1;">
             • تمام لغات جدید در ابتدا در <b>سطح ۱ (Box 1)</b> قرار دارند.<br><br>
             • 🟢 <b>دکمه Mastered:</b> در صورت یادگیری، لغت ۱ سطح ارتقا می‌یابد (Box 1 ➔ Box 5).<br><br>
             • 🔴 <b>دکمه Needs Review:</b> در صورت فراموشی، به Box 1 بازمی‌گردد تا مجدداً تکرار شود.
@@ -928,6 +926,7 @@
     </div>
   </div>
 
+  <!-- Practice Hub Screen -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('wfd')">
@@ -948,6 +947,7 @@
     </div>
   </div>
 
+  <!-- Flashcards Daily Quota Setup Screen -->
   <div class="view-screen" id="viewFlashSetup">
     <div class="flashcard-box" style="justify-content: flex-start;">
       <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
@@ -970,6 +970,7 @@
     </div>
   </div>
 
+  <!-- WFD Simulator Screen -->
   <div class="view-screen" id="viewWfd">
     <div class="wfd-box">
       <div class="wfd-category-bar">
@@ -1006,6 +1007,7 @@
     </div>
   </div>
 
+  <!-- Flashcards Practice Screen -->
   <div class="view-screen" id="viewFlash">
     <div class="flashcard-box">
       <div class="leitner-progress">
@@ -1055,10 +1057,26 @@
 
 <script>
   const coursesData = [
-    { title: "1. PTE Personal Mentoring", desc: "🌟 کامل‌ترین پکیج آمادگی آزمون PTE:\n\n• ارزیابی سطح و تعیین نقشه راه اختصاصی تا نمره هدف (+65 یا +79)\n• برنامه‌ریزی روزانه بر اساس زمان شما\n• تصحیح و فیدبک مستقیم تمرینات رایتینگ و اسپیکینگ\n• پشتیبانی مستمر تا روز آزمون رسمی." },
-    { title: "2. PTE Write Essay Mastery", desc: "✍️ مسترکلاس تخصصی رایتینگ اسه:\n\n• آموزش تمپلیت استاندارد نمره ۹۰\n• اصول پاراگراف‌بندی و پوشش کامل تاپیک\n• تکنیک‌های ارتقای نمره Grammar و Vocabulary بدون خطای Spelling\n• بررسی موضوعات پرتکرار و پیش‌بینی‌های جدید آزمون." },
-    { title: "3. PTE Private Lessons", desc: "🎯 کلاس‌های خصوصی آنلاین:\n\n• رفع اشکال فشرده روی تسک‌های کلیدی (RA, RS, DI, WFD)\n• آموزش تکنیک‌های میانبر و تست سنتر\n• شبیه‌سازی ماک تست و تحلیل کارنامه‌های قبلی\n• زمان‌بندی کاملاً هماهنگ با شما." },
-    { title: "4. General English", desc: "🚀 تقویت پایه‌ای زبان انگلیسی:\n\n• ارتقای دایره لغات آکادمیک و اصطلاحات\n• تسلط بر ساختارهای گرامری و روانی کلام در مکالمه\n• پایه‌ریزی اصولی برای آمادگی آزمون‌های بین‌المللی." }
+    {
+      title: "1. PTE Personal Mentoring",
+      badge: "VIP MENTORSHIP",
+      desc: "🌟 جامع‌ترین و مطمئن‌ترین مسیر قبولی در آزمون PTE:\n\n• 🎯 تعیین سطح و نقشه راه اختصاصی: تحلیل دقیق سطح زبان و طراحی پلن گام‌به‌گام تا نمره هدف (+65 یا +79)\n• 📅 برنامه‌ریزی منعطف روزانه: زمان‌بندی هوشمند متناسب با مشغله‌های کاری و تحصیلی شما\n• ✍️ فیدبک و تصحیح نامحدود: تحلیل ریزبه‌ریز و روزانه تمرین‌های Speaking و Writing همراه با نمره‌دهی استاندارد الگوریتم پیرسون\n• 📊 تحلیل کارنامه و ماک‌تست‌ها: ریشه‌یابی خطاهای ماک سنترال و رفع سریع نقاط ضعف قبل از آزمون اصلی\n• 🤝 پشتیبانی مستقیم و مستمر: همراهی گام‌به‌گام تا لحظه ورود به سنتر و کسب نتیجه نهایی."
+    },
+    {
+      title: "2. PTE Write Essay Mastery",
+      badge: "SPECIALIZED MASTERCLASS",
+      desc: "✍️ مسترکلاس تخصصی تسلط بر رایتینگ و کسب نمره ۹۰:\n\n• 📐 ساختارهای استاندارد و تست‌شده: آموزش چارچوب‌های مطمئن برای نگارش دقیق و پوشش کامل ساختاری بدون ریسک خطای الگوریتم پیرسون\n• 💡 اصول توسعه ایده و نگارش: آموزش بسط منطقی پاراگراف‌ها متناسب با هر نوع موضوع (Agree/Disagree, Advantage/Disadvantage و...)\n• 🔤 مدیریت نمره گرامر و واژگان: تکنیک‌های استفاده از ساختارهای پیشرفته و کالوکیشن‌های مناسب بدون خطای املا (Spelling)\n• 🔥 پوشش موضوعات داغ و پرتکرار: بررسی و تحلیل مستقیم سوالات پرتکرار و پیش‌بینی‌های جدید آزمون رسمی\n• 🔍 تحلیل و تصحیح زنده: بررسی نمونه اسه‌های داوطلبان و اصلاح خطاهای متداول نمره‌سوز."
+    },
+    {
+      title: "3. PTE Private Lessons",
+      badge: "1-ON-1 SESSIONS",
+      desc: "🎯 کلاس‌های خصوصی آنلاین و رفع اشکال فشرده تک‌نفره:\n\n• ⚡ تمرکز هدفمند بر تسک‌های کلیدی: تقویت تخصصی تسک‌های نمره‌ساز آزمون نظیر RA، RS، DI، SST و WFD\n• 🎙 آموزش ترفندها و تکنیک‌های میانبر: یادگیری قلق‌های میکروفون، لحن کلام (Oral Fluency) و استراتژی‌های تست‌سنتر\n• 🧪 شبیه‌سازی شرایط آزمون: اجرای زنده تست‌ها زیر نظر استاد و دریافت آنی فیدبک‌های کاربردی\n• ⏰ انعطاف کامل در زمان‌بندی: امکان هماهنگی ساعات کلاس متناسب با تایم آزاد شما\n• 📌 تعداد جلسات انتخابی: متناسب با نیاز به رفع اشکال مقطعی یا جمع‌بندی نهایی قبل از آزمون."
+    },
+    {
+      title: "4. General English",
+      badge: "FOUNDATION & FLUENCY",
+      desc: "🚀 تقویت پایه زبان و ارتقای روانی کلام:\n\n• 📚 گسترش دایره واژگان آکادمیک: یادگیری لغات پرکاربرد، اصطلاحات روزمره و هم‌آیی‌ها (Collocations)\n• 🛠 تقویت گرامر کاربردی: تسلط عملی بر ساختارهای دستوری زبان جهت استفاده صحیح در مکالمه و نگارش\n• 🗣 تقویت روانی گفتار و شنیدار: تکنیک‌های افزایش اعتمادبه‌نفس در مکالمه، تلفظ شفاف و فهم لهجه‌های مختلف صوتی\n• 🌍 پایه‌ریزی اصولی برای آزمون‌های بین‌المللی: آمادگی ذهنی و زبانی لازم جهت شروع پرقدرت مسیر آزمون‌های PTE و IELTS."
+    }
   ];
 
   let navHistory = ['home'];
@@ -1348,7 +1366,7 @@
     document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
-  /* Quota & Session Logic */
+  /* Flashcard Quota & Session Logic */
   function selectQuota(val) {
     selectedDailyQuota = val;
     const container = document.getElementById('quotaOptions');
