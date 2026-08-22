@@ -34,7 +34,8 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-      padding: max(12px, env(safe-area-inset-top, 12px)) 14px max(12px, env(safe-area-inset-bottom, 12px)) 14px;
+      /* فاصله استاندارد از بالای گوشی و دکمه کلوز تلگرام */
+      padding: max(50px, env(safe-area-inset-top, 50px)) 14px max(14px, env(safe-area-inset-bottom, 14px)) 14px;
       position: relative;
     }
 
@@ -45,20 +46,20 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       backdrop-filter: blur(12px);
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-radius: 12px;
       margin-bottom: 8px;
       flex-shrink: 0;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
-    .brand-title { font-weight: 900; color: #38bdf8; font-size: 14.5px; letter-spacing: 0.5px; }
+    .brand-title { font-weight: 900; color: #38bdf8; font-size: 14px; letter-spacing: 0.5px; }
     .back-home-btn {
       background: #1e293b;
       color: #94a3b8;
       border: 1px solid #334155;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
       cursor: pointer;
       display: none;
@@ -155,7 +156,6 @@
       }
     }
 
-    /* Shiny light beam sweep effect */
     .hub-card.placement-highlight::after {
       content: '';
       position: absolute;
@@ -1353,6 +1353,10 @@
     tg.expand();
     if (tg.requestFullscreen) tg.requestFullscreen();
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+    // اتصال دکمه بک رسمی تلگرام
+    if (tg.BackButton) {
+      tg.BackButton.onClick(() => navBack());
+    }
   }
 
   function showToast(msg) {
@@ -1403,8 +1407,17 @@
     document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
     const backBtn = document.getElementById('backHomeBtn');
     const title = document.getElementById('pageTitle');
+    const ticker = document.getElementById('newsTickerBar');
 
-    backBtn.style.display = (navHistory.length > 1) ? 'block' : 'none';
+    const isSubPage = (navHistory.length > 1);
+    backBtn.style.display = isSubPage ? 'block' : 'none';
+    if (ticker) ticker.style.display = isSubPage ? 'none' : 'flex';
+
+    // مدیریت BackButton بومی تلگرام
+    if (tg?.BackButton) {
+      if (isSubPage) tg.BackButton.show();
+      else tg.BackButton.hide();
+    }
 
     if (current === 'home') {
       document.getElementById('viewHome').classList.add('active');
