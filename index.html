@@ -175,8 +175,7 @@
       background: #64748b;
     }
     .status-badge.prep { background: #d97706; }
-    .status-badge.rec { background: var(--danger); animation: pulse 1.2s infinite; }
-    .status-badge.done { background: var(--success); }
+    .status-badge.ready { background: var(--success); }
 
     .progress-bar-bg {
       width: 100%;
@@ -188,7 +187,7 @@
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: var(--primary);
+      background: #d97706;
       transition: width 0.2s linear;
     }
 
@@ -205,12 +204,6 @@
       padding: 4px;
     }
     .di-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
 
     textarea {
       flex: 1;
@@ -385,7 +378,7 @@
 
     <div class="prompt-box" id="promptText">Loading prompt...</div>
 
-    <!-- DI Speaking Container: Recording controls placed at top -->
+    <!-- DI Speaking Container -->
     <div class="di-container" id="diContainer">
       <div class="di-recorder-panel">
         <div class="di-status-row">
@@ -396,8 +389,7 @@
           <div class="progress-bar-fill" id="diProgressFill"></div>
         </div>
         <div style="display: flex; gap: 6px; margin-top: 4px;">
-          <button class="btn" id="diStartRecBtn" style="flex:1; background:#0284c7; padding:8px;" onclick="startDiRecordingManual()">🎙 Start Recording Now</button>
-          <button class="btn" id="diStopRecBtn" style="flex:1; background:#dc2626; padding:8px; display:none;" onclick="stopDiRecording()">⏹ Finish & Send</button>
+          <button class="btn" id="diRecordBtn" style="flex:1; background:#0284c7; padding:9px;" onclick="sendDiReadySignal()">🎙 I'm Ready • Send Voice in Telegram</button>
         </div>
       </div>
       
@@ -471,9 +463,6 @@
 
   let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
   let currentCardIndex = 0;
-
-  let diMediaRecorder = null;
-  let diAudioChunks = [];
   let diTimerInterval = null;
 
   const tg = window.Telegram?.WebApp;
@@ -529,7 +518,7 @@
 
   function switchTask(task) {
     currentTask = task;
-    resetDiEngine();
+    if (diTimerInterval) clearInterval(diTimerInterval);
 
     ['SWT', 'WE', 'DI', 'SST', 'WFD', 'Flash'].forEach(t => {
       const btn = document.getElementById('tab' + t);
@@ -606,7 +595,7 @@
       timerElem.innerText = "Speaking Task";
       document.getElementById('taskHeading').innerText = "PTE ROOM • Describe Image";
       loadOptions(diQuestions);
-      startDiFlow();
+      startDiPrepTimer();
     } else if (task === 'SST') {
       promptBox.style.display = 'block';
       diContainer.style.display = 'none';
@@ -675,7 +664,7 @@
 
     if (currentTask === 'DI') {
       document.getElementById('diImageElem').src = "di_images/" + q.image;
-      startDiFlow();
+      startDiPrepTimer();
     } else if (currentTask === 'SST') {
       document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Listen to the recording above and write your summary.";
       const audioPl = document.getElementById('audioPlayer');
@@ -693,28 +682,20 @@
     calcWords();
   }
 
-  function resetDiEngine() {
+  function startDiPrepTimer() {
     if (diTimerInterval) clearInterval(diTimerInterval);
-    if (diMediaRecorder && diMediaRecorder.state === "recording") {
-      diMediaRecorder.stop();
-    }
-    document.getElementById('diStartRecBtn').style.display = "block";
-    document.getElementById('diStopRecBtn').style.display = "none";
-    document.getElementById('diProgressFill').style.width = "0%";
-  }
-
-  function startDiFlow() {
-    resetDiEngine();
     let prepSec = 25;
     
     const label = document.getElementById('diStatusLabel');
     const badge = document.getElementById('diStatusBadge');
     const fill = document.getElementById('diProgressFill');
+    const btn = document.getElementById('diRecordBtn');
     
     label.innerText = "⏳ Preparation Time:";
     badge.className = "status-badge prep";
     badge.innerText = `${prepSec}s Left`;
-    fill.style.background = "#d97706";
+    fill.style.width = "0%";
+    btn.innerText = "🎙 I'm Ready • Send Voice in Telegram";
 
     diTimerInterval = setInterval(() => {
       prepSec--;
@@ -724,101 +705,32 @@
 
       if (prepSec <= 0) {
         clearInterval(diTimerInterval);
-        startRecordingAudio();
+        badge.className = "status-badge ready";
+        badge.innerText = "Time to Speak!";
+        label.innerText = "👉 Click below to record voice:";
+        btn.innerText = "🚀 Send Voice Note Now";
       }
     }, 1000);
   }
 
-  function startDiRecordingManual() {
+  function sendDiReadySignal() {
     if (diTimerInterval) clearInterval(diTimerInterval);
-    startRecordingAudio();
-  }
-
-  async function startRecordingAudio() {
-    const label = document.getElementById('diStatusLabel');
-    const badge = document.getElementById('diStatusBadge');
-    const fill = document.getElementById('diProgressFill');
-    const startBtn = document.getElementById('diStartRecBtn');
-    const stopBtn = document.getElementById('diStopRecBtn');
-
-    label.innerText = "🔴 Recording Speech:";
-    badge.className = "status-badge rec";
-    badge.innerText = "40s Left";
-    fill.style.background = "#dc2626";
-    fill.style.width = "0%";
-    startBtn.style.display = "none";
-    stopBtn.style.display = "block";
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      diAudioChunks = [];
-      
-      // Select supported audio mimeType with low bitrate to prevent size limits
-      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/mp4';
-      diMediaRecorder = new MediaRecorder(stream, { mimeType: mime, audioBitsPerSecond: 16000 });
-
-      diMediaRecorder.ondataavailable = e => {
-        if (e.data.size > 0) diAudioChunks.push(e.data);
-      };
-
-      diMediaRecorder.onstop = () => {
-        const audioBlob = new Blob(diAudioChunks, { type: mime });
-        finishAndSendDi(audioBlob);
-      };
-
-      diMediaRecorder.start(250);
-
-      let recSec = 40;
-      diTimerInterval = setInterval(() => {
-        recSec--;
-        let pct = ((40 - recSec) / 40) * 100;
-        fill.style.width = `${pct}%`;
-        badge.innerText = `${recSec}s Left`;
-
-        if (recSec <= 0) {
-          stopDiRecording();
-        }
-      }, 1000);
-
-    } catch (err) {
-      alert("Microphone permission is required for speaking.");
-      resetDiEngine();
-    }
-  }
-
-  function stopDiRecording() {
-    if (diTimerInterval) clearInterval(diTimerInterval);
-    if (diMediaRecorder && diMediaRecorder.state === "recording") {
-      diMediaRecorder.stop();
-    }
-    document.getElementById('diStatusLabel').innerText = "✅ Speech Finished:";
-    document.getElementById('diStatusBadge').className = "status-badge done";
-    document.getElementById('diStatusBadge').innerText = "Submitting...";
-    document.getElementById('diStopRecBtn').style.display = "none";
-  }
-
-  function finishAndSendDi(audioBlob) {
     const idx = document.getElementById('questionSelect').value;
     const q = diQuestions[idx];
 
-    const reader = new FileReader();
-    reader.readAsDataURL(audioBlob);
-    reader.onloadend = () => {
-      const base64Data = reader.result.split(',')[1];
-      const payload = JSON.stringify({
-        task_type: "DI",
-        question_title: q.title,
-        prompt: q.keywords.join(', '),
-        audio_base64: base64Data
-      });
+    const payload = JSON.stringify({
+      task_type: "DI_READY",
+      question_title: q.title,
+      prompt: q.keywords ? q.keywords.join(', ') : "",
+      image_name: q.image
+    });
 
-      if (tg && typeof tg.sendData === "function") {
-        tg.sendData(payload);
-        tg.close();
-      } else {
-        alert("Audio recording finalized.");
-      }
-    };
+    if (tg && typeof tg.sendData === "function") {
+      tg.sendData(payload);
+      tg.close();
+    } else {
+      alert("Selected question: " + q.title + "\nIn Telegram, this seamlessly redirects to send your voice note.");
+    }
   }
 
   function calcWords() {
