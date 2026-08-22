@@ -71,24 +71,24 @@
     }
     .view-screen.active { display: flex; }
 
-    /* Home Hub View */
-    .home-grid {
+    /* Home & Practice Hub Menu Grid */
+    .hub-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       justify-content: center;
       flex: 1;
     }
     .hub-card {
       background: var(--card-bg);
       border: 2px solid #cbd5e1;
-      border-radius: 14px;
-      padding: 22px 18px;
+      border-radius: 16px;
+      padding: 24px 18px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
     .hub-card:active { transform: scale(0.98); border-color: var(--primary); }
@@ -96,15 +96,15 @@
       font-size: 34px;
       background: #eff6ff;
       border: 1px solid #bfdbfe;
-      width: 58px;
-      height: 58px;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
+      border-radius: 14px;
       flex-shrink: 0;
     }
-    .hub-text h3 { font-size: 16px; color: var(--primary-dark); margin-bottom: 4px; font-weight: 800; }
+    .hub-text h3 { font-size: 16.5px; color: var(--primary-dark); margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
     /* Courses List */
@@ -146,7 +146,7 @@
     .course-title { font-size: 15px; font-weight: 800; color: var(--text); }
     .arrow-icon { font-size: 20px; color: var(--primary); font-weight: bold; }
 
-    /* Modal / Bottom Sheet for Course Detail */
+    /* Modals */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -164,7 +164,7 @@
     .modal-content {
       background: #ffffff;
       width: 100%;
-      max-height: 85vh;
+      max-height: 88vh;
       border-radius: 20px 20px 0 0;
       padding: 20px 18px max(20px, env(safe-area-inset-bottom, 20px)) 18px;
       display: flex;
@@ -182,6 +182,17 @@
     .modal-title { font-size: 16px; font-weight: 800; color: var(--primary); }
     .close-btn { background: #f1f5f9; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; color: #64748b; }
     .modal-body { font-size: 13.5px; line-height: 1.8; color: #334155; text-align: justify; white-space: pre-line; }
+    
+    .guide-section {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .guide-title { font-weight: 800; color: var(--primary); font-size: 14px; margin-bottom: 6px; }
+    .guide-desc { font-size: 13px; line-height: 1.7; color: #334155; }
+
     .modal-action-btn {
       background: #229ED9;
       color: #ffffff;
@@ -199,50 +210,18 @@
       margin-top: 6px;
     }
 
-    /* Practice View Tabs & Layout */
-    .practice-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 8px;
-      flex-shrink: 0;
-    }
-    .ptab-btn {
-      flex: 1;
-      background: #e2e8f0;
-      border: 1px solid #cbd5e1;
-      padding: 8px 4px;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 12px;
-      color: #475569;
-      cursor: pointer;
-      text-align: center;
-    }
-    .ptab-btn.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-
-    .practice-box {
+    /* WFD Dedicated Screen */
+    .wfd-box {
       display: flex;
       flex-direction: column;
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1.5px solid #cbd5e1;
       padding: 12px;
       flex: 1;
       min-height: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    /* WFD Section */
-    .wfd-panel {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
       gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     .wfd-category-bar {
       display: flex;
@@ -253,9 +232,9 @@
       flex: 1;
       background: #f8fafc;
       border: 1px solid #cbd5e1;
-      padding: 6px;
+      padding: 8px 4px;
       border-radius: 6px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
       color: #475569;
       cursor: pointer;
@@ -267,7 +246,7 @@
     }
     select {
       width: 100%;
-      padding: 8px 10px;
+      padding: 9px 10px;
       border-radius: 6px;
       border: 1.5px solid var(--primary);
       font-size: 13px;
@@ -284,13 +263,13 @@
       border-radius: 6px;
       flex-shrink: 0;
     }
-    audio { width: 100%; height: 32px; outline: none; }
+    audio { width: 100%; height: 34px; outline: none; }
     textarea {
       flex: 1;
-      min-height: 80px;
+      min-height: 90px;
       width: 100%;
       padding: 10px;
-      font-size: 14px;
+      font-size: 14.5px;
       border: 1px solid #a0aec0;
       border-radius: 6px;
       resize: none;
@@ -315,37 +294,53 @@
       justify-content: space-between;
       align-items: center;
       font-weight: 800;
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--primary);
       border-bottom: 1px solid #e2e8f0;
       padding-bottom: 4px;
     }
-    .wfd-sentence-display { font-size: 13.5px; line-height: 1.7; font-weight: 600; direction: ltr; text-align: left; }
+    .wfd-sentence-display { font-size: 14px; line-height: 1.7; font-weight: 600; direction: ltr; text-align: left; }
     .wfd-word-correct { background: #d1fae5; color: #065f46; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: #fee2e2; color: #991b1b; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
 
-    /* Flashcard Section */
-    .flashcard-panel {
-      display: none;
+    /* Flashcard Dedicated Screen */
+    .flashcard-box {
+      display: flex;
       flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1.5px solid #cbd5e1;
+      padding: 12px;
       flex: 1;
       min-height: 0;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     .leitner-progress {
       width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #475569;
       margin-bottom: 8px;
       flex-shrink: 0;
+    }
+    .guide-btn {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
     }
     .card-scene {
       width: 100%;
@@ -384,8 +379,8 @@
       text-align: center;
       direction: ltr;
     }
-    .card-front .word-title { font-size: 30px; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px; }
-    .card-front .tap-hint { font-size: 12px; opacity: 0.9; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 14px; }
+    .card-front .word-title { font-size: 32px; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px; }
+    .card-front .tap-hint { font-size: 12px; opacity: 0.9; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 14px; }
     .card-back {
       background: #fafbfc;
       transform: rotateY(180deg);
@@ -395,15 +390,15 @@
       text-align: left;
     }
     .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 4px; }
-    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 13.5px; font-weight: 600; }
+    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 14px; font-weight: 600; }
     .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-    .card-back .persian-meaning { font-size: 16px; font-weight: 800; color: var(--primary); direction: rtl; text-align: right; margin: 4px 0; }
-    .card-back .section-title { font-size: 11.5px; font-weight: 800; color: #334155; }
+    .card-back .persian-meaning { font-size: 16.5px; font-weight: 800; color: var(--primary); direction: rtl; text-align: right; margin: 4px 0; }
+    .card-back .section-title { font-size: 12px; font-weight: 800; color: #334155; }
     .card-back .collocations { font-size: 13px; font-weight: 600; color: #1e293b; }
     .card-back .example-sentence { font-size: 12.5px; line-height: 1.4; color: #0f172a; background: #f1f5f9; padding: 6px 8px; border-radius: 6px; border-left: 3px solid var(--primary); }
 
     .leitner-actions { display: flex; width: 100%; gap: 8px; margin-top: 8px; flex-shrink: 0; }
-    .leitner-btn { flex: 1; padding: 10px; border-radius: 6px; font-weight: 800; font-size: 12.5px; border: none; cursor: pointer; color: #fff; }
+    .leitner-btn { flex: 1; padding: 11px; border-radius: 6px; font-weight: 800; font-size: 13px; border: none; cursor: pointer; color: #fff; }
     .btn-again { background: var(--danger); }
     .btn-good { background: var(--success); }
 
@@ -425,12 +420,12 @@
   <!-- Top Navigation Header -->
   <div class="global-header">
     <span class="brand-title" id="pageTitle">PTE ROOM • پلتفرم جامع</span>
-    <button class="back-home-btn" id="backHomeBtn" onclick="navTo('home')">🏠 بازگشت به منو</button>
+    <button class="back-home-btn" id="backHomeBtn" onclick="navBack()">بازگشت ‹</button>
   </div>
 
   <!-- 1. Main Home Screen -->
   <div class="view-screen active" id="viewHome">
-    <div class="home-grid">
+    <div class="hub-grid">
       <div class="hub-card" onclick="navTo('courses')">
         <div class="hub-icon">🎓</div>
         <div class="hub-text">
@@ -439,7 +434,7 @@
         </div>
       </div>
 
-      <div class="hub-card" onclick="navTo('practice')">
+      <div class="hub-card" onclick="navTo('practice_menu')">
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
           <h3>تمرین روزانه</h3>
@@ -487,89 +482,142 @@
   </div>
 
   <!-- Course Detail Modal -->
-  <div class="modal-overlay" id="courseModal" onclick="closeCourseModal(event)">
+  <div class="modal-overlay" id="courseModal" onclick="closeModal('courseModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <span class="modal-title" id="modalCourseTitle">عنوان دوره</span>
-        <button class="close-btn" onclick="closeCourseModal()">✕</button>
+        <button class="close-btn" onclick="closeModal('courseModal')">✕</button>
       </div>
-      <div class="modal-body" id="modalCourseDesc">
-        توضیحات دوره...
-      </div>
+      <div class="modal-body" id="modalCourseDesc"></div>
       <button class="modal-action-btn" onclick="redirectToSupport()">
         💬 دریافت مشاوره و ثبت‌نام در تلگرام
       </button>
     </div>
   </div>
 
-  <!-- 3. Daily Practice Screen -->
-  <div class="view-screen" id="viewPractice">
-    <div class="practice-tabs">
-      <button class="ptab-btn active" id="ptabWFD" onclick="switchPractice('WFD')">✍️ Write From Dictation</button>
-      <button class="ptab-btn" id="ptabFlash" onclick="switchPractice('FLASH')">🗂 Flash Cards</button>
-    </div>
-
-    <div class="practice-box">
-      <!-- WFD Section -->
-      <div class="wfd-panel" id="wfdSection">
-        <div class="wfd-category-bar">
-          <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
-          <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
-        </div>
-
-        <select id="wfdSelect" onchange="onSelectWfd()"></select>
-
-        <div class="audio-wrapper">
-          <audio id="wfdAudioPlayer" controls></audio>
-        </div>
-
-        <textarea id="wfdInput" placeholder="Type the exact sentence you heard here..." oninput="calcWfdWords()"></textarea>
-
-        <div class="wfd-result-card" id="wfdResultBox">
-          <div class="wfd-score-header">
-            <span>📊 Score Analysis:</span>
-            <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
+  <!-- Flashcard Guide Modal -->
+  <div class="modal-overlay" id="flashGuideModal" onclick="closeModal('flashGuideModal', event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">📖 راهنمای سیستم لایتنر واژگان</span>
+        <button class="close-btn" onclick="closeModal('flashGuideModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="guide-section">
+          <div class="guide-title">🧠 جعبه لایتنر هوشمند چیست؟</div>
+          <div class="guide-desc">
+            سیستم لایتنر یک روش اثبات‌شده علمی بر پایه «تکرار با فواصل زمانی منظم» است که واژگان را از حافظه کوتاه‌مدت به حافظه بلندمدت منتقل می‌کند.
           </div>
-          <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-          <span style="font-size:12px; font-weight:700; color:#475569;" id="wfdWordCount">Word Count: 0</span>
-          <button class="btn-primary" onclick="evaluateWfdAnswer()">Check Answer</button>
+        <div class="guide-section">
+          <div class="guide-title">📦 نحوه پیشرفت در ۵ جعبه:</div>
+          <div class="guide-desc">
+            • تمام لغات جدید در ابتدا در <b>سطح ۱ (Box 1)</b> قرار دارند.<br><br>
+            • 🟢 <b>دکمه Mastered:</b> اگر معنی و کاربرد لغت را بلد بودید، لغت ۱ جعبه بالا می‌رود (Box 1 ➔ Box 5).<br><br>
+            • 🔴 <b>دکمه Needs Review:</b> اگر لغت را فراموش کردید، بلافاصله به Box 1 بازمی‌گردد تا مجدداً در چرخه مرور فشرده قرار گیرد.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-title">💾 ذخیره‌سازی خودکار:</div>
+          <div class="guide-desc">
+            پیشرفت و سطح تسلط شما روی لغات به‌طور دائمی روی دستگاه ذخیره می‌شود و با بستن تلگرام صفر نخواهد شد.
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" style="padding:12px; width:100%; border-radius:10px;" onclick="closeModal('flashGuideModal')">
+        متوجه شدم • شروع مرور کارت‌ها
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Practice Hub Menu -->
+  <div class="view-screen" id="viewPracticeMenu">
+    <div class="hub-grid">
+      <div class="hub-card" onclick="navTo('wfd')">
+        <div class="hub-icon">✍️</div>
+        <div class="hub-text">
+          <h3>Write From Dictation</h3>
+          <p>شبیه‌ساز رسمی پخش صوت، نگارش و تصحیح هوشمند تطبیق کلمات</p>
         </div>
       </div>
 
-      <!-- Flashcards Section -->
-      <div class="flashcard-panel" id="flashSection">
-        <div class="leitner-progress">
-          <span id="cardCounter">Card 1</span>
-          <span id="boxLevel">📦 Box Level: 1/5</span>
+      <div class="hub-card" onclick="navTo('flash')">
+        <div class="hub-icon">🗂</div>
+        <div class="hub-text">
+          <h3>Academic Flashcards</h3>
+          <p>جعبه لایتنر ۵ مرحله‌ای واژگان، فونتیک، کالوکیشن و مثال کاربردی</p>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div class="card-scene" onclick="flipCard()">
-          <div class="card" id="activeCard">
-            <div class="card-face card-front">
-              <div class="word-title" id="frontWord">Loading...</div>
-              <div class="tap-hint">👆 Tap to flip card</div>
+  <!-- 4. WFD Dedicated Screen -->
+  <div class="view-screen" id="viewWfd">
+    <div class="wfd-box">
+      <div class="wfd-category-bar">
+        <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
+        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
+      </div>
+
+      <select id="wfdSelect" onchange="onSelectWfd()"></select>
+
+      <div class="audio-wrapper">
+        <audio id="wfdAudioPlayer" controls></audio>
+      </div>
+
+      <textarea id="wfdInput" placeholder="Type the exact sentence you heard here..." oninput="calcWfdWords()"></textarea>
+
+      <div class="wfd-result-card" id="wfdResultBox">
+        <div class="wfd-score-header">
+          <span>📊 Score Analysis:</span>
+          <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
+        </div>
+        <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+        <span style="font-size:12px; font-weight:700; color:#475569;" id="wfdWordCount">Word Count: 0</span>
+        <button class="btn-primary" onclick="evaluateWfdAnswer()">Check Answer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Flashcards Dedicated Screen -->
+  <div class="view-screen" id="viewFlash">
+    <div class="flashcard-box">
+      <div class="leitner-progress">
+        <div>
+          <span id="cardCounter">Card 1</span>
+          <span id="boxLevel" style="margin-right:8px;">📦 Box Level: 1/5</span>
+        </div>
+        <button class="guide-btn" onclick="openModal('flashGuideModal')">💡 راهنما</button>
+      </div>
+
+      <div class="card-scene" onclick="flipCard()">
+        <div class="card" id="activeCard">
+          <div class="card-face card-front">
+            <div class="word-title" id="frontWord">Loading...</div>
+            <div class="tap-hint">👆 Tap to flip card</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="meta-row">
+              <span class="pronunciation" id="backPhonetic"></span>
+              <span class="pos" id="backPos"></span>
             </div>
-            <div class="card-face card-back">
-              <div class="meta-row">
-                <span class="pronunciation" id="backPhonetic"></span>
-                <span class="pos" id="backPos"></span>
-              </div>
-              <div class="persian-meaning" id="backMeaning"></div>
-              <div class="section-title">Collocations:</div>
-              <div class="collocations" id="backCollocations"></div>
-              <div class="section-title">Example Sentence:</div>
-              <div class="example-sentence" id="backSentence"></div>
-            </div>
+            <div class="persian-meaning" id="backMeaning"></div>
+            <div class="section-title">Collocations:</div>
+            <div class="collocations" id="backCollocations"></div>
+            <div class="section-title">Example Sentence:</div>
+            <div class="example-sentence" id="backSentence"></div>
           </div>
         </div>
+      </div>
 
-        <div class="leitner-actions">
-          <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
-          <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
-        </div>
+      <div class="leitner-actions">
+        <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
+        <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
       </div>
     </div>
   </div>
@@ -595,6 +643,7 @@
     }
   ];
 
+  let navHistory = ['home'];
   let selectedCourseIndex = 0;
   let wfdQuestions = [];
   let academicVocab = [];
@@ -630,23 +679,47 @@
   }
 
   function navTo(screen) {
+    navHistory.push(screen);
+    renderCurrentScreen();
+  }
+
+  function navBack() {
+    if (navHistory.length > 1) {
+      navHistory.pop();
+      renderCurrentScreen();
+    }
+  }
+
+  function renderCurrentScreen() {
+    const current = navHistory[navHistory.length - 1];
     document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
     const backBtn = document.getElementById('backHomeBtn');
     const title = document.getElementById('pageTitle');
 
-    if (screen === 'home') {
+    backBtn.style.display = (navHistory.length > 1) ? 'block' : 'none';
+
+    if (current === 'home') {
       document.getElementById('viewHome').classList.add('active');
-      backBtn.style.display = 'none';
       title.innerText = "PTE ROOM • پلتفرم جامع";
-    } else if (screen === 'courses') {
+    } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
-      backBtn.style.display = 'block';
       title.innerText = "PTE ROOM • دوره‌های آموزشی";
-    } else if (screen === 'practice') {
-      document.getElementById('viewPractice').classList.add('active');
-      backBtn.style.display = 'block';
+    } else if (current === 'practice_menu') {
+      document.getElementById('viewPracticeMenu').classList.add('active');
       title.innerText = "PTE ROOM • تمرین روزانه";
-      switchPractice('WFD');
+    } else if (current === 'wfd') {
+      document.getElementById('viewWfd').classList.add('active');
+      title.innerText = "PTE ROOM • Write From Dictation";
+    } else if (current === 'flash') {
+      document.getElementById('viewFlash').classList.add('active');
+      title.innerText = "PTE ROOM • Academic Flashcards";
+      renderFlashcard();
+      
+      // Open Guide automatically on first visit
+      if (!localStorage.getItem('pteroom_seen_flash_guide')) {
+        openModal('flashGuideModal');
+        localStorage.setItem('pteroom_seen_flash_guide', 'true');
+      }
     }
   }
 
@@ -655,12 +728,16 @@
     const course = coursesData[index];
     document.getElementById('modalCourseTitle').innerText = course.title;
     document.getElementById('modalCourseDesc').innerText = course.desc;
-    document.getElementById('courseModal').classList.add('active');
+    openModal('courseModal');
   }
 
-  function closeCourseModal(e) {
-    if (!e || e.target.id === 'courseModal' || e.target.className === 'close-btn') {
-      document.getElementById('courseModal').classList.remove('active');
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+  }
+
+  function closeModal(id, e) {
+    if (!e || e.target.id === id || e.target.className === 'close-btn' || e.target.tagName === 'BUTTON') {
+      document.getElementById(id).classList.remove('active');
     }
   }
 
@@ -672,26 +749,6 @@
       tg.openTelegramLink(supportUrl);
     } else {
       window.open(supportUrl, '_blank');
-    }
-  }
-
-  function switchPractice(tab) {
-    const wfdSec = document.getElementById('wfdSection');
-    const flashSec = document.getElementById('flashSection');
-    const btnWFD = document.getElementById('ptabWFD');
-    const btnFlash = document.getElementById('ptabFlash');
-
-    if (tab === 'WFD') {
-      wfdSec.style.display = 'flex';
-      flashSec.style.display = 'none';
-      btnWFD.className = 'ptab-btn active';
-      btnFlash.className = 'ptab-btn';
-    } else {
-      wfdSec.style.display = 'none';
-      flashSec.style.display = 'flex';
-      btnWFD.className = 'ptab-btn';
-      btnFlash.className = 'ptab-btn active';
-      renderFlashcard();
     }
   }
 
