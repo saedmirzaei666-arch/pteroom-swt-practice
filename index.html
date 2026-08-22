@@ -115,14 +115,14 @@
     .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* Placement Test Container */
+    /* Placement Test Styles */
     .placement-container {
       display: flex;
       flex-direction: column;
       gap: 14px;
       overflow-y: auto;
       flex: 1;
-      padding-bottom: 12px;
+      padding-bottom: 14px;
     }
     .quiz-card {
       background: var(--card-bg);
@@ -141,14 +141,47 @@
       justify-content: space-between;
       align-items: center;
     }
-    .quiz-q-text {
+    .passage-box {
       font-size: 14px;
-      font-weight: 600;
+      line-height: 2;
       color: #f8fafc;
       direction: ltr;
       text-align: left;
-      line-height: 1.5;
+      background: #0f172a;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
     }
+    .fib-select {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1.5px solid #0284c7;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      outline: none;
+      margin: 0 4px;
+      display: inline-block;
+      direction: ltr;
+    }
+    .fib-input {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1.5px solid #0284c7;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      outline: none;
+      width: 110px;
+      margin: 0 4px;
+      display: inline-block;
+      direction: ltr;
+      text-align: center;
+    }
+    .fib-input:focus { border-color: #38bdf8; }
+
     .quiz-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -166,7 +199,6 @@
       cursor: pointer;
       direction: ltr;
       color: #cbd5e1;
-      transition: all 0.2s;
     }
     .opt-label:has(input:checked) {
       border-color: #38bdf8;
@@ -181,7 +213,7 @@
       padding: 10px 14px;
       border-radius: 10px;
       color: #fff;
-      font-size: 13px;
+      font-size: 13.5px;
       outline: none;
       width: 100%;
     }
@@ -223,14 +255,7 @@
       border-bottom: 1px solid #1e293b;
       padding-bottom: 6px;
     }
-    .day-title {
-      font-weight: 800;
-      font-size: 14px;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .day-title { font-weight: 800; font-size: 14px; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
     .day-date { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
     .day-events { display: flex; flex-direction: column; gap: 6px; }
     .event-row {
@@ -338,15 +363,7 @@
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #1f2937; padding-bottom: 12px; }
     .modal-title { font-size: 16.5px; font-weight: 800; color: #38bdf8; }
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
-    
-    .modal-body { 
-      font-size: 14.5px; 
-      line-height: 1.9; 
-      color: #e2e8f0; 
-      text-align: justify; 
-      white-space: pre-line; 
-      font-weight: 500;
-    }
+    .modal-body { font-size: 14.5px; line-height: 1.9; color: #e2e8f0; text-align: justify; white-space: pre-line; font-weight: 500; }
 
     .modal-action-btn {
       background: #0284c7;
@@ -378,11 +395,7 @@
       gap: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .wfd-category-bar {
-      display: flex;
-      gap: 8px;
-      flex-shrink: 0;
-    }
+    .wfd-category-bar { display: flex; gap: 8px; flex-shrink: 0; }
     .cat-btn {
       flex: 1;
       background: #1e293b;
@@ -395,11 +408,8 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .cat-btn.active {
-      background: #0284c7;
-      color: #fff;
-      border-color: #38bdf8;
-    }
+    .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    
     select {
       width: 100%;
       padding: 8px 10px;
@@ -421,13 +431,7 @@
     }
     audio { width: 100%; height: 32px; outline: none; }
 
-    .wfd-status-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 2px;
-      flex-shrink: 0;
-    }
+    .wfd-status-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 2px; flex-shrink: 0; }
     .wfd-timer-badge {
       font-size: 12.5px;
       font-weight: 800;
@@ -474,33 +478,12 @@
       flex: 1;
       min-height: 0;
     }
-    .wfd-score-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 800;
-      font-size: 13px;
-      color: #38bdf8;
-      border-bottom: 1px solid #1e293b;
-      padding-bottom: 4px;
-    }
+    .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
     .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
     .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
-    
     .wfd-tips-container { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
-    .wfd-warning-tip {
-      font-size: 11px;
-      font-weight: 700;
-      color: #facc15;
-      background: rgba(234, 179, 8, 0.12);
-      border: 1px solid rgba(234, 179, 8, 0.3);
-      padding: 4px 8px;
-      border-radius: 6px;
-      direction: ltr;
-      text-align: left;
-    }
-
+    .wfd-warning-tip { font-size: 11px; font-weight: 700; color: #facc15; background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); padding: 4px 8px; border-radius: 6px; direction: ltr; text-align: left; }
     .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
     .btn-secondary {
       background: #1e293b;
@@ -533,80 +516,17 @@
       justify-content: space-between;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .leitner-progress {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #94a3b8;
-      margin-bottom: 10px;
-      flex-shrink: 0;
-    }
-    .stats-info {
-      font-size: 11px;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin-left: 6px;
-    }
-    .action-top-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #38bdf8;
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-    }
+    .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
+    .stats-info { font-size: 11px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
+    .action-top-btn { background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
     .card-scene { width: 100%; flex: 1; perspective: 1000px; cursor: pointer; }
-    .card {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
-      transform-style: preserve-3d;
-      border-radius: 16px;
-    }
+    .card { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; border-radius: 16px; }
     .card.is-flipped { transform: rotateY(180deg); }
-    .card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      border: 1.5px solid var(--card-border);
-      overflow-y: auto;
-    }
-    .card-front {
-      background: linear-gradient(145deg, #0284c7, #0f172a);
-      color: #fff;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      direction: ltr;
-    }
+    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1.5px solid var(--card-border); overflow-y: auto; }
+    .card-front { background: linear-gradient(145deg, #0284c7, #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
     .card-front .word-title { font-size: 34px; font-weight: 900; margin-bottom: 12px; letter-spacing: 0.5px; color: #f8fafc; }
     .card-front .tap-hint { font-size: 12px; color: #cbd5e1; background: rgba(0,0,0,0.35); padding: 6px 16px; border-radius: 20px; }
-    .card-back {
-      background: #0f172a;
-      transform: rotateY(180deg);
-      justify-content: center;
-      gap: 8px;
-      direction: ltr;
-      text-align: left;
-    }
+    .card-back { background: #0f172a; transform: rotateY(180deg); justify-content: center; gap: 8px; direction: ltr; text-align: left; }
     .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #1e293b; padding-bottom: 6px; }
     .card-back .pronunciation { font-style: italic; color: #94a3b8; font-size: 14.5px; font-weight: 600; }
     .card-back .pos { background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
@@ -706,12 +626,11 @@
   <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
-      <!-- Placement Test Action Card -->
       <div class="hub-card placement-highlight" onclick="navTo('placement')">
         <div class="hub-icon">📋</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">آزمون تعیین سطح هوشمند</h3>
-          <p>ارزیابی سریع سطح زبان (۷ سوال)، پیشنهاد دوره و نقشه راه</p>
+          <h3 style="color:#38bdf8;">آزمون تعیین سطح تخصصی</h3>
+          <p>ارزیابی Reading, Listening, Vocab & Writing با تحلیل نمره</p>
         </div>
       </div>
 
@@ -745,128 +664,197 @@
   <div class="view-screen" id="viewPlacement">
     <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
       
-      <!-- Grammar Section -->
+      <!-- Section 1: R&W FIB (Modern Humans) -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>۱. گرامر و ساختار</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۱ از ۷</span>
+          <span>📖 ۱. Reading & Writing: FIB (سوال ۴۴۴)</span>
+          <span style="font-size:11px; color:#94a3b8;">۶ نمره</span>
         </div>
-        <div class="quiz-q-text">She has lived in Rome _______ over five years.</div>
-        <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q1" value="for" required> for</label>
-          <label class="opt-label"><input type="radio" name="q1" value="since"> since</label>
-          <label class="opt-label"><input type="radio" name="q1" value="during"> during</label>
-          <label class="opt-label"><input type="radio" name="q1" value="from"> from</label>
+        <div class="passage-box">
+          Modern humans are masters of multitasking. We eat while driving, watch TV while 
+          <select name="rw_a" class="fib-select" required>
+            <option value="">(A)</option>
+            <option value="volleying">volleying</option>
+            <option value="studying">studying</option>
+            <option value="couriering">couriering</option>
+            <option value="lobbying">lobbying</option>
+          </select>, 
+          and of course talk on our cell phones while doing, well, 
+          <select name="rw_b" class="fib-select" required>
+            <option value="">(B)</option>
+            <option value="antonym">antonym</option>
+            <option value="rpm">rpm</option>
+            <option value="everything">everything</option>
+            <option value="sen">sen</option>
+          </select>. 
+          How do we do it? A study in the July 16th issue of Neuron suggests that though we can train our brains to work faster as we juggle, we never 
+          <select name="rw_c" class="fib-select" required>
+            <option value="">(C)</option>
+            <option value="intramuscularly">intramuscularly</option>
+            <option value="incorrigibly">incorrigibly</option>
+            <option value="dispassionately">dispassionately</option>
+            <option value="actually">actually</option>
+          </select> 
+          manage to do more than one thing at a time. Our brains aren't really built to handle the sort of 
+          <select name="rw_d" class="fib-select" required>
+            <option value="">(D)</option>
+            <option value="smear">smear</option>
+            <option value="parallel">parallel</option>
+            <option value="clientele">clientele</option>
+            <option value="noel">noel</option>
+          </select> 
+          processing we think we're capable of. The good news is: studies have shown that extensive training can make us better at doing two things at once. But how? One theory is that with lots of 
+          <select name="rw_e" class="fib-select" required>
+            <option value="">(E)</option>
+            <option value="disservice">disservice</option>
+            <option value="practice">practice</option>
+            <option value="audits">audits</option>
+            <option value="comforts">comforts</option>
+          </select> 
+          some routines become "automatic." And if we don't need to run every little thing past the part of the brain that spends time 
+          <select name="rw_f" class="fib-select" required>
+            <option value="">(F)</option>
+            <option value="dipping">dipping</option>
+            <option value="gripping">gripping</option>
+            <option value="deflecting">deflecting</option>
+            <option value="thinking">thinking</option>
+          </select> 
+          about stuff, we can multitask just fine.
         </div>
       </div>
 
+      <!-- Section 2: R FIB (English Languages) -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>۲. گرامر و ساختار</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۲ از ۷</span>
+          <span>📖 ۲. Reading: FIB (سوال ۱۳۷)</span>
+          <span style="font-size:11px; color:#94a3b8;">۴ نمره</span>
         </div>
-        <div class="quiz-q-text">If the results _______ positive, we will schedule the mock test.</div>
-        <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q2" value="are" required> are</label>
-          <label class="opt-label"><input type="radio" name="q2" value="will be"> will be</label>
-          <label class="opt-label"><input type="radio" name="q2" value="were"> were</label>
-          <label class="opt-label"><input type="radio" name="q2" value="had been"> had been</label>
+        <div style="font-size:12px; color:#94a3b8; direction:ltr; text-align:left;">Word Bank: rate / part / dominance / margin / twice / relation / more / reign</div>
+        <div class="passage-box">
+          With about one and a half billion non-native speakers, English is the world’s language. Such 
+          <select name="rfib_a" class="fib-select" required>
+            <option value="">(A)</option>
+            <option value="rate">rate</option>
+            <option value="part">part</option>
+            <option value="dominance">dominance</option>
+            <option value="margin">margin</option>
+            <option value="twice">twice</option>
+            <option value="relation">relation</option>
+            <option value="more">more</option>
+            <option value="reign">reign</option>
+          </select> 
+          has its downside, of course. There are now about 6,800 languages left in the world, compared with perhaps 
+          <select name="rfib_b" class="fib-select" required>
+            <option value="">(B)</option>
+            <option value="rate">rate</option>
+            <option value="part">part</option>
+            <option value="dominance">dominance</option>
+            <option value="margin">margin</option>
+            <option value="twice">twice</option>
+            <option value="relation">relation</option>
+            <option value="more">more</option>
+            <option value="reign">reign</option>
+          </select> 
+          that number back at the dawn of agriculture. Thanks in 
+          <select name="rfib_c" class="fib-select" required>
+            <option value="">(C)</option>
+            <option value="rate">rate</option>
+            <option value="part">part</option>
+            <option value="dominance">dominance</option>
+            <option value="margin">margin</option>
+            <option value="twice">twice</option>
+            <option value="relation">relation</option>
+            <option value="more">more</option>
+            <option value="reign">reign</option>
+          </select> 
+          to the rise of uber-languages, most importantly English, the remaining languages are now dying at the 
+          <select name="rfib_d" class="fib-select" required>
+            <option value="">(D)</option>
+            <option value="rate">rate</option>
+            <option value="part">part</option>
+            <option value="dominance">dominance</option>
+            <option value="margin">margin</option>
+            <option value="twice">twice</option>
+            <option value="relation">relation</option>
+            <option value="more">more</option>
+            <option value="reign">reign</option>
+          </select> 
+          of about one a fortnight.
         </div>
       </div>
 
-      <!-- Vocab Section -->
+      <!-- Section 3: Listening FIB -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>۳. واژگان آکادمیک</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۳ از ۷</span>
-        </div>
-        <div class="quiz-q-text">The mentor provided helpful _______ to improve my essay structure.</div>
-        <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q3" value="feedback" required> feedback</label>
-          <label class="opt-label"><input type="radio" name="q3" value="theories"> theories</label>
-          <label class="opt-label"><input type="radio" name="q3" value="obstacles"> obstacles</label>
-          <label class="opt-label"><input type="radio" name="q3" value="accents"> accents</label>
-        </div>
-      </div>
-
-      <div class="quiz-card">
-        <div class="quiz-title">
-          <span>۴. واژگان آکادمیک</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۴ از ۷</span>
-        </div>
-        <div class="quiz-q-text">The primary _______ of this course is to achieve a +79 score.</div>
-        <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q4" value="objective" required> objective</label>
-          <label class="opt-label"><input type="radio" name="q4" value="consequence"> consequence</label>
-          <label class="opt-label"><input type="radio" name="q4" value="dimension"> dimension</label>
-          <label class="opt-label"><input type="radio" name="q4" value="substance"> substance</label>
-        </div>
-      </div>
-
-      <div class="quiz-card">
-        <div class="quiz-title">
-          <span>۵. جای خالی (Collocation)</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۵ از ۷</span>
-        </div>
-        <div class="quiz-q-text">Students are required to _______ their assignments before Friday.</div>
-        <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q5" value="submit" required> submit</label>
-          <label class="opt-label"><input type="radio" name="q5" value="emit"> emit</label>
-          <label class="opt-label"><input type="radio" name="q5" value="permit"> permit</label>
-          <label class="opt-label"><input type="radio" name="q5" value="admit"> admit</label>
-        </div>
-      </div>
-
-      <!-- Listening Section -->
-      <div class="quiz-card">
-        <div class="quiz-title">
-          <span>🎧 ۶. مهارت شنیداری</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۶ از ۷</span>
+          <span>🎧 ۳. Listening: Fill in the Blanks</span>
+          <span style="font-size:11px; color:#94a3b8;">۵ نمره</span>
         </div>
         <div class="audio-wrapper">
-          <audio controls src="wfd_audios/sample1.mp3"></audio>
+          <audio controls src="determination.mp3"></audio>
         </div>
-        <div class="quiz-q-text">کدام کلمه را در فایل صوتی شنیدید؟</div>
+        <div class="passage-box">
+          And an emotion consists of a very well <input type="text" name="lfib_1" class="fib-input" placeholder="(1)" required> set of alterations in the body that has, as a general purpose, making life more survivable by taking care of a danger, of taking care of an opportunity, either/or, or something in between. And it’s something that is set in our <input type="text" name="lfib_2" class="fib-input" placeholder="(2)" required> and that we all have with a certain <input type="text" name="lfib_3" class="fib-input" placeholder="(3)" required> nature that is modified by our experience so individually we have variations on the pattern. But in <input type="text" name="lfib_4" class="fib-input" placeholder="(4)" required>, your emotion of joy and mine are going to be extremely similar. We may express them physically slightly differently, and it’s of course graded depending on the circumstance, but the essence of the process is going to be the same, unless one of us is not <input type="text" name="lfib_5" class="fib-input" placeholder="(5)" required> well put together and is missing something, otherwise it’s going to be the same.
+        </div>
+      </div>
+
+      <!-- Section 4: Vocab & Spelling -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🔤 ۴. املا (Spelling)</span>
+          <span style="font-size:11px; color:#94a3b8;">۱ نمره</span>
+        </div>
+        <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left;">Choose the word with the correct spelling:</div>
         <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q6" value="maintenance" required> maintenance</label>
-          <label class="opt-label"><input type="radio" name="q6" value="renovations"> renovations</label>
-          <label class="opt-label"><input type="radio" name="q6" value="holidays"> holidays</label>
-          <label class="opt-label"><input type="radio" name="q6" value="registration"> registration</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Accomodation" required> Accomodation</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Accommodation"> Accommodation</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Acommodation"> Acommodation</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Acomodation"> Acomodation</label>
         </div>
       </div>
 
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>🎧 ۷. درک مطلب شنیداری</span>
-          <span style="font-size:11px; color:#94a3b8;">سوال ۷ از ۷</span>
+          <span>📚 ۵. واژگان پیشرفته (Vocabulary)</span>
+          <span style="font-size:11px; color:#94a3b8;">۱ نمره</span>
         </div>
-        <div class="audio-wrapper">
-          <audio controls src="wfd_audios/sample2.mp3"></audio>
-        </div>
-        <div class="quiz-q-text">بر اساس وویس، ددلاین ارسال فایل چه روزی اعلام شد؟</div>
+        <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left;">The government announced strict measures to _______ the rapid spread of the disease.</div>
         <div class="quiz-options">
-          <label class="opt-label"><input type="radio" name="q7" value="Friday" required> Friday</label>
-          <label class="opt-label"><input type="radio" name="q7" value="Thursday"> Thursday</label>
-          <label class="opt-label"><input type="radio" name="q7" value="Monday"> Monday</label>
-          <label class="opt-label"><input type="radio" name="q7" value="Next week"> Next week</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="curb" required> curb</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="induce"> induce</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="foster"> foster</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="yield"> yield</label>
         </div>
       </div>
 
-      <!-- Contact & Goal Info -->
+      <!-- Section 5: Short Writing Task -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>👤 مشخصات و هدف آزمون</span>
+          <span>✍️ ۶. بخش نگارش تحلیلی (Short Writing)</span>
+          <span id="writingWordCount" style="font-size:11px; color:#38bdf8; font-weight:800;">تعداد کلمات: ۰ (حداقل ۵۰)</span>
         </div>
-        <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا آیدی تلگرام جهت ارتباط *" required>
+        <div style="font-size:13px; line-height:1.7; color:#cbd5e1; direction:ltr; text-align:left;">
+          <b>Topic:</b> Some people believe that artificial intelligence (AI) will completely replace human teachers in the future, while others think traditional classrooms are irreplaceable. Write a short paragraph (50–100 words) giving your opinion.
+        </div>
+        <textarea id="placementWriting" style="height:110px; min-height:110px;" placeholder="Type your 50-100 words paragraph here in English..." oninput="updateWritingCount()" required></textarea>
+      </div>
+
+      <!-- Contact & Goals -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎯 هدف و شماره تماس اختیاری</span>
+        </div>
         <select id="userTarget" class="user-info-field" style="direction:rtl;">
-          <option value="PTE Target +65">هدف نمره: +65 (معادل 7 آیلتس)</option>
-          <option value="PTE Target +79">هدف نمره: +79 (معادل 8 آیلتس)</option>
-          <option value="General English">تقویت زبان عمومی و پایه</option>
+          <option value="PTE Target +50 (معادل 6 آیلتس)">PTE Target +50 (معادل 6 آیلتس)</option>
+          <option value="PTE Target +65 (معادل 7 آیلتس)">PTE Target +65 (معادل 7 آیلتس)</option>
+          <option value="PTE Target +79 (معادل 8 آیلتس)">PTE Target +79 (معادل 8 آیلتس)</option>
+          <option value="General English (تقویت پایه)">General English (تقویت پایه)</option>
+          <option value="سایر موارد (آیلتس، تافل یا ارزیابی کلی)">سایر موارد (آیلتس، تافل یا ارزیابی کلی)</option>
         </select>
+        <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا آیدی تلگرام (اختیاری جهت هماهنگی مشاوره)">
       </div>
 
       <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
-        🚀 ثبت نهایی و ارسال نتیجه تعیین سطح
+        🚀 ثبت نهایی و ارسال آزمون تعیین سطح
       </button>
     </form>
   </div>
@@ -880,119 +868,60 @@
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 شنبه</span>
-          <span class="day-date">۳۱ مرداد</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">💬 SST – محمد حسین نیرومند</span>
-            <span class="event-time">20:00</span>
-          </div>
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 یکشنبه</span>
-          <span class="day-date">۱ شهریور</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 یکشنبه</span><span class="day-date">۱ شهریور</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">📖 RA – بهنام حق گویی</span>
-            <span class="event-time">18:00</span>
-          </div>
-          <div class="event-row">
-            <span class="event-info">🎧 DI – محمد حسین نیرومند</span>
-            <span class="event-time">20:00</span>
-          </div>
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">📖 RA – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🎧 DI – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 دوشنبه</span>
-          <span class="day-date">۲ شهریور</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 دوشنبه</span><span class="day-date">۲ شهریور</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 سه‌شنبه</span>
-          <span class="day-date">۳ شهریور</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 سه‌شنبه</span><span class="day-date">۳ شهریور</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">📖 RA – سعید میرزایی</span>
-            <span class="event-time">09:00</span>
-          </div>
-          <div class="event-row">
-            <span class="event-info">📖 RTS – بهنام حق گویی</span>
-            <span class="event-time">18:00</span>
-          </div>
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">📖 RA – سعید میرزایی</span><span class="event-time">09:00</span></div>
+          <div class="event-row"><span class="event-info">📖 RTS – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 چهارشنبه</span>
-          <span class="day-date">۴ شهریور</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 چهارشنبه</span><span class="day-date">۴ شهریور</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 پنج‌شنبه</span>
-          <span class="day-date">۵ شهریور</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 پنج‌شنبه</span><span class="day-date">۵ شهریور</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
       <div class="schedule-day-card">
-        <div class="day-header">
-          <span class="day-title">📌 جمعه</span>
-          <span class="day-date">۶ شهریور</span>
-        </div>
+        <div class="day-header"><span class="day-title">📌 جمعه</span><span class="day-date">۶ شهریور</span></div>
         <div class="day-events">
-          <div class="event-row">
-            <span class="event-info">🤖 WFD Bot</span>
-            <span class="event-time">21:00</span>
-          </div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
         </div>
       </div>
 
-      <div class="schedule-footer-note">
-        ⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال و گروه انجام خواهد شد.
-      </div>
+      <div class="schedule-footer-note">⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال و گروه انجام خواهد شد.</div>
     </div>
   </div>
 
@@ -1000,34 +929,19 @@
   <div class="view-screen" id="viewCourses">
     <div class="courses-list">
       <div class="course-item-card" onclick="openCourseModal(0)">
-        <div class="course-info">
-          <span class="course-badge">VIP MENTORSHIP</span>
-          <div class="course-title">1. PTE Personal Mentoring</div>
-        </div>
+        <div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div>
         <div class="arrow-icon">‹</div>
       </div>
-
       <div class="course-item-card" onclick="openCourseModal(1)">
-        <div class="course-info">
-          <span class="course-badge">SPECIALIZED MASTERCLASS</span>
-          <div class="course-title">2. PTE Write Essay Mastery</div>
-        </div>
+        <div class="course-info"><span class="course-badge">SPECIALIZED MASTERCLASS</span><div class="course-title">2. PTE Write Essay Mastery</div></div>
         <div class="arrow-icon">‹</div>
       </div>
-
       <div class="course-item-card" onclick="openCourseModal(2)">
-        <div class="course-info">
-          <span class="course-badge">1-ON-1 SESSIONS</span>
-          <div class="course-title">3. PTE Private Lessons</div>
-        </div>
+        <div class="course-info"><span class="course-badge">1-ON-1 SESSIONS</span><div class="course-title">3. PTE Private Lessons</div></div>
         <div class="arrow-icon">‹</div>
       </div>
-
       <div class="course-item-card" onclick="openCourseModal(3)">
-        <div class="course-info">
-          <span class="course-badge">FOUNDATION & FLUENCY</span>
-          <div class="course-title">4. General English</div>
-        </div>
+        <div class="course-info"><span class="course-badge">FOUNDATION & FLUENCY</span><div class="course-title">4. General English</div></div>
         <div class="arrow-icon">‹</div>
       </div>
     </div>
@@ -1041,9 +955,7 @@
         <button class="close-btn" onclick="closeModal('courseModal')">✕</button>
       </div>
       <div class="modal-body" id="modalCourseDesc"></div>
-      <button class="modal-action-btn" onclick="redirectToSupport()">
-        💬 دریافت مشاوره و ثبت‌نام در تلگرام
-      </button>
+      <button class="modal-action-btn" onclick="redirectToSupport()">💬 دریافت مشاوره و ثبت‌نام در تلگرام</button>
     </div>
   </div>
 
@@ -1057,11 +969,8 @@
       <div class="modal-body">
         <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
           <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
-          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
-            سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.
-          </div>
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.</div>
         </div>
-
         <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
           <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
           <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
@@ -1071,9 +980,7 @@
           </div>
         </div>
       </div>
-      <button class="btn-primary" style="padding:12px; width:100%; border-radius:10px;" onclick="closeModal('flashGuideModal')">
-        متوجه شدم • بستن
-      </button>
+      <button class="btn-primary" style="padding:12px; width:100%; border-radius:10px;" onclick="closeModal('flashGuideModal')">متوجه شدم • بستن</button>
     </div>
   </div>
 
@@ -1098,11 +1005,10 @@
     </div>
   </div>
 
-  <!-- Flashcards Daily Quota Setup Screen -->
+  <!-- Flashcards Quota Setup -->
   <div class="view-screen" id="viewFlashSetup">
     <div class="flashcard-box" style="justify-content: flex-start;">
       <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
-      
       <div class="settings-panel">
         <label>تعداد کلمات جدید (جعبه ۱) در روز:</label>
         <div class="quota-info">💡 برای بازدهی مطلوب، بین <b>۱۵ تا ۲۵ کلمه جدید</b> در روز مناسب است.</div>
@@ -1114,10 +1020,7 @@
           <button type="button" class="quota-btn" onclick="selectQuota(30)">30</button>
         </div>
       </div>
-      
-      <button type="button" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startFlashcards()">
-        🚀 شروع تمرین روزانه
-      </button>
+      <button type="button" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startFlashcards()">🚀 شروع تمرین روزانه</button>
     </div>
   </div>
 
@@ -1207,9 +1110,9 @@
 </div>
 
 <script>
-  // تنظیمات ربات برای ارسال مستقیم تعیین سطح به پشتیبانی
+  // تنظیمات ربات برای ارسال مستقیم به ادمین
   const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // توکن ربات از BotFather
-  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE"; // آیدی عددی ادمین یا گروه پشتیبانی
+  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE"; // آیدی عددی چت ادمین یا گروه پشتیبانی
 
   const coursesData = [
     {
@@ -1259,14 +1162,11 @@
     toast.innerText = msg;
     toast.classList.add('show');
     if (toastTimeout) clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2400);
+    toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2400);
   }
 
   async function initApp() {
     const ts = Date.now();
-
     try {
       const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
       if (resFlash.ok) {
@@ -1275,9 +1175,7 @@
           if (!leitnerData[card.id]) leitnerData[card.id] = { box: 1 };
         });
       }
-    } catch (e) {
-      console.warn("Flashcards load error:", e);
-    }
+    } catch (e) { console.warn("Flashcards load error:", e); }
 
     try {
       const resWFD = await fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" });
@@ -1285,9 +1183,7 @@
         wfdQuestions = await resWFD.json();
         filterWfdCategory('all');
       }
-    } catch (e) {
-      console.warn("WFD load error:", e);
-    }
+    } catch (e) { console.warn("WFD load error:", e); }
   }
 
   function navTo(screen) {
@@ -1345,53 +1241,86 @@
     }
   }
 
+  /* Writing Word Counter */
+  function updateWritingCount() {
+    const text = document.getElementById('placementWriting').value.trim();
+    const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
+    const counterEl = document.getElementById('writingWordCount');
+    counterEl.innerText = `تعداد کلمات: ${count} (حداقل ۵۰)`;
+    counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
+  }
+
   /* Placement Test Submission Engine */
   async function handlePlacementSubmit(e) {
     e.preventDefault();
-    const btn = document.getElementById('submitPlacementBtn');
-    btn.disabled = true;
-    btn.innerText = "⏳ در حال ارسال اطلاعات...";
+    const writingText = document.getElementById('placementWriting').value.trim();
+    const wordsCount = writingText === "" ? 0 : writingText.split(/\s+/).filter(Boolean).length;
 
-    // پاسخ‌های صحیح
-    const answers = {
-      q1: "for",
-      q2: "are",
-      q3: "feedback",
-      q4: "objective",
-      q5: "submit",
-      q6: "maintenance",
-      q7: "Friday"
-    };
-
-    const formData = new FormData(document.getElementById('placementForm'));
-    let score = 0;
-    for (let key in answers) {
-      if (formData.get(key) === answers[key]) {
-        score++;
-      }
+    if (wordsCount < 35) {
+      alert("⚠️ لطفاً بخش رایتینگ را با حداقل ۵۰ کلمه کامل کنید تا سطح نگارش شما دقیق ارزیابی شود.");
+      return;
     }
 
-    const contact = document.getElementById('userContact').value.trim();
+    const btn = document.getElementById('submitPlacementBtn');
+    btn.disabled = true;
+    btn.innerText = "⏳ در حال تحلیل و ارسال اطلاعات...";
+
+    const formData = new FormData(document.getElementById('placementForm'));
+
+    // کلیدهای آزمون
+    const rwKeys = { rw_a: "studying", rw_b: "everything", rw_c: "actually", rw_d: "parallel", rw_e: "practice", rw_f: "thinking" };
+    const rfibKeys = { rfib_a: "dominance", rfib_b: "twice", rfib_c: "part", rfib_d: "rate" };
+    const lfibKeys = { lfib_1: "orchestrated", lfib_2: "biology", lfib_3: "basic", lfib_4: "principle", lfib_5: "quite" };
+
+    let rwScore = 0;
+    for (let k in rwKeys) if (formData.get(k) === rwKeys[k]) rwScore++;
+
+    let rfibScore = 0;
+    for (let k in rfibKeys) if (formData.get(k) === rfibKeys[k]) rfibScore++;
+
+    let lfibScore = 0;
+    for (let k in lfibKeys) {
+      const val = (formData.get(k) || "").trim().toLowerCase();
+      if (val === lfibKeys[k]) lfibScore++;
+    }
+
+    let vocabScore = 0;
+    if (formData.get('spell_q') === "Accommodation") vocabScore++;
+    if (formData.get('vocab_q') === "curb") vocabScore++;
+
+    const totalObjectiveScore = rwScore + rfibScore + lfibScore + vocabScore; // از ۱۷ نمره
+
+    // اطلاعات کاربر تلگرام
+    const tgUser = tg?.initDataUnsafe?.user;
+    const firstName = tgUser?.first_name || "نامشخص";
+    const lastName = tgUser?.last_name || "";
+    const username = tgUser?.username ? `@${tgUser.username}` : "ندارد";
+    const userId = tgUser?.id || "نامشخص";
+    const contact = document.getElementById('userContact').value.trim() || "ارسال نشده";
     const target = document.getElementById('userTarget').value;
 
-    const tgUser = tg?.initDataUnsafe?.user;
-    const userName = tgUser ? `${tgUser.first_name || ''} ${tgUser.last_name || ''} (@${tgUser.username || 'ندارد'})` : "نامشخص";
-    const userId = tgUser ? tgUser.id : "نامشخص";
-
-    let levelEstimate = "مقدماتی (General English)";
-    if (score >= 6) levelEstimate = "پیشرفته (+79 VIP Mentorship)";
-    else if (score >= 4) levelEstimate = "متوسط (+65 Preparation)";
-
-    const report = `
-📥 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
+    const reportMessage = `
+📋 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
 ━━━━━━━━━━━━━━━━━━━━
-👤 <b>کاربر:</b> ${userName}
-🆔 <b>شناسه عددی:</b> <code>${userId}</code>
-📞 <b>راه‌ ارتباطی:</b> <code>${contact}</code>
-🎯 <b>هدف داوطلب:</b> ${target}
+👤 <b>مشخصات تلگرام کاربر:</b>
+• <b>نام:</b> ${firstName} ${lastName}
+• <b>یوزرنیم:</b> ${username}
+• <b>شناسه عددی (ID):</b> <code>${userId}</code>
+• <b>لینک چت مستقیم:</b> <a href="tg://user?id=${userId}">ارسال پیام به کاربر</a>
+• <b>شماره تماس/توضیحات:</b> <code>${contact}</code>
+• <b>هدف انتخابی:</b> ${target}
+
 ━━━━━━━━━━━━━━━━━━━━
-📊 <b>نمره کسب‌شده:</b> ${score} از ۷
-📈 <b>سطح برآوردی:</b> <b>${levelEstimate}</b>
+📊 <b>کارنامه و ریزنمرات آزمون تستی:</b>
+• 📖 <b>Reading & Writing FIB:</b> ${rwScore} از ۶
+• 📖 <b>Reading FIB:</b> ${rfibScore} از ۴
+• 🎧 <b>Listening FIB:</b> ${lfibScore} از ۵
+• 🔤 <b>Vocab & Spelling:</b> ${vocabScore} از ۲
+🎯 <b>مجموع نمره تستی:</b> <b>${totalObjectiveScore} از ۱۷</b>
+
+━━━━━━━━━━━━━━━━━━━━
+✍️ <b>پاراگراف رایتینگ کاربر (${wordsCount} کلمه):</b>
+<i>"${writingText}"</i>
     `.trim();
 
     try {
@@ -1401,7 +1330,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: ADMIN_CHAT_ID,
-            text: report,
+            text: reportMessage,
             parse_mode: "HTML"
           })
         });
@@ -1409,24 +1338,24 @@
 
       if (tg && typeof tg.showAlert === "function") {
         tg.showAlert(
-          "✅ پاسخ‌های تعیین سطح شما با موفقیت دریافت شد.\n\nبه زودی از طریق پشتیبانان PTE ROOM جهت بررسی نتیجه و ارائه نقشه راه با شما تماس گرفته خواهد شد.",
+          "✅ آزمون تعیین سطح شما با موفقیت ثبت و ارسال شد.\n\nبه زودی نتیجه و تحلیل اختصاصی رایتینگ از طریق پشتیبانان PTE ROOM به تلگرام شما ارسال خواهد شد.",
           () => {
             navTo('home');
             btn.disabled = false;
-            btn.innerText = "🚀 ثبت نهایی و ارسال نتیجه تعیین سطح";
+            btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
           }
         );
       } else {
-        alert("✅ پاسخ‌های تعیین سطح شما با موفقیت دریافت شد.\nبه زودی با شما تماس گرفته خواهد شد.");
+        alert("✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\nبه زودی با شما تماس خواهیم گرفت.");
         navTo('home');
         btn.disabled = false;
-        btn.innerText = "🚀 ثبت نهایی و ارسال نتیجه تعیین سطح";
+        btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
       }
     } catch (err) {
       console.error(err);
       alert("⚠️ ارسال با خطا مواجه شد، لطفاً اتصال اینترنت خود را بررسی کنید.");
       btn.disabled = false;
-      btn.innerText = "🚀 ثبت نهایی و ارسال نتیجه تعیین سطح";
+      btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
     }
   }
 
@@ -1438,10 +1367,7 @@
     openModal('courseModal');
   }
 
-  function openModal(id) {
-    document.getElementById(id).classList.add('active');
-  }
-
+  function openModal(id) { document.getElementById(id).classList.add('active'); }
   function closeModal(id, e) {
     if (!e || e.target.id === id || e.target.className === 'close-btn' || e.target.tagName === 'BUTTON') {
       document.getElementById(id).classList.remove('active');
@@ -1458,7 +1384,7 @@
     }
   }
 
-  /* WFD Timer */
+  /* WFD Functions */
   function startWfdTimer() {
     stopWfdTimer();
     wfdElapsedSeconds = 0;
@@ -1480,18 +1406,12 @@
     const badge = document.getElementById('wfdTimerBadge');
     const mins = Math.floor(wfdElapsedSeconds / 60);
     const secs = wfdElapsedSeconds % 60;
-    const formatted = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    badge.innerText = formatted;
-
+    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     badge.classList.remove('warning', 'danger');
-    if (wfdElapsedSeconds >= 120) {
-      badge.classList.add('danger');
-    } else if (wfdElapsedSeconds >= 90) {
-      badge.classList.add('warning');
-    }
+    if (wfdElapsedSeconds >= 120) badge.classList.add('danger');
+    else if (wfdElapsedSeconds >= 90) badge.classList.add('warning');
   }
 
-  /* WFD Engine */
   function filterWfdCategory(cat) {
     currentWfdCat = cat;
     document.getElementById('catAll').className = cat === 'all' ? 'cat-btn active' : 'cat-btn';
@@ -1529,9 +1449,7 @@
     let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
     const select = document.getElementById('wfdSelect');
     let nextIdx = parseInt(select.value) + 1;
-    if (nextIdx >= list.length) {
-      nextIdx = 0;
-    }
+    if (nextIdx >= list.length) nextIdx = 0;
     select.value = nextIdx;
     onSelectWfd();
   }
@@ -1557,7 +1475,6 @@
 
     const origTokens = q.text.trim().split(/\s+/);
     const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
-    
     const userTokens = userRawText.split(/\s+/).filter(Boolean);
     const userCleanWords = userTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
 
@@ -1568,7 +1485,6 @@
     origTokens.forEach((token, i) => {
       const targetLower = origCleanWords[i].toLowerCase();
       const matchIdx = userPool.indexOf(targetLower);
-
       if (matchIdx !== -1) {
         score++;
         userPool.splice(matchIdx, 1);
@@ -1579,15 +1495,12 @@
     });
 
     let tips = [];
-
     const firstOrigChar = origCleanWords[0].charAt(0);
     const firstUserChar = userCleanWords[0] ? userCleanWords[0].charAt(0) : "";
     if (firstOrigChar === firstOrigChar.toUpperCase() && firstUserChar !== firstUserChar.toUpperCase()) {
       tips.push("⚠️ <b>Capitalization Tip:</b> Remember to capitalize the first letter of the sentence.");
     }
-
-    const endsWithPeriod = userRawText.endsWith('.');
-    if (!endsWithPeriod) {
+    if (!userRawText.endsWith('.')) {
       tips.push("⚠️ <b>Punctuation Tip:</b> Don't forget to put a full stop (<b>.</b>) at the end of the sentence.");
     }
 
@@ -1606,16 +1519,13 @@
     document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
-  /* Flashcard Quota & Session Logic */
+  /* Flashcards Logic */
   function selectQuota(val) {
     selectedDailyQuota = val;
-    const container = document.getElementById('quotaOptions');
-    const buttons = container.getElementsByTagName('button');
+    const buttons = document.getElementById('quotaOptions').getElementsByTagName('button');
     for (let btn of buttons) {
       btn.classList.remove('selected');
-      if (parseInt(btn.innerText) === val) {
-        btn.classList.add('selected');
-      }
+      if (parseInt(btn.innerText) === val) btn.classList.add('selected');
     }
   }
   
@@ -1630,7 +1540,6 @@
 
   function startFlashcards() {
     checkDailyReset();
-    
     sessionQueue = [];
     
     academicVocab.forEach(card => {
@@ -1641,7 +1550,6 @@
     
     let remainingQuota = selectedDailyQuota - dailyStats.newCardsSeen;
     let addedNew = 0;
-    
     if (remainingQuota > 0) {
       for (let i = 0; i < academicVocab.length; i++) {
         let card = academicVocab[i];
@@ -1677,7 +1585,6 @@
     const box = leitnerData[cardObj.id]?.box || 1;
 
     document.getElementById('activeCard').classList.remove('is-flipped');
-    
     document.getElementById('quotaDisplay').innerText = `Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
     document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${sessionQueue.length}`;
     document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
