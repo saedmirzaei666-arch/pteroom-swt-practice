@@ -150,28 +150,15 @@
       min-height: 0;
       gap: 6px;
     }
-    .di-image-box {
-      flex: 1;
-      min-height: 160px;
+    
+    .di-recorder-panel {
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 4px;
-    }
-    .di-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-    .di-recorder-panel {
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 8px 12px;
+      padding: 8px 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       flex-shrink: 0;
     }
     .di-status-row {
@@ -193,9 +180,9 @@
 
     .progress-bar-bg {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: #e2e8f0;
-      border-radius: 4px;
+      border-radius: 3px;
       overflow: hidden;
     }
     .progress-bar-fill {
@@ -204,6 +191,20 @@
       background: var(--primary);
       transition: width 0.2s linear;
     }
+
+    .di-image-box {
+      flex: 1;
+      min-height: 150px;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 4px;
+    }
+    .di-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
     @keyframes pulse {
       0% { opacity: 1; }
@@ -384,11 +385,8 @@
 
     <div class="prompt-box" id="promptText">Loading prompt...</div>
 
-    <!-- DI Dedicated Container -->
+    <!-- DI Speaking Container: Recording controls placed at top -->
     <div class="di-container" id="diContainer">
-      <div class="di-image-box">
-        <img id="diImageElem" src="" alt="Describe Image">
-      </div>
       <div class="di-recorder-panel">
         <div class="di-status-row">
           <span id="diStatusLabel">⏳ Preparation Time:</span>
@@ -398,9 +396,13 @@
           <div class="progress-bar-fill" id="diProgressFill"></div>
         </div>
         <div style="display: flex; gap: 6px; margin-top: 4px;">
-          <button class="btn" id="diStartRecBtn" style="flex:1; background:#0284c7; padding:7px;" onclick="startDiRecordingManual()">🎙 Record Now</button>
-          <button class="btn" id="diStopRecBtn" style="flex:1; background:#dc2626; padding:7px; display:none;" onclick="stopDiRecording()">⏹ Stop & Submit</button>
+          <button class="btn" id="diStartRecBtn" style="flex:1; background:#0284c7; padding:8px;" onclick="startDiRecordingManual()">🎙 Start Recording Now</button>
+          <button class="btn" id="diStopRecBtn" style="flex:1; background:#dc2626; padding:8px; display:none;" onclick="stopDiRecording()">⏹ Finish & Send</button>
         </div>
+      </div>
+      
+      <div class="di-image-box">
+        <img id="diImageElem" src="" alt="Describe Image">
       </div>
     </div>
 
@@ -421,7 +423,6 @@
     </div>
   </div>
 
-  <!-- Flashcards View -->
   <div class="flashcard-wrapper" id="flashcardContainer">
     <div class="leitner-progress">
       <span id="cardCounter">Card 1</span>
@@ -471,11 +472,9 @@
   let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
   let currentCardIndex = 0;
 
-  // DI Recorder Variables
   let diMediaRecorder = null;
   let diAudioChunks = [];
   let diTimerInterval = null;
-  let diPhase = "idle"; // idle, prep, rec, done
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -509,7 +508,7 @@
 
       switchTask('SWT');
     } catch (err) {
-      document.getElementById('promptText').innerText = "⚠️ Error loading datasets. Verify JSON files in /data folder.";
+      document.getElementById('promptText').innerText = "⚠️ Error loading datasets. Verify JSON files in /data.";
     }
   }
 
@@ -694,13 +693,11 @@
     calcWords();
   }
 
-  /* DI Pearson Flow & Voice Recording */
   function resetDiEngine() {
     if (diTimerInterval) clearInterval(diTimerInterval);
     if (diMediaRecorder && diMediaRecorder.state === "recording") {
       diMediaRecorder.stop();
     }
-    diPhase = "idle";
     document.getElementById('diStartRecBtn').style.display = "block";
     document.getElementById('diStopRecBtn').style.display = "none";
     document.getElementById('diProgressFill').style.width = "0%";
@@ -709,7 +706,6 @@
   function startDiFlow() {
     resetDiEngine();
     let prepSec = 25;
-    diPhase = "prep";
     
     const label = document.getElementById('diStatusLabel');
     const badge = document.getElementById('diStatusBadge');
@@ -728,18 +724,17 @@
 
       if (prepSec <= 0) {
         clearInterval(diTimerInterval);
-        playBeepAndRecord();
+        startRecordingAudio();
       }
     }, 1000);
   }
 
   function startDiRecordingManual() {
     if (diTimerInterval) clearInterval(diTimerInterval);
-    playBeepAndRecord();
+    startRecordingAudio();
   }
 
-  async function playBeepAndRecord() {
-    diPhase = "rec";
+  async function startRecordingAudio() {
     const label = document.getElementById('diStatusLabel');
     const badge = document.getElementById('diStatusBadge');
     const fill = document.getElementById('diProgressFill');
@@ -757,18 +752,21 @@
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       diAudioChunks = [];
-      diMediaRecorder = new MediaRecorder(stream);
+      
+      // Select supported audio mimeType with low bitrate to prevent size limits
+      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/mp4';
+      diMediaRecorder = new MediaRecorder(stream, { mimeType: mime, audioBitsPerSecond: 16000 });
 
       diMediaRecorder.ondataavailable = e => {
         if (e.data.size > 0) diAudioChunks.push(e.data);
       };
 
       diMediaRecorder.onstop = () => {
-        const audioBlob = new Blob(diAudioChunks, { type: 'audio/webm' });
-        submitDiVoiceResponse(audioBlob);
+        const audioBlob = new Blob(diAudioChunks, { type: mime });
+        finishAndSendDi(audioBlob);
       };
 
-      diMediaRecorder.start();
+      diMediaRecorder.start(250);
 
       let recSec = 40;
       diTimerInterval = setInterval(() => {
@@ -783,7 +781,7 @@
       }, 1000);
 
     } catch (err) {
-      alert("Microphone permission is required for Describe Image speaking task.");
+      alert("Microphone permission is required for speaking.");
       resetDiEngine();
     }
   }
@@ -793,33 +791,32 @@
     if (diMediaRecorder && diMediaRecorder.state === "recording") {
       diMediaRecorder.stop();
     }
-    diPhase = "done";
-    document.getElementById('diStatusLabel').innerText = "✅ Response Finished:";
+    document.getElementById('diStatusLabel').innerText = "✅ Speech Finished:";
     document.getElementById('diStatusBadge').className = "status-badge done";
-    document.getElementById('diStatusBadge').innerText = "Analyzing...";
+    document.getElementById('diStatusBadge').innerText = "Submitting...";
     document.getElementById('diStopRecBtn').style.display = "none";
   }
 
-  function submitDiVoiceResponse(audioBlob) {
+  function finishAndSendDi(audioBlob) {
     const idx = document.getElementById('questionSelect').value;
     const q = diQuestions[idx];
 
     const reader = new FileReader();
     reader.readAsDataURL(audioBlob);
     reader.onloadend = () => {
-      const base64Audio = reader.result.split(',')[1];
+      const base64Data = reader.result.split(',')[1];
       const payload = JSON.stringify({
         task_type: "DI",
         question_title: q.title,
         prompt: q.keywords.join(', '),
-        audio_base64: base64Audio
+        audio_base64: base64Data
       });
 
       if (tg && typeof tg.sendData === "function") {
         tg.sendData(payload);
         tg.close();
       } else {
-        alert("Audio recorded successfully. In Telegram, this sends directly to AI examiner.");
+        alert("Audio recording finalized.");
       }
     };
   }
