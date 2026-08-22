@@ -1130,7 +1130,7 @@
 </div>
 
 <script>
-  // توکن و آیدی فعال
+  // توکن ربات و شناسه عددی ادمین
   const BOT_TOKEN = "8953110530:AAEAsaVEEsId6NE_CXAIWleIRqY0_6kt5us";
   const ADMIN_CHAT_ID = "600029017";
 
@@ -1364,7 +1364,7 @@
     counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
   }
 
-  /* Multi-Message Submission Engine */
+  /* Multi-Message Submission Engine with Tracking Code */
   async function handlePlacementSubmit(e) {
     e.preventDefault();
     const writingText = document.getElementById('placementWriting').value.trim();
@@ -1373,6 +1373,9 @@
     const btn = document.getElementById('submitPlacementBtn');
     btn.disabled = true;
     btn.innerText = "⏳ در حال ارسال اطلاعات...";
+
+    // تولید کد پیگیری رندوم ۵ رقمی
+    const trackingCode = "PTE-" + Math.floor(10000 + Math.random() * 90000);
 
     const formData = new FormData(document.getElementById('placementForm'));
 
@@ -1417,51 +1420,57 @@
     const totalScore = rwScore + rfibScore + lfibScore + vocabScore;
 
     const tgUser = tg?.initDataUnsafe?.user;
-    const firstName = tgUser?.first_name || "نامشخص";
+    const firstName = tgUser?.first_name || "کاربر";
     const lastName = tgUser?.last_name || "";
+    const fullName = `${firstName} ${lastName}`.trim();
     const username = tgUser?.username ? `@${tgUser.username}` : "ندارد";
     const userId = tgUser?.id || "نامشخص";
     const contact = document.getElementById('userContact').value.trim() || "ارسال نشده";
     const target = document.getElementById('userTarget').value;
 
-    // پیام اول: خلاصه کارنامه و رایتینگ
+    // لینک مستقیم به پیوی کاربر
+    const userDirectLink = userId !== "نامشخص" 
+      ? `<a href="tg://user?id=${userId}">${fullName} (کلیک جهت شروع چت)</a>` 
+      : fullName;
+
+    // پیام اول: خلاصه کارنامه با اعداد انگلیسی و کد رهگیری
     const messagePart1 = `
 📋 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
+🔖 <b>کد رهگیری:</b> <code>${trackingCode}</code>
 ━━━━━━━━━━━━━━━━━━━━
 👤 <b>مشخصات تلگرام داوطلب:</b>
-• <b>نام:</b> ${firstName} ${lastName}
+• <b>نام و پروفایل:</b> ${userDirectLink}
 • <b>یوزرنیم:</b> ${username}
 • <b>شناسه عددی (ID):</b> <code>${userId}</code>
-• <b>لینک چت مستقیم:</b> <a href="tg://user?id=${userId}">ارسال پیام به کاربر</a>
 • <b>شماره تماس/توضیحات:</b> <code>${contact}</code>
 • <b>هدف انتخابی:</b> ${target}
 
 ━━━━━━━━━━━━━━━━━━━━
 📊 <b>کارنامه و ریزنمرات آزمون تستی:</b>
-• 📖 <b>Reading & Writing FIB:</b> ${rwScore} از ۶
-• 📖 <b>Reading FIB:</b> ${rfibScore} از ۴
-• 🎧 <b>Listening FIB:</b> ${lfibScore} از ۵
-• 🔤 <b>Vocab & Spelling:</b> ${vocabScore} از ۲
-🎯 <b>مجموع نمره تستی:</b> <b>${totalScore} از ۱۷</b>
+• 📖 <b>Reading & Writing FIB:</b> ${rwScore} / 6
+• 📖 <b>Reading FIB:</b> ${rfibScore} / 4
+• 🎧 <b>Listening FIB:</b> ${lfibScore} / 5
+• 🔤 <b>Vocab & Spelling:</b> ${vocabScore} / 2
+🎯 <b>مجموع نمره تستی:</b> <b>${totalScore} / 17</b>
 
 ━━━━━━━━━━━━━━━━━━━━
 ✍️ <b>پاراگراف رایتینگ داوطلب (${wordsCount} کلمه):</b>
 <i>"${writingText || 'متنی ارسال نشده است.'}"</i>
     `.trim();
 
-    // پیام دوم: تحلیل خط‌به‌خط سوالات و گزینه‌ها
+    // پیام دوم: تحلیل خط‌به‌خط
     const messagePart2 = `
-🔍 <b>تحلیل دقیق پاسخ‌ها (داوطلب: ${firstName}):</b>
+🔍 <b>تحلیل دقیق پاسخ‌ها (کد رهگیری: ${trackingCode}):</b>
 ━━━━━━━━━━━━━━━━━━━━
-📖 <b>Reading & Writing FIB (Modern Humans):</b>
+📖 <b>Reading & Writing FIB:</b>
 ${rwDetails.join('\n')}
 
 ━━━━━━━━━━━━━━━━━━━━
-📖 <b>Reading FIB (English Languages):</b>
+📖 <b>Reading FIB:</b>
 ${rfibDetails.join('\n')}
 
 ━━━━━━━━━━━━━━━━━━━━
-🎧 <b>Listening FIB (Emotion/Biology):</b>
+🎧 <b>Listening FIB:</b>
 ${lfibDetails.join('\n')}
 
 ━━━━━━━━━━━━━━━━━━━━
@@ -1471,7 +1480,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     `.trim();
 
     try {
-      // ارسال پیام اول
       const res1 = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1484,7 +1492,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
       const data1 = await res1.json();
       if (!data1.ok) throw new Error(data1.description || "خطا در ارسال پیام اول");
 
-      // ارسال پیام دوم با تأخیر کوتاه
       await new Promise(r => setTimeout(r, 400));
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
@@ -1496,24 +1503,23 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
         })
       });
 
+      const userSuccessNotice = `✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\n\n🔖 کد پیگیری شما: ${trackingCode}\n\nبه زودی نتیجه و تحلیل اختصاصی رایتینگ از طریق پشتیبانان PTE ROOM به تلگرام شما ارسال خواهد شد.`;
+
       if (tg && typeof tg.showAlert === "function") {
-        tg.showAlert(
-          "✅ آزمون تعیین سطح شما با موفقیت ثبت و ارسال شد.\n\nبه زودی نتیجه و تحلیل اختصاصی رایتینگ از طریق پشتیبانان PTE ROOM به تلگرام شما ارسال خواهد شد.",
-          () => {
-            navTo('home');
-            btn.disabled = false;
-            btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
-          }
-        );
+        tg.showAlert(userSuccessNotice, () => {
+          navTo('home');
+          btn.disabled = false;
+          btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
+        });
       } else {
-        alert("✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\nبه زودی با شما تماس گرفته خواهد شد.");
+        alert(userSuccessNotice);
         navTo('home');
         btn.disabled = false;
         btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
       }
     } catch (err) {
       console.error(err);
-      alert(`⚠️ خطا در ارسال اطلاعات به ادمین:\n${err.message}`);
+      alert(`⚠️ خطا در ارسال اطلاعات:\n${err.message}`);
       btn.disabled = false;
       btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
     }
