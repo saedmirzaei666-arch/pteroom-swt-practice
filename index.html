@@ -237,7 +237,7 @@
     .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
-    /* Modal Styles */
+    /* Modal Styles - Top Down Dropdown */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -245,35 +245,46 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(8px);
       z-index: 1000;
       justify-content: center;
-      align-items: flex-end;
+      align-items: flex-start;
     }
     .modal-overlay.active { display: flex; }
     .modal-content {
       background: #111827;
-      border-top: 1.5px solid #1e293b;
+      border-bottom: 2px solid #0284c7;
+      border-left: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
       width: 100%;
-      max-height: 88vh;
-      border-radius: 24px 24px 0 0;
-      padding: 22px 20px max(20px, env(safe-area-inset-bottom, 20px)) 20px;
+      max-height: 90vh;
+      border-radius: 0 0 24px 24px;
+      padding: max(20px, env(safe-area-inset-top, 20px)) 20px 22px 20px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
-      animation: slideUp 0.25s ease-out;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+      animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-y: auto;
     }
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #1f2937; padding-bottom: 12px; }
-    .modal-title { font-size: 16px; font-weight: 800; color: #38bdf8; }
-    .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; color: #94a3b8; }
-    .modal-body { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; text-align: justify; white-space: pre-line; }
+    .modal-title { font-size: 16.5px; font-weight: 800; color: #38bdf8; }
+    .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
+    
+    /* Typography formatting */
+    .modal-body { 
+      font-size: 14.5px; 
+      line-height: 1.9; 
+      color: #e2e8f0; 
+      text-align: justify; 
+      white-space: pre-line; 
+      font-weight: 500;
+    }
 
     .modal-action-btn {
       background: #0284c7;
@@ -282,7 +293,7 @@
       padding: 14px;
       border-radius: 12px;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 14.5px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -906,14 +917,14 @@
       <div class="modal-body">
         <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
           <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
-          <div style="font-size:13px; line-height:1.7; color:#cbd5e1;">
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
             سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.
           </div>
         </div>
 
         <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
           <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
-          <div style="font-size:13px; line-height:1.7; color:#cbd5e1;">
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
             • تمام لغات جدید در ابتدا در <b>سطح ۱ (Box 1)</b> قرار دارند.<br><br>
             • 🟢 <b>دکمه Mastered:</b> در صورت یادگیری، لغت ۱ سطح ارتقا می‌یابد (Box 1 ➔ Box 5).<br><br>
             • 🔴 <b>دکمه Needs Review:</b> در صورت فراموشی، به Box 1 بازمی‌گردد تا مجدداً تکرار شود.
@@ -1059,23 +1070,19 @@
   const coursesData = [
     {
       title: "1. PTE Personal Mentoring",
-      badge: "VIP MENTORSHIP",
-      desc: "🌟 جامع‌ترین و مطمئن‌ترین مسیر قبولی در آزمون PTE:\n\n• 🎯 تعیین سطح و نقشه راه اختصاصی: تحلیل دقیق سطح زبان و طراحی پلن گام‌به‌گام تا نمره هدف (+65 یا +79)\n• 📅 برنامه‌ریزی منعطف روزانه: زمان‌بندی هوشمند متناسب با مشغله‌های کاری و تحصیلی شما\n• ✍️ فیدبک و تصحیح نامحدود: تحلیل ریزبه‌ریز و روزانه تمرین‌های Speaking و Writing همراه با نمره‌دهی استاندارد الگوریتم پیرسون\n• 📊 تحلیل کارنامه و ماک‌تست‌ها: ریشه‌یابی خطاهای ماک سنترال و رفع سریع نقاط ضعف قبل از آزمون اصلی\n• 🤝 پشتیبانی مستقیم و مستمر: همراهی گام‌به‌گام تا لحظه ورود به سنتر و کسب نتیجه نهایی."
+      desc: "🌟 جامع‌ترین و مطمئن‌ترین مسیر قبولی در آزمون PTE:\n\n• 🎯 تعیین سطح و نقشه راه اختصاصی: تحلیل دقیق سطح زبان و طراحی پلن گام‌به‌گام تا کسب نمره هدف (+65 یا +79).\n\n• 📅 برنامه‌ریزی منعطف روزانه: زمان‌بندی هوشمند متناسب با مشغله‌های کاری و تحصیلی شما.\n\n• ✍️ فیدبک و تصحیح نامحدود: تحلیل ریزبه‌ریز و روزانه تمرین‌ها در تمام تسک‌ها همراه با نمره‌دهی استاندارد الگوریتم پیرسون.\n\n• 📊 تحلیل کارنامه و ماک‌تست‌ها: ریشه‌یابی خطاهای ماک‌تست‌ها و رفع سریع نقاط ضعف قبل از آزمون اصلی.\n\n• 🤝 پشتیبانی مستقیم و مستمر: همراهی گام‌به‌گام منتور تا لحظه ورود به سنتر و کسب نتیجه نهایی."
     },
     {
       title: "2. PTE Write Essay Mastery",
-      badge: "SPECIALIZED MASTERCLASS",
-      desc: "✍️ مسترکلاس تخصصی تسلط بر رایتینگ و کسب نمره ۹۰:\n\n• 📐 ساختارهای استاندارد و تست‌شده: آموزش چارچوب‌های مطمئن برای نگارش دقیق و پوشش کامل ساختاری بدون ریسک خطای الگوریتم پیرسون\n• 💡 اصول توسعه ایده و نگارش: آموزش بسط منطقی پاراگراف‌ها متناسب با هر نوع موضوع (Agree/Disagree, Advantage/Disadvantage و...)\n• 🔤 مدیریت نمره گرامر و واژگان: تکنیک‌های استفاده از ساختارهای پیشرفته و کالوکیشن‌های مناسب بدون خطای املا (Spelling)\n• 🔥 پوشش موضوعات داغ و پرتکرار: بررسی و تحلیل مستقیم سوالات پرتکرار و پیش‌بینی‌های جدید آزمون رسمی\n• 🔍 تحلیل و تصحیح زنده: بررسی نمونه اسه‌های داوطلبان و اصلاح خطاهای متداول نمره‌سوز."
+      desc: "✍️ مسترکلاس تخصصی تسلط بر بخش Writing و کسب نمره ۹۰:\n\n• 📐 ساختارهای استاندارد و تست‌شده: آموزش چارچوب‌های مطمئن برای نگارش دقیق و پوشش کامل ساختاری بدون ریسک خطای الگوریتم پیرسون.\n\n• 💡 اصول توسعه ایده و نگارش: آموزش بسط منطقی پاراگراف‌ها متناسب با هر نوع موضوع (Agree/Disagree, Advantage/Disadvantage و...).\n\n• 🔤 مدیریت نمره گرامر و واژگان: تکنیک‌های استفاده از ساختارهای پیشرفته و کالوکیشن‌های مناسب بدون خطای املا (Spelling).\n\n• 🔥 پوشش موضوعات پرتکرار: بررسی و تحلیل مستقیم سوالات پرتکرار و پردیکشن‌های جدید آزمون اصلی.\n\n• 🔍 تحلیل و تصحیح زنده: بررسی نمونه Writing داوطلبان و اصلاح خطاهای متداول نمره‌سوز."
     },
     {
       title: "3. PTE Private Lessons",
-      badge: "1-ON-1 SESSIONS",
-      desc: "🎯 کلاس‌های خصوصی آنلاین و رفع اشکال فشرده تک‌نفره:\n\n• ⚡ تمرکز هدفمند بر تسک‌های کلیدی: تقویت تخصصی تسک‌های نمره‌ساز آزمون نظیر RA، RS، DI، SST و WFD\n• 🎙 آموزش ترفندها و تکنیک‌های میانبر: یادگیری قلق‌های میکروفون، لحن کلام (Oral Fluency) و استراتژی‌های تست‌سنتر\n• 🧪 شبیه‌سازی شرایط آزمون: اجرای زنده تست‌ها زیر نظر استاد و دریافت آنی فیدبک‌های کاربردی\n• ⏰ انعطاف کامل در زمان‌بندی: امکان هماهنگی ساعات کلاس متناسب با تایم آزاد شما\n• 📌 تعداد جلسات انتخابی: متناسب با نیاز به رفع اشکال مقطعی یا جمع‌بندی نهایی قبل از آزمون."
+      desc: "🎯 کلاس‌های خصوصی آنلاین و رفع اشکال فشرده تک‌نفره:\n\n• ⚡ تمرکز هدفمند بر تسک‌های کلیدی: تقویت تخصصی تسک‌های نمره‌ساز آزمون.\n\n• 🧪 شبیه‌سازی شرایط آزمون: اجرای زنده تست‌ها زیر نظر استاد و دریافت آنی فیدبک‌های کاربردی.\n\n• ⏰ انعطاف کامل در زمان‌بندی: امکان هماهنگی ساعات کلاس متناسب با تایم آزاد شما.\n\n• 📌 تعداد جلسات انتخابی: متناسب با نیاز به رفع اشکال مقطعی یا جمع‌بندی نهایی قبل از آزمون."
     },
     {
       title: "4. General English",
-      badge: "FOUNDATION & FLUENCY",
-      desc: "🚀 تقویت پایه زبان و ارتقای روانی کلام:\n\n• 📚 گسترش دایره واژگان آکادمیک: یادگیری لغات پرکاربرد، اصطلاحات روزمره و هم‌آیی‌ها (Collocations)\n• 🛠 تقویت گرامر کاربردی: تسلط عملی بر ساختارهای دستوری زبان جهت استفاده صحیح در مکالمه و نگارش\n• 🗣 تقویت روانی گفتار و شنیدار: تکنیک‌های افزایش اعتمادبه‌نفس در مکالمه، تلفظ شفاف و فهم لهجه‌های مختلف صوتی\n• 🌍 پایه‌ریزی اصولی برای آزمون‌های بین‌المللی: آمادگی ذهنی و زبانی لازم جهت شروع پرقدرت مسیر آزمون‌های PTE و IELTS."
+      desc: "🚀 تقویت پایه زبان و ارتقای روانی کلام:\n\n• 📚 گسترش دایره واژگان آکادمیک: یادگیری لغات پرکاربرد، اصطلاحات روزمره و هم‌آیی‌ها (Collocations).\n\n• 🛠 تقویت گرامر کاربردی: تسلط عملی بر ساختارهای دستوری زبان جهت استفاده صحیح در مکالمه و نگارش.\n\n• 🗣 تقویت روانی گفتار و شنیدار: تکنیک‌های افزایش اعتمادبه‌نفس در مکالمه، تلفظ شفاف و فهم لهجه‌های مختلف صوتی.\n\n• 🌍 پایه‌ریزی اصولی برای آزمون‌های بین‌المللی: آمادگی ذهنی و زبانی لازم جهت شروع پرقدرت مسیر آزمون‌های بین‌المللی."
     }
   ];
 
