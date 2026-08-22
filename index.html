@@ -77,7 +77,7 @@
     .hub-grid {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
       justify-content: center;
       flex: 1;
     }
@@ -85,30 +85,121 @@
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       backdrop-filter: blur(14px);
-      border-radius: 18px;
-      padding: 22px 18px;
+      border-radius: 16px;
+      padding: 18px 16px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       cursor: pointer;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
       transition: all 0.2s ease;
     }
     .hub-card:active { transform: scale(0.98); border-color: #38bdf8; background: rgba(30, 41, 59, 0.95); }
     .hub-icon {
-      font-size: 32px;
+      font-size: 28px;
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 58px;
-      height: 58px;
+      width: 52px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 14px;
+      border-radius: 12px;
       flex-shrink: 0;
     }
-    .hub-text h3 { font-size: 16.5px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
-    .hub-text p { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+    .hub-text h3 { font-size: 15.5px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
+    .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Schedule View Styles */
+    .schedule-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
+    .schedule-banner {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #38bdf8;
+      flex-shrink: 0;
+    }
+    .schedule-day-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 6px;
+    }
+    .day-title {
+      font-weight: 800;
+      font-size: 14px;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .day-date {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .day-events {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .event-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+    }
+    .event-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .event-time {
+      font-weight: 800;
+      color: #38bdf8;
+      direction: ltr;
+      font-size: 12.5px;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .schedule-footer-note {
+      font-size: 11.5px;
+      color: #facc15;
+      text-align: center;
+      padding: 6px;
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
 
     .courses-list {
       display: flex;
@@ -566,7 +657,6 @@
     .done-message h3 { color: #34d399; font-size: 19px; margin-bottom: 10px; }
     .done-message p { color: #cbd5e1; font-size: 13.5px; line-height: 1.7; }
 
-    /* Elegant In-App Toast Notification (Zero browser alerts/URLs) */
     .app-toast {
       position: absolute;
       bottom: 75px;
@@ -602,6 +692,14 @@
 
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
+      <div class="hub-card" onclick="navTo('schedule')">
+        <div class="hub-icon">📅</div>
+        <div class="hub-text">
+          <h3>برنامه تمرینی این هفته</h3>
+          <p>جدول زمان‌بندی جلسات آنلاین، تسک‌ها و تمرینات ربات</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('courses')">
         <div class="hub-icon">🎓</div>
         <div class="hub-text">
@@ -616,6 +714,138 @@
           <h3>تمرین روزانه</h3>
           <p>شبیه‌ساز هوشمند Write From Dictation و جعبه لایتنر واژگان</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Schedule Screen -->
+  <div class="view-screen" id="viewSchedule">
+    <div class="schedule-container">
+      <div class="schedule-banner">
+        📅 برنامه تمرینی هفته – تیم PTE ROOM<br>
+        <span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span>
+      </div>
+
+      <!-- شنبه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 شنبه</span>
+          <span class="day-date">۳۱ مرداد</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">💬 SST – محمد حسین نیرومند</span>
+            <span class="event-time">20:00</span>
+          </div>
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- یکشنبه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 یکشنبه</span>
+          <span class="day-date">۱ شهریور</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">📖 RA – بهنام حق گویی</span>
+            <span class="event-time">18:00</span>
+          </div>
+          <div class="event-row">
+            <span class="event-info">🎧 DI – محمد حسین نیرومند</span>
+            <span class="event-time">20:00</span>
+          </div>
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- دوشنبه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 دوشنبه</span>
+          <span class="day-date">۲ شهریور</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- سه‌شنبه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 سه‌شنبه</span>
+          <span class="day-date">۳ شهریور</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">📖 RA – سعید میرزایی</span>
+            <span class="event-time">09:00</span>
+          </div>
+          <div class="event-row">
+            <span class="event-info">📖 RTS – بهنام حق گویی</span>
+            <span class="event-time">18:00</span>
+          </div>
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- چهارشنبه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 چهارشنبه</span>
+          <span class="day-date">۴ شهریور</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- پنج‌شنبه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 پنج‌شنبه</span>
+          <span class="day-date">۵ شهریور</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- جمعه -->
+      <div class="schedule-day-card">
+        <div class="day-header">
+          <span class="day-title">📌 جمعه</span>
+          <span class="day-date">۶ شهریور</span>
+        </div>
+        <div class="day-events">
+          <div class="event-row">
+            <span class="event-info">🤖 WFD Bot</span>
+            <span class="event-time">21:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="schedule-footer-note">
+        ⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال و گروه انجام خواهد شد.
       </div>
     </div>
   </div>
@@ -820,7 +1050,6 @@
     </div>
   </div>
 
-  <!-- In-App Notification Element -->
   <div class="app-toast" id="appToast">Please type your answer first!</div>
 </div>
 
@@ -845,8 +1074,8 @@
   let wfdElapsedSeconds = 0;
   let toastTimeout = null;
 
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v14')) || {};
-  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v14')) || { date: "", newCardsSeen: 0 };
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v15')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v15')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -915,6 +1144,10 @@
     if (current === 'home') {
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
+      stopWfdTimer();
+    } else if (current === 'schedule') {
+      document.getElementById('viewSchedule').classList.add('active');
+      title.innerText = "PTE ROOM • برنامه تمرینی هفته";
       stopWfdTimer();
     } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
@@ -1133,7 +1366,7 @@
     if (dailyStats.date !== today) {
       dailyStats.date = today;
       dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v14', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
     }
   }
 
@@ -1209,11 +1442,11 @@
     
     if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
       dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v14', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
     }
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v14', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v15', JSON.stringify(leitnerData));
     
     currentCardIndex++;
     renderFlashcard();
