@@ -1,88 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PTE ROOM - Multi-Task Platform</title>
+  <title>PTE ROOM • Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    :root { --primary: #0056b3; --bg: #eef2f5; --text: #1e293b; --danger: #dc2626; --success: #16a34a; }
-    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    :root { 
+      --primary: #0056b3; 
+      --primary-dark: #003d80; 
+      --bg: #f1f5f9; 
+      --card-bg: #ffffff; 
+      --text: #0f172a; 
+      --text-muted: #64748b; 
+      --success: #10b981; 
+      --danger: #ef4444; 
+    }
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "IRANSans", sans-serif; margin: 0; padding: 0; }
     
     html, body {
-      margin: 0;
-      padding: max(10px, env(safe-area-inset-top, 10px)) 8px max(10px, env(safe-area-inset-bottom, 10px)) 8px;
       background: var(--bg);
       color: var(--text);
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-    }
-
-    .box {
       display: flex;
       flex-direction: column;
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #c9d2db;
-      padding: 10px 12px;
-      width: 100%;
-      height: 100%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-    
-    .nav-tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 8px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 6px;
-      flex-shrink: 0;
     }
 
-    .tab-btn {
-      flex: 1;
-      background: #edf2f7;
+    .app-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: max(12px, env(safe-area-inset-top, 12px)) 12px max(12px, env(safe-area-inset-bottom, 12px)) 12px;
+    }
+
+    /* Top Global Header */
+    .global-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
       border: 1px solid #cbd5e1;
-      padding: 7px 2px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .brand-title { font-weight: 900; color: var(--primary); font-size: 14px; letter-spacing: 0.5px; }
+    .back-home-btn {
+      background: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 5px 10px;
       border-radius: 6px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      font-size: 11px;
+      display: none;
+    }
+
+    /* Views */
+    .view-screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+    .view-screen.active { display: flex; }
+
+    /* Home Hub View */
+    .home-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      flex: 1;
+    }
+    .hub-card {
+      background: var(--card-bg);
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 22px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .hub-card:active { transform: scale(0.98); border-color: var(--primary); }
+    .hub-icon {
+      font-size: 34px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .hub-text h3 { font-size: 16px; color: var(--primary-dark); margin-bottom: 4px; font-weight: 800; }
+    .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Courses View */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
+    .course-card {
+      background: var(--card-bg);
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .course-badge {
+      align-self: flex-start;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .course-title { font-size: 15px; font-weight: 800; color: var(--text); }
+    .course-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .course-action-btn {
+      margin-top: 4px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    /* Practice View Tabs & Layout */
+    .practice-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+    .ptab-btn {
+      flex: 1;
+      background: #e2e8f0;
+      border: 1px solid #cbd5e1;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 12px;
       color: #475569;
+      cursor: pointer;
       text-align: center;
     }
-    .tab-btn.active {
+    .ptab-btn.active {
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
     }
 
-    .header {
+    .practice-box {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1.5px solid var(--primary);
-      padding-bottom: 4px;
-      margin-bottom: 6px;
-      flex-shrink: 0;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      padding: 12px;
+      flex: 1;
+      min-height: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .brand { font-weight: 800; color: var(--primary); font-size: 13px; }
-    .timer { font-weight: bold; color: #c00; font-size: 13px; }
-    
-    .task-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-    
+
+    /* WFD Section */
+    .wfd-panel {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      gap: 8px;
+    }
     .wfd-category-bar {
-      display: none;
+      display: flex;
       gap: 6px;
-      margin-bottom: 6px;
       flex-shrink: 0;
     }
     .cat-btn {
       flex: 1;
-      background: #f1f5f9;
+      background: #f8fafc;
       border: 1px solid #cbd5e1;
-      padding: 6px 8px;
+      padding: 6px;
       border-radius: 6px;
       font-size: 11.5px;
       font-weight: 700;
@@ -94,120 +216,29 @@
       color: #fff;
       border-color: var(--primary);
     }
-
-    .selector-bar {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin-bottom: 6px;
-      flex-shrink: 0;
-    }
-
     select {
-      flex: 1;
+      width: 100%;
       padding: 8px 10px;
       border-radius: 6px;
       border: 1.5px solid var(--primary);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       background: #f8fafc;
       color: var(--primary);
       outline: none;
+      direction: ltr;
     }
-    
-    .audio-container {
-      display: none;
-      margin-bottom: 6px;
-      background: #f1f5f9;
-      padding: 6px 8px;
-      border-radius: 6px;
+    .audio-wrapper {
+      background: #f8fafc;
       border: 1px solid #cbd5e1;
+      padding: 6px 10px;
+      border-radius: 6px;
       flex-shrink: 0;
     }
     audio { width: 100%; height: 32px; outline: none; }
-
-    .prompt-box {
-      flex: 1;
-      min-height: 80px;
-      background: #fafbfc;
-      border: 1px solid #dbe2e8;
-      padding: 10px;
-      font-size: 13.5px;
-      line-height: 1.5;
-      overflow-y: auto;
-      margin-bottom: 6px;
-      border-radius: 6px;
-      text-align: justify;
-      white-space: pre-line;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* DI Speaking View */
-    .di-container {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      gap: 6px;
-    }
-    
-    .di-recorder-panel {
-      background: #f8fafc;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 8px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      flex-shrink: 0;
-    }
-    .di-status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .status-badge {
-      padding: 3px 8px;
-      border-radius: 12px;
-      color: #fff;
-      background: #64748b;
-    }
-    .status-badge.prep { background: #d97706; }
-    .status-badge.ready { background: var(--success); }
-
-    .progress-bar-bg {
-      width: 100%;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: #d97706;
-      transition: width 0.2s linear;
-    }
-
-    .di-image-box {
-      flex: 1;
-      min-height: 150px;
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 4px;
-    }
-    .di-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
     textarea {
       flex: 1;
-      min-height: 90px;
+      min-height: 80px;
       width: 100%;
       padding: 10px;
       font-size: 14px;
@@ -215,19 +246,19 @@
       border-radius: 6px;
       resize: none;
       outline: none;
-      -webkit-overflow-scrolling: touch;
+      direction: ltr;
+      text-align: left;
     }
     textarea:focus { border-color: var(--primary); }
-    
+
     .wfd-result-card {
       display: none;
       flex-direction: column;
       gap: 6px;
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
-      padding: 10px;
+      padding: 8px 10px;
       border-radius: 8px;
-      margin-top: 6px;
       overflow-y: auto;
     }
     .wfd-score-header {
@@ -235,36 +266,17 @@
       justify-content: space-between;
       align-items: center;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--primary);
       border-bottom: 1px solid #e2e8f0;
       padding-bottom: 4px;
     }
-    .wfd-sentence-display { font-size: 14px; line-height: 1.7; font-weight: 600; }
-    .wfd-word-correct { background: #d1fae5; color: #065f46; padding: 2px 5px; border-radius: 4px; }
-    .wfd-word-missing { background: #fee2e2; color: #991b1b; padding: 2px 5px; border-radius: 4px; text-decoration: line-through; }
+    .wfd-sentence-display { font-size: 13.5px; line-height: 1.7; font-weight: 600; direction: ltr; text-align: left; }
+    .wfd-word-correct { background: #d1fae5; color: #065f46; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
+    .wfd-word-missing { background: #fee2e2; color: #991b1b; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
 
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-      flex-shrink: 0;
-    }
-    .word-count { font-size: 12.5px; font-weight: bold; color: #333; }
-    .btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 9px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    /* Flashcard Styles */
-    .flashcard-wrapper {
+    /* Flashcard Section */
+    .flashcard-panel {
       display: none;
       flex-direction: column;
       flex: 1;
@@ -296,7 +308,7 @@
       width: 100%;
       height: 100%;
       position: relative;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
       transform-style: preserve-3d;
       border-radius: 12px;
     }
@@ -310,333 +322,284 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       border: 1.5px solid #cbd5e1;
       background: #ffffff;
       overflow-y: auto;
     }
     .card-front {
-      background: linear-gradient(135deg, var(--primary), #003366);
+      background: linear-gradient(135deg, var(--primary), #002d62);
       color: #fff;
       justify-content: center;
       align-items: center;
       text-align: center;
+      direction: ltr;
     }
-    .card-front .word-title { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
-    .card-front .tap-hint { font-size: 12px; opacity: 0.9; background: rgba(255,255,255,0.18); padding: 5px 12px; border-radius: 16px; }
+    .card-front .word-title { font-size: 30px; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px; }
+    .card-front .tap-hint { font-size: 12px; opacity: 0.9; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 14px; }
     .card-back {
       background: #fafbfc;
       transform: rotateY(180deg);
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
+      direction: ltr;
+      text-align: left;
     }
-    .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px; }
-    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 14px; font-weight: 600; }
+    .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 4px; }
+    .card-back .pronunciation { font-style: italic; color: #475569; font-size: 13.5px; font-weight: 600; }
     .card-back .pos { background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-    .card-back .persian-meaning { font-size: 16px; font-weight: 800; color: var(--primary); direction: rtl; text-align: right; }
-    .card-back .section-title { font-size: 12px; font-weight: 800; color: #334155; margin-top: 2px; }
+    .card-back .persian-meaning { font-size: 16px; font-weight: 800; color: var(--primary); direction: rtl; text-align: right; margin: 4px 0; }
+    .card-back .section-title { font-size: 11.5px; font-weight: 800; color: #334155; }
     .card-back .collocations { font-size: 13px; font-weight: 600; color: #1e293b; }
-    .card-back .example-sentence { font-size: 12.5px; line-height: 1.4; color: #0f172a; background: #f1f5f9; padding: 8px 10px; border-radius: 6px; border-left: 3px solid var(--primary); }
+    .card-back .example-sentence { font-size: 12.5px; line-height: 1.4; color: #0f172a; background: #f1f5f9; padding: 6px 8px; border-radius: 6px; border-left: 3px solid var(--primary); }
 
     .leitner-actions { display: flex; width: 100%; gap: 8px; margin-top: 8px; flex-shrink: 0; }
-    .leitner-btn { flex: 1; padding: 10px; border-radius: 6px; font-weight: 800; font-size: 13px; border: none; cursor: pointer; color: #fff; }
-    .btn-again { background: #ef4444; }
-    .btn-good { background: #10b981; }
+    .leitner-btn { flex: 1; padding: 10px; border-radius: 6px; font-weight: 800; font-size: 12.5px; border: none; cursor: pointer; color: #fff; }
+    .btn-again { background: var(--danger); }
+    .btn-good { background: var(--success); }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
 
-<div class="box">
-  <div class="nav-tabs">
-    <button class="tab-btn active" id="tabSWT" onclick="switchTask('SWT')">SWT</button>
-    <button class="tab-btn" id="tabWE" onclick="switchTask('WE')">WE</button>
-    <button class="tab-btn" id="tabDI" onclick="switchTask('DI')">🎙 DI</button>
-    <button class="tab-btn" id="tabSST" onclick="switchTask('SST')">SST</button>
-    <button class="tab-btn" id="tabWFD" onclick="switchTask('WFD')">WFD</button>
-    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Vocab</button>
+<div class="app-wrapper">
+  <!-- Top Navigation Header -->
+  <div class="global-header">
+    <span class="brand-title" id="pageTitle">PTE ROOM • پلتفرم جامع</span>
+    <button class="back-home-btn" id="backHomeBtn" onclick="navTo('home')">🏠 بازگشت به منو</button>
   </div>
 
-  <div class="header">
-    <span class="brand" id="taskHeading">PTE ROOM • Summarize Written Text</span>
-    <span class="timer" id="timer">Time Left: 10:00</span>
-  </div>
-
-  <div class="task-container" id="taskContainer">
-    <div class="wfd-category-bar" id="wfdCategoryBar">
-      <button class="cat-btn active" id="wfdCatAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
-      <button class="cat-btn" id="wfdCatPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
-    </div>
-
-    <div class="selector-bar">
-      <select id="questionSelect" onchange="onSelectQuestion()"></select>
-    </div>
-
-    <div class="audio-container" id="audioSection">
-      <div style="font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #334155;">🎧 Audio Lecture:</div>
-      <audio id="audioPlayer" controls>Your browser does not support audio element.</audio>
-    </div>
-
-    <div class="prompt-box" id="promptText">Loading prompt...</div>
-
-    <!-- DI Speaking Container -->
-    <div class="di-container" id="diContainer">
-      <div class="di-recorder-panel">
-        <div class="di-status-row">
-          <span id="diStatusLabel">⏳ Preparation Time:</span>
-          <span class="status-badge prep" id="diStatusBadge">25s Left</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="diProgressFill"></div>
-        </div>
-        <div style="display: flex; gap: 6px; margin-top: 4px;">
-          <button class="btn" id="diRecordBtn" style="flex:1; background:#0284c7; padding:9px;" onclick="sendDiReadySignal()">🎙 I'm Ready • Send Voice in Telegram</button>
+  <!-- 1. Main Home Screen -->
+  <div class="view-screen active" id="viewHome">
+    <div class="home-grid">
+      <div class="hub-card" onclick="navTo('courses')">
+        <div class="hub-icon">🎓</div>
+        <div class="hub-text">
+          <h3>دوره‌های آموزشی PTE ROOM</h3>
+          <p>مشاهده و ثبت‌نام در دوره‌های تخصصی، منتورینگ و کلاس‌های خصوصی</p>
         </div>
       </div>
-      
-      <div class="di-image-box">
-        <img id="diImageElem" src="" alt="Describe Image">
+
+      <div class="hub-card" onclick="navTo('practice')">
+        <div class="hub-icon">⚡</div>
+        <div class="hub-text">
+          <h3>تمرین روزانه (Daily Practice)</h3>
+          <p>شبیه‌ساز هوشمند Write From Dictation و جعبه لایتنر لغات آکادمیک</p>
+        </div>
       </div>
-    </div>
-
-    <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
-
-    <div class="wfd-result-card" id="wfdResultCard">
-      <div class="wfd-score-header">
-        <span>📊 Score Evaluation:</span>
-        <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:2px 8px; border-radius:10px;">0 / 0</span>
-      </div>
-      <div style="font-size:11px; color:#64748b; font-weight:700; margin-top:2px;">Original Sentence Analysis:</div>
-      <div class="wfd-sentence-display" id="wfdSentenceMarkup"></div>
-    </div>
-
-    <div class="footer" id="mainFooter">
-      <span class="word-count" id="wordCount">Total Word Count: 0</span>
-      <button class="btn" id="submitBtn" onclick="sendResult()">Submit Response</button>
     </div>
   </div>
 
-  <div class="flashcard-wrapper" id="flashcardContainer">
-    <div class="leitner-progress">
-      <span id="cardCounter">Card 1</span>
-      <span id="boxLevel">📦 Box Level: 1/5</span>
+  <!-- 2. Courses Screen -->
+  <div class="view-screen" id="viewCourses">
+    <div class="courses-list">
+      <div class="course-card">
+        <span class="course-badge">VIP MENTORSHIP</span>
+        <div class="course-title">1. PTE Personal Mentoring</div>
+        <div class="course-desc">برنامه‌ریزی کاملاً شخصی‌سازی‌شده، پیگیری روزانه تکالیف، فیدبک مستقیم اسپیکینگ و رایتینگ تا کسب نمره هدف (+79).</div>
+        <button class="course-action-btn" onclick="requestCourse('PTE Personal Mentoring')">دریافت مشاوره و ثبت‌نام</button>
+      </div>
+
+      <div class="course-card">
+        <span class="course-badge">SPECIALIZED MASTERCLASS</span>
+        <div class="course-title">2. PTE Write Essay Mastery</div>
+        <div class="course-desc">تسلط بر تمپلیت‌های استاندارد 90، ساختارهای گرامری نمره‌آور و تکنیک‌های پوشش حداکثری ایده و ایده‌پردازی برای تمام تاپیک‌های پیش‌بینی.</div>
+        <button class="course-action-btn" onclick="requestCourse('PTE Write Essay Mastery')">دریافت مشاوره و ثبت‌نام</button>
+      </div>
+
+      <div class="course-card">
+        <span class="course-badge">1-ON-1 SESSIONS</span>
+        <div class="course-title">3. PTE Private Lessons</div>
+        <div class="course-desc">کلاس‌های تک‌نفره و فشرده برای رفع اشکال سریع در مهارت‌های اسپیکینگ، ریدینگ و لیسنینگ تحت نظارت مستقیم استاد.</div>
+        <button class="course-action-btn" onclick="requestCourse('PTE Private Lessons')">دریافت مشاوره و ثبت‌نام</button>
+      </div>
+
+      <div class="course-card">
+        <span class="course-badge">FOUNDATION & FLUENCY</span>
+        <div class="course-title">4. General English</div>
+        <div class="course-desc">تقویت پایه‌ای دایره واژگان، کالوکیشن‌های کاربردی، گرامر دقیق و روانی کلام جهت آمادگی برای آزمون‌های بین‌المللی.</div>
+        <button class="course-action-btn" onclick="requestCourse('General English')">دریافت مشاوره و ثبت‌نام</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Daily Practice Screen (WFD & Flashcards only) -->
+  <div class="view-screen" id="viewPractice">
+    <div class="practice-tabs">
+      <button class="ptab-btn active" id="ptabWFD" onclick="switchPractice('WFD')">✍️ Write From Dictation</button>
+      <button class="ptab-btn" id="ptabFlash" onclick="switchPractice('FLASH')">🗂 Academic Flashcards</button>
     </div>
 
-    <div class="card-scene" onclick="flipCard()">
-      <div class="card" id="activeCard">
-        <div class="card-face card-front">
-          <div class="word-title" id="frontWord">Loading...</div>
-          <div class="tap-hint">👆 Tap to view meaning</div>
+    <div class="practice-box">
+      <!-- WFD Section -->
+      <div class="wfd-panel" id="wfdSection">
+        <div class="wfd-category-bar">
+          <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
+          <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
         </div>
-        <div class="card-face card-back">
-          <div class="meta-row">
-            <span class="pronunciation" id="backPhonetic"></span>
-            <span class="pos" id="backPos"></span>
+
+        <select id="wfdSelect" onchange="onSelectWfd()"></select>
+
+        <div class="audio-wrapper">
+          <audio id="wfdAudioPlayer" controls></audio>
+        </div>
+
+        <textarea id="wfdInput" placeholder="Type the exact sentence you heard here..." oninput="calcWfdWords()"></textarea>
+
+        <div class="wfd-result-card" id="wfdResultBox">
+          <div class="wfd-score-header">
+            <span>📊 Score Analysis:</span>
+            <span id="wfdScoreBadge" style="background:#0056b3; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
           </div>
-          <div class="persian-meaning" id="backMeaning"></div>
-          <div class="section-title">Collocations:</div>
-          <div class="collocations" id="backCollocations"></div>
-          <div class="section-title">Example Sentence:</div>
-          <div class="example-sentence" id="backSentence"></div>
+          <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+          <span style="font-size:12px; font-weight:700; color:#475569;" id="wfdWordCount">Word Count: 0</span>
+          <button class="btn-primary" onclick="evaluateWfdAnswer()">Check Answer</button>
         </div>
       </div>
-    </div>
 
-    <div class="leitner-actions">
-      <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
-      <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
+      <!-- Flashcards Section -->
+      <div class="flashcard-panel" id="flashSection">
+        <div class="leitner-progress">
+          <span id="cardCounter">Card 1</span>
+          <span id="boxLevel">📦 Box Level: 1/5</span>
+        </div>
+
+        <div class="card-scene" onclick="flipCard()">
+          <div class="card" id="activeCard">
+            <div class="card-face card-front">
+              <div class="word-title" id="frontWord">Loading...</div>
+              <div class="tap-hint">👆 Tap to flip card</div>
+            </div>
+            <div class="card-face card-back">
+              <div class="meta-row">
+                <span class="pronunciation" id="backPhonetic"></span>
+                <span class="pos" id="backPos"></span>
+              </div>
+              <div class="persian-meaning" id="backMeaning"></div>
+              <div class="section-title">Collocations:</div>
+              <div class="collocations" id="backCollocations"></div>
+              <div class="section-title">Example Sentence:</div>
+              <div class="example-sentence" id="backSentence"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="leitner-actions">
+          <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
+          <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  let currentTask = "SWT";
-  let currentWfdCategory = "all";
-  let timerInterval = null;
-  let sec = 600;
-
-  let swtQuestions = [];
-  let weQuestions = [];
-  let diQuestions = [];
-  let sstQuestions = [];
   let wfdQuestions = [];
   let academicVocab = [];
-
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
+  let currentWfdCat = "all";
   let currentCardIndex = 0;
-  let diTimerInterval = null;
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v2')) || {};
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
     tg.expand();
-    if (tg.requestFullscreen) tg.requestFullscreen();
-    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
   }
 
-  async function loadAllData() {
+  async function initApp() {
     try {
-      const [resSWT, resWE, resDI, resSST, resWFD, resFlash] = await Promise.all([
-        fetch('data/swt_questions.json').then(r => r.json()),
-        fetch('data/we_questions.json').then(r => r.json()),
-        fetch('data/di_questions.json').then(r => r.json()),
-        fetch('data/sst_questions.json').then(r => r.json()),
+      const [resWFD, resFlash] = await Promise.all([
         fetch('data/wfd_questions.json').then(r => r.json()),
         fetch('data/flashcards.json').then(r => r.json())
       ]);
-
-      swtQuestions = resSWT;
-      weQuestions = resWE;
-      diQuestions = resDI;
-      sstQuestions = resSST;
       wfdQuestions = resWFD;
       academicVocab = resFlash;
 
-      academicVocab.forEach((v, idx) => {
+      academicVocab.forEach((_, idx) => {
         if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
       });
 
-      switchTask('SWT');
+      filterWfdCategory('all');
     } catch (err) {
-      document.getElementById('promptText').innerText = "⚠️ Error loading datasets. Verify JSON files in /data.";
+      console.error("Data load error:", err);
     }
   }
 
-  function startTimer(duration) {
-    if (timerInterval) clearInterval(timerInterval);
-    sec = duration;
-    timerInterval = setInterval(() => {
-      sec--;
-      let m = Math.floor(sec / 60);
-      let s = sec % 60;
-      document.getElementById('timer').innerText = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
-      if (sec <= 0) {
-        clearInterval(timerInterval);
-        sendResult();
-      }
-    }, 1000);
+  function navTo(screen) {
+    document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
+    const backBtn = document.getElementById('backHomeBtn');
+    const title = document.getElementById('pageTitle');
+
+    if (screen === 'home') {
+      document.getElementById('viewHome').classList.add('active');
+      backBtn.style.display = 'none';
+      title.innerText = "PTE ROOM • پلتفرم جامع";
+    } else if (screen === 'courses') {
+      document.getElementById('viewCourses').classList.add('active');
+      backBtn.style.display = 'block';
+      title.innerText = "PTE ROOM • دوره‌های آموزشی";
+    } else if (screen === 'practice') {
+      document.getElementById('viewPractice').classList.add('active');
+      backBtn.style.display = 'block';
+      title.innerText = "PTE ROOM • تمرین روزانه";
+      switchPractice('WFD');
+    }
   }
 
-  function switchTask(task) {
-    currentTask = task;
-    if (diTimerInterval) clearInterval(diTimerInterval);
-
-    ['SWT', 'WE', 'DI', 'SST', 'WFD', 'Flash'].forEach(t => {
-      const btn = document.getElementById('tab' + t);
-      if (btn) btn.className = (task === t.toUpperCase()) ? 'tab-btn active' : 'tab-btn';
+  function requestCourse(courseName) {
+    const payload = JSON.stringify({
+      task_type: "COURSE_INQUIRY",
+      course_name: courseName
     });
-    
-    const taskContainer = document.getElementById('taskContainer');
-    const flashContainer = document.getElementById('flashcardContainer');
-    const timerElem = document.getElementById('timer');
-    const audioSec = document.getElementById('audioSection');
-    const audioPl = document.getElementById('audioPlayer');
-    const promptBox = document.getElementById('promptText');
-    const diContainer = document.getElementById('diContainer');
-    const answerInput = document.getElementById('answerInput');
-    const mainFooter = document.getElementById('mainFooter');
-    const wfdResultCard = document.getElementById('wfdResultCard');
-    const wfdCategoryBar = document.getElementById('wfdCategoryBar');
-    const submitBtn = document.getElementById('submitBtn');
+    if (tg && typeof tg.sendData === "function") {
+      tg.sendData(payload);
+      tg.close();
+    } else {
+      alert(`درخواست مشاوره برای دوره "${courseName}" ثبت شد. کارشناسان ما به زودی با شما ارتباط برقرار می‌کنند.`);
+    }
+  }
 
-    wfdResultCard.style.display = 'none';
+  function switchPractice(tab) {
+    const wfdSec = document.getElementById('wfdSection');
+    const flashSec = document.getElementById('flashSection');
+    const btnWFD = document.getElementById('ptabWFD');
+    const btnFlash = document.getElementById('ptabFlash');
 
-    if (task === 'FLASH') {
-      taskContainer.style.display = 'none';
-      flashContainer.style.display = 'flex';
-      audioSec.style.display = 'none';
-      wfdCategoryBar.style.display = 'none';
-      diContainer.style.display = 'none';
-      audioPl.pause();
-      if (timerInterval) clearInterval(timerInterval);
-      timerElem.innerText = "Study Mode";
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Academic Flashcards";
+    if (tab === 'WFD') {
+      wfdSec.style.display = 'flex';
+      flashSec.style.display = 'none';
+      btnWFD.className = 'ptab-btn active';
+      btnFlash.className = 'ptab-btn';
+    } else {
+      wfdSec.style.display = 'none';
+      flashSec.style.display = 'flex';
+      btnWFD.className = 'ptab-btn';
+      btnFlash.className = 'ptab-btn active';
       renderFlashcard();
-      return;
-    }
-
-    taskContainer.style.display = 'flex';
-    flashContainer.style.display = 'none';
-
-    if (task === 'SWT') {
-      promptBox.style.display = 'block';
-      diContainer.style.display = 'none';
-      answerInput.style.display = 'block';
-      mainFooter.style.display = 'flex';
-      audioSec.style.display = 'none';
-      wfdCategoryBar.style.display = 'none';
-      audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Written Text";
-      answerInput.placeholder = "Write your single sentence summary (5-75 words)...";
-      submitBtn.innerText = "Submit Response";
-      startTimer(600);
-      loadOptions(swtQuestions);
-    } else if (task === 'WE') {
-      promptBox.style.display = 'block';
-      diContainer.style.display = 'none';
-      answerInput.style.display = 'block';
-      mainFooter.style.display = 'flex';
-      audioSec.style.display = 'none';
-      wfdCategoryBar.style.display = 'none';
-      audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay";
-      answerInput.placeholder = "Write your 200-300 word academic essay here...";
-      submitBtn.innerText = "Submit Response";
-      startTimer(1200);
-      loadOptions(weQuestions);
-    } else if (task === 'DI') {
-      promptBox.style.display = 'none';
-      diContainer.style.display = 'flex';
-      answerInput.style.display = 'none';
-      mainFooter.style.display = 'none';
-      audioSec.style.display = 'none';
-      wfdCategoryBar.style.display = 'none';
-      audioPl.pause();
-      if (timerInterval) clearInterval(timerInterval);
-      timerElem.innerText = "Speaking Task";
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Describe Image";
-      loadOptions(diQuestions);
-      startDiPrepTimer();
-    } else if (task === 'SST') {
-      promptBox.style.display = 'block';
-      diContainer.style.display = 'none';
-      answerInput.style.display = 'block';
-      mainFooter.style.display = 'flex';
-      audioSec.style.display = 'block';
-      wfdCategoryBar.style.display = 'none';
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Spoken Text";
-      answerInput.placeholder = "Write your 50-70 word summary based on the lecture...";
-      submitBtn.innerText = "Submit Response";
-      startTimer(600);
-      loadOptions(sstQuestions);
-    } else if (task === 'WFD') {
-      promptBox.style.display = 'none';
-      diContainer.style.display = 'none';
-      answerInput.style.display = 'block';
-      mainFooter.style.display = 'flex';
-      audioSec.style.display = 'block';
-      wfdCategoryBar.style.display = 'flex';
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
-      answerInput.placeholder = "Type the exact sentence you heard here...";
-      submitBtn.innerText = "Check Answer";
-      startTimer(60);
-      filterWfdCategory(currentWfdCategory);
     }
   }
 
+  /* WFD Engine */
   function filterWfdCategory(cat) {
-    currentWfdCategory = cat;
-    document.getElementById('wfdCatAll').className = cat === 'all' ? 'cat-btn active' : 'cat-btn';
-    document.getElementById('wfdCatPred').className = cat === 'pred' ? 'cat-btn active' : 'cat-btn';
+    currentWfdCat = cat;
+    document.getElementById('catAll').className = cat === 'all' ? 'cat-btn active' : 'cat-btn';
+    document.getElementById('catPred').className = cat === 'pred' ? 'cat-btn active' : 'cat-btn';
 
-    let filteredList = wfdQuestions;
-    if (cat === 'pred') {
-      filteredList = wfdQuestions.filter(q => q.isPrediction);
-    }
-    loadOptions(filteredList);
-  }
-
-  function loadOptions(list) {
-    const select = document.getElementById('questionSelect');
+    let list = cat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const select = document.getElementById('wfdSelect');
     select.innerHTML = "";
     list.forEach((q, idx) => {
       const opt = document.createElement('option');
@@ -644,181 +607,79 @@
       opt.innerText = q.title;
       select.appendChild(opt);
     });
-    onSelectQuestion();
+    onSelectWfd();
   }
 
-  function onSelectQuestion() {
-    let list = swtQuestions;
-    if (currentTask === 'WE') list = weQuestions;
-    if (currentTask === 'DI') list = diQuestions;
-    if (currentTask === 'SST') list = sstQuestions;
-    if (currentTask === 'WFD') {
-      list = currentWfdCategory === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
-    }
-
-    const idx = document.getElementById('questionSelect').value;
+  function onSelectWfd() {
+    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const idx = document.getElementById('wfdSelect').value;
     const q = list[idx];
     if (!q) return;
-    
-    document.getElementById('wfdResultCard').style.display = 'none';
 
-    if (currentTask === 'DI') {
-      document.getElementById('diImageElem').src = "di_images/" + q.image;
-      startDiPrepTimer();
-    } else if (currentTask === 'SST') {
-      document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Listen to the recording above and write your summary.";
-      const audioPl = document.getElementById('audioPlayer');
-      audioPl.src = q.audioUrl;
-      audioPl.load();
-    } else if (currentTask === 'WFD') {
-      const audioPl = document.getElementById('audioPlayer');
-      audioPl.src = "wfd_audios/" + q.audioUrl;
-      audioPl.load();
-    } else {
-      document.getElementById('promptText').innerText = q.text;
-    }
-    
-    document.getElementById('answerInput').value = "";
-    calcWords();
+    document.getElementById('wfdResultBox').style.display = 'none';
+    document.getElementById('wfdInput').value = "";
+    calcWfdWords();
+
+    const audio = document.getElementById('wfdAudioPlayer');
+    audio.src = "wfd_audios/" + q.audioUrl;
+    audio.load();
   }
 
-  function startDiPrepTimer() {
-    if (diTimerInterval) clearInterval(diTimerInterval);
-    let prepSec = 25;
-    
-    const label = document.getElementById('diStatusLabel');
-    const badge = document.getElementById('diStatusBadge');
-    const fill = document.getElementById('diProgressFill');
-    const btn = document.getElementById('diRecordBtn');
-    
-    label.innerText = "⏳ Preparation Time:";
-    badge.className = "status-badge prep";
-    badge.innerText = `${prepSec}s Left`;
-    fill.style.width = "0%";
-    btn.innerText = "🎙 I'm Ready • Send Voice in Telegram";
-
-    diTimerInterval = setInterval(() => {
-      prepSec--;
-      let pct = ((25 - prepSec) / 25) * 100;
-      fill.style.width = `${pct}%`;
-      badge.innerText = `${prepSec}s Left`;
-
-      if (prepSec <= 0) {
-        clearInterval(diTimerInterval);
-        badge.className = "status-badge ready";
-        badge.innerText = "Time to Speak!";
-        label.innerText = "👉 Click below to record voice:";
-        btn.innerText = "🚀 Send Voice Note Now";
-      }
-    }, 1000);
+  function calcWfdWords() {
+    const val = document.getElementById('wfdInput').value.trim();
+    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
+    document.getElementById('wfdWordCount').innerText = "Word Count: " + count;
   }
 
-  function sendDiReadySignal() {
-    if (diTimerInterval) clearInterval(diTimerInterval);
-    const idx = document.getElementById('questionSelect').value;
-    const q = diQuestions[idx];
+  function evaluateWfdAnswer() {
+    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const idx = document.getElementById('wfdSelect').value;
+    const q = list[idx];
+    const userText = document.getElementById('wfdInput').value.trim();
 
-    const payload = JSON.stringify({
-      task_type: "DI_READY",
-      question_title: q.title,
-      prompt: q.keywords ? q.keywords.join(', ') : "",
-      image_name: q.image
-    });
-
-    if (tg && typeof tg.sendData === "function") {
-      tg.sendData(payload);
-      tg.close();
-    } else {
-      alert("Selected question: " + q.title + "\nIn Telegram, this seamlessly redirects to send your voice note.");
-    }
-  }
-
-  function calcWords() {
-    let t = document.getElementById('answerInput').value.trim();
-    let count = t === "" ? 0 : t.split(/\s+/).filter(Boolean).length;
-    document.getElementById('wordCount').innerText = "Total Word Count: " + count;
-  }
-
-  function sendResult() {
-    let ans = document.getElementById('answerInput').value.trim();
-    let list = swtQuestions;
-    if (currentTask === 'WE') list = weQuestions;
-    if (currentTask === 'SST') list = sstQuestions;
-    if (currentTask === 'WFD') {
-      list = currentWfdCategory === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
-    }
-
-    let currentIdx = document.getElementById('questionSelect').value;
-    let q = list[currentIdx];
-
-    if (!ans) {
-      alert("Please write your answer before submitting.");
+    if (!userText) {
+      alert("Please write your answer before checking.");
       return;
     }
 
-    if (currentTask === 'WFD') {
-      evaluateWfdLocally(q.text, ans);
-      return;
-    }
-
-    let payload = JSON.stringify({
-      task_type: currentTask,
-      question_title: q.title,
-      prompt: q.text,
-      user_answer: ans
-    });
-
-    if (tg && typeof tg.sendData === "function") {
-      tg.sendData(payload);
-      tg.close();
-    }
-  }
-
-  function evaluateWfdLocally(originalSentence, userSentence) {
-    const origTrimmed = originalSentence.trim();
-    const userTrimmed = userSentence.trim();
-
-    const origHasPeriod = origTrimmed.endsWith('.');
-    const userHasPeriod = userTrimmed.endsWith('.');
-    const periodMissing = origHasPeriod && !userHasPeriod;
-
-    const origTokens = origTrimmed.split(/\s+/);
+    const origTokens = q.text.trim().split(/\s+/);
     const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:]/g, ''));
-    const userCleanWords = userTrimmed.split(/\s+/).map(w => w.replace(/[.,!?;:]/g, ''));
+    const userCleanWords = userText.split(/\s+/).map(w => w.replace(/[.,!?;:]/g, ''));
+    const periodMissing = q.text.trim().endsWith('.') && !userText.endsWith('.');
 
     let score = 0;
-    let markupHTML = "";
+    let markup = "";
 
-    origTokens.forEach((origToken, idx) => {
-      const targetWord = origCleanWords[idx];
-      let isCorrect = (idx === 0) 
-        ? userCleanWords.includes(targetWord) 
-        : userCleanWords.some(u => u.toLowerCase() === targetWord.toLowerCase());
+    origTokens.forEach((token, i) => {
+      const target = origCleanWords[i];
+      let isCorrect = (i === 0) 
+        ? userCleanWords.includes(target) 
+        : userCleanWords.some(u => u.toLowerCase() === target.toLowerCase());
 
-      if (idx === origTokens.length - 1 && periodMissing) isCorrect = false;
+      if (i === origTokens.length - 1 && periodMissing) isCorrect = false;
 
       if (isCorrect) {
         score++;
-        markupHTML += `<span class="wfd-word-correct">${origToken}</span> `;
+        markup += `<span class="wfd-word-correct">${token}</span> `;
       } else {
-        markupHTML += `<span class="wfd-word-missing">${origToken}</span> `;
+        markup += `<span class="wfd-word-missing">${token}</span> `;
       }
     });
 
     document.getElementById('wfdScoreBadge').innerText = `${score} / ${origTokens.length}`;
-    document.getElementById('wfdSentenceMarkup').innerHTML = markupHTML;
-    document.getElementById('wfdResultCard').style.display = 'flex';
+    document.getElementById('wfdSentenceDisplay').innerHTML = markup;
+    document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
+  /* Flashcard Engine */
   function renderFlashcard() {
     if (!academicVocab.length) return;
     const cardObj = academicVocab[currentCardIndex];
-    const cardLevel = leitnerData[currentCardIndex]?.box || 1;
-    
+    const box = leitnerData[currentCardIndex]?.box || 1;
+
     document.getElementById('activeCard').classList.remove('is-flipped');
     document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${academicVocab.length}`;
-    document.getElementById('boxLevel').innerText = `📦 Box Level: ${cardLevel}/5`;
-    
+    document.getElementById('boxLevel').innerText = `📦 Box Level: ${box}/5`;
     document.getElementById('frontWord').innerText = cardObj.word;
     document.getElementById('backPhonetic').innerText = cardObj.phonetic;
     document.getElementById('backPos').innerText = cardObj.pos;
@@ -834,12 +695,12 @@
   function answerCard(known) {
     if (!leitnerData[currentCardIndex]) leitnerData[currentCardIndex] = { box: 1 };
     leitnerData[currentCardIndex].box = known ? Math.min(5, leitnerData[currentCardIndex].box + 1) : 1;
-    localStorage.setItem('pteroom_leitner_data', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v2', JSON.stringify(leitnerData));
     currentCardIndex = (currentCardIndex + 1) % academicVocab.length;
     renderFlashcard();
   }
 
-  window.onload = loadAllData;
+  window.onload = initApp;
 </script>
 
 </body>
