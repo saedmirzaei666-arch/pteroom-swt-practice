@@ -143,6 +143,21 @@
       -webkit-overflow-scrolling: touch;
     }
 
+    .di-image-box {
+      display: none;
+      flex: 1;
+      min-height: 140px;
+      background: #fafbfc;
+      border: 1px solid #dbe2e8;
+      padding: 8px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .di-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
     textarea {
       flex: 1;
       min-height: 100px;
@@ -157,7 +172,6 @@
     }
     textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
     
-    /* WFD Result Box */
     .wfd-result-card {
       display: none;
       flex-direction: column;
@@ -221,7 +235,6 @@
     }
     .btn:hover { background: #004494; }
 
-    /* Flashcard Styles */
     .flashcard-wrapper {
       display: none;
       flex-direction: column;
@@ -312,9 +325,10 @@
   <div class="nav-tabs">
     <button class="tab-btn active" id="tabSWT" onclick="switchTask('SWT')">SWT</button>
     <button class="tab-btn" id="tabWE" onclick="switchTask('WE')">WE</button>
+    <button class="tab-btn" id="tabDI" onclick="switchTask('DI')">🎙 DI</button>
     <button class="tab-btn" id="tabSST" onclick="switchTask('SST')">SST</button>
     <button class="tab-btn" id="tabWFD" onclick="switchTask('WFD')">WFD</button>
-    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Flashcards</button>
+    <button class="tab-btn" id="tabFlash" onclick="switchTask('FLASH')">🗂 Vocab</button>
   </div>
 
   <div class="header">
@@ -322,9 +336,7 @@
     <span class="timer" id="timer">Time Left: 10:00</span>
   </div>
 
-  <!-- Main Tasks Container -->
   <div class="task-container" id="taskContainer">
-    <!-- WFD Category Filter Bar -->
     <div class="wfd-category-bar" id="wfdCategoryBar">
       <button class="cat-btn active" id="wfdCatAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
       <button class="cat-btn" id="wfdCatPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
@@ -341,11 +353,14 @@
       </audio>
     </div>
 
-    <div class="prompt-box" id="promptText">Loading prompt...</div>
+    <div class="prompt-box" id="promptText">Loading questions...</div>
+
+    <div class="di-image-box" id="diImageBox">
+      <img id="diImageElem" src="" alt="Describe Image">
+    </div>
 
     <textarea id="answerInput" placeholder="Write your response here..." oninput="calcWords()"></textarea>
 
-    <!-- WFD Instant Result Box -->
     <div class="wfd-result-card" id="wfdResultCard">
       <div class="wfd-score-header">
         <span>📊 Score Evaluation:</span>
@@ -361,31 +376,30 @@
     </div>
   </div>
 
-  <!-- Flashcards Container -->
   <div class="flashcard-wrapper" id="flashcardContainer">
     <div class="leitner-progress">
-      <span id="cardCounter">Card 1 of 8</span>
+      <span id="cardCounter">Loading cards...</span>
       <span id="boxLevel">📦 Box Level: 1/5</span>
     </div>
 
     <div class="card-scene" onclick="flipCard()">
       <div class="card" id="activeCard">
         <div class="card-face card-front">
-          <div class="word-title" id="frontWord">Mitigate</div>
+          <div class="word-title" id="frontWord">Loading...</div>
           <div class="tap-hint">👆 Tap to view meaning</div>
         </div>
         <div class="card-face card-back">
           <div class="meta-row">
-            <span class="pronunciation" id="backPhonetic">/ˈmɪt.ɪ.ɡeɪt/</span>
-            <span class="pos" id="backPos">verb</span>
+            <span class="pronunciation" id="backPhonetic"></span>
+            <span class="pos" id="backPos"></span>
           </div>
-          <div class="persian-meaning" id="backMeaning">کاهش دادن، تعدیل کردن، تسکین دادن</div>
+          <div class="persian-meaning" id="backMeaning"></div>
           
           <div class="section-title">Collocations:</div>
-          <div class="collocations" id="backCollocations">• mitigate the risk<br>• mitigate environmental damage</div>
+          <div class="collocations" id="backCollocations"></div>
           
           <div class="section-title">Example Sentence:</div>
-          <div class="example-sentence" id="backSentence">Governments must implement stringent policies to mitigate the adverse impacts of pollution.</div>
+          <div class="example-sentence" id="backSentence"></div>
         </div>
       </div>
     </div>
@@ -403,108 +417,15 @@
   let timerInterval = null;
   let sec = 600;
 
-  // 1. SWT Questions Dataset
-  const swtQuestions = [
-    { id: "#36", title: "#36 Human Remains", text: "Human remains are a fundamental part of the archaeological record, offering unique insights into the lives of individuals and populations in the past. Specialized methods of recovery and interpretation are required." },
-    { id: "#39", title: "#39 Malaysia Tourism", text: "Malaysia is launching its biggest ever tourism campaign in an effort to lure 20 million visitors here this year. Tourism is the Southeast Asian nation's second-largest source of foreign exchange after exports." },
-    { id: "#40", title: "#40 Small Wars", text: "In such an environment, warfare is no longer purely directed against the military potential of adversarial states. Both governmental and non-governmental actors prefer to use force in a way characterized as small wars." }
-  ];
-
-  // 2. WE Questions Dataset
-  const weQuestions = [
-    { id: "#WE1", title: "#1 Mass Media & Public Perception", text: "Mass media has a powerful influence on shaping public opinion and perceptions. Do you agree or disagree with the notion that news outlets manipulate public thinking? Support your position with reasons and relevant examples." },
-    { id: "#WE2", title: "#2 Climate Change Responsibility", text: "Some people believe that individual actions are negligible in combating climate change and that only governments and large corporations can solve environmental issues. Discuss both views and give your opinion." },
-    { id: "#WE3", title: "#3 Artificial Intelligence & Employment", text: "With advancements in artificial intelligence and automation, many traditional jobs are predicted to disappear. Do the benefits of AI outweigh the societal drawbacks of workforce displacement?" }
-  ];
-
-  // 3. SST Questions Dataset
-  const sstQuestions = [
-    {
-      id: "#136",
-      title: "#136 Recycling Water",
-      audioUrl: "sst1.mp3",
-      text: "Why do we need to recycle water? Because we don’t generate much new water. Chemically the process of generating water is not a process that happens a lot anymore."
-    },
-    {
-      id: "#240",
-      title: "#240 Stock Market and Business",
-      audioUrl: "sst2.mp3",
-      text: "The stock market is where investors connect to buy and sell investments, most commonly stocks, which are shares of ownership in a public company."
-    }
-  ];
-
-  // 4. Complete WFD Questions Dataset (Obfuscated Question Numbers)
-  const wfdQuestions = [
-    { id: "#WFD1", title: "Question #1", audioUrl: "1.mp3", text: "The artists and conservative politicians follow their own rules in politics.", isPrediction: true },
-    { id: "#WFD2", title: "Question #2", audioUrl: "10.mp3", text: "The department will continue to offer three new scholarships next year.", isPrediction: true },
-    { id: "#WFD3", title: "Question #3", audioUrl: "104.mp3", text: "Economic problems caused a big rise in unemployment.", isPrediction: true },
-    { id: "#WFD4", title: "Question #4", audioUrl: "105.mp3", text: "The economic strength of early Roman Republic will be examined.", isPrediction: true },
-    { id: "#WFD5", title: "Question #5", audioUrl: "11.mp3", text: "Dogs are able to provide assistance to people with disabilities.", isPrediction: true },
-    { id: "#WFD6", title: "Question #6", audioUrl: "113.mp3", text: "A good research assistant is not afraid to ask questions.", isPrediction: true },
-    { id: "#WFD7", title: "Question #7", audioUrl: "115.mp3", text: "Every student has both the right and the ability to succeed.", isPrediction: true },
-    { id: "#WFD8", title: "Question #8", audioUrl: "118.mp3", text: "Experts are now able to forecast weather over much longer periods.", isPrediction: true },
-    { id: "#WFD9", title: "Question #9", audioUrl: "12.mp3", text: "Popular culture is now a serious subject of academic inquiry.", isPrediction: true },
-    { id: "#WFD10", title: "Question #10", audioUrl: "124.mp3", text: "Find out how to get your resources before your research.", isPrediction: true },
-    { id: "#WFD11", title: "Question #11", audioUrl: "13.mp3", text: "The reading list will be available before the course begins.", isPrediction: true },
-    { id: "#WFD12", title: "Question #12", audioUrl: "136.mp3", text: "He landed his job in a very prestigious law firm.", isPrediction: true },
-    { id: "#WFD13", title: "Question #13", audioUrl: "14.mp3", text: "Books for children often contain many beautiful illustrations.", isPrediction: true },
-    { id: "#WFD14", title: "Question #14", audioUrl: "142.mp3", text: "The typical part of this course involves the study of society.", isPrediction: true },
-    { id: "#WFD15", title: "Question #15", audioUrl: "15.mp3", text: "The blue whale is the largest animal that ever lived.", isPrediction: true },
-    { id: "#WFD16", title: "Question #16", audioUrl: "16.mp3", text: "Free Campus Tour runs daily during summer for prospective students.", isPrediction: true },
-    { id: "#WFD17", title: "Question #17", audioUrl: "17.mp3", text: "Interim grades will be posted on the board outside the student lounge.", isPrediction: true },
-    { id: "#WFD18", title: "Question #18", audioUrl: "18.mp3", text: "A regional assembly was moved to the devolution of power.", isPrediction: true },
-    { id: "#WFD19", title: "Question #19", audioUrl: "19.mp3", text: "I think it's one of the best things I've done, really.", isPrediction: true },
-    { id: "#WFD20", title: "Question #20", audioUrl: "2.mp3", text: "Please confirm that you have received the textbook.", isPrediction: true },
-    { id: "#WFD21", title: "Question #21", audioUrl: "20.mp3", text: "The celebrated theory is still the source of great controversy.", isPrediction: false },
-    { id: "#WFD22", title: "Question #22", audioUrl: "25.mp3", text: "A good scientific paper should have clear arguments.", isPrediction: false },
-    { id: "#WFD23", title: "Question #23", audioUrl: "26.mp3", text: "A massive accumulation of data was converted into a coherent argument.", isPrediction: false },
-    { id: "#WFD24", title: "Question #24", audioUrl: "27.mp3", text: "Today, a number of students have volunteer jobs.", isPrediction: false },
-    { id: "#WFD25", title: "Question #25", audioUrl: "29.mp3", text: "The educational level is found to be related to social and economic background.", isPrediction: false },
-    { id: "#WFD26", title: "Question #26", audioUrl: "3.mp3", text: "The change of policy will have a great effect on society.", isPrediction: false },
-    { id: "#WFD27", title: "Question #27", audioUrl: "31.mp3", text: "A very basic feature of computing would be counting and calculating.", isPrediction: false },
-    { id: "#WFD28", title: "Question #28", audioUrl: "35.mp3", text: "Students who study environmental biology need to do field work.", isPrediction: false },
-    { id: "#WFD29", title: "Question #29", audioUrl: "36.mp3", text: "The posters are on display at the larger lecture theater.", isPrediction: false },
-    { id: "#WFD30", title: "Question #30", audioUrl: "37.mp3", text: "Affordable housing is an important issue for all members of society.", isPrediction: false },
-    { id: "#WFD31", title: "Question #31", audioUrl: "39.mp3", text: "All answers must be thoroughly researched and supported by relevant theories.", isPrediction: false },
-    { id: "#WFD32", title: "Question #32", audioUrl: "4.mp3", text: "You will acquire many skills during your academic studies.", isPrediction: false },
-    { id: "#WFD33", title: "Question #33", audioUrl: "40.mp3", text: "All dissertations must be accompanied by a submission form.", isPrediction: false },
-    { id: "#WFD34", title: "Question #34", audioUrl: "41.mp3", text: "The island is located at the south end of the bay.", isPrediction: false },
-    { id: "#WFD35", title: "Question #35", audioUrl: "47.mp3", text: "Two drops of the solution were heated in a test tube.", isPrediction: false },
-    { id: "#WFD36", title: "Question #36", audioUrl: "49.mp3", text: "Our view is that all the educational reforms have been inadequately implemented.", isPrediction: false },
-    { id: "#WFD37", title: "Question #37", audioUrl: "5.mp3", text: "Graduates from this course typically pursue careers in the financial sector.", isPrediction: false },
-    { id: "#WFD38", title: "Question #38", audioUrl: "51.mp3", text: "Although sustainable development is not easy, it is an unavoidable responsibility.", isPrediction: false },
-    { id: "#WFD39", title: "Question #39", audioUrl: "56.mp3", text: "An architect requires problem-solving skills and an eye for design.", isPrediction: false },
-    { id: "#WFD40", title: "Question #40", audioUrl: "58.mp3", text: "And in that regard, as well as in other regards, it stands as an important contribution.", isPrediction: false },
-    { id: "#WFD41", title: "Question #41", audioUrl: "6.mp3", text: "The features provide the same explanation of the problem.", isPrediction: false },
-    { id: "#WFD42", title: "Question #42", audioUrl: "7.mp3", text: "The results of the study underscore the importance of the discoveries from early detection.", isPrediction: false },
-    { id: "#WFD43", title: "Question #43", audioUrl: "76.mp3", text: "Building trust is not something that can be achieved overnight.", isPrediction: false },
-    { id: "#WFD44", title: "Question #44", audioUrl: "78.mp3", text: "Career opportunities in this field are quite limited.", isPrediction: false },
-    { id: "#WFD45", title: "Question #45", audioUrl: "8.mp3", text: "The program must be conducted in abidance with general regulations.", isPrediction: false },
-    { id: "#WFD46", title: "Question #46", audioUrl: "81.mp3", text: "Certain scientific principles must be learned verbally or by a logical deduction.", isPrediction: false },
-    { id: "#WFD47", title: "Question #47", audioUrl: "83.mp3", text: "Please click the logo above to enter the site.", isPrediction: false },
-    { id: "#WFD48", title: "Question #48", audioUrl: "86.mp3", text: "Clinical placements in nursing prepare students for professional practice.", isPrediction: false },
-    { id: "#WFD49", title: "Question #49", audioUrl: "87.mp3", text: "Collaboration between departments is a feature of successful companies.", isPrediction: false },
-    { id: "#WFD50", title: "Question #50", audioUrl: "9.mp3", text: "The undergraduates need some specific sources to analyze a program.", isPrediction: false },
-    { id: "#WFD51", title: "Question #51", audioUrl: "90.mp3", text: "Students are required to have an undergraduate degree in biology to be enrolled in this course.", isPrediction: false },
-    { id: "#WFD52", title: "Question #52", audioUrl: "91.mp3", text: "Conferences ought to be always scheduled two weeks in advance.", isPrediction: false },
-    { id: "#WFD53", title: "Question #53", audioUrl: "92.mp3", text: "Consumer confidence has a direct influence on sales.", isPrediction: false },
-    { id: "#WFD54", title: "Question #54", audioUrl: "94.mp3", text: "Convincing evidence to support this theory is hard to obtain.", isPrediction: false }
-  ];
-
-  // 5. Flashcards Academic Vocab
-  const academicVocab = [
-    { word: "Mitigate", phonetic: "/ˈmɪt.ɪ.ɡeɪt/", pos: "Verb", meaning: "کاهش دادن، تعدیل کردن، تسکین دادن", collocations: ["mitigate the risk", "mitigate environmental damage"], sentence: "Governments must implement stringent policies to mitigate the adverse impacts of pollution." },
-    { word: "Detrimental", phonetic: "/ˌdet.rɪˈmen.təl/", pos: "Adjective", meaning: "مضر، زیان‌آور، آسیب‌رسان", collocations: ["detrimental effect", "detrimental impact on health"], sentence: "Excessive screen time can have a detrimental effect on cognitive development." },
-    { word: "Ubiquitous", phonetic: "/juːˈbɪk.wɪ.təs/", pos: "Adjective", meaning: "همه‌جا حاضر، فراگیر، بسیار متداول", collocations: ["ubiquitous presence", "become ubiquitous"], sentence: "Smartphones have become ubiquitous in almost every aspect of contemporary life." },
-    { word: "Exacerbate", phonetic: "/ɪɡˈzæs.ə.beɪt/", pos: "Verb", meaning: "وخیم‌تر کردن، تشدید کردن (مشکل یا بیماری)", collocations: ["exacerbate the problem", "exacerbate tension"], sentence: "Unplanned urbanization will inevitably exacerbate the existing housing crisis." }
-  ];
+  let swtQuestions = [];
+  let weQuestions = [];
+  let diQuestions = [];
+  let sstQuestions = [];
+  let wfdQuestions = [];
+  let academicVocab = [];
 
   let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_data')) || {};
   let currentCardIndex = 0;
-
-  academicVocab.forEach((v, idx) => {
-    if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
-  });
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -512,6 +433,34 @@
     tg.expand();
     if (tg.requestFullscreen) tg.requestFullscreen();
     if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+  }
+
+  async function loadAllData() {
+    try {
+      const [resSWT, resWE, resDI, resSST, resWFD, resFlash] = await Promise.all([
+        fetch('data/swt_questions.json').then(r => r.json()),
+        fetch('data/we_questions.json').then(r => r.json()),
+        fetch('data/di_questions.json').then(r => r.json()),
+        fetch('data/sst_questions.json').then(r => r.json()),
+        fetch('data/wfd_questions.json').then(r => r.json()),
+        fetch('data/flashcards.json').then(r => r.json())
+      ]);
+
+      swtQuestions = resSWT;
+      weQuestions = resWE;
+      diQuestions = resDI;
+      sstQuestions = resSST;
+      wfdQuestions = resWFD;
+      academicVocab = resFlash;
+
+      academicVocab.forEach((v, idx) => {
+        if (!leitnerData[idx]) leitnerData[idx] = { box: 1 };
+      });
+
+      switchTask('SWT');
+    } catch (err) {
+      document.getElementById('promptText').innerText = "⚠️ Error loading datasets. Please verify JSON files in /data.";
+    }
   }
 
   function startTimer(duration) {
@@ -531,11 +480,10 @@
 
   function switchTask(task) {
     currentTask = task;
-    document.getElementById('tabSWT').className = task === 'SWT' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabWE').className = task === 'WE' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabSST').className = task === 'SST' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabWFD').className = task === 'WFD' ? 'tab-btn active' : 'tab-btn';
-    document.getElementById('tabFlash').className = task === 'FLASH' ? 'tab-btn active' : 'tab-btn';
+    ['SWT', 'WE', 'DI', 'SST', 'WFD', 'Flash'].forEach(t => {
+      const btn = document.getElementById('tab' + t);
+      if (btn) btn.className = (task === t.toUpperCase()) ? 'tab-btn active' : 'tab-btn';
+    });
     
     const taskContainer = document.getElementById('taskContainer');
     const flashContainer = document.getElementById('flashcardContainer');
@@ -543,6 +491,8 @@
     const audioSec = document.getElementById('audioSection');
     const audioPl = document.getElementById('audioPlayer');
     const promptBox = document.getElementById('promptText');
+    const diImgBox = document.getElementById('diImageBox');
+    const answerInput = document.getElementById('answerInput');
     const wfdResultCard = document.getElementById('wfdResultCard');
     const wfdCategoryBar = document.getElementById('wfdCategoryBar');
     const submitBtn = document.getElementById('submitBtn');
@@ -554,6 +504,7 @@
       flashContainer.style.display = 'flex';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
+      diImgBox.style.display = 'none';
       audioPl.pause();
       if (timerInterval) clearInterval(timerInterval);
       timerElem.innerText = "Study Mode";
@@ -564,40 +515,62 @@
 
     taskContainer.style.display = 'flex';
     flashContainer.style.display = 'none';
-    promptBox.style.display = 'block';
 
     if (task === 'SWT') {
+      promptBox.style.display = 'block';
+      diImgBox.style.display = 'none';
+      answerInput.style.display = 'block';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
       audioPl.pause();
       document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Written Text";
-      document.getElementById('answerInput').placeholder = "Write your single sentence summary (5-75 words)...";
+      answerInput.placeholder = "Write your single sentence summary (5-75 words)...";
       submitBtn.innerText = "Submit Response";
       startTimer(600);
       loadOptions(swtQuestions);
     } else if (task === 'WE') {
+      promptBox.style.display = 'block';
+      diImgBox.style.display = 'none';
+      answerInput.style.display = 'block';
       audioSec.style.display = 'none';
       wfdCategoryBar.style.display = 'none';
       audioPl.pause();
-      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay";
-      document.getElementById('answerInput').placeholder = "Write your 200-300 word academic essay here...";
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Write Essay (August 2026)";
+      answerInput.placeholder = "Write your 200-300 word academic essay here...";
       submitBtn.innerText = "Submit Response";
       startTimer(1200);
       loadOptions(weQuestions);
+    } else if (task === 'DI') {
+      promptBox.style.display = 'none';
+      diImgBox.style.display = 'flex';
+      answerInput.style.display = 'block';
+      audioSec.style.display = 'none';
+      wfdCategoryBar.style.display = 'none';
+      audioPl.pause();
+      document.getElementById('taskHeading').innerText = "PTE ROOM • Describe Image (August 2026)";
+      answerInput.placeholder = "Type your transcription or describe the key features of the image here...";
+      submitBtn.innerText = "Submit Response";
+      startTimer(40);
+      loadOptions(diQuestions);
     } else if (task === 'SST') {
+      promptBox.style.display = 'block';
+      diImgBox.style.display = 'none';
+      answerInput.style.display = 'block';
       audioSec.style.display = 'block';
       wfdCategoryBar.style.display = 'none';
       document.getElementById('taskHeading').innerText = "PTE ROOM • Summarize Spoken Text";
-      document.getElementById('answerInput').placeholder = "Write your 50-70 word summary based on the lecture...";
+      answerInput.placeholder = "Write your 50-70 word summary based on the lecture...";
       submitBtn.innerText = "Submit Response";
       startTimer(600);
       loadOptions(sstQuestions);
     } else if (task === 'WFD') {
+      promptBox.style.display = 'none';
+      diImgBox.style.display = 'none';
+      answerInput.style.display = 'block';
       audioSec.style.display = 'block';
       wfdCategoryBar.style.display = 'flex';
-      promptBox.style.display = 'none';
       document.getElementById('taskHeading').innerText = "PTE ROOM • Write From Dictation";
-      document.getElementById('answerInput').placeholder = "Type the exact sentence you heard here...";
+      answerInput.placeholder = "Type the exact sentence you heard here...";
       submitBtn.innerText = "Check Answer";
       startTimer(60);
       filterWfdCategory(currentWfdCategory);
@@ -631,6 +604,7 @@
   function onSelectQuestion() {
     let list = swtQuestions;
     if (currentTask === 'WE') list = weQuestions;
+    if (currentTask === 'DI') list = diQuestions;
     if (currentTask === 'SST') list = sstQuestions;
     if (currentTask === 'WFD') {
       list = currentWfdCategory === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
@@ -642,7 +616,9 @@
     
     document.getElementById('wfdResultCard').style.display = 'none';
 
-    if (currentTask === 'SST') {
+    if (currentTask === 'DI') {
+      document.getElementById('diImageElem').src = "di_images/" + q.image;
+    } else if (currentTask === 'SST') {
       document.getElementById('promptText').innerText = "🎧 Audio Lecture Active: Please listen to the recording above and write your summary.";
       const audioPl = document.getElementById('audioPlayer');
       audioPl.src = q.audioUrl;
@@ -669,6 +645,7 @@
     let ans = document.getElementById('answerInput').value.trim();
     let list = swtQuestions;
     if (currentTask === 'WE') list = weQuestions;
+    if (currentTask === 'DI') list = diQuestions;
     if (currentTask === 'SST') list = sstQuestions;
     if (currentTask === 'WFD') {
       list = currentWfdCategory === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
@@ -690,7 +667,7 @@
     let payload = JSON.stringify({
       task_type: currentTask,
       question_title: q.title,
-      prompt: q.text,
+      prompt: currentTask === 'DI' ? q.keywords.join(', ') : q.text,
       user_answer: ans
     });
 
@@ -700,7 +677,6 @@
     }
   }
 
-  // WFD Evaluation Engine: Relaxed case sensitivity for non-first words
   function evaluateWfdLocally(originalSentence, userSentence) {
     const origTrimmed = originalSentence.trim();
     const userTrimmed = userSentence.trim();
@@ -726,10 +702,8 @@
       let wordMatch = false;
 
       if (isFirstWord) {
-        // First word strictly requires exact case match (Capital letter required)
         wordMatch = userCleanWords.includes(targetWord);
       } else {
-        // Non-first words allow flexible case-insensitive matching
         wordMatch = userCleanWords.some(u => u.toLowerCase() === targetWord.toLowerCase());
       }
 
@@ -753,7 +727,6 @@
       warningNotice = "<div style='color:#ef4444; font-size:12px; font-weight:bold; margin-top:6px;'>⚠️ No answer provided.</div>";
     } else {
       let issues = [];
-      // Check first word capitalization specifically
       if (origCleanWords[0] && userCleanWords[0]) {
         if (userCleanWords[0].toLowerCase() === origCleanWords[0].toLowerCase() && userCleanWords[0] !== origCleanWords[0]) {
           issues.push("The first word of the sentence must start with a capital letter.");
@@ -773,6 +746,7 @@
   }
 
   function renderFlashcard() {
+    if (!academicVocab.length) return;
     const cardObj = academicVocab[currentCardIndex];
     const cardLevel = leitnerData[currentCardIndex]?.box || 1;
     
@@ -810,7 +784,7 @@
     renderFlashcard();
   }
 
-  window.onload = () => switchTask('SWT');
+  window.onload = loadAllData;
 </script>
 
 </body>
