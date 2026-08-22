@@ -356,6 +356,29 @@
       text-align: left;
     }
 
+    .wfd-action-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .btn-secondary:active { background: #334155; }
+
     .flashcard-box {
       display: flex;
       flex-direction: column;
@@ -715,8 +738,9 @@
         <div class="wfd-tips-container" id="wfdTipsContainer"></div>
       </div>
 
-      <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:2px;">
-        <button class="btn-primary" style="width:100%; padding:12px;" onclick="evaluateWfdAnswer()">Check Answer</button>
+      <div class="wfd-action-buttons">
+        <button class="btn-primary" style="flex: 2; padding: 12px;" onclick="evaluateWfdAnswer()">Check Answer</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextWfdQuestion()">Next ⏭</button>
       </div>
     </div>
   </div>
@@ -786,8 +810,8 @@
   let wfdTimerInterval = null;
   let wfdElapsedSeconds = 0;
 
-  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v12')) || {};
-  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v12')) || { date: "", newCardsSeen: 0 };
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v13')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v13')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -965,6 +989,17 @@
     audio.load();
   }
 
+  function nextWfdQuestion() {
+    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const select = document.getElementById('wfdSelect');
+    let nextIdx = parseInt(select.value) + 1;
+    if (nextIdx >= list.length) {
+      nextIdx = 0;
+    }
+    select.value = nextIdx;
+    onSelectWfd();
+  }
+
   function calcWfdWords() {
     const val = document.getElementById('wfdInput').value.trim();
     const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
@@ -982,13 +1017,14 @@
       return;
     }
 
+    stopWfdTimer();
+
     const origTokens = q.text.trim().split(/\s+/);
     const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
     
     const userTokens = userRawText.split(/\s+/).filter(Boolean);
     const userCleanWords = userTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
 
-    // Accurate Multi-occurrence Frequency Tracker
     let userPool = [...userCleanWords.map(w => w.toLowerCase())];
     let score = 0;
     let markup = "";
@@ -1006,23 +1042,19 @@
       }
     });
 
-    // Formatting Warnings
     let tips = [];
 
-    // 1. Capitalization check
     const firstOrigChar = origCleanWords[0].charAt(0);
     const firstUserChar = userCleanWords[0] ? userCleanWords[0].charAt(0) : "";
     if (firstOrigChar === firstOrigChar.toUpperCase() && firstUserChar !== firstUserChar.toUpperCase()) {
       tips.push("⚠️ <b>Capitalization Tip:</b> Remember to capitalize the first letter of the sentence.");
     }
 
-    // 2. Full stop / period check
     const endsWithPeriod = userRawText.endsWith('.');
     if (!endsWithPeriod) {
       tips.push("⚠️ <b>Punctuation Tip:</b> Don't forget to put a full stop (<b>.</b>) at the end of the sentence.");
     }
 
-    // Render Results
     document.getElementById('wfdScoreBadge').innerText = `${score} / ${origTokens.length}`;
     document.getElementById('wfdSentenceDisplay').innerHTML = markup;
     
@@ -1056,7 +1088,7 @@
     if (dailyStats.date !== today) {
       dailyStats.date = today;
       dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v12', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v13', JSON.stringify(dailyStats));
     }
   }
 
@@ -1065,14 +1097,12 @@
     
     sessionQueue = [];
     
-    // Add review cards
     academicVocab.forEach(card => {
       if (leitnerData[card.id] && leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
         sessionQueue.push(card);
       }
     });
     
-    // Add new Box 1 cards up to remaining daily quota
     let remainingQuota = selectedDailyQuota - dailyStats.newCardsSeen;
     let addedNew = 0;
     
@@ -1134,11 +1164,11 @@
     
     if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
       dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v12', JSON.stringify(dailyStats));
+      localStorage.setItem('pteroom_daily_stats_v13', JSON.stringify(dailyStats));
     }
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v12', JSON.stringify(leitnerData));
+    localStorage.setItem('pteroom_leitner_v13', JSON.stringify(leitnerData));
     
     currentCardIndex++;
     renderFlashcard();
