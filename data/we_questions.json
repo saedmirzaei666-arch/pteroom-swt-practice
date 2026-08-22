@@ -1,0 +1,236 @@
+[
+  {
+    "id": "#17",
+    "title": "#17 Formal Written Examination",
+    "text": "Many education systems assess students' learning using formal written examinations. Those kinds of exams are a valid method. To what extent do you agree or disagree? Give examples with your own experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#39",
+    "title": "#39 Right Balance",
+    "text": "Nowadays, it is increasingly more difficult to maintain the right balance between work and the other aspects of one's life, such as leisure pursuits with family members. How important do you think this balance is and what are the reasons why some people think that this is hard to achieve?",
+    "isPrediction": true
+  },
+  {
+    "id": "#63",
+    "title": "#63 Mark Deduction",
+    "text": "Some universities deduct marks from students' work if it is given late. What is your opinion? What other actions do you recommend?",
+    "isPrediction": true
+  },
+  {
+    "id": "#71",
+    "title": "#71 Extending Life Expectancy",
+    "text": "Medical technology is responsible for increasing the average life expectancy. Do you think it is a curse or a blessing?",
+    "isPrediction": true
+  },
+  {
+    "id": "#75",
+    "title": "#75 Personal Life",
+    "text": "Nowadays, people who devote too much time to their job leave very little time for their personal and private life. How widespread is the problem? What problem will this shortage of time cause?",
+    "isPrediction": true
+  },
+  {
+    "id": "#76",
+    "title": "#76 Facing Issues",
+    "text": "The world's governments and international organizations confront a multitude of global problems. Which do you think is the most pressing problem for the inhabitants of our planet and give the solution?",
+    "isPrediction": true
+  },
+  {
+    "id": "#77",
+    "title": "#77 Studying Theater",
+    "text": "What are the problems and the benefits for high school students of studying plays and other works for theatre that were written centuries ago? Use your own experience to discuss it.",
+    "isPrediction": true
+  },
+  {
+    "id": "#90",
+    "title": "#90 Age Limit",
+    "text": "Age restrictions are placed on many activities. It is believed that people should not do things until they reach the right ages, such as getting married, driving, voting, buying certain products, and doing particular things. Give an example, state which minimum age you think it should be and share your own experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#5",
+    "title": "#5 Transportation Networks",
+    "text": "With cities expanding, governments should look forward to creating better networks of public transport available for everyone rather than building more roads for vehicle owning population. To what extent do you agree or disagree?",
+    "isPrediction": true
+  },
+  {
+    "id": "#9",
+    "title": "#9 Global Issue",
+    "text": "Climate change is a concerning global issue. Who has the main responsibility to take action to solve this problem, governments, large companies, or individuals?",
+    "isPrediction": true
+  },
+  {
+    "id": "#24",
+    "title": "#24 Information Revolution",
+    "text": "The information revolution brought about by modern mass communications has both positive and negative consequences for individuals and society. To what extent do you agree with this statement? Give the reason with your own experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#30",
+    "title": "#30 Shopping Malls",
+    "text": "In many towns and cities large shopping malls are replacing small local shops. Some people say that this is a positive development. To what extent do you agree?",
+    "isPrediction": true
+  },
+  {
+    "id": "#35",
+    "title": "#35 Mass Media",
+    "text": "The mass media, such as TV, radio and newspapers, have an influence on people, particularly on younger generations. It plays a pivotal role in shaping the opinions of people, especially teenagers and young people. To what extent do you agree with this? Please give examples.",
+    "isPrediction": true
+  },
+  {
+    "id": "#43",
+    "title": "#43 Legal Responsibility",
+    "text": "Should parents be held legally responsible for the actions of their children? Support your opinion from your study, observations or experiences.",
+    "isPrediction": true
+  },
+  {
+    "id": "#46",
+    "title": "#46 Worker Decision-Making",
+    "text": "In some companies, employers involve workers in the decision-making process about products and services. What are the advantages and disadvantages of such a policy?",
+    "isPrediction": true
+  },
+  {
+    "id": "#56",
+    "title": "#56 Experiential Learning",
+    "text": "Some people point that experiential learning (i.e. learning by doing) can work well in formal education. However, others think a traditional form of teaching is the best. Do you think experiential learning can work well in high schools or colleges?",
+    "isPrediction": true
+  },
+  {
+    "id": "#72",
+    "title": "#72 Building Effects",
+    "text": "Do you think the design of buildings affects, either positively or negatively, where people live and work?",
+    "isPrediction": true
+  },
+  {
+    "id": "#86",
+    "title": "#86 Digital Materials",
+    "text": "With the increase of digital media available online, the role of the library has become obsolete. Universities should only procure new digital media rather than constantly update textbooks. Discuss both the advantages and disadvantages of this position and give your own point of view.",
+    "isPrediction": true
+  },
+  {
+    "id": "#102",
+    "title": "#102 Life Experience",
+    "text": "Some people argue that experience is the best teacher, saying life experiences teach people more effectively than books or formal education can. How far do you agree with this statement? Give your reason or provide your personal experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#106",
+    "title": "#106 Effective Study",
+    "text": "Effective study requires time, comfort and peace. It is impossible to combine a student's learning with employment because one may distract the other. To what extent do you think the statements are realistic? Give your opinion with examples.",
+    "isPrediction": true
+  },
+  {
+    "id": "#155",
+    "title": "#155 Studying Climate Change",
+    "text": "Imagine you have been assigned on the study of climate change. Which area of climate change will you focus on and why? Use examples.",
+    "isPrediction": true
+  },
+  {
+    "id": "#195",
+    "title": "#195 Marketing in Companies",
+    "text": "Should marketing in companies which produce consumer goods, like food and clothing, place emphasis on the reputation of the company or short-term strategies like discounts and special offers? Why?",
+    "isPrediction": true
+  },
+  {
+    "id": "#149",
+    "title": "#149 Law Effect",
+    "text": "Some people think human behavior can be changed by laws, while others think laws have little effect. What is your opinion?",
+    "isPrediction": true
+  },
+  {
+    "id": "#156",
+    "title": "#156 Tourism's Pros and Cons",
+    "text": "For a less developed country, the disadvantages of tourism are as great as the advantages. Please discuss this statement, and explain your opinion.",
+    "isPrediction": true
+  },
+  {
+    "id": "#69",
+    "title": "#69 Inventions",
+    "text": "Talk about an invention that you think beneficial or harmful.",
+    "isPrediction": true
+  },
+  {
+    "id": "#160",
+    "title": "#160 Television",
+    "text": "Television serves many useful functions. It helps people to relax. We can learn from television, and it can also be seen as a companion for the lonely. To what extent do you agree with this? Explain why with your own experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#162",
+    "title": "#162 Fewer Work Hours",
+    "text": "\"In the future, people will work fewer hours at their jobs than they do now.\" How far do you agree with the statement? Please support your opinion with your own experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#163",
+    "title": "#163 Celebrities' Privacy",
+    "text": "People who are famous entertainers or sportspeople should give up the right to privacy as this is the price of fame. To what extent do you agree/disagree with this point of view? Give your opinion with your experiences.",
+    "isPrediction": true
+  },
+  {
+    "id": "#166",
+    "title": "#166 Short Weeks",
+    "text": "In many countries unemployment among young people is a serious problem. One suggested solution is to shorten the working week. What do you think are the advantages and disadvantages? Do you think this policy should apply to just young workers or the whole workforce?",
+    "isPrediction": true
+  },
+  {
+    "id": "#170",
+    "title": "#170 Compulsory Learning",
+    "text": "Some people think learning a foreign language at school should be compulsory. To what extent do you agree with it? Use your experience or examples to support your viewpoint.",
+    "isPrediction": true
+  },
+  {
+    "id": "#171",
+    "title": "#171 Old or Modern Buildings",
+    "text": "Many countries spend large amounts of money on the restoration of historic buildings rather than on modern housing. To what extent do you agree or disagree with this analysis? What are advantages and disadvantages of this? Support your writing with your experience or examples.",
+    "isPrediction": true
+  },
+  {
+    "id": "#173",
+    "title": "#173 Harder Life",
+    "text": "It is harder for children to grow up in the 21st century than it was in the past. How far do you agree with this statement? Give your opinions.",
+    "isPrediction": true
+  },
+  {
+    "id": "#174",
+    "title": "#174 Wage Cap",
+    "text": "Many people say there should be a maximum wage for high-paying jobs as some people are paid too much. Do you support that? Can you give your point of view or your own experience?",
+    "isPrediction": true
+  },
+  {
+    "id": "#183",
+    "title": "#183 City or Countryside",
+    "text": "Some people prefer to live in cities, while some people prefer to live in the countryside. Which is better for you? Give your reasons or experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#184",
+    "title": "#184 Foreign Languages",
+    "text": "While artificial intelligence becomes so advanced, people can use computers to translate foreign languages. That makes learning a foreign language unnecessary. To what extent do you agree with it?",
+    "isPrediction": true
+  },
+  {
+    "id": "#261",
+    "title": "#261 Travel for Education",
+    "text": "Some believe the value of travel is highly overrated. 'One brilliant scholar never leaves the home bases.' To what extent do you agree that travel is not a necessary component of a quality education?",
+    "isPrediction": true
+  },
+  {
+    "id": "#159",
+    "title": "#159 Inventions",
+    "text": "In our technological world, the number of new inventions has been evolving daily. Please describe a new invention and determine whether it has a beneficial or detrimental impact on society.",
+    "isPrediction": true
+  },
+  {
+    "id": "#116",
+    "title": "#116 Public Transportation",
+    "text": "What are the advantages and problems of cheaper public transportation? Give your opinion from your own experience.",
+    "isPrediction": true
+  },
+  {
+    "id": "#124",
+    "title": "#124 Studying Abroad",
+    "text": "It is often argued that studying overseas is overrated. There are many scholars who study locally. To what extent do you agree with this?",
+    "isPrediction": true
+  }
+]
