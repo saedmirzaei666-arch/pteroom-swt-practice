@@ -115,7 +115,7 @@
     .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* Placement Test Styles */
+    /* Placement Test Styles - PTE Exam Replica */
     .placement-container {
       display: flex;
       flex-direction: column;
@@ -142,45 +142,117 @@
       align-items: center;
     }
     .passage-box {
-      font-size: 14px;
-      line-height: 2;
+      font-size: 14.5px;
+      line-height: 2.3;
       color: #f8fafc;
       direction: ltr;
       text-align: left;
       background: #0f172a;
-      padding: 12px 14px;
+      padding: 14px;
       border-radius: 10px;
       border: 1px solid #1e293b;
+      word-spacing: 1px;
     }
-    .fib-select {
+
+    /* Dropdown In-line (Size of a single word) */
+    .inline-select {
+      display: inline-block !important;
+      width: auto !important;
+      min-width: 90px !important;
+      max-width: 140px !important;
+      padding: 3px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      vertical-align: middle !important;
+      direction: ltr !important;
+      height: 32px !important;
+    }
+
+    /* Listening FIB Input In-line */
+    .inline-input {
+      display: inline-block !important;
+      width: 110px !important;
+      height: 30px !important;
+      padding: 2px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      direction: ltr !important;
+      text-align: center !important;
+      vertical-align: middle !important;
+    }
+    .inline-input:focus { border-color: #38bdf8 !important; }
+
+    /* Drag and Drop Zone & Word Bank */
+    .rfib-drop-zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 95px;
+      height: 32px;
+      padding: 2px 8px;
+      margin: 0 4px;
       background: #1e293b;
-      color: #38bdf8;
-      border: 1.5px solid #0284c7;
-      padding: 3px 8px;
+      border: 1.5px dashed #0284c7;
       border-radius: 6px;
       font-weight: 700;
-      font-size: 13px;
-      outline: none;
-      margin: 0 4px;
-      display: inline-block;
-      direction: ltr;
-    }
-    .fib-input {
-      background: #1e293b;
       color: #38bdf8;
-      border: 1.5px solid #0284c7;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 13px;
-      outline: none;
-      width: 110px;
-      margin: 0 4px;
-      display: inline-block;
-      direction: ltr;
-      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      font-size: 13.5px;
+      transition: all 0.2s;
     }
-    .fib-input:focus { border-color: #38bdf8; }
+    .rfib-drop-zone.filled {
+      border-style: solid;
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+    }
+    .rfib-word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      padding: 10px;
+      border-radius: 10px;
+      direction: ltr;
+      justify-content: flex-start;
+      margin-top: 6px;
+    }
+    .rfib-chip {
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      color: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .rfib-chip.selected {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
+      transform: scale(0.96);
+    }
+    .rfib-chip.used {
+      opacity: 0.25;
+      pointer-events: none;
+      border-style: dashed;
+    }
 
     .quiz-options {
       display: grid;
@@ -630,7 +702,7 @@
         <div class="hub-icon">📋</div>
         <div class="hub-text">
           <h3 style="color:#38bdf8;">آزمون تعیین سطح تخصصی</h3>
-          <p>ارزیابی Reading, Listening, Vocab & Writing با تحلیل نمره</p>
+          <p>شبیه‌ساز استاندارد ریدینگ، لیسنینگ و نگارش تحلیلی</p>
         </div>
       </div>
 
@@ -664,56 +736,55 @@
   <div class="view-screen" id="viewPlacement">
     <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
       
-      <!-- Section 1: R&W FIB (Modern Humans) -->
+      <!-- Section 1: R&W FIB (Dropdown) -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>📖 ۱. Reading & Writing: FIB (سوال ۴۴۴)</span>
-          <span style="font-size:11px; color:#94a3b8;">۶ نمره</span>
+          <span>📖 Reading & Writing: Fill in the Blanks</span>
         </div>
         <div class="passage-box">
           Modern humans are masters of multitasking. We eat while driving, watch TV while 
-          <select name="rw_a" class="fib-select" required>
-            <option value="">(A)</option>
+          <select name="rw_a" class="inline-select" required>
+            <option value="">Select...</option>
             <option value="volleying">volleying</option>
             <option value="studying">studying</option>
             <option value="couriering">couriering</option>
             <option value="lobbying">lobbying</option>
           </select>, 
           and of course talk on our cell phones while doing, well, 
-          <select name="rw_b" class="fib-select" required>
-            <option value="">(B)</option>
+          <select name="rw_b" class="inline-select" required>
+            <option value="">Select...</option>
             <option value="antonym">antonym</option>
             <option value="rpm">rpm</option>
             <option value="everything">everything</option>
             <option value="sen">sen</option>
           </select>. 
           How do we do it? A study in the July 16th issue of Neuron suggests that though we can train our brains to work faster as we juggle, we never 
-          <select name="rw_c" class="fib-select" required>
-            <option value="">(C)</option>
+          <select name="rw_c" class="inline-select" required>
+            <option value="">Select...</option>
             <option value="intramuscularly">intramuscularly</option>
             <option value="incorrigibly">incorrigibly</option>
             <option value="dispassionately">dispassionately</option>
             <option value="actually">actually</option>
           </select> 
           manage to do more than one thing at a time. Our brains aren't really built to handle the sort of 
-          <select name="rw_d" class="fib-select" required>
-            <option value="">(D)</option>
+          <select name="rw_d" class="inline-select" required>
+            <option value="">Select...</option>
             <option value="smear">smear</option>
             <option value="parallel">parallel</option>
             <option value="clientele">clientele</option>
             <option value="noel">noel</option>
           </select> 
           processing we think we're capable of. The good news is: studies have shown that extensive training can make us better at doing two things at once. But how? One theory is that with lots of 
-          <select name="rw_e" class="fib-select" required>
-            <option value="">(E)</option>
+          <select name="rw_e" class="inline-select" required>
+            <option value="">Select...</option>
             <option value="disservice">disservice</option>
             <option value="practice">practice</option>
             <option value="audits">audits</option>
             <option value="comforts">comforts</option>
           </select> 
           some routines become "automatic." And if we don't need to run every little thing past the part of the brain that spends time 
-          <select name="rw_f" class="fib-select" required>
-            <option value="">(F)</option>
+          <select name="rw_f" class="inline-select" required>
+            <option value="">Select...</option>
             <option value="dipping">dipping</option>
             <option value="gripping">gripping</option>
             <option value="deflecting">deflecting</option>
@@ -723,85 +794,43 @@
         </div>
       </div>
 
-      <!-- Section 2: R FIB (English Languages) -->
+      <!-- Section 2: R FIB (Interactive Drag/Click to Drop) -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>📖 ۲. Reading: FIB (سوال ۱۳۷)</span>
-          <span style="font-size:11px; color:#94a3b8;">۴ نمره</span>
+          <span>📖 Reading: Fill in the Blanks</span>
         </div>
-        <div style="font-size:12px; color:#94a3b8; direction:ltr; text-align:left;">Word Bank: rate / part / dominance / margin / twice / relation / more / reign</div>
         <div class="passage-box">
           With about one and a half billion non-native speakers, English is the world’s language. Such 
-          <select name="rfib_a" class="fib-select" required>
-            <option value="">(A)</option>
-            <option value="rate">rate</option>
-            <option value="part">part</option>
-            <option value="dominance">dominance</option>
-            <option value="margin">margin</option>
-            <option value="twice">twice</option>
-            <option value="relation">relation</option>
-            <option value="more">more</option>
-            <option value="reign">reign</option>
-          </select> 
+          <span class="rfib-drop-zone" id="dropA" onclick="handleZoneClick('A')"></span> 
           has its downside, of course. There are now about 6,800 languages left in the world, compared with perhaps 
-          <select name="rfib_b" class="fib-select" required>
-            <option value="">(B)</option>
-            <option value="rate">rate</option>
-            <option value="part">part</option>
-            <option value="dominance">dominance</option>
-            <option value="margin">margin</option>
-            <option value="twice">twice</option>
-            <option value="relation">relation</option>
-            <option value="more">more</option>
-            <option value="reign">reign</option>
-          </select> 
+          <span class="rfib-drop-zone" id="dropB" onclick="handleZoneClick('B')"></span> 
           that number back at the dawn of agriculture. Thanks in 
-          <select name="rfib_c" class="fib-select" required>
-            <option value="">(C)</option>
-            <option value="rate">rate</option>
-            <option value="part">part</option>
-            <option value="dominance">dominance</option>
-            <option value="margin">margin</option>
-            <option value="twice">twice</option>
-            <option value="relation">relation</option>
-            <option value="more">more</option>
-            <option value="reign">reign</option>
-          </select> 
+          <span class="rfib-drop-zone" id="dropC" onclick="handleZoneClick('C')"></span> 
           to the rise of uber-languages, most importantly English, the remaining languages are now dying at the 
-          <select name="rfib_d" class="fib-select" required>
-            <option value="">(D)</option>
-            <option value="rate">rate</option>
-            <option value="part">part</option>
-            <option value="dominance">dominance</option>
-            <option value="margin">margin</option>
-            <option value="twice">twice</option>
-            <option value="relation">relation</option>
-            <option value="more">more</option>
-            <option value="reign">reign</option>
-          </select> 
+          <span class="rfib-drop-zone" id="dropD" onclick="handleZoneClick('D')"></span> 
           of about one a fortnight.
         </div>
+        <div style="font-size:12px; color:#94a3b8; margin-top:2px;">💡 روی کلمه و سپس روی جای خالی کلیک کنید (یا کلمه را به داخل کادر بکشید):</div>
+        <div class="rfib-word-bank" id="rfibWordBank"></div>
       </div>
 
       <!-- Section 3: Listening FIB -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>🎧 ۳. Listening: Fill in the Blanks</span>
-          <span style="font-size:11px; color:#94a3b8;">۵ نمره</span>
+          <span>🎧 Listening: Fill in the Blanks</span>
         </div>
         <div class="audio-wrapper">
           <audio controls src="determination.mp3"></audio>
         </div>
         <div class="passage-box">
-          And an emotion consists of a very well <input type="text" name="lfib_1" class="fib-input" placeholder="(1)" required> set of alterations in the body that has, as a general purpose, making life more survivable by taking care of a danger, of taking care of an opportunity, either/or, or something in between. And it’s something that is set in our <input type="text" name="lfib_2" class="fib-input" placeholder="(2)" required> and that we all have with a certain <input type="text" name="lfib_3" class="fib-input" placeholder="(3)" required> nature that is modified by our experience so individually we have variations on the pattern. But in <input type="text" name="lfib_4" class="fib-input" placeholder="(4)" required>, your emotion of joy and mine are going to be extremely similar. We may express them physically slightly differently, and it’s of course graded depending on the circumstance, but the essence of the process is going to be the same, unless one of us is not <input type="text" name="lfib_5" class="fib-input" placeholder="(5)" required> well put together and is missing something, otherwise it’s going to be the same.
+          And an emotion consists of a very well <input type="text" name="lfib_1" class="inline-input" placeholder="..." required> set of alterations in the body that has, as a general purpose, making life more survivable by taking care of a danger, of taking care of an opportunity, either/or, or something in between. And it’s something that is set in our <input type="text" name="lfib_2" class="inline-input" placeholder="..." required> and that we all have with a certain <input type="text" name="lfib_3" class="inline-input" placeholder="..." required> nature that is modified by our experience so individually we have variations on the pattern. But in <input type="text" name="lfib_4" class="inline-input" placeholder="..." required>, your emotion of joy and mine are going to be extremely similar. We may express them physically slightly differently, and it’s of course graded depending on the circumstance, but the essence of the process is going to be the same, unless one of us is not <input type="text" name="lfib_5" class="inline-input" placeholder="..." required> well put together and is missing something, otherwise it’s going to be the same.
         </div>
       </div>
 
       <!-- Section 4: Vocab & Spelling -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>🔤 ۴. املا (Spelling)</span>
-          <span style="font-size:11px; color:#94a3b8;">۱ نمره</span>
+          <span>🔤 Spelling & Vocabulary</span>
         </div>
         <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left;">Choose the word with the correct spelling:</div>
         <div class="quiz-options">
@@ -810,14 +839,8 @@
           <label class="opt-label"><input type="radio" name="spell_q" value="Acommodation"> Acommodation</label>
           <label class="opt-label"><input type="radio" name="spell_q" value="Acomodation"> Acomodation</label>
         </div>
-      </div>
 
-      <div class="quiz-card">
-        <div class="quiz-title">
-          <span>📚 ۵. واژگان پیشرفته (Vocabulary)</span>
-          <span style="font-size:11px; color:#94a3b8;">۱ نمره</span>
-        </div>
-        <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left;">The government announced strict measures to _______ the rapid spread of the disease.</div>
+        <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left; margin-top:8px;">The government announced strict measures to _______ the rapid spread of the disease.</div>
         <div class="quiz-options">
           <label class="opt-label"><input type="radio" name="vocab_q" value="curb" required> curb</label>
           <label class="opt-label"><input type="radio" name="vocab_q" value="induce"> induce</label>
@@ -829,19 +852,19 @@
       <!-- Section 5: Short Writing Task -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>✍️ ۶. بخش نگارش تحلیلی (Short Writing)</span>
-          <span id="writingWordCount" style="font-size:11px; color:#38bdf8; font-weight:800;">تعداد کلمات: ۰ (حداقل ۵۰)</span>
+          <span>✍️ Short Writing Task</span>
+          <span id="writingWordCount" style="font-size:11.5px; color:#38bdf8; font-weight:800; direction:ltr;">Word Count: 0</span>
         </div>
-        <div style="font-size:13px; line-height:1.7; color:#cbd5e1; direction:ltr; text-align:left;">
+        <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1; direction:ltr; text-align:left;">
           <b>Topic:</b> Some people believe that artificial intelligence (AI) will completely replace human teachers in the future, while others think traditional classrooms are irreplaceable. Write a short paragraph (50–100 words) giving your opinion.
         </div>
-        <textarea id="placementWriting" style="height:110px; min-height:110px;" placeholder="Type your 50-100 words paragraph here in English..." oninput="updateWritingCount()" required></textarea>
+        <textarea id="placementWriting" style="height:110px; min-height:110px;" placeholder="Type your 50-100 words paragraph here in English..." oninput="updateWritingCount()"></textarea>
       </div>
 
-      <!-- Contact & Goals -->
+      <!-- Contact & Goal Selection -->
       <div class="quiz-card">
         <div class="quiz-title">
-          <span>🎯 هدف و شماره تماس اختیاری</span>
+          <span>🎯 هدف و راه‌های ارتباطی</span>
         </div>
         <select id="userTarget" class="user-info-field" style="direction:rtl;">
           <option value="PTE Target +50 (معادل 6 آیلتس)">PTE Target +50 (معادل 6 آیلتس)</option>
@@ -850,7 +873,7 @@
           <option value="General English (تقویت پایه)">General English (تقویت پایه)</option>
           <option value="سایر موارد (آیلتس، تافل یا ارزیابی کلی)">سایر موارد (آیلتس، تافل یا ارزیابی کلی)</option>
         </select>
-        <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا آیدی تلگرام (اختیاری جهت هماهنگی مشاوره)">
+        <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا توضیحات تکمیلی (اختیاری)">
       </div>
 
       <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
@@ -1005,7 +1028,7 @@
     </div>
   </div>
 
-  <!-- Flashcards Quota Setup -->
+  <!-- Flashcards Quota Setup Screen -->
   <div class="view-screen" id="viewFlashSetup">
     <div class="flashcard-box" style="justify-content: flex-start;">
       <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
@@ -1110,9 +1133,9 @@
 </div>
 
 <script>
-  // تنظیمات ربات برای ارسال مستقیم به ادمین
+  // تنظیمات ربات برای ارسال مستقیم تعیین سطح به پشتیبانی
   const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // توکن ربات از BotFather
-  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE"; // آیدی عددی چت ادمین یا گروه پشتیبانی
+  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE"; // آیدی عددی ادمین یا گروه پشتیبانی
 
   const coursesData = [
     {
@@ -1132,6 +1155,105 @@
       desc: "🚀 تقویت پایه زبان و ارتقای روانی کلام:\n\n• 📚 گسترش دایره واژگان آکادمیک: یادگیری لغات پرکاربرد، اصطلاحات روزمره و هم‌آیی‌ها (Collocations).\n\n• 🛠 تقویت گرامر کاربردی: تسلط عملی بر ساختارهای دستوری زبان جهت استفاده صحیح در مکالمه و نگارش.\n\n• 🗣 تقویت روانی گفتار و شنیدار: تکنیک‌های افزایش اعتمادبه‌نفس در مکالمه، تلفظ شفاف و فهم لهجه‌های مختلف صوتی.\n\n• 🌍 پایه‌ریزی اصولی برای آزمون‌های بین‌المللی: آمادگی ذهنی و زبانی لازم جهت شروع پرقدرت مسیر آزمون‌های بین‌المللی."
     }
   ];
+
+  /* Reading FIB Drag/Drop Logic */
+  const rfibBankWords = ["rate", "part", "dominance", "margin", "twice", "relation", "more", "reign"];
+  let rfibUserAnswers = { A: null, B: null, C: null, D: null };
+  let activeSelectedWord = null;
+
+  function initRfib() {
+    const bankContainer = document.getElementById('rfibWordBank');
+    if (!bankContainer) return;
+    bankContainer.innerHTML = "";
+    
+    rfibBankWords.forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'rfib-chip';
+      chip.innerText = w;
+      chip.draggable = true;
+      chip.id = `chip_${w}`;
+
+      // Touch / Click Support
+      chip.onclick = () => {
+        if (chip.classList.contains('used')) return;
+        document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('selected'));
+        if (activeSelectedWord === w) {
+          activeSelectedWord = null;
+        } else {
+          activeSelectedWord = w;
+          chip.classList.add('selected');
+        }
+      };
+
+      // Desktop HTML5 Drag Support
+      chip.ondragstart = (e) => {
+        e.dataTransfer.setData("text/plain", w);
+      };
+
+      bankContainer.appendChild(chip);
+    });
+
+    // Dropzone listeners
+    ['A', 'B', 'C', 'D'].forEach(zoneKey => {
+      const zone = document.getElementById(`drop${zoneKey}`);
+      if (!zone) return;
+
+      zone.ondragover = (e) => e.preventDefault();
+      zone.ondrop = (e) => {
+        e.preventDefault();
+        const word = e.dataTransfer.getData("text/plain");
+        placeWordInZone(zoneKey, word);
+      };
+    });
+  }
+
+  function handleZoneClick(zoneKey) {
+    const zone = document.getElementById(`drop${zoneKey}`);
+    // If clicking on a filled zone -> return word to bank
+    if (rfibUserAnswers[zoneKey]) {
+      const prevWord = rfibUserAnswers[zoneKey];
+      rfibUserAnswers[zoneKey] = null;
+      zone.innerText = "";
+      zone.classList.remove('filled');
+      const prevChip = document.getElementById(`chip_${prevWord}`);
+      if (prevChip) prevChip.classList.remove('used');
+      return;
+    }
+
+    // If an active word was selected -> drop it
+    if (activeSelectedWord) {
+      placeWordInZone(zoneKey, activeSelectedWord);
+      activeSelectedWord = null;
+      document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('selected'));
+    }
+  }
+
+  function placeWordInZone(zoneKey, word) {
+    const zone = document.getElementById(`drop${zoneKey}`);
+    
+    // Clear previously placed word if exists
+    if (rfibUserAnswers[zoneKey]) {
+      const oldWord = rfibUserAnswers[zoneKey];
+      const oldChip = document.getElementById(`chip_${oldWord}`);
+      if (oldChip) oldChip.classList.remove('used');
+    }
+
+    // If word was in another zone, clear that zone
+    for (let k in rfibUserAnswers) {
+      if (rfibUserAnswers[k] === word) {
+        rfibUserAnswers[k] = null;
+        const z = document.getElementById(`drop${k}`);
+        if (z) { z.innerText = ""; z.classList.remove('filled'); }
+      }
+    }
+
+    rfibUserAnswers[zoneKey] = word;
+    zone.innerText = word;
+    zone.classList.add('filled');
+
+    const chip = document.getElementById(`chip_${word}`);
+    if (chip) chip.classList.add('used');
+  }
 
   let navHistory = ['home'];
   let selectedCourseIndex = 0;
@@ -1167,6 +1289,8 @@
 
   async function initApp() {
     const ts = Date.now();
+    initRfib();
+
     try {
       const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
       if (resFlash.ok) {
@@ -1241,12 +1365,12 @@
     }
   }
 
-  /* Writing Word Counter */
+  /* Live Word Count */
   function updateWritingCount() {
     const text = document.getElementById('placementWriting').value.trim();
     const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
     const counterEl = document.getElementById('writingWordCount');
-    counterEl.innerText = `تعداد کلمات: ${count} (حداقل ۵۰)`;
+    counterEl.innerText = `Word Count: ${count}`;
     counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
   }
 
@@ -1256,27 +1380,22 @@
     const writingText = document.getElementById('placementWriting').value.trim();
     const wordsCount = writingText === "" ? 0 : writingText.split(/\s+/).filter(Boolean).length;
 
-    if (wordsCount < 35) {
-      alert("⚠️ لطفاً بخش رایتینگ را با حداقل ۵۰ کلمه کامل کنید تا سطح نگارش شما دقیق ارزیابی شود.");
-      return;
-    }
-
     const btn = document.getElementById('submitPlacementBtn');
     btn.disabled = true;
-    btn.innerText = "⏳ در حال تحلیل و ارسال اطلاعات...";
+    btn.innerText = "⏳ در حال ارسال اطلاعات...";
 
     const formData = new FormData(document.getElementById('placementForm'));
 
     // کلیدهای آزمون
     const rwKeys = { rw_a: "studying", rw_b: "everything", rw_c: "actually", rw_d: "parallel", rw_e: "practice", rw_f: "thinking" };
-    const rfibKeys = { rfib_a: "dominance", rfib_b: "twice", rfib_c: "part", rfib_d: "rate" };
+    const rfibKeys = { A: "dominance", B: "twice", C: "part", D: "rate" };
     const lfibKeys = { lfib_1: "orchestrated", lfib_2: "biology", lfib_3: "basic", lfib_4: "principle", lfib_5: "quite" };
 
     let rwScore = 0;
     for (let k in rwKeys) if (formData.get(k) === rwKeys[k]) rwScore++;
 
     let rfibScore = 0;
-    for (let k in rfibKeys) if (formData.get(k) === rfibKeys[k]) rfibScore++;
+    for (let k in rfibKeys) if (rfibUserAnswers[k] === rfibKeys[k]) rfibScore++;
 
     let lfibScore = 0;
     for (let k in lfibKeys) {
@@ -1288,9 +1407,8 @@
     if (formData.get('spell_q') === "Accommodation") vocabScore++;
     if (formData.get('vocab_q') === "curb") vocabScore++;
 
-    const totalObjectiveScore = rwScore + rfibScore + lfibScore + vocabScore; // از ۱۷ نمره
+    const totalScore = rwScore + rfibScore + lfibScore + vocabScore; // از ۱۷ نمره
 
-    // اطلاعات کاربر تلگرام
     const tgUser = tg?.initDataUnsafe?.user;
     const firstName = tgUser?.first_name || "نامشخص";
     const lastName = tgUser?.last_name || "";
@@ -1302,7 +1420,7 @@
     const reportMessage = `
 📋 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
 ━━━━━━━━━━━━━━━━━━━━
-👤 <b>مشخصات تلگرام کاربر:</b>
+👤 <b>مشخصات تلگرام داوطلب:</b>
 • <b>نام:</b> ${firstName} ${lastName}
 • <b>یوزرنیم:</b> ${username}
 • <b>شناسه عددی (ID):</b> <code>${userId}</code>
@@ -1316,11 +1434,11 @@
 • 📖 <b>Reading FIB:</b> ${rfibScore} از ۴
 • 🎧 <b>Listening FIB:</b> ${lfibScore} از ۵
 • 🔤 <b>Vocab & Spelling:</b> ${vocabScore} از ۲
-🎯 <b>مجموع نمره تستی:</b> <b>${totalObjectiveScore} از ۱۷</b>
+🎯 <b>مجموع نمره تستی:</b> <b>${totalScore} از ۱۷</b>
 
 ━━━━━━━━━━━━━━━━━━━━
-✍️ <b>پاراگراف رایتینگ کاربر (${wordsCount} کلمه):</b>
-<i>"${writingText}"</i>
+✍️ <b>پاراگراف رایتینگ داوطلب (${wordsCount} کلمه):</b>
+<i>"${writingText || 'متنی ارسال نشده است.'}"</i>
     `.trim();
 
     try {
@@ -1384,7 +1502,7 @@
     }
   }
 
-  /* WFD Functions */
+  /* WFD Simulator Functions */
   function startWfdTimer() {
     stopWfdTimer();
     wfdElapsedSeconds = 0;
