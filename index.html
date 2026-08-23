@@ -153,6 +153,24 @@
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
       animation: glowBorder 3s infinite alternate;
     }
+
+    /* Vibrant Glowing Card for Flashcards on Main Menu */
+    .hub-card.flashcard-highlight {
+      border-color: #ec4899;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
+      animation: glowFlashCard 2.5s infinite alternate;
+    }
+    @keyframes glowFlashCard {
+      0% {
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        border-color: rgba(236, 72, 153, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), inset 0 0 15px rgba(236, 72, 153, 0.2);
+        border-color: #f472b6;
+      }
+    }
+
     @keyframes glowBorder {
       0% {
         box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
@@ -164,7 +182,7 @@
       }
     }
 
-    .hub-card.placement-highlight::after {
+    .hub-card.placement-highlight::after, .hub-card.flashcard-highlight::after {
       content: '';
       position: absolute;
       top: -50%;
@@ -308,68 +326,9 @@
     }
     .inline-input:focus { border-color: #38bdf8 !important; }
 
-    /* RFIB Practice Screen Styles */
-    .rfib-drop-zone {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 95px;
-      height: 32px;
-      padding: 2px 8px;
-      margin: 0 4px;
-      background: #1e293b;
-      border: 1.5px dashed #0284c7;
-      border-radius: 6px;
-      font-weight: 700;
-      color: #38bdf8;
-      vertical-align: middle;
-      cursor: pointer;
-      font-size: 13.5px;
-      transition: all 0.2s;
-    }
-    .rfib-drop-zone.filled {
-      border-style: solid;
-      background: rgba(56, 189, 248, 0.15);
-      border-color: #38bdf8;
-    }
-    .rfib-drop-zone.correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
-    .rfib-drop-zone.wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
-
-    .rfib-word-bank {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      background: #0b1120;
-      border: 1px solid #1e293b;
-      padding: 12px;
-      border-radius: 10px;
-      direction: ltr;
-      justify-content: flex-start;
-      margin-top: 10px;
-    }
-    .rfib-chip {
-      background: #1e293b;
-      border: 1.5px solid #334155;
-      color: #f1f5f9;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.15s;
-    }
-    .rfib-chip.selected {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: #fff;
-      transform: scale(0.96);
-    }
-    .rfib-chip.used {
-      opacity: 0.25;
-      pointer-events: none;
-      border-style: dashed;
-    }
+    /* RFIB Practice Screen Dropdown Styles */
+    .correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
+    .wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
 
     .quiz-options {
       display: grid;
@@ -783,17 +742,17 @@
     .card { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; border-radius: 16px; }
     .card.is-flipped { transform: rotateY(180deg); }
     .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1.5px solid var(--card-border); overflow-y: auto; }
-    .card-front { background: linear-gradient(145deg, #0284c7, #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
-    .card-front .word-title { font-size: 34px; font-weight: 900; margin-bottom: 12px; letter-spacing: 0.5px; color: #f8fafc; }
-    .card-front .tap-hint { font-size: 12px; color: #cbd5e1; background: rgba(0,0,0,0.35); padding: 6px 16px; border-radius: 20px; }
+    .card-front { background: linear-gradient(145deg, #ec4899, #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
+    .card-front .word-title { font-size: 42px; font-weight: 900; margin-bottom: 12px; letter-spacing: 1px; color: #fff; text-shadow: 0 0 15px rgba(236, 72, 153, 0.6); }
+    .card-front .tap-hint { font-size: 12.5px; color: #fbcfe8; background: rgba(0,0,0,0.4); padding: 6px 18px; border-radius: 20px; font-weight: 700; }
     .card-back { background: #0f172a; transform: rotateY(180deg); justify-content: center; gap: 8px; direction: ltr; text-align: left; }
     .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #1e293b; padding-bottom: 6px; }
     .card-back .pronunciation { font-style: italic; color: #94a3b8; font-size: 14.5px; font-weight: 600; }
     .card-back .pos { background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-    .card-back .persian-meaning { font-size: 17px; font-weight: 800; color: #38bdf8; direction: rtl; text-align: right; margin: 4px 0; }
+    .card-back .persian-meaning { font-size: 18px; font-weight: 900; color: #38bdf8; direction: rtl; text-align: right; margin: 4px 0; }
     .card-back .section-title { font-size: 12px; font-weight: 800; color: #94a3b8; }
-    .card-back .collocations { font-size: 13px; font-weight: 600; color: #e2e8f0; }
-    .card-back .example-sentence { font-size: 12.5px; line-height: 1.5; color: #f1f5f9; background: #1e293b; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #38bdf8; }
+    .card-back .collocations { font-size: 13.5px; font-weight: 600; color: #e2e8f0; }
+    .card-back .example-sentence { font-size: 13px; line-height: 1.5; color: #f1f5f9; background: #1e293b; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #38bdf8; }
 
     .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
     .leitner-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13.5px; border: none; cursor: pointer; color: #fff; }
@@ -924,6 +883,14 @@
         </div>
       </div>
 
+      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
+        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
+        <div class="hub-text">
+          <h3 style="color:#f472b6; font-size: 16px; letter-spacing: 0.5px;">FLASH CARDS</h3>
+          <p>جعبه لایتنر واژگان آکادمیک (مرور هوشمند و جعبه‌های ۵گانه)</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('materials')">
         <div class="hub-icon">📁</div>
         <div class="hub-text">
@@ -951,8 +918,8 @@
       <div class="hub-card" onclick="navTo('practice_menu')">
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
-          <h3>تمرین روزانه</h3>
-          <p>شبیه‌ساز هوشمند WFD، لایتنر واژگان و بانک سوالات RFIB</p>
+          <h3>PTE PRACTICE</h3>
+          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB</p>
         </div>
       </div>
     </div>
@@ -1323,7 +1290,7 @@
     </div>
   </div>
 
-  <!-- Practice Hub Screen -->
+  <!-- Practice Hub Screen (PTE Practice) -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('wfd')">
@@ -1341,21 +1308,13 @@
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
-
-      <div class="hub-card" onclick="navTo('flash_setup')">
-        <div class="hub-icon">🗂</div>
-        <div class="hub-text">
-          <h3>Academic Flashcards</h3>
-          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (همراه با مرور هوشمند روزانه)</p>
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
-      <!-- Grammar Category Selection Bar (10 categories: Inversion & Conditional only in All) -->
+      <!-- Grammar Category Selection Bar -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
         <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
@@ -1520,7 +1479,7 @@
     }
   ];
 
-  /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
+  /* RFIB Dynamic Data Engine */
   let rfibAllQuestions = [];
   let currentRfibList = [];
   let activeRfibIndex = 0;
@@ -1529,12 +1488,12 @@
 
   async function initRfibModule() {
     try {
-      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         rfibAllQuestions = await res.json();
         filterRfibCategory('All');
       } else {
-        console.warn("Could not load rfib_questions.json");
+        console.warn("Could not load rwfib_questions.json");
       }
     } catch (err) {
       console.error("Error loading RFIB JSON:", err);
@@ -2496,10 +2455,7 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     const cardObj = sessionQueue[currentCardIndex];
     const currentBox = leitnerData[cardObj.id]?.box || 1;
     
-    if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
-      dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
-    }
+    (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) && (dailyStats.newCardsSeen++, localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats)));
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
     localStorage.setItem('pteroom_leitner_v15', JSON.stringify(leitnerData));
