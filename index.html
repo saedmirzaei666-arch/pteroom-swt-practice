@@ -746,40 +746,6 @@
     }
     .btn-secondary:active { background: #334155; }
 
-    /* Difficulty Rating Buttons */
-    .wfd-diff-buttons {
-      display: none;
-      gap: 8px;
-      margin-top: auto;
-      flex-shrink: 0;
-    }
-    .btn-diff-hard {
-      flex: 1;
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-      border: 1.5px solid #ef4444;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-diff-hard:active { background: rgba(239, 68, 68, 0.35); }
-    .btn-diff-easy {
-      flex: 1;
-      background: rgba(16, 185, 129, 0.2);
-      color: #34d399;
-      border: 1.5px solid #10b981;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-diff-easy:active { background: rgba(16, 185, 129, 0.35); }
-
     /* Flashcard Styles */
     .flashcard-box {
       display: flex;
@@ -978,7 +944,7 @@
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
           <h3>PTE PRACTICE</h3>
-          <p>شبیه‌ساز هوشمند WFD، بانک سوالات RFIB و تسک SWT</p>
+          <p>شبیه‌ساز هوشمند WFD، بانک سوالات RFIB و SWT</p>
         </div>
       </div>
     </div>
@@ -1368,7 +1334,7 @@
         </div>
       </div>
 
-      <!-- SWT Card added here -->
+      <!-- SWT Card Added to PTE Practice -->
       <div class="hub-card" onclick="navTo('swt')">
         <div class="hub-icon">📝</div>
         <div class="hub-text">
@@ -1412,7 +1378,7 @@
     </div>
   </div>
 
-  <!-- SWT Practice Screen (Added with timer 0-10 mins, English Feedback, Correct Button Order) -->
+  <!-- SWT Practice Screen Added -->
   <div class="view-screen" id="viewSwt">
     <div class="wfd-box">
       <select id="swtSelect" onchange="onSelectSwt()"></select>
@@ -1582,13 +1548,13 @@
     }
   ];
 
-  /* SWT Data Engine with 60-66 words sample answer and prompt question */
+  /* SWT Data Engine with 60-66 words sample answer and movie passage */
   let swtQuestions = [
     {
       id: 1,
       title: "SWT: 1920s Movie Goers & Silent Films",
       passage: "The 1920's movie goers experience was largely dominated by silent movies but saw the introduction of synchronized sound. In the 1920's movie stars were really stars - with huge salaries, the fashions and activities of the Hollywood greats echoed around the world and 100,000 people would gather in cities all over the world, including such diverse cities as London and Moscow, to greet Mary Pickford and Douglas Fairbanks when they toured of Europe. Early silent movies were often accompanied by live piano or organ music and provided enormous entertainment value to audiences captivated by the experience of watching moving pictures on the silver screen. Although there had been previous attempts to introduce sound, it wasn't until 1923 that a synchronized soundtrack was photographically recorded and printed on to the side of the strip of motion picture film and made it on to a commercially distributed movie. It would still be seven long years before talking pictures gained total supremacy and finally replaced the silent film era.\nThe first movie theatres were called Nickelodeons, and were very basic compared to the luxurious picture palaces that followed but what an aura of excitement, of laughter, fun and tears surrounded them! Before the introduction of movie soundtracks, movies were often accompanied by scripted music from a piano.",
-      sampleAnswer: "The passage discusses the transition from silent films to synchronized sound during the 1920s, explaining that Hollywood movie stars achieved massive global popularity with huge salaries, while also referring to the traditional live musical accompaniments in early cinemas, presenting the technical introduction of soundtracks in 1923, and ending with the complete replacement of silent movies." // 62 words
+      sampleAnswer: "The passage discusses the transition from silent films to synchronized sound during the 1920s, explaining that Hollywood movie stars achieved massive global popularity with huge salaries, while also referring to the traditional live musical accompaniments in early cinemas, presenting the technical introduction of soundtracks in 1923, and ending with the complete replacement of silent movies."
     }
   ];
   let currentSwtIndex = 0;
@@ -1663,6 +1629,7 @@
     document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
   }
 
+  /* Strict PTE Room Structure Evaluation for SWT (English Feedback) */
   function evaluateSwtAnswer() {
     const userText = document.getElementById('swtInput').value.trim();
     if (!userText) {
@@ -1683,7 +1650,7 @@
       errors.push(`❌ Form Error: Word count (${wordCount}) is out of the 5-75 range.`);
     }
 
-    // Single Sentence Check (Ignoring standard abbreviations)
+    // Single Sentence Validation
     const cleanSentences = userText.split(/(?<!\b(?:Mr|Dr|Mrs|Ms|Prof|Sr|Jr))\.\s+/).filter(Boolean);
     const isSingleSentence = (cleanSentences.length === 1 && userText.endsWith('.'));
 
@@ -2155,7 +2122,7 @@
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
-      stopSwtTimer();
+      stopWfdTimer();
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
@@ -2750,7 +2717,7 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     document.getElementById('doneMessage').style.display = 'flex';
   }
 
-  /* SWT Engine & Timers */
+  /* SWT Engine with Timer, English Feedback & Corrected Button Order */
   let swtQuestions = [
     {
       id: 1,
@@ -2819,9 +2786,9 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     badge.classList.remove('warning', 'danger');
     if (swtElapsedSeconds >= 600) {
-      badge.classList.add('danger');
+      badge.classList.add('danger'); // From 10 mins: Red
     } else if (swtElapsedSeconds >= 480) {
-      badge.classList.add('warning');
+      badge.classList.add('warning'); // From 8 mins: Yellow
     }
   }
 
@@ -2905,10 +2872,7 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     loadSwtQuestion(nextIdx);
   }
 
-  window.onload = () => {
-    initApp();
-    loadSwtList();
-  };
+  window.onload = initApp;
 </script>
 
 </body>
