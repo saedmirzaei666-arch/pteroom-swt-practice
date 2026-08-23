@@ -326,7 +326,7 @@
     }
     .inline-input:focus { border-color: #38bdf8 !important; }
 
-    /* RFIB Practice Screen Dropdown Styles */
+    /* RFIB Dropdown Practice Styles */
     .correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
     .wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
 
@@ -1441,7 +1441,7 @@
       <div class="done-message" id="doneMessage">
         <h3>🎉 عالی بود!</h3>
         <p>شما سهمیه لغات جدید امروز را به پایان رساندید.<br>فردا برای کلمات جدید برگردید.</p>
-        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('practice_menu')">بازگشت به منو</button>
+        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('home')">بازگشت به خانه</button>
       </div>
 
       <div class="leitner-actions" id="leitnerActions">
@@ -1479,7 +1479,7 @@
     }
   ];
 
-  /* RFIB Dynamic Data Engine */
+  /* RFIB Dynamic Data Engine loaded via fetch from rwfib_questions.json */
   let rfibAllQuestions = [];
   let currentRfibList = [];
   let activeRfibIndex = 0;
@@ -1496,7 +1496,7 @@
         console.warn("Could not load rwfib_questions.json");
       }
     } catch (err) {
-      console.error("Error loading RFIB JSON:", err);
+      console.error("Error loading RWFIB JSON:", err);
     }
   }
 
@@ -1550,25 +1550,36 @@
 
     const bankContainer = document.getElementById('rfibDynamicWordBank');
     bankContainer.innerHTML = "";
-    if (q.options) {
-      q.options.forEach(w => {
-        const chip = document.createElement('div');
-        chip.className = 'rfib-chip';
-        chip.innerText = w;
-        chip.id = `rfib_chip_${w}`;
-        chip.onclick = () => {
-          if (chip.classList.contains('used')) return;
-          document.querySelectorAll('#rfibDynamicWordBank .rfib-chip').forEach(c => c.classList.remove('selected'));
-          if (rfibActiveWord === w) {
-            rfibActiveWord = null;
-          } else {
-            rfibActiveWord = w;
-            chip.classList.add('selected');
-          }
-        };
-        bankContainer.appendChild(chip);
+    
+    // جمع‌آوری آپشن‌ها از تمام کلیدهای options (مثل A, B, C یا آرایه مستقیم)
+    let availableWords = [];
+    if (Array.isArray(q.options)) {
+      availableWords = q.options;
+    } else if (q.options && typeof q.options === 'object') {
+      let setWords = new Set();
+      Object.values(q.options).forEach(arr => {
+        if (Array.isArray(arr)) arr.forEach(w => setWords.add(w));
       });
+      availableWords = Array.from(setWords);
     }
+
+    availableWords.forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'rfib-chip';
+      chip.innerText = w;
+      chip.id = `rfib_chip_${w}`;
+      chip.onclick = () => {
+        if (chip.classList.contains('used')) return;
+        document.querySelectorAll('#rfibDynamicWordBank .rfib-chip').forEach(c => c.classList.remove('selected'));
+        if (rfibActiveWord === w) {
+          rfibActiveWord = null;
+        } else {
+          rfibActiveWord = w;
+          chip.classList.add('selected');
+        }
+      };
+      bankContainer.appendChild(chip);
+    });
   }
 
   function onSelectRfibQuestion() {
@@ -1882,7 +1893,7 @@
       stopWfdTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
-      title.innerText = "PTE ROOM • تمرین روزانه";
+      title.innerText = "PTE ROOM • PTE Practice";
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
@@ -1898,7 +1909,7 @@
       stopWfdTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
-      title.innerText = "PTE ROOM • Academic Flashcards";
+      title.innerText = "PTE ROOM • Flashcards";
       stopWfdTimer();
     }
   }
@@ -2455,7 +2466,10 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     const cardObj = sessionQueue[currentCardIndex];
     const currentBox = leitnerData[cardObj.id]?.box || 1;
     
-    (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) && (dailyStats.newCardsSeen++, localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats)));
+    if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
+      dailyStats.newCardsSeen++;
+      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
+    }
     
     leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
     localStorage.setItem('pteroom_leitner_v15', JSON.stringify(leitnerData));
