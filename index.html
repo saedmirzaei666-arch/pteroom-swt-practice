@@ -830,6 +830,50 @@
       transition: all 0.2s;
     }
     .btn-primary:active { transform: scale(0.98); background: #0369a1; }
+
+    /* SWT (Summarize Written Text) Module */
+    .swt-structure-box {
+      display: none;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e2e8f0;
+      direction: ltr;
+      text-align: left;
+    }
+    .swt-structure-box.show { display: block; }
+    .swt-structure-tpl {
+      font-family: monospace;
+      color: #facc15;
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 8px;
+      margin: 6px 0 10px;
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+    .swt-crit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .swt-crit {
+      background: #111827; border: 1px solid #1e293b; border-radius: 8px;
+      padding: 8px 10px; direction: ltr; text-align: left;
+    }
+    .swt-crit .swt-crit-name { font-size: 10.5px; color: #94a3b8; }
+    .swt-crit .swt-crit-val { font-size: 17px; font-weight: 800; font-family: monospace; }
+    .swt-crit .swt-crit-val.full { color: #34d399; }
+    .swt-crit .swt-crit-val.mid { color: #facc15; }
+    .swt-crit .swt-crit-val.zero { color: #f87171; }
+    .swt-feedback-item {
+      font-size: 11px; font-weight: 600; padding: 5px 8px; border-radius: 6px;
+      direction: ltr; text-align: left; border: 1px solid rgba(148,163,184,0.25);
+      background: rgba(148,163,184,0.08); color: #cbd5e1;
+    }
+    .swt-feedback-item.pos { color: #34d399; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.1); }
+    .swt-feedback-item.neg { color: #f87171; border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.1); }
+    .swt-feedback-item.tip { color: #facc15; border-color: rgba(234,179,8,0.3); background: rgba(234,179,8,0.1); }
     
     .settings-panel {
       background: #0f172a;
@@ -1368,6 +1412,14 @@
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
+
+      <div class="hub-card" onclick="navTo('swt')">
+        <div class="hub-icon">📝</div>
+        <div class="hub-text">
+          <h3 style="color:#38bdf8;">Summarize Written Text</h3>
+          <p>تایمر، شمارنده کلمات و نمره‌دهی خودکار بر اساس اسکورگاید رسمی PTE</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1400,6 +1452,55 @@
         <button class="btn-secondary" style="flex: 1;" onclick="prevRfibQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="checkRfibAnswer()">Check Answer 🎯</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ▶️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWT (Summarize Written Text) Practice Screen -->
+  <div class="view-screen" id="viewSwt">
+    <div class="wfd-box">
+      <select id="swtSelect" onchange="onSelectSwt()"></select>
+
+      <div class="quiz-card" style="flex:1; overflow-y:auto; margin-top:2px; padding:10px; gap:8px;">
+        <div class="quiz-title"><span>📖 Reading Passage</span></div>
+        <div class="passage-box" id="swtPassageBox" style="font-size:13.5px; line-height:2;"></div>
+
+        <button class="btn-secondary" style="align-self:flex-start; font-size:11px; padding:6px 10px;" onclick="toggleSwtStructure()">🧩 PTE ROOM Structure &amp; Sample Answer</button>
+        <div class="swt-structure-box" id="swtStructureBox">
+          <b>PTE ROOM Structure</b>
+          <div class="swt-structure-tpl">The passage discusses [NP], explaining (that) [CLAUSE or NP] and [CLAUSE or NP], while also mentioning [NP] as well as [NP], presenting [NP], and ending with [NP].</div>
+          <div>Use <i>that</i> before a full clause (subject + verb). Drop <i>that</i> before a noun phrase. What comes before and after "and" must be grammatically parallel.</div>
+          <div style="margin-top:8px;"><b>Sample answer:</b></div>
+          <div id="swtSampleAnswer" style="margin-top:4px;"></div>
+          <div id="swtSampleWc" style="color:#94a3b8; font-size:11px; margin-top:4px;"></div>
+        </div>
+      </div>
+
+      <div class="wfd-status-bar">
+        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="swtWordCount">Word Count: 0</span>
+        <span class="wfd-timer-badge" id="swtTimerBadge">⏱ 0:00</span>
+      </div>
+      <div style="font-size:10.5px; color:#64748b;" id="swtDictStatus">Loading spelling dictionary…</div>
+
+      <textarea id="swtInput" style="height:95px; min-height:95px; max-height:110px;" placeholder="Write your one-sentence summary here (5–75 words)..." oninput="calcSwtWords()"></textarea>
+
+      <div class="wfd-result-card" id="swtResultBox">
+        <div class="wfd-score-header">
+          <span>📊 Automated Score (Pearson score guide)</span>
+          <span id="swtScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 9</span>
+        </div>
+        <div class="swt-crit-grid" id="swtCritGrid"></div>
+        <div class="wfd-tips-container" id="swtFeedbackContainer"></div>
+        <div style="font-size:10.5px; color:#64748b; margin-top:4px; line-height:1.6;">Automated estimate only — rule-based Content/Grammar/Vocabulary checks cannot fully judge paraphrasing or meaning like a human rater or the real PTE engine.</div>
+      </div>
+
+      <div class="wfd-action-buttons" id="swtCheckActionBox">
+        <button class="btn-primary" style="flex: 2;" onclick="gradeSwtAnswer()">Submit &amp; Get Score</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextSwtQuestion()">Next ⏭</button>
+      </div>
+      <div class="wfd-action-buttons" id="swtAfterActionBox" style="display:none;">
+        <button class="btn-secondary" style="flex: 1;" onclick="retrySwtQuestion()">🔁 Try Again</button>
+        <button class="btn-primary" style="flex: 2;" onclick="nextSwtQuestion()">Next Question ⏭</button>
       </div>
     </div>
   </div>
@@ -1558,6 +1659,360 @@
     } catch (err) {
       console.error("Error loading RFIB JSON:", err);
     }
+  }
+
+  /* ============================================================
+     SWT (Summarize Written Text) MODULE
+     Loads questions from data/swt_questions.json. Expected shape
+     per question (aliases in parentheses are also accepted):
+       {
+         "id" / "title": string,
+         "passage" (or "text"): string,
+         "keywords" (or "keyWords"): [string, ...],
+         "sampleAnswer" (or "answer" / "model"): string
+       }
+     ============================================================ */
+  async function initSwtModule() {
+    try {
+      const res = await fetch(`data/swt_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      if (res.ok) {
+        const raw = await res.json();
+        swtQuestions = (raw || []).map((q, i) => ({
+          id: q.id ?? q.title ?? `Q${i + 1}`,
+          title: q.title ?? q.id ?? `Question ${i + 1}`,
+          passage: q.passage ?? q.text ?? q.reading ?? "",
+          keywords: q.keywords ?? q.keyWords ?? q.key_words ?? [],
+          sampleAnswer: q.sampleAnswer ?? q.sample_answer ?? q.answer ?? q.model ?? ""
+        }));
+        populateSwtSelect();
+      } else {
+        console.warn("Could not load swt_questions.json");
+      }
+    } catch (err) {
+      console.error("Error loading SWT JSON:", err);
+    }
+  }
+
+  function populateSwtSelect() {
+    const select = document.getElementById('swtSelect');
+    select.innerHTML = "";
+    if (swtQuestions.length === 0) {
+      const opt = document.createElement('option');
+      opt.innerText = "No SWT questions loaded yet";
+      select.appendChild(opt);
+      document.getElementById('swtPassageBox').innerText = "Add questions to data/swt_questions.json to see them here.";
+      return;
+    }
+    swtQuestions.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title;
+      select.appendChild(opt);
+    });
+    swtActiveIndex = 0;
+    loadSwtQuestion(0);
+  }
+
+  function onSelectSwt() {
+    const idx = parseInt(document.getElementById('swtSelect').value, 10);
+    loadSwtQuestion(idx);
+  }
+
+  function loadSwtQuestion(idx) {
+    swtActiveIndex = idx;
+    const q = swtQuestions[idx];
+    if (!q) return;
+
+    document.getElementById('swtPassageBox').innerText = q.passage;
+    document.getElementById('swtSampleAnswer').innerText = q.sampleAnswer || "(no sample answer provided for this question)";
+    document.getElementById('swtSampleWc').innerText = q.sampleAnswer ? (countSwtWords(q.sampleAnswer) + " words") : "";
+
+    document.getElementById('swtInput').value = "";
+    document.getElementById('swtInput').disabled = false;
+    calcSwtWords();
+
+    swtSubmitted = false;
+    document.getElementById('swtResultBox').style.display = 'none';
+    document.getElementById('swtCheckActionBox').style.display = 'flex';
+    document.getElementById('swtAfterActionBox').style.display = 'none';
+
+    startSwtTimer();
+  }
+
+  function nextSwtQuestion() {
+    if (swtQuestions.length === 0) return;
+    let next = swtActiveIndex + 1;
+    if (next >= swtQuestions.length) next = 0;
+    document.getElementById('swtSelect').value = next;
+    loadSwtQuestion(next);
+  }
+
+  function retrySwtQuestion() {
+    loadSwtQuestion(swtActiveIndex);
+  }
+
+  function toggleSwtStructure() {
+    document.getElementById('swtStructureBox').classList.toggle('show');
+  }
+
+  /* ---- word count ---- */
+  function countSwtWords(text) {
+    const trimmed = (text || "").trim();
+    if (!trimmed) return 0;
+    return trimmed.split(/\s+/).filter(Boolean).length;
+  }
+
+  function calcSwtWords() {
+    const n = countSwtWords(document.getElementById('swtInput').value);
+    const el = document.getElementById('swtWordCount');
+    el.innerText = "Word Count: " + n;
+    if (n === 0) el.style.color = "#94a3b8";
+    else if (n < 5 || n > 75) el.style.color = "#f87171";
+    else if (n < 15 || n > 60) el.style.color = "#facc15";
+    else el.style.color = "#34d399";
+  }
+
+  /* ---- timer: counts UP, never auto-stops the user ----
+     0:00–8:00 normal | 8:00–10:00 warning | 10:00+ danger (keeps counting) */
+  function startSwtTimer() {
+    stopSwtTimer();
+    swtElapsedSeconds = 0;
+    updateSwtTimerDisplay();
+    swtTimerInterval = setInterval(() => {
+      swtElapsedSeconds++;
+      updateSwtTimerDisplay();
+    }, 1000);
+  }
+
+  function stopSwtTimer() {
+    if (swtTimerInterval) {
+      clearInterval(swtTimerInterval);
+      swtTimerInterval = null;
+    }
+  }
+
+  function updateSwtTimerDisplay() {
+    const badge = document.getElementById('swtTimerBadge');
+    if (!badge) return;
+    const mins = Math.floor(swtElapsedSeconds / 60);
+    const secs = swtElapsedSeconds % 60;
+    badge.innerText = `⏱ ${mins}:${String(secs).padStart(2, '0')}`;
+    badge.classList.remove('warning', 'danger');
+    if (swtElapsedSeconds >= 600) badge.classList.add('danger');
+    else if (swtElapsedSeconds >= 480) badge.classList.add('warning');
+  }
+
+  /* ---- spelling dictionary (strict Vocabulary scoring) ---- */
+  async function loadSwtDictionary() {
+    try {
+      const res = await fetch("https://cdn.jsdelivr.net/gh/dwyl/english-words/words_dictionary.json");
+      if (!res.ok) throw new Error("fetch failed");
+      const data = await res.json();
+      swtDictionary = new Set(Object.keys(data).map(w => w.toLowerCase()));
+      const statusEl = document.getElementById('swtDictStatus');
+      if (statusEl) statusEl.innerText = "Spelling dictionary loaded — strict spelling check active.";
+    } catch (err) {
+      swtDictionary = null;
+      const statusEl = document.getElementById('swtDictStatus');
+      if (statusEl) statusEl.innerText = "Spelling dictionary unavailable offline — vocabulary scoring uses limited checks only.";
+    }
+  }
+
+  const SWT_KNOWN_EXTRA_WORDS = new Set(["pte"]);
+
+  function isSwtKnownWord(word) {
+    const w = word.toLowerCase();
+    if (SWT_KNOWN_EXTRA_WORDS.has(w)) return true;
+    if (swtDictionary) return swtDictionary.has(w);
+    return true; // no dictionary loaded -> don't penalize spelling we can't verify
+  }
+
+  const SWT_UNCOUNTABLE_MISUSE = [
+    "informations","advices","furnitures","equipments","researches",
+    "knowledges","feedbacks","evidences","softwares","staffs",
+    "trainings","progresses","luggages"
+  ];
+
+  /* ---- scoring: Content (0-4) ---- */
+  function scoreSwtContent(text, keywords, wordCount) {
+    const lower = text.toLowerCase();
+    let hits = 0;
+    (keywords || []).forEach(k => { if (lower.includes(String(k).toLowerCase())) hits++; });
+    const total = (keywords || []).length;
+    const ratio = total ? hits / total : 0;
+
+    let score;
+    if (ratio >= 0.7) score = 4;
+    else if (ratio >= 0.5) score = 3;
+    else if (ratio >= 0.3) score = 2;
+    else if (ratio > 0) score = 1;
+    else score = 0;
+
+    if (wordCount > 0 && wordCount < 15 && score > 2) score = 2;
+
+    const notes = {
+      4: `Strong coverage of the passage's main ideas (${hits}/${total} key concepts detected).`,
+      3: `Good coverage (${hits}/${total}) with minor gaps — connect ideas more tightly rather than listing them.`,
+      2: `Partial coverage (${hits}/${total}) — avoid copying phrases straight from the passage; separate main points from detail.`,
+      1: `Limited coverage (${hits}/${total}) — relevant but doesn't meaningfully summarize the main ideas.`,
+      0: `Very little overlap with the passage's key content (${hits}/${total}).`
+    };
+    return { score, note: notes[score] };
+  }
+
+  /* ---- scoring: Form (0-1) — exact rubric rule ---- */
+  function scoreSwtForm(text, wordCount) {
+    const trimmed = text.trim();
+    if (wordCount === 0) return { score: 0, note: "No answer submitted." };
+
+    const sentenceEnders = (trimmed.match(/[.!?]+/g) || []).length;
+    const endsProperly = /[.!?]$/.test(trimmed);
+    const singleSentence = sentenceEnders <= 1 && endsProperly;
+    const isAllCaps = trimmed === trimmed.toUpperCase() && /[A-Z]/.test(trimmed);
+
+    if (wordCount < 5 || wordCount > 75) {
+      return { score: 0, note: `Contains ${wordCount} words — outside the required 5–75 word range.` };
+    }
+    if (isAllCaps) {
+      return { score: 0, note: "Written entirely in capital letters — not accepted as proper form." };
+    }
+    if (!singleSentence) {
+      return { score: 0, note: "Not written as one single, complete sentence." };
+    }
+    return { score: 1, note: "Written as one complete sentence within the 5–75 word range." };
+  }
+
+  /* ---- scoring: Grammar (0-2) — strict, rule-based ---- */
+  const SWT_SUBJECT_VERB_PAIRS = [
+    ["discuss","discusses"], ["explain","explains"], ["mention","mentions"],
+    ["present","presents"], ["highlight","highlights"], ["describe","describes"],
+    ["argue","argues"], ["state","states"], ["show","shows"],
+    ["conclude","concludes"], ["end","ends"], ["suggest","suggests"],
+    ["claim","claims"], ["note","notes"], ["indicate","indicates"]
+  ];
+
+  function scoreSwtGrammar(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return { score: 0, issues: ["No text to check."] };
+
+    const issues = [];
+    if (!/^[A-Z]/.test(trimmed)) issues.push("Sentence should start with a capital letter.");
+    if (!/[.!?]$/.test(trimmed)) issues.push("Sentence should end with a full stop or other end punctuation.");
+    if (/\s{2,}/.test(trimmed)) issues.push("Extra spaces between words.");
+    if (/\b(\w+)\s+\1\b/i.test(trimmed)) issues.push("A word appears to be repeated twice in a row.");
+    if (/\b(don't|doesn't|didn't|can't|won't|isn't|wasn't|never)\b.*\b(no|nothing|nobody|none|nowhere)\b/i.test(trimmed)) {
+      issues.push("Possible double negative.");
+    }
+    SWT_SUBJECT_VERB_PAIRS.forEach(([base, sform]) => {
+      const directRe = new RegExp("\\b(the passage|the article|the text|the author|the writer|it)\\s+(?:\\w+\\s+){0,3}" + base + "\\b", "i");
+      if (directRe.test(trimmed) && !new RegExp("\\b" + sform + "\\b", "i").test(trimmed)) {
+        issues.push(`Possible subject–verb agreement error: use "${sform}" instead of "${base}" with a singular subject.`);
+      }
+    });
+
+    let score;
+    if (issues.length === 0) score = 2;
+    else if (issues.length === 1) score = 1;
+    else score = 0;
+    return { score, issues };
+  }
+
+  /* ---- scoring: Vocabulary (0-2) — strict spelling + word form ---- */
+  function scoreSwtVocab(text, wordCount) {
+    if (wordCount === 0) return { score: 0, issues: ["No text to check."] };
+
+    const issues = [];
+    const rawWords = text.match(/[A-Za-z']+/g) || [];
+    const misspelled = [];
+    rawWords.forEach(w => {
+      const clean = w.replace(/'s$/i, "").toLowerCase();
+      if (clean.length < 2) return;
+      if (!isSwtKnownWord(clean)) misspelled.push(w);
+    });
+    if (misspelled.length === 1) issues.push(`Possible spelling error: "${misspelled[0]}".`);
+    if (misspelled.length > 1) issues.push(`Possible spelling errors: ${misspelled.slice(0, 5).map(w => '"' + w + '"').join(", ")}${misspelled.length > 5 ? ", …" : ""}.`);
+
+    const lower = text.toLowerCase();
+    const badForms = SWT_UNCOUNTABLE_MISUSE.filter(w => new RegExp("\\b" + w + "\\b", "i").test(lower));
+    if (badForms.length) issues.push(`Uncountable noun used incorrectly in plural form: ${badForms.join(", ")}.`);
+
+    const words = lower.match(/[a-z']+/g) || [];
+    const unique = new Set(words);
+    const diversity = words.length ? unique.size / words.length : 0;
+    if (words.length >= 10 && diversity < 0.6) issues.push("Noticeable word repetition — try varying vocabulary.");
+
+    const hardErrorCount = misspelled.length + badForms.length;
+    let score;
+    if (hardErrorCount === 0 && diversity >= 0.6) score = 2;
+    else if (hardErrorCount <= 1) score = 1;
+    else score = 0;
+
+    return { score, issues };
+  }
+
+  /* ---- grading orchestration ---- */
+  function gradeSwtAnswer() {
+    if (swtSubmitted) return;
+    if (swtQuestions.length === 0) { showToast("⚠️ No SWT question loaded."); return; }
+
+    const text = document.getElementById('swtInput').value.trim();
+    if (!text) { showToast("⚠️ Please type your summary before submitting."); return; }
+
+    swtSubmitted = true;
+    document.getElementById('swtInput').disabled = true;
+    stopSwtTimer();
+
+    const wc = countSwtWords(text);
+    const q = swtQuestions[swtActiveIndex];
+
+    const content = scoreSwtContent(text, q.keywords, wc);
+    const form = scoreSwtForm(text, wc);
+    const grammar = scoreSwtGrammar(text);
+    const vocab = scoreSwtVocab(text, wc);
+
+    const total = content.score + form.score + grammar.score + vocab.score;
+    document.getElementById('swtScoreBadge').innerText = `${total} / 9`;
+
+    const critGrid = document.getElementById('swtCritGrid');
+    critGrid.innerHTML = "";
+    critGrid.appendChild(buildSwtCrit("Content", content.score, 4));
+    critGrid.appendChild(buildSwtCrit("Form", form.score, 1));
+    critGrid.appendChild(buildSwtCrit("Grammar", grammar.score, 2));
+    critGrid.appendChild(buildSwtCrit("Vocabulary", vocab.score, 2));
+
+    const fb = document.getElementById('swtFeedbackContainer');
+    fb.innerHTML = "";
+    addSwtFeedback(fb, "Content — " + content.note, content.score >= 3 ? "pos" : content.score >= 1 ? "tip" : "neg");
+    addSwtFeedback(fb, "Form — " + form.note, form.score === 1 ? "pos" : "neg");
+    if (grammar.issues.length === 0) {
+      addSwtFeedback(fb, "Grammar — No structural issues detected.", "pos");
+    } else {
+      grammar.issues.forEach(msg => addSwtFeedback(fb, "Grammar — " + msg, "neg"));
+    }
+    if (vocab.issues.length === 0) {
+      addSwtFeedback(fb, "Vocabulary — No spelling or word-form issues detected; good lexical variety.", "pos");
+    } else {
+      vocab.issues.forEach(msg => addSwtFeedback(fb, "Vocabulary — " + msg, vocab.score === 0 ? "neg" : "tip"));
+    }
+
+    document.getElementById('swtResultBox').style.display = 'flex';
+    document.getElementById('swtCheckActionBox').style.display = 'none';
+    document.getElementById('swtAfterActionBox').style.display = 'flex';
+  }
+
+  function buildSwtCrit(name, score, max) {
+    const div = document.createElement('div');
+    div.className = 'swt-crit';
+    const cls = score === max ? 'full' : (score === 0 ? 'zero' : 'mid');
+    div.innerHTML = `<div class="swt-crit-name">${name} (0–${max})</div><div class="swt-crit-val ${cls}">${score}</div>`;
+    return div;
+  }
+
+  function addSwtFeedback(container, text, type) {
+    const div = document.createElement('div');
+    div.className = 'swt-feedback-item ' + type;
+    div.innerText = text;
+    container.appendChild(div);
   }
 
   function filterRfibCategory(cat) {
@@ -1826,6 +2281,14 @@
   let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v15')) || { date: "", newCardsSeen: 0 };
   let wfdHardList = JSON.parse(localStorage.getItem('pteroom_wfd_hard_list')) || [];
 
+  /* SWT Module state */
+  let swtQuestions = [];
+  let swtActiveIndex = 0;
+  let swtTimerInterval = null;
+  let swtElapsedSeconds = 0;
+  let swtSubmitted = false;
+  let swtDictionary = null; // Set of valid English words, or null if unavailable
+
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
@@ -1872,6 +2335,9 @@
         filterWfdCategory('all');
       }
     } catch (e) { console.warn("WFD load error:", e); }
+
+    initSwtModule();
+    loadSwtDictionary();
   }
 
   /* Force Join Functions */
@@ -1920,6 +2386,8 @@
       else tg.BackButton.hide();
     }
 
+    if (current !== 'swt') stopSwtTimer();
+
     if (current === 'home') {
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
@@ -1952,6 +2420,11 @@
       document.getElementById('viewRfib').classList.add('active');
       title.innerText = "PTE ROOM • Reading FIB";
       stopWfdTimer();
+    } else if (current === 'swt') {
+      document.getElementById('viewSwt').classList.add('active');
+      title.innerText = "PTE ROOM • Summarize Written Text";
+      stopWfdTimer();
+      if (swtQuestions.length > 0) startSwtTimer();
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
