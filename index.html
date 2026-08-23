@@ -153,24 +153,6 @@
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
       animation: glowBorder 3s infinite alternate;
     }
-
-    /* Vibrant Glowing Card for Flashcards on Main Menu */
-    .hub-card.flashcard-highlight {
-      border-color: #ec4899;
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
-      animation: glowFlashCard 2.5s infinite alternate;
-    }
-    @keyframes glowFlashCard {
-      0% {
-        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
-        border-color: rgba(236, 72, 153, 0.6);
-      }
-      100% {
-        box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), inset 0 0 15px rgba(236, 72, 153, 0.2);
-        border-color: #f472b6;
-      }
-    }
-
     @keyframes glowBorder {
       0% {
         box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
@@ -182,7 +164,7 @@
       }
     }
 
-    .hub-card.placement-highlight::after, .hub-card.flashcard-highlight::after {
+    .hub-card.placement-highlight::after {
       content: '';
       position: absolute;
       top: -50%;
@@ -326,8 +308,68 @@
     }
     .inline-input:focus { border-color: #38bdf8 !important; }
 
-    .correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
-    .wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
+    /* RFIB Practice Screen Styles */
+    .rfib-drop-zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 95px;
+      height: 32px;
+      padding: 2px 8px;
+      margin: 0 4px;
+      background: #1e293b;
+      border: 1.5px dashed #0284c7;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #38bdf8;
+      vertical-align: middle;
+      cursor: pointer;
+      font-size: 13.5px;
+      transition: all 0.2s;
+    }
+    .rfib-drop-zone.filled {
+      border-style: solid;
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+    }
+    .rfib-drop-zone.correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
+    .rfib-drop-zone.wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
+
+    .rfib-word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      padding: 12px;
+      border-radius: 10px;
+      direction: ltr;
+      justify-content: flex-start;
+      margin-top: 10px;
+    }
+    .rfib-chip {
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      color: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .rfib-chip.selected {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
+      transform: scale(0.96);
+    }
+    .rfib-chip.used {
+      opacity: 0.25;
+      pointer-events: none;
+      border-style: dashed;
+    }
 
     .quiz-options {
       display: grid;
@@ -882,14 +924,6 @@
         </div>
       </div>
 
-      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
-        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
-        <div class="hub-text">
-          <h3 style="color:#f472b6; font-size: 16px; letter-spacing: 0.5px;">FLASH CARDS</h3>
-          <p>جعبه لایتنر واژگان آکادمیک (مرور هوشمند و جعبه‌های ۵گانه)</p>
-        </div>
-      </div>
-
       <div class="hub-card" onclick="navTo('materials')">
         <div class="hub-icon">📁</div>
         <div class="hub-text">
@@ -917,8 +951,8 @@
       <div class="hub-card" onclick="navTo('practice_menu')">
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
-          <h3>PTE PRACTICE</h3>
-          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB</p>
+          <h3>تمرین روزانه</h3>
+          <p>شبیه‌ساز هوشمند WFD، لایتنر واژگان و بانک سوالات RFIB</p>
         </div>
       </div>
     </div>
@@ -1289,7 +1323,7 @@
     </div>
   </div>
 
-  <!-- Practice Hub Screen (PTE Practice) -->
+  <!-- Practice Hub Screen -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('wfd')">
@@ -1307,13 +1341,21 @@
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
+
+      <div class="hub-card" onclick="navTo('flash_setup')">
+        <div class="hub-icon">🗂</div>
+        <div class="hub-text">
+          <h3>Academic Flashcards</h3>
+          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (همراه با مرور هوشمند روزانه)</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
-      <!-- Grammar Category Selection Bar -->
+      <!-- Grammar Category Selection Bar (10 categories: Inversion & Conditional only in All) -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
         <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
@@ -1440,7 +1482,7 @@
       <div class="done-message" id="doneMessage">
         <h3>🎉 عالی بود!</h3>
         <p>شما سهمیه لغات جدید امروز را به پایان رساندید.<br>فردا برای کلمات جدید برگردید.</p>
-        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('home')">بازگشت به خانه</button>
+        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('practice_menu')">بازگشت به منو</button>
       </div>
 
       <div class="leitner-actions" id="leitnerActions">
@@ -1478,7 +1520,7 @@
     }
   ];
 
-  /* RFIB Dynamic Data Engine */
+  /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
   let rfibAllQuestions = [];
   let currentRfibList = [];
   let activeRfibIndex = 0;
@@ -1487,15 +1529,15 @@
 
   async function initRfibModule() {
     try {
-      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         rfibAllQuestions = await res.json();
         filterRfibCategory('All');
       } else {
-        console.warn("Could not load rwfib_questions.json");
+        console.warn("Could not load rfib_questions.json");
       }
     } catch (err) {
-      console.error("Error loading RWFIB JSON:", err);
+      console.error("Error loading RFIB JSON:", err);
     }
   }
 
@@ -1881,7 +1923,7 @@
       stopWfdTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
-      title.innerText = "PTE ROOM • PTE PRACTICE";
+      title.innerText = "PTE ROOM • تمرین روزانه";
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
@@ -1897,7 +1939,7 @@
       stopWfdTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
-      title.innerText = "PTE ROOM • FLASH CARDS";
+      title.innerText = "PTE ROOM • Academic Flashcards";
       stopWfdTimer();
     }
   }
