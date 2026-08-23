@@ -1,5 +1,47 @@
 [
   {
+    "id": "22.1",
+    "title": "WFD #22.1",
+    "text": "A good architectural structure should be usable, durable and beautiful.",
+    "audioUrl": "22.1.mp3",
+    "isPrediction": false
+  },
+  {
+    "id": "61 (3)",
+    "title": "WFD #61 (3)",
+    "text": "Artists, other than politicians, played their own roles as critics of the culture.",
+    "audioUrl": "61 (3).mp3",
+    "isPrediction": false
+  },
+  {
+    "id": "528 (2)",
+    "title": "WFD #528 (2)",
+    "text": "Currently, the growth of the company is unpredictable.",
+    "audioUrl": "528 (2).mp3",
+    "isPrediction": false
+  },
+  {
+    "id": "1161 (2)",
+    "title": "WFD #1161 (2)",
+    "text": "Businesses must adapt to the general data protection regulations.",
+    "audioUrl": "1161 (2).mp3",
+    "isPrediction": false
+  },
+  {
+    "id": "1238 (2)",
+    "title": "WFD #1238 (2)",
+    "text": "He wrote poetry and plays as well as scientific papers.",
+    "audioUrl": "1238 (2).mp3",
+    "isPrediction": false
+  },
+  {
+    "id": "determination",
+    "title": "WFD #determination",
+    "audioUrl": "determination.mp3",
+    "text": "An emotion consists of a very well-orchestrated set of alterations in the body that has, as a general purpose, making life more survivable by taking care of a danger or taking care of an opportunity, either or something in between. And it's something that is set in our genome and that we all have with a certain program nature that is modified by our experience. So individually we have variations on the pattern, but in essence your emotion of joy and mine are going to be extremely similar. We may express them physically, slightly differently and it's of course great, depending on the circumstance, but the essence of the process is going to be the same. Unless one of us is not quite well put together and is missing something, otherwise it's going to be the same. It's going to be the same across even other species.",
+    "isPrediction": true
+  },
+  {
     "id": "1",
     "title": "WFD #1",
     "text": "The artists and conservative politicians follow their own rules in politics.",
@@ -140,13 +182,6 @@
     "isPrediction": false
   },
   {
-    "id": "22.1",
-    "title": "WFD #22.1",
-    "text": "A good architectural structure should be usable, durable and beautiful.",
-    "audioUrl": "22.1.mp3",
-    "isPrediction": false
-  },
-  {
     "id": "25",
     "title": "WFD #25",
     "text": "A good scientific paper should have clear arguments.",
@@ -259,13 +294,6 @@
     "isPrediction": false
   },
   {
-    "id": "61 (3)",
-    "title": "WFD #61 (3)",
-    "text": "Artists, other than politicians, played their own roles as critics of the culture.",
-    "audioUrl": "61 (3).mp3",
-    "isPrediction": false
-  },
-  {
     "id": "61",
     "title": "WFD #61",
     "text": "We physicists have often wondered are there signs of intelligent life in the galaxy? And if so, how advanced my theory be? So we categorize these alien civilizations on the basis of energy, energy consumption. Type 1 would be planetary. They control the weather. They control anything planetary because they have the energy of a planet. Then this type 2, a type 2 civilization has exhausted the power of their planet and they use the sun. They basically take the energy from their sun to power their machines. Sort of like the federation of planets in Star Trek. Then this type 3, galactic, they roam the galactic space lanes. They play with black holes. Sort of like the empire of empire strikes back. That would be a type 3 civilization.",
@@ -348,6 +376,13 @@
     "text": "Convincing evidence to support this theory is hard to obtain.",
     "audioUrl": "94.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 101,
+    "title": "WFD #101",
+    "audioUrl": "101.mp3",
+    "text": "Classical mechanics is sometimes considered as a branch of applied mathematics.",
+    "isPrediction": true
   },
   {
     "id": "104",
@@ -763,6 +798,13 @@
     "isPrediction": false
   },
   {
+    "id": 308,
+    "title": "WFD #308",
+    "audioUrl": "308.mp3",
+    "text": "Students have the options to live in college residences or apartments.",
+    "isPrediction": true
+  },
+  {
     "id": "310",
     "title": "WFD #310",
     "text": "Students requiring an extension should apply sooner rather than later.",
@@ -819,6 +861,13 @@
     "isPrediction": false
   },
   {
+    "id": 332,
+    "title": "WFD #332",
+    "audioUrl": "332.mp3",
+    "text": "The application process may take longer than expected.",
+    "isPrediction": true
+  },
+  {
     "id": "333",
     "title": "WFD #333",
     "text": "The archaeologist's new discoveries stand out in the previously overlooked foundations.",
@@ -861,6 +910,13 @@
     "isPrediction": false
   },
   {
+    "id": 360,
+    "title": "WFD #360",
+    "audioUrl": "360.mp3",
+    "text": "The chemistry building is located near the entrance of the campus.",
+    "isPrediction": true
+  },
+  {
     "id": "370",
     "title": "WFD #370",
     "text": "The course helps students to improve their pronunciation skills.",
@@ -901,6 +957,13 @@
     "text": "The dining hall will undergo renovations during the fall break.",
     "audioUrl": "381.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 382,
+    "title": "WFD #382",
+    "audioUrl": "382.mp3",
+    "text": "The director of the gallery was grateful for the anonymous donation.",
+    "isPrediction": true
   },
   {
     "id": "387",
@@ -985,6 +1048,13 @@
     "text": "The most important details in this argument are missing.",
     "audioUrl": "422.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 424,
+    "title": "WFD #424",
+    "audioUrl": "424.mp3",
+    "text": "The most popular courses still have a few places left.",
+    "isPrediction": true
   },
   {
     "id": "426",
@@ -1187,13 +1257,6 @@
     "title": "WFD #522",
     "text": "This course provides the opportunity to get valuable industry experience.",
     "audioUrl": "522.mp3",
-    "isPrediction": false
-  },
-  {
-    "id": "528 (2)",
-    "title": "WFD #528 (2)",
-    "text": "Currently, the growth of the company is unpredictable.",
-    "audioUrl": "528 (2).mp3",
     "isPrediction": false
   },
   {
@@ -1442,6 +1505,13 @@
     "isPrediction": false
   },
   {
+    "id": 621,
+    "title": "WFD #621",
+    "audioUrl": "621.mp3",
+    "text": "More research is needed before any definitive conclusion is drawn.",
+    "isPrediction": true
+  },
+  {
     "id": "624",
     "title": "WFD #624",
     "text": "Our courses help to improve critical thinking and independent learning skills.",
@@ -1510,6 +1580,13 @@
     "text": "The student advisor was aware that the lecture today has been cancelled.",
     "audioUrl": "638.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 644,
+    "title": "WFD #644",
+    "audioUrl": "644.mp3",
+    "text": "The college operates a system of continuous assessment.",
+    "isPrediction": true
   },
   {
     "id": "645",
@@ -1657,6 +1734,13 @@
     "text": "Many vocational courses in the institution are funded by private enterprises.",
     "audioUrl": "701.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 707,
+    "title": "WFD #707",
+    "audioUrl": "707.mp3",
+    "text": "Human beings compete with other living things for resources and space",
+    "isPrediction": true
   },
   {
     "id": "708",
@@ -2037,6 +2121,13 @@
     "isPrediction": false
   },
   {
+    "id": 900,
+    "title": "WFD #900",
+    "audioUrl": "900.mp3",
+    "text": "The rising of the sea level indicates climate change.",
+    "isPrediction": true
+  },
+  {
     "id": "902",
     "title": "WFD #902",
     "text": "The timetable for the next term will be available next week.",
@@ -2077,6 +2168,13 @@
     "text": "A thorough bibliography is needed at the end of every assignment.",
     "audioUrl": "911.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 913,
+    "title": "WFD #913",
+    "audioUrl": "913.mp3",
+    "text": "Designers need to keep up with social trends",
+    "isPrediction": true
   },
   {
     "id": "919",
@@ -2233,6 +2331,13 @@
     "isPrediction": false
   },
   {
+    "id": 977,
+    "title": "WFD #977",
+    "audioUrl": "977.mp3",
+    "text": "The printers automatically print two sides of each page.",
+    "isPrediction": true
+  },
+  {
     "id": "978",
     "title": "WFD #978",
     "text": "The bus to London will leave 10 minutes later than expected.",
@@ -2317,6 +2422,13 @@
     "isPrediction": false
   },
   {
+    "id": 1000,
+    "title": "WFD #1000",
+    "audioUrl": "1000.mp3",
+    "text": "The North Campus Car Park could be closed on Sunday.",
+    "isPrediction": true
+  },
+  {
     "id": "1002",
     "title": "WFD #1002",
     "text": "Scientists recognize different ice types according to the water molecule content.",
@@ -2352,6 +2464,13 @@
     "isPrediction": false
   },
   {
+    "id": 1010,
+    "title": "WFD #1010",
+    "audioUrl": "1010.mp3",
+    "text": "Request for late applications will not be accepted under any circumstances.",
+    "isPrediction": true
+  },
+  {
     "id": "1011",
     "title": "WFD #1011",
     "text": "It helps you to rationally assess your arguments.",
@@ -2364,6 +2483,13 @@
     "text": "Social media is criticized for causing internet addiction.",
     "audioUrl": "1013.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 1014,
+    "title": "WFD #1014",
+    "audioUrl": "1014.mp3",
+    "text": "The area has a wide variety of underwater habitats and species.",
+    "isPrediction": true
   },
   {
     "id": "1016",
@@ -2471,6 +2597,13 @@
     "isPrediction": false
   },
   {
+    "id": 1052,
+    "title": "WFD #1052",
+    "audioUrl": "1052.mp3",
+    "text": "The Commissioner will apportion the funds among all the soverenties.",
+    "isPrediction": true
+  },
+  {
     "id": "1055",
     "title": "WFD #1055",
     "text": "The History Department is very active in research.",
@@ -2490,6 +2623,13 @@
     "text": "The skills of grade stage actors cannot be taught.",
     "audioUrl": "1058.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 1059,
+    "title": "WFD #1059",
+    "audioUrl": "1059.mp3",
+    "text": "Philosophy uses logic and reason to analyze human experience.",
+    "isPrediction": true
   },
   {
     "id": "1060",
@@ -2539,6 +2679,13 @@
     "text": "The universities provide excellent leisure facilities for students and staff.",
     "audioUrl": "1079.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 1081,
+    "title": "WFD #1081",
+    "audioUrl": "1081.mp3",
+    "text": "A new collection of articles has just been published.",
+    "isPrediction": true
   },
   {
     "id": "1082",
@@ -2814,13 +2961,6 @@
     "isPrediction": false
   },
   {
-    "id": "1161 (2)",
-    "title": "WFD #1161 (2)",
-    "text": "Businesses must adapt to the general data protection regulations.",
-    "audioUrl": "1161 (2).mp3",
-    "isPrediction": false
-  },
-  {
     "id": "1161",
     "title": "WFD #1161",
     "text": "Businesses must adapt to the general data protection regulations.",
@@ -3080,13 +3220,6 @@
     "isPrediction": false
   },
   {
-    "id": "1238 (2)",
-    "title": "WFD #1238 (2)",
-    "text": "He wrote poetry and plays as well as scientific papers.",
-    "audioUrl": "1238 (2).mp3",
-    "isPrediction": false
-  },
-  {
     "id": "1238",
     "title": "WFD #1238",
     "text": "He wrote poetry and plays as well as scientific papers.",
@@ -3295,6 +3428,13 @@
     "text": "We should have a meeting to discuss and report.",
     "audioUrl": "1397.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 1400,
+    "title": "WFD #1400",
+    "audioUrl": "1400.mp3",
+    "text": "Essays and assignments spread out across the academic year",
+    "isPrediction": true
   },
   {
     "id": "1401",
@@ -3521,6 +3661,13 @@
     "isPrediction": false
   },
   {
+    "id": 1484,
+    "title": "WFD #1484",
+    "audioUrl": "1484.mp3",
+    "text": "New materials and techniques are changing the style of modern architecture.",
+    "isPrediction": true
+  },
+  {
     "id": "1485",
     "title": "WFD #1485",
     "text": "Course work gives students the chances to thoroughly explore the subject.",
@@ -3561,6 +3708,13 @@
     "text": "There is an agreed consensus that the leadership skills can be taught.",
     "audioUrl": "1504.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 1523,
+    "title": "WFD #1523",
+    "audioUrl": "1523.mp3",
+    "text": "There is a widely believed perception that engineering is for boys.",
+    "isPrediction": true
   },
   {
     "id": "1528",
@@ -3626,6 +3780,13 @@
     "isPrediction": false
   },
   {
+    "id": 1962,
+    "title": "WFD #1962",
+    "audioUrl": "1962.mp3",
+    "text": "Please note that the seminar has now been cancelled.",
+    "isPrediction": true
+  },
+  {
     "id": "1970",
     "title": "WFD #1970",
     "text": "One student representative will be selected from H-class.",
@@ -3687,6 +3848,13 @@
     "text": "Before choosing your university courses, you should consider your future career.",
     "audioUrl": "2429.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 2436,
+    "title": "WFD #2436",
+    "audioUrl": "2436.mp3",
+    "text": "We encourage students to complete their applications before the deadline.",
+    "isPrediction": true
   },
   {
     "id": "2452",
@@ -4102,6 +4270,20 @@
     "isPrediction": false
   },
   {
+    "id": 3283,
+    "title": "WFD #3283",
+    "audioUrl": "3283.mp3",
+    "text": "Social psychology is concerned with the understanding of human behavior.",
+    "isPrediction": true
+  },
+  {
+    "id": 3285,
+    "title": "WFD #3285",
+    "audioUrl": "3285.mp3",
+    "text": "The population has risen sharply over the past 20 years.",
+    "isPrediction": true
+  },
+  {
     "id": "3288",
     "title": "WFD #3288",
     "text": "Stories often contain messages in our life.",
@@ -4149,5 +4331,26 @@
     "text": "We will discuss these two pictures in the next lecture.",
     "audioUrl": "3303.mp3",
     "isPrediction": false
+  },
+  {
+    "id": 3942,
+    "title": "WFD #3942",
+    "audioUrl": "3942.mp3",
+    "text": "Her design incorporates the best aspects of architecture.",
+    "isPrediction": true
+  },
+  {
+    "id": 3944,
+    "title": "WFD #3944",
+    "audioUrl": "3944.mp3",
+    "text": "Polar regions islands are ideal for astrophysicists and meteorologists to carry out field experiments.",
+    "isPrediction": true
+  },
+  {
+    "id": 3946,
+    "title": "WFD #3946",
+    "audioUrl": "3946.mp3",
+    "text": "Tacked is the knack of making a point without making an enemy.",
+    "isPrediction": true
   }
 ]
