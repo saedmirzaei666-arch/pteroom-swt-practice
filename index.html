@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PTE ROOM • پلتفرم جامع</title>
+  <title>PTE ROOM • Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root { 
@@ -175,8 +175,8 @@
     .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* Materials, Schedule, Courses, Lists */
-    .materials-container, .schedule-container, .courses-list, .list-container-box {
+    /* Materials View Styles */
+    .materials-container {
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -184,7 +184,7 @@
       flex: 1;
       padding-bottom: 8px;
     }
-    .material-item-card, .course-item-card, .list-row-card {
+    .material-item-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       border-radius: 14px;
@@ -195,9 +195,9 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .material-item-card:active, .course-item-card:active, .list-row-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
-    .material-info, .course-info { display: flex; flex-direction: column; gap: 4px; }
-    .material-badge, .course-badge {
+    .material-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .material-info { display: flex; flex-direction: column; gap: 4px; }
+    .material-badge {
       align-self: flex-start;
       background: rgba(56, 189, 248, 0.15);
       color: #38bdf8;
@@ -206,60 +206,54 @@
       padding: 2px 8px;
       border-radius: 4px;
     }
-    .material-title, .course-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
+    .material-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
-    /* Reading Practice Screen Styles */
-    .reading-practice-container {
+    /* Placement Test Styles */
+    .placement-container {
       display: flex;
       flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
       flex: 1;
-      min-height: 0;
-      gap: 10px;
+      padding-bottom: 14px;
     }
-    .practice-header-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 10px 14px;
-      border-radius: 12px;
-      flex-shrink: 0;
-      font-size: 13.5px;
-      font-weight: 800;
-    }
-    .timer-display-box {
-      background: #0f172a;
-      border: 1px solid #334155;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-family: monospace;
-      font-size: 14px;
-      color: #38bdf8;
-    }
-    .timer-display-box.warning {
-      background: rgba(245, 158, 11, 0.2);
-      border-color: var(--warning);
-      color: var(--warning);
-    }
-    .passage-content-box {
+    .quiz-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       border-radius: 14px;
-      padding: 16px;
-      overflow-y: auto;
-      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .passage-box {
       font-size: 14.5px;
-      line-height: 2.5;
+      line-height: 2.3;
+      color: #f8fafc;
       direction: ltr;
       text-align: left;
+      background: #0f172a;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      word-spacing: 1px;
     }
-    .inline-select-custom {
+
+    .inline-select {
       display: inline-block !important;
       width: auto !important;
-      min-width: 100px !important;
-      padding: 4px 8px !important;
+      min-width: 90px !important;
+      max-width: 140px !important;
+      padding: 3px 6px !important;
       margin: 0 4px !important;
       background: #1e293b !important;
       color: #38bdf8 !important;
@@ -269,31 +263,30 @@
       font-weight: 700 !important;
       outline: none !important;
       vertical-align: middle !important;
+      direction: ltr !important;
+      height: 32px !important;
     }
-    .inline-select-custom.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
-    .inline-select-custom.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
 
-    .practice-footer-buttons {
-      display: flex;
-      gap: 10px;
-      flex-shrink: 0;
+    .inline-input {
+      display: inline-block !important;
+      width: 110px !important;
+      height: 30px !important;
+      padding: 2px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      direction: ltr !important;
+      text-align: center !important;
+      vertical-align: middle !important;
     }
-    .btn-nav-action {
-      flex: 1;
-      background: #1e293b;
-      color: #fff;
-      border: 1px solid #334155;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 13.5px;
-      cursor: pointer;
-    }
-    .btn-nav-action.submit-btn { background: #059669; border-color: #059669; }
-    .btn-nav-action:active { transform: scale(0.98); }
+    .inline-input:focus { border-color: #38bdf8 !important; }
 
-    /* RFIB Drop Zone & Bank */
-    .rfib-drop-zone-custom {
+    .rfib-drop-zone {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -309,16 +302,14 @@
       vertical-align: middle;
       cursor: pointer;
       font-size: 13.5px;
+      transition: all 0.2s;
     }
-    .rfib-drop-zone-custom.filled {
+    .rfib-drop-zone.filled {
       border-style: solid;
       background: rgba(56, 189, 248, 0.15);
       border-color: #38bdf8;
     }
-    .rfib-drop-zone-custom.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
-    .rfib-drop-zone-custom.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
-
-    .rfib-bank-container {
+    .rfib-word-bank {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
@@ -328,9 +319,9 @@
       border-radius: 10px;
       direction: ltr;
       justify-content: flex-start;
-      margin-top: 14px;
+      margin-top: 6px;
     }
-    .rfib-chip-item {
+    .rfib-chip {
       background: #1e293b;
       border: 1.5px solid #334155;
       color: #f1f5f9;
@@ -340,11 +331,75 @@
       font-weight: 700;
       cursor: pointer;
       user-select: none;
+      transition: all 0.15s;
     }
-    .rfib-chip-item.selected { background: #0284c7; border-color: #38bdf8; color: #fff; }
-    .rfib-chip-item.used { opacity: 0.25; pointer-events: none; border-style: dashed; }
+    .rfib-chip.selected {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
+      transform: scale(0.96);
+    }
+    .rfib-chip.used {
+      opacity: 0.25;
+      pointer-events: none;
+      border-style: dashed;
+    }
 
-    /* Schedule & Courses */
+    .audio-wrapper {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      padding: 6px 10px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    audio { width: 100%; height: 32px; outline: none; }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      direction: ltr;
+      color: #cbd5e1;
+    }
+    .opt-label:has(input:checked) {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      color: #fff;
+    }
+    .opt-label input { accent-color: #38bdf8; }
+
+    .user-info-field {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      width: 100%;
+    }
+    .user-info-field:focus { border-color: #38bdf8; }
+
+    /* Schedule View Styles */
+    .schedule-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
     .schedule-banner {
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.3);
@@ -365,12 +420,82 @@
       flex-direction: column;
       gap: 8px;
     }
-    .day-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 6px; }
-    .day-title { font-weight: 800; font-size: 14px; color: #f8fafc; }
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 6px;
+    }
+    .day-title { font-weight: 800; font-size: 14px; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
     .day-date { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
-    .event-row { display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 8px 10px; border-radius: 8px; font-size: 12.5px; }
-    .event-info { font-weight: 700; color: #e2e8f0; }
-    .event-time { font-weight: 800; color: #38bdf8; direction: ltr; background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 6px; }
+    .day-events { display: flex; flex-direction: column; gap: 6px; }
+    .event-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+    }
+    .event-info { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #e2e8f0; }
+    .event-time {
+      font-weight: 800;
+      color: #38bdf8;
+      direction: ltr;
+      font-size: 12.5px;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .schedule-footer-note {
+      font-size: 11.5px;
+      color: #facc15;
+      text-align: center;
+      padding: 6px;
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Courses View Styles */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
+    .course-item-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .course-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .course-info { display: flex; flex-direction: column; gap: 6px; }
+    .course-badge {
+      align-self: flex-start;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
+    .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
     /* Modal Styles */
     .modal-overlay {
@@ -409,11 +534,151 @@
       cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin-top: 6px;
     }
 
+    /* WFD Simulator Styles */
+    .wfd-box {
+      display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border);
+      padding: 14px; flex: 1; min-height: 0; gap: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .wfd-category-bar { display: flex; gap: 8px; flex-shrink: 0; }
+    .cat-btn {
+      flex: 1; background: #1e293b; border: 1px solid #334155; padding: 8px 4px; border-radius: 8px;
+      font-size: 12px; font-weight: 700; color: #94a3b8; cursor: pointer; transition: all 0.2s;
+    }
+    .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    
+    .wfd-status-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 2px; flex-shrink: 0; }
+    .wfd-timer-badge {
+      font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #0284c7;
+    }
+    .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
+    .wfd-timer-badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
+
+    textarea {
+      height: 75px; min-height: 75px; max-height: 85px; width: 100%; padding: 10px 12px; font-size: 14px; line-height: 1.4;
+      background: #0f172a; color: #f8fafc; border: 1.5px solid #334155; border-radius: 10px; resize: none; outline: none; direction: ltr; text-align: left; flex-shrink: 0;
+    }
+    textarea:focus { border-color: #38bdf8; }
+
+    .wfd-result-card {
+      display: none; flex-direction: column; gap: 6px; background: #0f172a; border: 1.5px solid #334155;
+      padding: 10px 12px; border-radius: 10px; overflow-y: auto; flex: 1; min-height: 0;
+    }
+    .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+    .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
+    .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
+    .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
+    .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
+    .btn-secondary {
+      background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 10px 14px; border-radius: 10px;
+      cursor: pointer; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+
+    /* Flashcard Styles */
+    .flashcard-box {
+      display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border);
+      padding: 14px; flex: 1; min-height: 0; align-items: center; justify-content: space-between; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
+    .stats-info { font-size: 11px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
+    .action-top-btn { background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .card-scene { width: 100%; flex: 1; perspective: 1000px; cursor: pointer; }
+    .card { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; border-radius: 16px; }
+    .card.is-flipped { transform: rotateY(180deg); }
+    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1.5px solid var(--card-border); overflow-y: auto; }
+    .card-front { background: linear-gradient(145deg, #0284c7, #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
+    .card-front .word-title { font-size: 34px; font-weight: 900; margin-bottom: 12px; color: #f8fafc; }
+    .card-front .tap-hint { font-size: 12px; color: #cbd5e1; background: rgba(0,0,0,0.35); padding: 6px 16px; border-radius: 20px; }
+    .card-back { background: #0f172a; transform: rotateY(180deg); justify-content: center; gap: 8px; direction: ltr; text-align: left; }
+    .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #1e293b; padding-bottom: 6px; }
+    .card-back .pronunciation { font-style: italic; color: #94a3b8; font-size: 14.5px; font-weight: 600; }
+    .card-back .pos { background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .card-back .persian-meaning { font-size: 17px; font-weight: 800; color: #38bdf8; direction: rtl; text-align: right; margin: 4px 0; }
+    .card-back .section-title { font-size: 12px; font-weight: 800; color: #94a3b8; }
+    .card-back .collocations { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+    .card-back .example-sentence { font-size: 12.5px; line-height: 1.5; color: #f1f5f9; background: #1e293b; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #38bdf8; }
+
+    .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
+    .leitner-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13.5px; border: none; cursor: pointer; color: #fff; }
+    .btn-again { background: #dc2626; }
+    .btn-good { background: #059669; }
+
+    .btn-primary {
+      background: #0284c7; color: #fff; border: none; padding: 12px 16px; border-radius: 12px;
+      cursor: pointer; font-weight: 800; font-size: 14px; transition: all 0.2s;
+    }
+    .btn-primary:active { transform: scale(0.98); background: #0369a1; }
+    
+    .settings-panel { background: #0f172a; border: 1.5px solid var(--card-border); border-radius: 14px; padding: 18px; margin-bottom: 14px; width: 100%; }
+    .settings-panel label { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: block; margin-bottom: 8px; }
+    .quota-info { font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.6; }
+    .quota-options { display: flex; gap: 8px; margin-bottom: 4px; }
+    .quota-btn {
+      flex: 1; padding: 11px 0; background: #1e293b; border: 1.5px solid #334155; border-radius: 10px;
+      font-weight: 800; font-size: 14px; color: #cbd5e1; cursor: pointer;
+    }
+    .quota-btn.selected { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    
+    .done-message {
+      display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1;
+      background: rgba(16, 185, 129, 0.1); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px;
+    }
+    .done-message h3 { color: #34d399; font-size: 19px; margin-bottom: 10px; }
+    .done-message p { color: #cbd5e1; font-size: 13.5px; line-height: 1.7; }
+
+    /* New Reading Practice Screen Styles */
+    .reading-practice-container { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 10px; }
+    .practice-header-bar {
+      display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);
+      border: 1px solid var(--card-border); padding: 10px 14px; border-radius: 12px; flex-shrink: 0; font-size: 13.5px; font-weight: 800;
+    }
+    .timer-display-box {
+      background: #0f172a; border: 1px solid #334155; padding: 4px 10px; border-radius: 8px; font-family: monospace; font-size: 14px; color: #38bdf8;
+    }
+    .timer-display-box.warning { background: rgba(245, 158, 11, 0.2); border-color: var(--warning); color: var(--warning); }
+    .passage-content-box {
+      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px;
+      overflow-y: auto; flex: 1; font-size: 14.5px; line-height: 2.5; direction: ltr; text-align: left;
+    }
+    .inline-select-custom {
+      display: inline-block !important; width: auto !important; min-width: 100px !important; padding: 4px 8px !important;
+      margin: 0 4px !important; background: #1e293b !important; color: #38bdf8 !important; border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important; font-size: 13.5px !important; font-weight: 700 !important; outline: none !important; vertical-align: middle !important;
+    }
+    .inline-select-custom.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
+    .inline-select-custom.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
+
+    .practice-footer-buttons { display: flex; gap: 10px; flex-shrink: 0; }
+    .btn-nav-action {
+      flex: 1; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 13.5px; cursor: pointer;
+    }
+    .btn-nav-action.submit-btn { background: #059669; border-color: #059669; }
+    .btn-nav-action:active { transform: scale(0.98); }
+
+    .rfib-drop-zone-custom {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 95px; height: 32px; padding: 2px 8px;
+      margin: 0 4px; background: #1e293b; border: 1.5px dashed #0284c7; border-radius: 6px; font-weight: 700; color: #38bdf8; vertical-align: middle; cursor: pointer; font-size: 13.5px;
+    }
+    .rfib-drop-zone-custom.filled { border-style: solid; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; }
+    .rfib-drop-zone-custom.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
+    .rfib-drop-zone-custom.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
+
+    .rfib-bank-container { display: flex; flex-wrap: wrap; gap: 8px; background: #0b1120; border: 1px solid #1e293b; padding: 10px; border-radius: 10px; direction: ltr; justify-content: flex-start; margin-top: 14px; }
+    .rfib-chip-item { background: #1e293b; border: 1.5px solid #334155; color: #f1f5f9; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; user-select: none; }
+    .rfib-chip-item.selected { background: #0284c7; border-color: #38bdf8; color: #fff; }
+    .rfib-chip-item.used { opacity: 0.25; pointer-events: none; border-style: dashed; }
+
+    .list-container-box { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-bottom: 10px; }
+    .list-row-card {
+      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px; padding: 14px;
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 800; font-size: 14px;
+    }
+    .list-row-card:active { background: #1e293b; border-color: #38bdf8; }
+
     .app-toast {
-      position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: rgba(15, 23, 42, 0.95); border: 1px solid #38bdf8; color: #f8fafc; padding: 10px 18px;
-      border-radius: 25px; font-size: 12.5px; font-weight: 700; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-      opacity: 0; pointer-events: none; transition: all 0.25s ease-out; z-index: 2000; white-space: nowrap;
+      position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8; color: #f8fafc; padding: 10px 18px; border-radius: 25px; font-size: 12.5px; font-weight: 700;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); opacity: 0; pointer-events: none; transition: all 0.25s ease-out; z-index: 2000; white-space: nowrap;
     }
     .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
@@ -481,14 +746,14 @@
     </div>
   </div>
 
-  <!-- Practice Hub Menu (تمرین روزانه) -->
+  <!-- Practice Hub Menu -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
       <div class="hub-card" onclick="openReadingMain('rwfib')">
         <div class="hub-icon">📖</div>
         <div class="hub-text">
           <h3>Dropdown RWFIB</h3>
-          <p>تمرین‌های جای‌خالی ریدینگ و رایتینگ (همه سوالات گرامری و پردیکشن)</p>
+          <p>تمرین‌های جای‌خالی ریدینگ و رایتینگ (همه سوالات و پردیکشن)</p>
         </div>
       </div>
 
@@ -497,6 +762,22 @@
         <div class="hub-text">
           <h3>Drag Drop RFIB</h3>
           <p>تمرین‌های جای‌خالی ریدینگ (دسته‌بندی گرامری و پردیکشن ماهانه)</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('wfd')">
+        <div class="hub-icon">✍️</div>
+        <div class="hub-text">
+          <h3>Write From Dictation</h3>
+          <p>شبیه‌ساز رسمی پخش صوت، نگارش و تصحیح هوشمند تطبیق کلمات</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('flash_setup')">
+        <div class="hub-icon">🗂</div>
+        <div class="hub-text">
+          <h3>Academic Flashcards</h3>
+          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (همراه با مرور هوشمند روزانه)</p>
         </div>
       </div>
     </div>
@@ -551,6 +832,7 @@
       <div class="schedule-banner">📁 بانک متریال و پردیکشن‌های رسمی PTE ROOM</div>
       <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RA</div></div><div class="arrow-icon">‹</div></div>
       <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RS</div></div><div class="arrow-icon">‹</div></div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2865')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RL</div></div><div class="arrow-icon">‹</div></div>
     </div>
   </div>
 
@@ -569,6 +851,71 @@
   <div class="view-screen" id="viewCourses">
     <div class="courses-list">
       <div class="course-item-card" onclick="openCourseModal(0)"><div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div><div class="arrow-icon">‹</div></div>
+      <div class="course-item-card" onclick="openCourseModal(1)"><div class="course-info"><span class="course-badge">SPECIALIZED MASTERCLASS</span><div class="course-title">2. PTE Write Essay Mastery</div></div><div class="arrow-icon">‹</div></div>
+    </div>
+  </div>
+
+  <!-- Placement Test Screen -->
+  <div class="view-screen" id="viewPlacement">
+    <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
+      <div class="quiz-card">
+        <div class="quiz-title"><span>📖 Reading & Writing: Fill in the Blanks</span></div>
+        <div class="passage-box">
+          Modern humans are masters of multitasking. We eat while driving, watch TV while 
+          <select name="rw_a" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="volleying">volleying</option>
+            <option value="studying">studying</option>
+          </select>.
+        </div>
+      </div>
+      <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">🚀 ثبت نهایی و ارسال آزمون تعیین سطح</button>
+    </form>
+  </div>
+
+  <!-- WFD Simulator Screen -->
+  <div class="view-screen" id="viewWfd">
+    <div class="wfd-box">
+      <div class="wfd-category-bar">
+        <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
+        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
+      </div>
+      <select id="wfdSelect" onchange="onSelectWfd()"></select>
+      <div class="audio-wrapper"><audio id="wfdAudioPlayer" controls></audio></div>
+      <div class="wfd-status-bar">
+        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="wfdWordCount">Word Count: 0</span>
+        <span class="wfd-timer-badge" id="wfdTimerBadge">⏱ 00:00</span>
+      </div>
+      <textarea id="wfdInput" placeholder="Type sentence..." oninput="calcWfdWords()"></textarea>
+      <div class="wfd-result-card" id="wfdResultBox">
+        <div class="wfd-score-header"><span>📊 Score:</span><span id="wfdScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span></div>
+        <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
+      </div>
+      <div class="wfd-action-buttons">
+        <button class="btn-primary" style="flex: 2;" onclick="evaluateWfdAnswer()">Check Answer</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextWfdQuestion()">Next ⏭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flashcards Setup & Practice Screens -->
+  <div class="view-screen" id="viewFlashSetup">
+    <div class="flashcard-box" style="justify-content: flex-start;">
+      <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
+      <button type="button" class="btn-primary" style="padding:14px; width:100%; border-radius:12px;" onclick="navTo('flash')">🚀 شروع تمرین روزانه</button>
+    </div>
+  </div>
+
+  <div class="view-screen" id="viewFlash">
+    <div class="flashcard-box">
+      <div class="leitner-progress"><div><span id="cardCounter">Card 1</span></div></div>
+      <div class="card-scene" onclick="flipCard()" id="cardScene">
+        <div class="card" id="activeCard">
+          <div class="card-face card-front"><div class="word-title" id="frontWord">Word</div></div>
+          <div class="card-face card-back"><div class="persian-meaning" id="backMeaning">معنی</div></div>
+        </div>
+      </div>
+      <div class="done-message" id="doneMessage"><h3>🎉 عالی بود!</h3><button class="btn-primary" onclick="navTo('practice_menu')">بازگشت</button></div>
     </div>
   </div>
 
@@ -580,7 +927,7 @@
         <button class="close-btn" onclick="closeModal('courseModal')">✕</button>
       </div>
       <div class="modal-body" id="modalCourseDesc"></div>
-      <a class="modal-action-btn" id="modalSupportLink" href="#" target="_blank">💬 دریافت مشاوره و ثبت‌نام در تلگرام</a>
+      <a class="modal-action-btn" id="modalSupportLink" href="#" target="_blank">💬 مشاوره و ثبت‌نام</a>
     </div>
   </div>
 
@@ -659,6 +1006,10 @@
     else if (current === 'materials') document.getElementById('viewMaterials').classList.add('active');
     else if (current === 'schedule') document.getElementById('viewSchedule').classList.add('active');
     else if (current === 'courses') document.getElementById('viewCourses').classList.add('active');
+    else if (current === 'placement') document.getElementById('viewPlacement').classList.add('active');
+    else if (current === 'wfd') document.getElementById('viewWfd').classList.add('active');
+    else if (current === 'flash_setup') document.getElementById('viewFlashSetup').classList.add('active');
+    else if (current === 'flash') document.getElementById('viewFlash').classList.add('active');
   }
 
   function openReadingMain(type) {
@@ -710,7 +1061,6 @@
         return;
       }
     }
-    // Fallback نمونه پیش‌فرض اگر فایل لود نشد
     if (currentReadingType === 'rwfib') {
       readingQuestionsList = [
         {
@@ -751,7 +1101,6 @@
     readingSeconds = 0;
     updateReadingTimerDisplay();
     
-    // تایمر هشدار: برای RWFIB معادل ۱۵۰ ثانیه (۲:۳۰) و برای RFIB معادل ۱۲۰ ثانیه (۲ دقیقه)
     const limitSec = currentReadingType === 'rwfib' ? 150 : 120;
 
     readingTimerInterval = setInterval(() => {
@@ -881,6 +1230,19 @@
       document.getElementById(id).classList.remove('active');
     }
   }
+
+  function openExternalLink(url) {
+    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+    else window.open(url, '_blank');
+  }
+
+  function filterWfdCategory(cat) {}
+  function onSelectWfd() {}
+  function nextWfdQuestion() {}
+  function calcWfdWords() {}
+  function evaluateWfdAnswer() {}
+  function flipCard() {}
+  function handlePlacementSubmit(e) { e.preventDefault(); alert("ثبت شد"); }
 
   window.onload = () => {
     renderCurrentScreen();
