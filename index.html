@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PTE ROOM Super App</title>
+  <title>PTE ROOM • Super App</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root { 
       --primary: #38bdf8; 
+      --primary-dark: #0284c7; 
       --bg: #0b0f19; 
       --card-bg: rgba(17, 24, 39, 0.85); 
       --card-border: #1e293b;
@@ -16,6 +17,7 @@
       --success: #10b981; 
       --danger: #ef4444; 
       --warning: #f59e0b;
+      --arena-color: #8b5cf6;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "IRANSans", sans-serif; margin: 0; padding: 0; }
     
@@ -47,7 +49,7 @@
       backdrop-filter: blur(12px);
       padding: 10px 14px;
       border-radius: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-shrink: 0;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
@@ -64,143 +66,110 @@
       display: none;
     }
 
-    .view-screen {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
+    /* Live Ticker Bar */
+    .news-ticker-bar {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 10px;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
     }
+    .ticker-tag { background: #059669; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+    .ticker-content { flex: 1; white-space: nowrap; overflow: hidden; display: flex; }
+    .ticker-text {
+      display: inline-block; font-size: 12px; color: #e2e8f0; direction: ltr; text-align: left; font-weight: 600;
+      animation: tickerSlide 20s linear infinite;
+    }
+    .ticker-text span { color: #38bdf8; font-weight: 800; margin-left: 15px; margin-right: 15px; }
+    @keyframes tickerSlide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    .view-screen { display: none; flex-direction: column; flex: 1; min-height: 0; }
     .view-screen.active { display: flex; }
 
-    .hub-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      justify-content: center;
-      flex: 1;
-      overflow-y: auto;
-    }
+    .hub-grid { display: flex; flex-direction: column; gap: 10px; justify-content: center; flex: 1; overflow-y: auto; padding-bottom: 5px; }
     .hub-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 14px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       cursor: pointer;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       transition: all 0.2s;
     }
     .hub-card:active { transform: scale(0.98); }
     .hub-icon {
-      font-size: 26px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 50px; height: 50px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 12px; flex-shrink: 0;
+      font-size: 24px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25);
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;
     }
-    .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
-    .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .hub-text h3 { font-size: 14px; color: #f1f5f9; margin-bottom: 3px; font-weight: 800; }
+    .hub-text p { font-size: 11.5px; color: var(--text-muted); line-height: 1.3; }
 
-    /* Sub-menu & Lists */
-    .list-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow-y: auto;
-      flex: 1;
-      padding-bottom: 10px;
-    }
-    .list-item-card {
-      background: var(--card-bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: 14px;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 14px;
-    }
-    .list-item-card:active { background: #1e293b; border-color: var(--primary); }
+    .hub-card.arena-highlight { border-color: var(--arena-color); background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%); }
+    .hub-card.challenge-highlight { border-color: var(--success); background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%); }
 
-    /* Practice Screen Styles */
+    /* Lists & Passages */
+    .list-container, .arena-container, .challenge-container, .materials-container {
+      display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-bottom: 10px;
+    }
+    .list-item-card, .material-item-card {
+      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px; padding: 14px;
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 800; font-size: 13.5px;
+    }
+    .list-item-card:active, .material-item-card:active { background: #1e293b; border-color: var(--primary); }
+
     .practice-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--card-bg);
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--card-border);
-      margin-bottom: 10px;
-      flex-shrink: 0;
-      font-size: 13px;
-      font-weight: 800;
+      display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);
+      padding: 10px 14px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 10px; flex-shrink: 0; font-size: 13px; font-weight: 800;
     }
     .timer-box {
-      background: #0f172a;
-      border: 1px solid #334155;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 14px;
-      color: #38bdf8;
+      background: #0f172a; border: 1px solid #334155; padding: 4px 10px; border-radius: 6px; font-family: monospace; font-size: 14px; color: #38bdf8;
     }
     .timer-box.warning { background: rgba(245, 158, 11, 0.2); border-color: var(--warning); color: var(--warning); }
 
     .passage-area {
-      background: var(--card-bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: 14px;
-      padding: 16px;
-      overflow-y: auto;
-      flex: 1;
-      font-size: 14.5px;
-      line-height: 2.5;
-      direction: ltr;
-      text-align: left;
+      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px;
+      overflow-y: auto; flex: 1; font-size: 14.5px; line-height: 2.5; direction: ltr; text-align: left;
     }
     .inline-select {
-      display: inline-block !important;
-      width: auto !important;
-      min-width: 100px !important;
-      padding: 4px 8px !important;
-      margin: 0 4px !important;
-      background: #1e293b !important;
-      color: var(--primary) !important;
-      border: 1.5px solid var(--primary) !important;
-      border-radius: 6px !important;
-      font-size: 13.5px !important;
-      font-weight: 700 !important;
-      outline: none !important;
-      vertical-align: middle !important;
+      display: inline-block !important; width: auto !important; min-width: 100px !important; padding: 4px 8px !important;
+      margin: 0 4px !important; background: #1e293b !important; color: var(--primary) !important; border: 1.5px solid var(--primary) !important;
+      border-radius: 6px !important; font-size: 13.5px !important; font-weight: 700 !important; outline: none !important; vertical-align: middle !important;
     }
     .inline-select.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
     .inline-select.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
 
-    .practice-footer {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-      flex-shrink: 0;
-    }
+    .practice-footer { display: flex; gap: 10px; margin-top: 10px; flex-shrink: 0; }
     .btn-action {
-      flex: 1;
-      background: #1e293b;
-      color: #fff;
-      border: 1px solid #334155;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 13.5px;
-      cursor: pointer;
+      flex: 1; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 13.5px; cursor: pointer;
     }
     .btn-action.primary { background: #059669; border-color: #059669; }
     .btn-action:active { transform: scale(0.98); }
+
+    .schedule-banner {
+      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 14px; border-radius: 12px;
+      text-align: center; font-size: 13px; font-weight: 800; color: #34d399; flex-shrink: 0;
+    }
+    .arena-banner {
+      background: rgba(139, 92, 246, 0.12); border: 1px solid rgba(139, 92, 246, 0.3); padding: 12px; border-radius: 12px;
+      text-align: center; font-size: 12.5px; font-weight: 800; color: #a78bfa; flex-shrink: 0; line-height: 1.5;
+    }
+    .lobby-action-box { background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+    .lobby-item-card { background: #0f172a; border: 1.5px solid #1e293b; border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; }
+    .btn-arena { background: var(--arena-color); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 12px; }
+
+    .app-toast {
+      position: absolute; bottom: 65px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8; color: #f8fafc; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 2000;
+    }
+    .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -211,16 +180,43 @@
     <button class="back-home-btn" id="backHomeBtn" onclick="navBack()">بازگشت ‹</button>
   </div>
 
-  <!-- Home Screen -->
+  <!-- Live Ticker Bar -->
+  <div class="news-ticker-bar" id="newsTickerBar">
+    <span class="ticker-tag">🏆 Live Leaders</span>
+    <div class="ticker-content">
+      <span class="ticker-text" id="liveTickerText">
+        <span>Saeid: 8/8</span> • <span>Majid: 7/8</span> • <span>Reza: 8/8</span> • <span>Sara: 6/8</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
+      <div class="hub-card arena-highlight" onclick="navTo('arena')">
+        <div class="hub-icon">⚔️</div>
+        <div class="hub-text">
+          <h3 style="color:#a78bfa;">لابی چالش آنلاین (۱ به ۱)</h3>
+          <p>رزرو زمان مسابقه و دوئل زنده با زبان‌آموزان</p>
+        </div>
+      </div>
+
+      <div class="hub-card challenge-highlight" onclick="checkAndOpenChallenge()">
+        <div class="hub-icon">🏆</div>
+        <div class="hub-text">
+          <h3 style="color:#34d399;">چالش مسابقه روزانه (۸ جای خالی)</h3>
+          <p>فعال هر روز از ساعت ۱۰ تا ۲۲ • کسب بالاترین امتیاز</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="openModule('rwfib')">
         <div class="hub-icon">📖</div>
         <div class="hub-text">
           <h3>Reading & Writing: Fill in the Blanks</h3>
-          <p>تست‌های دسته‌بندی شده گرامری و پردیکشن‌های ماهانه</p>
+          <p>دسته‌بندی‌های گرامری و پردیکشن‌های ماهانه</p>
         </div>
       </div>
+
       <div class="hub-card" onclick="openModule('rfib')">
         <div class="hub-icon">📝</div>
         <div class="hub-text">
@@ -228,10 +224,18 @@
           <p>تمرین‌های تخصصی ریدینگ با تایمر استاندارد</p>
         </div>
       </div>
+
+      <div class="hub-card" onclick="navTo('materials')">
+        <div class="hub-icon">📁</div>
+        <div class="hub-text">
+          <h3>بانک متریال و پردیکشن‌ها</h3>
+          <p>فایل‌های رسمی RA، RS، RL، DI و WE</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Section Hub (All Questions vs Prediction) -->
+  <!-- Module Hub (All Questions vs Prediction) -->
   <div class="view-screen" id="viewModuleHub">
     <div class="hub-grid">
       <div class="hub-card" onclick="openSubList('all')">
@@ -251,12 +255,12 @@
     </div>
   </div>
 
-  <!-- Grammar Categories List (for 'All Questions') -->
+  <!-- Grammar Categories List -->
   <div class="view-screen" id="viewCategories">
     <div class="list-container" id="categoriesListContainer"></div>
   </div>
 
-  <!-- Practice Screen with Timer & Next/Prev -->
+  <!-- Practice Screen -->
   <div class="view-screen" id="viewPractice">
     <div class="practice-header">
       <span id="practiceQuestionTitle">سوال ۱ از ۵</span>
@@ -271,24 +275,88 @@
       <button class="btn-action" onclick="changeQuestion(1)">بعدی</button>
     </div>
   </div>
+
+  <!-- Arena Lobby Screen -->
+  <div class="view-screen" id="viewArena">
+    <div class="arena-container">
+      <div class="arena-banner">⚔️ لابی دوئل آنلاین PTE ROOM<br><span style="font-size:11px; color:#cbd5e1;">ساعت مسابقه رو ثبت کن یا حریف انتخاب کن!</span></div>
+      <div class="lobby-action-box">
+        <div style="font-size: 13px; font-weight: 800; color: #a78bfa;">⏰ اعلام آمادگی برای امشب:</div>
+        <div style="display: flex; gap: 8px;">
+          <select id="duelTimeSelect" class="inline-select" style="direction:ltr; width:100% !important;">
+            <option value="20:00">20:00 شب</option>
+            <option value="21:00">21:00 شب</option>
+            <option value="22:00" selected>22:00 شب</option>
+          </select>
+          <button type="button" class="btn-arena" onclick="registerForDuel()" style="white-space:nowrap;">ثبت در لابی</button>
+        </div>
+      </div>
+      <div style="font-size: 13px; font-weight: 800; color: #f8fafc;">👥 حریفان منتظر:</div>
+      <div id="lobbyUsersList" style="display: flex; flex-direction: column; gap: 8px;">
+        <div class="lobby-item-card">
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <span style="font-size:13.5px; font-weight:800;">مجیب</span>
+            <span style="font-size:11px; color:#a78bfa;">ساعت: 22:00</span>
+          </div>
+          <button class="btn-arena" onclick="alert('چالش پذیرفته شد!')">پذیرش دوئل ⚔️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Challenge Screen -->
+  <div class="view-screen" id="viewChallenge">
+    <form id="challengeForm" class="challenge-container" onsubmit="handleChallengeSubmit(event)">
+      <div class="schedule-banner">🔥 چالش مسابقه امروز (۸ جای خالی - مهلت تا ساعت ۲۲)</div>
+      <div class="hub-card" style="display:block; padding:12px;">
+        <div class="passage-area" style="border:none; background:transparent; padding:0; height:auto;">
+          With about one and a half billion non-native speakers, English is the world’s language. Such 
+          <select name="ch_1" class="inline-select" required><option value="">Select...</option><option value="dominance">dominance</option></select> 
+          has its downside. There are now about 6,800 languages left, compared with perhaps 
+          <select name="ch_2" class="inline-select" required><option value="">Select...</option><option value="twice">twice</option></select> 
+          that number back at the dawn of agriculture.
+        </div>
+      </div>
+      <button type="submit" id="submitChallengeBtn" class="btn-action primary" style="width:100%; padding:14px;">🏆 ثبت پاسخ مسابقه</button>
+    </form>
+  </div>
+
+  <!-- Materials View -->
+  <div class="view-screen" id="viewMaterials">
+    <div class="materials-container">
+      <div class="schedule-banner">📁 بانک متریال و پردیکشن‌های رسمی</div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><span>آخرین ورژن پردیکشن RA</span><span>‹</span></div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')"><span>آخرین ورژن پردیکشن RS</span><span>‹</span></div>
+    </div>
+  </div>
+
+  <div class="app-toast" id="appToast">پیام سیستم</div>
 </div>
 
 <script>
-  let currentModule = ''; // 'rwfib' or 'rfib'
-  let currentSubMode = ''; // 'all' or 'prediction'
-  let currentCategory = '';
+  const BOT_TOKEN = "8953110530:AAEAsaVEEsId6NE_CXAIWleIRqY0_6kt5us";
+  const ADMIN_CHAT_ID = "600029017";
+  let currentModule = '';
+  let currentSubMode = '';
   let questionsData = [];
   let currentIndex = 0;
   let timerInterval = null;
   let secondsElapsed = 0;
 
-  let navHistory = ['home'];
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
 
+  function showToast(msg) {
+    const t = document.getElementById('appToast');
+    t.innerText = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  let navHistory = ['home'];
   function navTo(screenId) {
     navHistory.push(screenId);
     renderScreen();
   }
-
   function navBack() {
     if (navHistory.length > 1) {
       navHistory.pop();
@@ -300,119 +368,62 @@
   function renderScreen() {
     const current = navHistory[navHistory.length - 1];
     document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
-    document.getElementById('backHomeBtn').style.display = (navHistory.length > 1) ? 'block' : 'none';
+    const isSub = (navHistory.length > 1);
+    document.getElementById('backHomeBtn').style.display = isSub;
+    document.getElementById('newsTickerBar').style.display = isSub ? 'none' : 'flex';
 
-    if (current === 'home') {
-      document.getElementById('viewHome').classList.add('active');
-      document.getElementById('pageTitle').innerText = "PTE ROOM • Super App";
-    } else if (current === 'moduleHub') {
-      document.getElementById('viewModuleHub').classList.add('active');
-      document.getElementById('pageTitle').innerText = currentModule === 'rwfib' ? 'RWFIB Hub' : 'RFIB Hub';
-    } else if (current === 'categories') {
-      document.getElementById('viewCategories').classList.add('active');
-      document.getElementById('pageTitle').innerText = "دسته‌بندی‌های گرامری";
-    } else if (current === 'practice') {
-      document.getElementById('viewPractice').classList.add('active');
-      document.getElementById('pageTitle').innerText = "محیط تمرین هوشمند";
-    }
+    if (current === 'home') document.getElementById('viewHome').classList.add('active');
+    else if (current === 'moduleHub') document.getElementById('viewModuleHub').classList.add('active');
+    else if (current === 'categories') document.getElementById('viewCategories').classList.add('active');
+    else if (current === 'practice') document.getElementById('viewPractice').classList.add('active');
+    else if (current === 'arena') document.getElementById('viewArena').classList.add('active');
+    else if (current === 'challenge') document.getElementById('viewChallenge').classList.add('active');
+    else if (current === 'materials') document.getElementById('viewMaterials').classList.add('active');
   }
 
-  function openModule(module) {
-    currentModule = module;
-    document.getElementById('allHubTitle').innerText = module === 'rwfib' ? 'همه سوالات RWFIB (دسته‌بندی گرامری)' : 'همه سوالات RFIB (دسته‌بندی گرامری)';
+  function openModule(m) {
+    currentModule = m;
+    document.getElementById('allHubTitle').innerText = m === 'rwfib' ? 'همه سوالات RWFIB (دسته‌بندی گرامری)' : 'همه سوالات RFIB (دسته‌بندی گرامری)';
     navTo('moduleHub');
   }
 
   function openSubList(mode) {
     currentSubMode = mode;
     if (mode === 'all') {
-      renderCategoriesList();
+      const cats = [{name:"Prepositions", count:45}, {name:"Adjectives", count:38}, {name:"Verbs", count:62}, {name:"Connectors", count:29}];
+      document.getElementById('categoriesListContainer').innerHTML = cats.map(c => `
+        <div class="list-item-card" onclick="startPractice('${c.name}')"><span>${c.name}</span><span style="color:var(--text-muted);">${c.count} سوال ‹</span></div>
+      `).join('');
       navTo('categories');
     }
   }
 
   function openPrediction() {
     currentSubMode = 'prediction';
-    // بارگذاری سوالات پردیکشن (فعلاً نمونه تست)
-    loadPredictionQuestions();
+    startPractice('Prediction');
+  }
+
+  function startPractice(title) {
+    questionsData = [
+      { title: title, text: `The International Monetary Fund (IMF) works to foster global growth and economic stability by providing policy advice and <select class="inline-select" data-correct="financing"><option value="">Select...</option><option value="financing">financing</option><option value="preventing">preventing</option></select> to its members.`, answers: { ch_1: "financing" } }
+    ];
     currentIndex = 0;
     navTo('practice');
     startTimer();
     renderQuestion();
-  }
-
-  // پایگاه داده نمونه از دسته‌بندی‌های استخراج شده از فایل‌های شما
-  const grammarCategories = [
-    { name: "Prepositions", count: 45 },
-    { name: "Verbs & Tenses", count: 62 },
-    { name: "Adjectives", count: 38 },
-    { name: "Connectors", count: 29 },
-    { name: "Adjective Clauses", count: 24 }
-  ];
-
-  function renderCategoriesList() {
-    const container = document.getElementById('categoriesListContainer');
-    container.innerHTML = grammarCategories.map(cat => `
-      <div class="list-item-card" onclick="selectCategory('${cat.name}')">
-        <span>${cat.name}</span>
-        <span style="font-size: 12px; color: var(--text-muted);">${cat.count} سوال ‹</span>
-      </div>
-    `).join('');
-  }
-
-  function selectCategory(catName) {
-    currentCategory = catName;
-    loadCategoryQuestions(catName);
-    currentIndex = 0;
-    navTo('practice');
-    startTimer();
-    renderQuestion();
-  }
-
-  // لود سوالات نمونه بر اساس فایل‌های PDF شما
-  function loadCategoryQuestions(category) {
-    questionsData = [
-      {
-        title: "International Monetary Fund (Sample)",
-        text: `The International Monetary Fund (IMF), headquartered in Washington, DC, is <select class="inline-select" data-correct="comprised"><option value="">Select...</option><option value="presented">presented</option><option value="comprised">comprised</option></select> of 189 member countries. The IMF works to foster global growth and economic stability by providing policy advice and financing.`,
-        answers: { ch_1: "comprised" }
-      },
-      {
-        title: "Information Overload (Sample)",
-        text: `We have all been in situations when we felt that too much information was coming at us. When this happens, we feel <select class="inline-select" data-correct="overwhelmed"><option value="">Select...</option><option value="overwhelmed">overwhelmed</option><option value="overestimated">overestimated</option></select> and fear that we will not be able to retain any information.`,
-        answers: { ch_1: "overwhelmed" }
-      }
-    ];
-  }
-
-  function loadPredictionQuestions() {
-    questionsData = [
-      {
-        title: "Prediction Question 1",
-        text: `Climate change is impacting human lives and health in a variety of ways. It threatens the essential <select class="inline-select" data-correct="ingredients"><option value="">Select...</option><option value="drugs">drugs</option><option value="ingredients">ingredients</option></select> of good health.`,
-        answers: { ch_1: "ingredients" }
-      }
-    ];
   }
 
   function startTimer() {
     stopTimer();
     secondsElapsed = 0;
-    updateTimerDisplay();
-    
-    // زمان هشدار زرد رنگ: برای RWFIB معادل ۲:۳۰ (۱۵۰ ثانیه) و RFIB معادل ۲ دقیقه (۱۲۰ ثانیه)
-    const warningLimit = currentModule === 'rwfib' ? 150 : 120;
-
+    updateTimer();
+    const limit = currentModule === 'rwfib' ? 150 : 120;
     timerInterval = setInterval(() => {
       secondsElapsed++;
-      updateTimerDisplay();
-      
-      const timerEl = document.getElementById('timerDisplay');
-      if (secondsElapsed >= warningLimit) {
-        timerEl.classList.add('warning');
-      } else {
-        timerEl.classList.remove('warning');
-      }
+      updateTimer();
+      const tBox = document.getElementById('timerDisplay');
+      if (secondsElapsed >= limit) tBox.classList.add('warning');
+      else tBox.classList.remove('warning');
     }, 1000);
   }
 
@@ -421,38 +432,54 @@
     document.getElementById('timerDisplay').classList.remove('warning');
   }
 
-  function updateTimerDisplay() {
-    const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
-    const secs = (secondsElapsed % 60).toString().padStart(2, '0');
-    document.getElementById('timerDisplay').innerText = `${mins}:${secs}`;
+  function updateTimer() {
+    const m = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+    const s = (secondsElapsed % 60).toString().padStart(2, '0');
+    document.getElementById('timerDisplay').innerText = `${m}:${s}`;
   }
 
   function renderQuestion() {
-    if (questionsData.length === 0) return;
+    if (!questionsData.length) return;
     const q = questionsData[currentIndex];
-    document.getElementById('practiceQuestionTitle').innerText = `${q.title} (${currentIndex + 1} از ${questionsData.length})`;
+    document.getElementById('practiceQuestionTitle').innerText = `${q.title} (${currentIndex + 1}/${questionsData.length})`;
     document.getElementById('passageContent').innerHTML = q.text;
   }
 
-  function changeQuestion(direction) {
-    currentIndex += direction;
+  function changeQuestion(dir) {
+    currentIndex += dir;
     if (currentIndex < 0) currentIndex = 0;
     if (currentIndex >= questionsData.length) currentIndex = questionsData.length - 1;
     renderQuestion();
   }
 
   function submitAnswers() {
-    const selects = document.querySelectorAll('.inline-select');
-    selects.forEach(sel => {
-      const correctVal = sel.getAttribute('data-correct');
-      if (sel.value === correctVal) {
-        sel.classList.add('correct');
-        sel.classList.remove('incorrect');
-      } else {
-        sel.classList.add('incorrect');
-        sel.classList.remove('correct');
-      }
+    document.querySelectorAll('.inline-select').forEach(sel => {
+      const correct = sel.getAttribute('data-correct');
+      if (sel.value === correct) { sel.classList.add('correct'); sel.classList.remove('incorrect'); }
+      else { sel.classList.add('incorrect'); sel.classList.remove('correct'); }
     });
+    showToast("پاسخ‌ها بررسی شدند!");
+  }
+
+  function checkAndOpenChallenge() {
+    const h = new Date().getHours();
+    if (h >= 10 && h < 22) navTo('challenge');
+    else alert("⏰ مسابقه امروز فعال نیست! ساعت فعالیت: ۱۰ الی ۲۲");
+  }
+
+  function registerForDuel() {
+    showToast("✅ در لابی دوئل ثبت‌نام شدید!");
+  }
+
+  function openExternalLink(url) {
+    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+    else window.open(url, '_blank');
+  }
+
+  async function handleChallengeSubmit(e) {
+    e.preventDefault();
+    alert("🎉 پاسخ مسابقه با موفقیت ثبت شد!");
+    navTo('home');
   }
 </script>
 
