@@ -861,7 +861,7 @@
   <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
-      <div class="hub-card placement-highlight" onclick="navTo('placement')">
+      <div class="hub-card placement-highlight" onclick="openPlacementIntro()">
         <div class="hub-icon">📋</div>
         <div class="hub-text">
           <h3 style="color:#38bdf8;">آزمون تعیین سطح تخصصی</h3>
@@ -1215,6 +1215,31 @@
       </div>
       <div class="modal-body" id="modalCourseDesc"></div>
       <button class="modal-action-btn" onclick="redirectToSupport()">💬 دریافت مشاوره و ثبت‌نام در تلگرام</button>
+    </div>
+  </div>
+
+  <!-- Placement Test Intro Modal -->
+  <div class="modal-overlay" id="placementIntroModal" onclick="closeModal('placementIntroModal', event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">🌟 راهنمای آزمون تعیین سطح PTE ROOM</span>
+        <button class="close-btn" onclick="closeModal('placementIntroModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:13.5px; line-height:1.8; color:#cbd5e1; margin-bottom:10px;">
+          به بخش ارزیابی استاندارد و دقیق مهارت‌های زبانی خوش آمدید! این آزمون کمک می‌کند تا سطح واقعی خود را برای آزمون بین‌المللی PTE بسنجید.
+        </div>
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:13.5px; margin-bottom:6px;">📌 نکات کلیدی پیش از شروع:</div>
+          <div style="font-size:13px; line-height:1.8; color:#cbd5e1;">
+            • 🎯 <b>هدف آزمون:</b> ارزیابی مهارت‌های کلیدی (Reading، Listening، Spelling و Writing) جهت تعیین دقیق پلن مطالعاتی[cite: 2].<br>
+            • ⏱ <b>زمان تقریبی:</b> حدود ۵ الی ۷ دقیقه تمرکز کامل[cite: 2].<br>
+            • 📊 <b>ساختار بخش‌ها:</b> شامل ریدینگ، لیسنینگ، واژگان، املا و رایتینگ کوتاه[cite: 2].<br>
+            • 🚀 <b>گام بعدی:</b> پس از ثبت نهایی، پاسخ‌ها همراه با تحلیل دقیق و کد رهگیری برای تیم پشتیبانی ارسال می‌شود تا مشاوره اختصاصی دریافت کنید[cite: 2].
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startPlacementTest()">🚀 متوجه شدم • شروع آزمون</button>
     </div>
   </div>
 
@@ -1629,6 +1654,15 @@
     }
   }
 
+  function openPlacementIntro() {
+    openModal('placementIntroModal');
+  }
+
+  function startPlacementTest() {
+    closeModal('placementIntroModal');
+    navTo('placement');
+  }
+
   function updateWritingCount() {
     const text = document.getElementById('placementWriting').value.trim();
     const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
@@ -1871,7 +1905,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     } else if (cat === 'review') {
       list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
     } else {
-      // مرتب‌سازی هوشمند: سوالات Hard در اولویت بالا قرار می‌گیرند
       list = [...wfdQuestions].sort((a, b) => {
         const aHard = wfdHardList.includes(String(a.id));
         const bHard = wfdHardList.includes(String(b.id));
@@ -2041,7 +2074,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     }
 
     document.getElementById('wfdResultBox').style.display = 'flex';
-    // جایگزینی دکمه چک جواب با دکمه‌های Easy / Hard
     document.getElementById('wfdCheckActionBox').style.display = 'none';
     document.getElementById('wfdDiffActionBox').style.display = 'flex';
   }
