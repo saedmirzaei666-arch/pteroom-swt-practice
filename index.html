@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PTE ROOM • Super App</title>
+  <title>PTE ROOM • Platform</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root { 
@@ -16,8 +16,6 @@
       --text-muted: #94a3b8; 
       --success: #10b981; 
       --danger: #ef4444; 
-      --warning: #f59e0b;
-      --arena-color: #8b5cf6;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "IRANSans", sans-serif; margin: 0; padding: 0; }
     
@@ -64,9 +62,11 @@
       font-weight: 800;
       cursor: pointer;
       display: none;
+      transition: all 0.2s;
     }
+    .back-home-btn:hover { background: #334155; color: #fff; }
 
-    /* Live Ticker Bar */
+    /* Live Top Performers Ticker Bar */
     .news-ticker-bar {
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(16, 185, 129, 0.35);
@@ -79,95 +79,322 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    .ticker-tag { background: #059669; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
-    .ticker-content { flex: 1; white-space: nowrap; overflow: hidden; display: flex; }
+    .ticker-tag {
+      background: #059669;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .ticker-content {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      display: flex;
+    }
     .ticker-text {
-      display: inline-block; font-size: 12px; color: #e2e8f0; direction: ltr; text-align: left; font-weight: 600;
+      display: inline-block;
+      font-size: 12px;
+      color: #e2e8f0;
+      direction: ltr;
+      text-align: left;
+      font-weight: 600;
       animation: tickerSlide 20s linear infinite;
     }
-    .ticker-text span { color: #38bdf8; font-weight: 800; margin-left: 15px; margin-right: 15px; }
-    @keyframes tickerSlide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-text span {
+      color: #38bdf8;
+      font-weight: 800;
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+    @keyframes tickerSlide {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
 
-    .view-screen { display: none; flex-direction: column; flex: 1; min-height: 0; }
+    .view-screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
     .view-screen.active { display: flex; }
 
-    .hub-grid { display: flex; flex-direction: column; gap: 10px; justify-content: center; flex: 1; overflow-y: auto; padding-bottom: 5px; }
+    .hub-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      flex: 1;
+      overflow-y: auto;
+    }
     .hub-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-card:active { transform: scale(0.98); }
+
+    /* Neon Glow for Arena & Challenge */
+    .hub-card.arena-highlight {
+      border-color: #8b5cf6;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+      animation: glowArena 3s infinite alternate;
+    }
+    @keyframes glowArena {
+      0% { box-shadow: 0 0 12px rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5); }
+      100% { box-shadow: 0 0 24px rgba(139, 92, 246, 0.55); border-color: #8b5cf6; }
+    }
+
+    .hub-card.challenge-highlight {
+      border-color: #10b981;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+      animation: glowChallenge 3s infinite alternate;
+    }
+    @keyframes glowChallenge {
+      0% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); }
+      100% { box-shadow: 0 0 24px rgba(16, 185, 129, 0.55); border-color: #10b981; }
+    }
+
+    .hub-card.placement-highlight {
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+      animation: glowBorder 3s infinite alternate;
+    }
+    @keyframes glowBorder {
+      0% { box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); }
+      100% { box-shadow: 0 0 24px rgba(56, 189, 248, 0.55); border-color: #38bdf8; }
+    }
+
+    .hub-icon {
+      font-size: 26px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .hub-card:hover .hub-icon { transform: scale(1.08) rotate(3deg); }
+    .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
+    .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Arena Lobby Screen Styles */
+    .arena-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
+    .arena-banner {
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 12px 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #a78bfa;
+      flex-shrink: 0;
+      line-height: 1.6;
+    }
+    .lobby-action-box {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .lobby-item-card {
+      background: #0f172a;
+      border: 1.5px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lobby-user-info { display: flex; flex-direction: column; gap: 4px; }
+    .lobby-username { font-size: 14px; font-weight: 800; color: #f8fafc; }
+    .lobby-time-badge {
+      align-self: flex-start;
+      background: rgba(139, 92, 246, 0.15);
+      color: #a78bfa;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      direction: ltr;
+    }
+
+    /* Challenge Screen Styles */
+    .challenge-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 14px;
+    }
+    .quiz-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       border-radius: 14px;
       padding: 14px;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #34d399;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      transition: all 0.2s;
     }
-    .hub-card:active { transform: scale(0.98); }
-    .hub-icon {
-      font-size: 24px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;
-    }
-    .hub-text h3 { font-size: 14px; color: #f1f5f9; margin-bottom: 3px; font-weight: 800; }
-    .hub-text p { font-size: 11.5px; color: var(--text-muted); line-height: 1.3; }
-
-    .hub-card.arena-highlight { border-color: var(--arena-color); background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%); }
-    .hub-card.challenge-highlight { border-color: var(--success); background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%); }
-
-    /* Lists & Passages */
-    .list-container, .arena-container, .challenge-container, .materials-container {
-      display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-bottom: 10px;
-    }
-    .list-item-card, .material-item-card {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px; padding: 14px;
-      display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 800; font-size: 13.5px;
-    }
-    .list-item-card:active, .material-item-card:active { background: #1e293b; border-color: var(--primary); }
-
-    .practice-header {
-      display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);
-      padding: 10px 14px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 10px; flex-shrink: 0; font-size: 13px; font-weight: 800;
-    }
-    .timer-box {
-      background: #0f172a; border: 1px solid #334155; padding: 4px 10px; border-radius: 6px; font-family: monospace; font-size: 14px; color: #38bdf8;
-    }
-    .timer-box.warning { background: rgba(245, 158, 11, 0.2); border-color: var(--warning); color: var(--warning); }
-
-    .passage-area {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px;
-      overflow-y: auto; flex: 1; font-size: 14.5px; line-height: 2.5; direction: ltr; text-align: left;
+    .passage-box {
+      font-size: 14.5px;
+      line-height: 2.3;
+      color: #f8fafc;
+      direction: ltr;
+      text-align: left;
+      background: #0f172a;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      word-spacing: 1px;
     }
     .inline-select {
-      display: inline-block !important; width: auto !important; min-width: 100px !important; padding: 4px 8px !important;
-      margin: 0 4px !important; background: #1e293b !important; color: var(--primary) !important; border: 1.5px solid var(--primary) !important;
-      border-radius: 6px !important; font-size: 13.5px !important; font-weight: 700 !important; outline: none !important; vertical-align: middle !important;
+      display: inline-block !important;
+      width: auto !important;
+      min-width: 90px !important;
+      max-width: 140px !important;
+      padding: 3px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #34d399 !important;
+      border: 1.5px solid #059669 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      vertical-align: middle !important;
+      direction: ltr !important;
+      height: 32px !important;
     }
-    .inline-select.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
-    .inline-select.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
 
-    .practice-footer { display: flex; gap: 10px; margin-top: 10px; flex-shrink: 0; }
-    .btn-action {
-      flex: 1; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 13.5px; cursor: pointer;
+    .btn-primary {
+      background: #059669;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      transition: all 0.2s;
     }
-    .btn-action.primary { background: #059669; border-color: #059669; }
-    .btn-action:active { transform: scale(0.98); }
+    .btn-primary:active { transform: scale(0.98); background: #047857; }
+
+    .btn-arena {
+      background: #8b5cf6;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .btn-arena:active { transform: scale(0.98); background: #7c3aed; }
 
     .schedule-banner {
-      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 14px; border-radius: 12px;
-      text-align: center; font-size: 13px; font-weight: 800; color: #34d399; flex-shrink: 0;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #34d399;
+      flex-shrink: 0;
     }
-    .arena-banner {
-      background: rgba(139, 92, 246, 0.12); border: 1px solid rgba(139, 92, 246, 0.3); padding: 12px; border-radius: 12px;
-      text-align: center; font-size: 12.5px; font-weight: 800; color: #a78bfa; flex-shrink: 0; line-height: 1.5;
+
+    /* Materials View Styles */
+    .materials-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
     }
-    .lobby-action-box { background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-    .lobby-item-card { background: #0f172a; border: 1.5px solid #1e293b; border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; }
-    .btn-arena { background: var(--arena-color); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 12px; }
+    .material-item-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .material-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .material-info { display: flex; flex-direction: column; gap: 4px; }
+    .material-badge {
+      align-self: flex-start;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .material-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
+    .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
     .app-toast {
-      position: absolute; bottom: 65px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 23, 42, 0.95);
-      border: 1px solid #38bdf8; color: #f8fafc; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 2000;
+      position: absolute;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8;
+      color: #f8fafc;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease-out;
+      z-index: 2000;
+      white-space: nowrap;
     }
     .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
@@ -176,11 +403,11 @@
 
 <div class="app-wrapper">
   <div class="global-header">
-    <span class="brand-title" id="pageTitle">PTE ROOM • Super App</span>
+    <span class="brand-title" id="pageTitle">PTE ROOM • پلتفرم جامع</span>
     <button class="back-home-btn" id="backHomeBtn" onclick="navBack()">بازگشت ‹</button>
   </div>
 
-  <!-- Live Ticker Bar -->
+  <!-- Dynamic Live Leaderboard Ticker Bar -->
   <div class="news-ticker-bar" id="newsTickerBar">
     <span class="ticker-tag">🏆 Live Leaders</span>
     <div class="ticker-content">
@@ -193,293 +420,336 @@
   <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
+      <!-- Online PvP Arena Hub Card -->
       <div class="hub-card arena-highlight" onclick="navTo('arena')">
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
-          <h3 style="color:#a78bfa;">لابی چالش آنلاین (۱ به ۱)</h3>
-          <p>رزرو زمان مسابقه و دوئل زنده با زبان‌آموزان</p>
+          <h3 style="color:#a78bfa;">چالش آنلاین و لابی دوئل (۱ به ۱)</h3>
+          <p>رزرو زمان مسابقه، اعلام آمادگی و مبارزه زنده با سایر زبان‌آموزان</p>
         </div>
       </div>
 
+      <!-- Daily Challenge Hub Card -->
       <div class="hub-card challenge-highlight" onclick="checkAndOpenChallenge()">
         <div class="hub-icon">🏆</div>
         <div class="hub-text">
           <h3 style="color:#34d399;">چالش مسابقه روزانه (۸ جای خالی)</h3>
-          <p>فعال هر روز از ساعت ۱۰ تا ۲۲ • کسب بالاترین امتیاز</p>
+          <p>فعال هر روز از ساعت ۱۰ تا ۲۲ • رقابت برای کسب بالاترین امتیاز</p>
         </div>
       </div>
 
-      <div class="hub-card" onclick="openModule('rwfib')">
-        <div class="hub-icon">📖</div>
+      <div class="hub-card placement-highlight" onclick="navTo('placement')">
+        <div class="hub-icon">📋</div>
         <div class="hub-text">
-          <h3>Reading & Writing: Fill in the Blanks</h3>
-          <p>دسته‌بندی‌های گرامری و پردیکشن‌های ماهانه</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="openModule('rfib')">
-        <div class="hub-icon">📝</div>
-        <div class="hub-text">
-          <h3>Reading: Fill in the Blanks (Drag & Drop)</h3>
-          <p>تمرین‌های تخصصی ریدینگ با تایمر استاندارد</p>
+          <h3 style="color:#38bdf8;">آزمون تعیین سطح تخصصی</h3>
+          <p>شبیه‌ساز استاندارد ریدینگ، لیسنینگ و نگارش تحلیلی</p>
         </div>
       </div>
 
       <div class="hub-card" onclick="navTo('materials')">
         <div class="hub-icon">📁</div>
         <div class="hub-text">
-          <h3>بانک متریال و پردیکشن‌ها</h3>
-          <p>فایل‌های رسمی RA، RS، RL، DI و WE</p>
+          <h3 style="color:#38bdf8;">متریال PTE ROOM</h3>
+          <p>آخرین ورژن فایل‌ها و پردیکشن‌های رسمی آزمون اصلی</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Module Hub (All Questions vs Prediction) -->
-  <div class="view-screen" id="viewModuleHub">
-    <div class="hub-grid">
-      <div class="hub-card" onclick="openSubList('all')">
-        <div class="hub-icon">📂</div>
-        <div class="hub-text">
-          <h3 id="allHubTitle">همه سوالات (دسته‌بندی گرامری)</h3>
-          <p>تفکیک‌شده بر اساس Prepositions، Adjectives، Verbs و...</p>
-        </div>
-      </div>
-      <div class="hub-card" onclick="openPrediction()">
-        <div class="hub-icon">⭐</div>
-        <div class="hub-text">
-          <h3>پردیکشن ماهانه (Monthly Prediction)</h3>
-          <p>مجموعه سوالات گلچین‌شده بدون دسته‌بندی</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Grammar Categories List -->
-  <div class="view-screen" id="viewCategories">
-    <div class="list-container" id="categoriesListContainer"></div>
-  </div>
-
-  <!-- Practice Screen -->
-  <div class="view-screen" id="viewPractice">
-    <div class="practice-header">
-      <span id="practiceQuestionTitle">سوال ۱ از ۵</span>
-      <div class="timer-box" id="timerDisplay">00:00</div>
-    </div>
-    
-    <div class="passage-area" id="passageContent"></div>
-
-    <div class="practice-footer">
-      <button class="btn-action" onclick="changeQuestion(-1)">قبلی</button>
-      <button class="btn-action primary" onclick="submitAnswers()">ثبت و بررسی</button>
-      <button class="btn-action" onclick="changeQuestion(1)">بعدی</button>
-    </div>
-  </div>
-
-  <!-- Arena Lobby Screen -->
+  <!-- Arena Lobby Screen (چالش آنلاین و رزرو دوئل) -->
   <div class="view-screen" id="viewArena">
     <div class="arena-container">
-      <div class="arena-banner">⚔️ لابی دوئل آنلاین PTE ROOM<br><span style="font-size:11px; color:#cbd5e1;">ساعت مسابقه رو ثبت کن یا حریف انتخاب کن!</span></div>
+      <div class="arena-banner">
+        ⚔️ لابی دوئل آنلاین PTE ROOM<br>
+        <span style="font-size: 11.5px; color: #cbd5e1; font-weight: 500;">ساعت دلخواهت رو ثبت کن یا چالش بقیه رو پذیرش کن!</span>
+      </div>
+
       <div class="lobby-action-box">
-        <div style="font-size: 13px; font-weight: 800; color: #a78bfa;">⏰ اعلام آمادگی برای امشب:</div>
+        <div style="font-size: 13.5px; font-weight: 800; color: #a78bfa;">⏰ اعلام آمادگی برای مسابقه امروز:</div>
         <div style="display: flex; gap: 8px;">
-          <select id="duelTimeSelect" class="inline-select" style="direction:ltr; width:100% !important;">
+          <select id="duelTimeSelect" class="user-info-field" style="direction: ltr; text-align: center;">
             <option value="20:00">20:00 شب</option>
             <option value="21:00">21:00 شب</option>
             <option value="22:00" selected>22:00 شب</option>
+            <option value="23:00">23:00 شب</option>
           </select>
-          <button type="button" class="btn-arena" onclick="registerForDuel()" style="white-space:nowrap;">ثبت در لابی</button>
+          <button type="button" class="btn-arena" onclick="registerForDuel()" style="white-space: nowrap;">ثبت در لابی 🚀</button>
         </div>
       </div>
-      <div style="font-size: 13px; font-weight: 800; color: #f8fafc;">👥 حریفان منتظر:</div>
+
+      <div style="font-size: 13.5px; font-weight: 800; color: #f8fafc; margin-top: 4px;">👥 لیست حریفان منتظر در لابی:</div>
+      
       <div id="lobbyUsersList" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- لیست نمونه کاربران منتظر -->
         <div class="lobby-item-card">
-          <div style="display:flex; flex-direction:column; gap:2px;">
-            <span style="font-size:13.5px; font-weight:800;">مجیب</span>
-            <span style="font-size:11px; color:#a78bfa;">ساعت: 22:00</span>
+          <div class="lobby-user-info">
+            <span class="lobby-username">مجیب</span>
+            <span class="lobby-time-badge">ساعت: 22:00</span>
           </div>
-          <button class="btn-arena" onclick="alert('چالش پذیرفته شد!')">پذیرش دوئل ⚔️</button>
+          <button class="btn-arena" onclick="acceptDuel('مجیب', '22:00')">پذیرش دوئل ⚔️</button>
+        </div>
+        <div class="lobby-item-card">
+          <div class="lobby-user-info">
+            <span class="lobby-username">سعید</span>
+            <span class="lobby-time-badge">ساعت: 22:00</span>
+          </div>
+          <button class="btn-arena" onclick="acceptDuel('سعید', '22:00')">پذیرش دوئل ⚔️</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Daily Challenge Screen -->
+  <!-- Daily Challenge Screen (2 Questions, 8 blanks total) -->
   <div class="view-screen" id="viewChallenge">
     <form id="challengeForm" class="challenge-container" onsubmit="handleChallengeSubmit(event)">
-      <div class="schedule-banner">🔥 چالش مسابقه امروز (۸ جای خالی - مهلت تا ساعت ۲۲)</div>
-      <div class="hub-card" style="display:block; padding:12px;">
-        <div class="passage-area" style="border:none; background:transparent; padding:0; height:auto;">
+      <div class="schedule-banner">
+        🔥 چالش مسابقه امروز (۸ جای خالی - مهلت تا ساعت ۲۲)
+      </div>
+
+      <!-- Question 1: 4 blanks -->
+      <div class="quiz-card">
+        <div class="quiz-title"><span>سوال اول (۴ جای خالی)</span></div>
+        <div class="passage-box">
           With about one and a half billion non-native speakers, English is the world’s language. Such 
-          <select name="ch_1" class="inline-select" required><option value="">Select...</option><option value="dominance">dominance</option></select> 
-          has its downside. There are now about 6,800 languages left, compared with perhaps 
-          <select name="ch_2" class="inline-select" required><option value="">Select...</option><option value="twice">twice</option></select> 
-          that number back at the dawn of agriculture.
+          <select name="ch_1" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="rate">rate</option>
+            <option value="part">part</option>
+            <option value="dominance">dominance</option>
+            <option value="margin">margin</option>
+          </select> 
+          has its downside, of course. There are now about 6,800 languages left in the world, compared with perhaps 
+          <select name="ch_2" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="twice">twice</option>
+            <option value="more">more</option>
+            <option value="reign">reign</option>
+            <option value="relation">relation</option>
+          </select> 
+          that number back at the dawn of agriculture. Thanks in 
+          <select name="ch_3" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="part">part</option>
+            <option value="rate">rate</option>
+            <option value="margin">margin</option>
+            <option value="twice">twice</option>
+          </select> 
+          to the rise of uber-languages, most importantly English, the remaining languages are now dying at the 
+          <select name="ch_4" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="rate">rate</option>
+            <option value="part">part</option>
+            <option value="dominance">dominance</option>
+            <option value="twice">twice</option>
+          </select> 
+          of about one a fortnight.
         </div>
       </div>
-      <button type="submit" id="submitChallengeBtn" class="btn-action primary" style="width:100%; padding:14px;">🏆 ثبت پاسخ مسابقه</button>
+
+      <!-- Question 2: 4 blanks -->
+      <div class="quiz-card">
+        <div class="quiz-title"><span>سوال دوم (۴ جای خالی)</span></div>
+        <div class="passage-box">
+          Modern humans are masters of multitasking. We eat while driving, watch TV while 
+          <select name="ch_5" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="studying">studying</option>
+            <option value="volleying">volleying</option>
+            <option value="lobbying">lobbying</option>
+          </select>, 
+          and talk on cell phones while doing 
+          <select name="ch_6" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="everything">everything</option>
+            <option value="antonym">antonym</option>
+            <option value="rpm">rpm</option>
+          </select>. 
+          Though we train our brains to work faster, we never 
+          <select name="ch_7" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="actually">actually</option>
+            <option value="intramuscularly">intramuscularly</option>
+            <option value="dispassionately">dispassionately</option>
+          </select> 
+          manage to do more than one thing, and with lots of 
+          <select name="ch_8" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="practice">practice</option>
+            <option value="audits">audits</option>
+            <option value="comforts">comforts</option>
+          </select> 
+          routines become automatic.
+        </div>
+      </div>
+
+      <button type="submit" id="submitChallengeBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
+        🏆 ثبت پاسخ مسابقه و مشاهده رتبه
+      </button>
     </form>
   </div>
 
-  <!-- Materials View -->
+  <!-- Materials View Screen -->
   <div class="view-screen" id="viewMaterials">
     <div class="materials-container">
-      <div class="schedule-banner">📁 بانک متریال و پردیکشن‌های رسمی</div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><span>آخرین ورژن پردیکشن RA</span><span>‹</span></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')"><span>آخرین ورژن پردیکشن RS</span><span>‹</span></div>
+      <div class="schedule-banner">📁 بانک متریال و پردیکشن‌های رسمی PTE ROOM</div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RA</div></div><div class="arrow-icon">‹</div></div>
     </div>
   </div>
 
-  <div class="app-toast" id="appToast">پیام سیستم</div>
+  <div class="app-toast" id="appToast">Please type your answer first!</div>
 </div>
 
 <script>
   const BOT_TOKEN = "8953110530:AAEAsaVEEsId6NE_CXAIWleIRqY0_6kt5us";
   const ADMIN_CHAT_ID = "600029017";
-  let currentModule = '';
-  let currentSubMode = '';
-  let questionsData = [];
-  let currentIndex = 0;
-  let timerInterval = null;
-  let secondsElapsed = 0;
+
+  let isSubmitting = false;
 
   const tg = window.Telegram?.WebApp;
-  if (tg) { tg.ready(); tg.expand(); }
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (tg.requestFullscreen) tg.requestFullscreen();
+    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+    if (tg.BackButton) {
+      tg.BackButton.onClick(() => navBack());
+    }
+  }
 
   function showToast(msg) {
-    const t = document.getElementById('appToast');
-    t.innerText = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  }
-
-  let navHistory = ['home'];
-  function navTo(screenId) {
-    navHistory.push(screenId);
-    renderScreen();
-  }
-  function navBack() {
-    if (navHistory.length > 1) {
-      navHistory.pop();
-      stopTimer();
-      renderScreen();
-    }
-  }
-
-  function renderScreen() {
-    const current = navHistory[navHistory.length - 1];
-    document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
-    const isSub = (navHistory.length > 1);
-    document.getElementById('backHomeBtn').style.display = isSub;
-    document.getElementById('newsTickerBar').style.display = isSub ? 'none' : 'flex';
-
-    if (current === 'home') document.getElementById('viewHome').classList.add('active');
-    else if (current === 'moduleHub') document.getElementById('viewModuleHub').classList.add('active');
-    else if (current === 'categories') document.getElementById('viewCategories').classList.add('active');
-    else if (current === 'practice') document.getElementById('viewPractice').classList.add('active');
-    else if (current === 'arena') document.getElementById('viewArena').classList.add('active');
-    else if (current === 'challenge') document.getElementById('viewChallenge').classList.add('active');
-    else if (current === 'materials') document.getElementById('viewMaterials').classList.add('active');
-  }
-
-  function openModule(m) {
-    currentModule = m;
-    document.getElementById('allHubTitle').innerText = m === 'rwfib' ? 'همه سوالات RWFIB (دسته‌بندی گرامری)' : 'همه سوالات RFIB (دسته‌بندی گرامری)';
-    navTo('moduleHub');
-  }
-
-  function openSubList(mode) {
-    currentSubMode = mode;
-    if (mode === 'all') {
-      const cats = [{name:"Prepositions", count:45}, {name:"Adjectives", count:38}, {name:"Verbs", count:62}, {name:"Connectors", count:29}];
-      document.getElementById('categoriesListContainer').innerHTML = cats.map(c => `
-        <div class="list-item-card" onclick="startPractice('${c.name}')"><span>${c.name}</span><span style="color:var(--text-muted);">${c.count} سوال ‹</span></div>
-      `).join('');
-      navTo('categories');
-    }
-  }
-
-  function openPrediction() {
-    currentSubMode = 'prediction';
-    startPractice('Prediction');
-  }
-
-  function startPractice(title) {
-    questionsData = [
-      { title: title, text: `The International Monetary Fund (IMF) works to foster global growth and economic stability by providing policy advice and <select class="inline-select" data-correct="financing"><option value="">Select...</option><option value="financing">financing</option><option value="preventing">preventing</option></select> to its members.`, answers: { ch_1: "financing" } }
-    ];
-    currentIndex = 0;
-    navTo('practice');
-    startTimer();
-    renderQuestion();
-  }
-
-  function startTimer() {
-    stopTimer();
-    secondsElapsed = 0;
-    updateTimer();
-    const limit = currentModule === 'rwfib' ? 150 : 120;
-    timerInterval = setInterval(() => {
-      secondsElapsed++;
-      updateTimer();
-      const tBox = document.getElementById('timerDisplay');
-      if (secondsElapsed >= limit) tBox.classList.add('warning');
-      else tBox.classList.remove('warning');
-    }, 1000);
-  }
-
-  function stopTimer() {
-    if (timerInterval) clearInterval(timerInterval);
-    document.getElementById('timerDisplay').classList.remove('warning');
-  }
-
-  function updateTimer() {
-    const m = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
-    const s = (secondsElapsed % 60).toString().padStart(2, '0');
-    document.getElementById('timerDisplay').innerText = `${m}:${s}`;
-  }
-
-  function renderQuestion() {
-    if (!questionsData.length) return;
-    const q = questionsData[currentIndex];
-    document.getElementById('practiceQuestionTitle').innerText = `${q.title} (${currentIndex + 1}/${questionsData.length})`;
-    document.getElementById('passageContent').innerHTML = q.text;
-  }
-
-  function changeQuestion(dir) {
-    currentIndex += dir;
-    if (currentIndex < 0) currentIndex = 0;
-    if (currentIndex >= questionsData.length) currentIndex = questionsData.length - 1;
-    renderQuestion();
-  }
-
-  function submitAnswers() {
-    document.querySelectorAll('.inline-select').forEach(sel => {
-      const correct = sel.getAttribute('data-correct');
-      if (sel.value === correct) { sel.classList.add('correct'); sel.classList.remove('incorrect'); }
-      else { sel.classList.add('incorrect'); sel.classList.remove('correct'); }
-    });
-    showToast("پاسخ‌ها بررسی شدند!");
+    const toast = document.getElementById('appToast');
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 2400);
   }
 
   function checkAndOpenChallenge() {
-    const h = new Date().getHours();
-    if (h >= 10 && h < 22) navTo('challenge');
-    else alert("⏰ مسابقه امروز فعال نیست! ساعت فعالیت: ۱۰ الی ۲۲");
+    const now = new Date();
+    const hour = now.getHours();
+    if (hour >= 10 && hour < 22) {
+      navTo('challenge');
+    } else {
+      alert("⏰ مسابقه امروز به پایان رسیده یا هنوز شروع نشده است!\n\nساعت فعالیت چالش: هر روز از ساعت ۱۰:۰۰ صبح تا ۲۲:۰۰ شب.");
+    }
   }
 
+  /* ثبت‌نام کاربر در لابی دوئل */
   function registerForDuel() {
-    showToast("✅ در لابی دوئل ثبت‌نام شدید!");
+    const timeVal = document.getElementById('duelTimeSelect').value;
+    const tgUser = tg?.initDataUnsafe?.user;
+    const name = tgUser?.first_name || "کاربر مهمان";
+
+    const listEl = document.getElementById('lobbyUsersList');
+    const newCard = document.createElement('div');
+    newCard.className = 'lobby-item-card';
+    newCard.innerHTML = `
+      <div class="lobby-user-info">
+        <span class="lobby-username">${name} (شما)</span>
+        <span class="lobby-time-badge">ساعت: ${timeVal}</span>
+      </div>
+      <span style="font-size:12px; color:#34d399; font-weight:800;">منتظر حریف 🟢</span>
+    `;
+    listEl.prepend(newCard);
+    showToast("✅ نام شما با موفقیت در لابی دوئل ثبت شد!");
+  }
+
+  function acceptDuel(opponentName, time) {
+    alert(`⚔️ شما چالش دونفره با "${opponentName}" برای ساعت ${time} را پذیردید!\n\nبه زودی در ساعت مقرر صف مسابقه برای شما فعال خواهد شد.`);
+  }
+
+  let navHistory = ['home'];
+
+  function navTo(screen) {
+    navHistory.push(screen);
+    renderCurrentScreen();
+  }
+
+  function navBack() {
+    if (navHistory.length > 1) {
+      navHistory.pop();
+      renderCurrentScreen();
+    }
+  }
+
+  function renderCurrentScreen() {
+    const current = navHistory[navHistory.length - 1];
+    document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
+    const backBtn = document.getElementById('backHomeBtn');
+    const title = document.getElementById('pageTitle');
+    const ticker = document.getElementById('newsTickerBar');
+
+    const isSubPage = (navHistory.length > 1);
+    backBtn.style.display = isSubPage ? 'block' : 'none';
+    if (ticker) ticker.style.display = isSubPage ? 'none' : 'flex';
+
+    if (tg?.BackButton) {
+      if (isSubPage) tg.BackButton.show();
+      else tg.BackButton.hide();
+    }
+
+    if (current === 'home') {
+      document.getElementById('viewHome').classList.add('active');
+      title.innerText = "PTE ROOM • پلتفرم جامع";
+    } else if (current === 'arena') {
+      document.getElementById('viewArena').classList.add('active');
+      title.innerText = "PTE ROOM • لابی دوئل آنلاین";
+    } else if (current === 'challenge') {
+      document.getElementById('viewChallenge').classList.add('active');
+      title.innerText = "PTE ROOM • چالش روزانه";
+    } else if (current === 'materials') {
+      document.getElementById('viewMaterials').classList.add('active');
+      title.innerText = "PTE ROOM • متریال آموزشی";
+    }
   }
 
   function openExternalLink(url) {
-    if (tg?.openTelegramLink) tg.openTelegramLink(url);
-    else window.open(url, '_blank');
+    if (tg && typeof tg.openTelegramLink === "function") {
+      tg.openTelegramLink(url);
+    } else {
+      window.open(url, '_blank');
+    }
   }
 
   async function handleChallengeSubmit(e) {
     e.preventDefault();
-    alert("🎉 پاسخ مسابقه با موفقیت ثبت شد!");
-    navTo('home');
+    if (isSubmitting) return;
+
+    isSubmitting = true;
+    const btn = document.getElementById('submitChallengeBtn');
+    btn.disabled = true;
+    btn.innerText = "⏳ در حال بررسی و ثبت امتیاز...";
+
+    const formData = new FormData(document.getElementById('challengeForm'));
+    const correctKeys = { ch_1: "dominance", ch_2: "twice", ch_3: "part", ch_4: "rate", ch_5: "studying", ch_6: "everything", ch_7: "actually", ch_8: "practice" };
+
+    let score = 0;
+    for (let k in correctKeys) {
+      if (formData.get(k) === correctKeys[k]) score++;
+    }
+
+    const tgUser = tg?.initDataUnsafe?.user;
+    const fullName = `${tgUser?.first_name || 'کاربر'} ${tgUser?.last_name || ''}`.trim();
+    const userId = tgUser?.id || "نامشخص";
+
+    const reportMessage = `🏆 <b>ثبت پاسخ چالش روزانه مسابقه</b>\n👤 <b>کاربر:</b> ${fullName} (<code>${userId}</code>)\n🎯 <b>امتیاز: ${score} از ۸</b>`;
+
+    try {
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: reportMessage, parse_mode: "HTML" })
+      });
+
+      alert(`🎉 پاسخ شما با موفقیت ثبت شد!\n\nامتیاز شما: ${score} از ۸`);
+      navTo('home');
+      document.getElementById('challengeForm').reset();
+    } catch (err) {
+      alert("⚠️ خطا در ارسال امتیاز. لطفاً دوباره تلاش کنید.");
+    } finally {
+      isSubmitting = false;
+      btn.disabled = false;
+      btn.innerText = "🏆 ثبت پاسخ مسابقه و مشاهده رتبه";
+    }
   }
 </script>
 
