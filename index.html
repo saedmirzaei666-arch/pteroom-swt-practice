@@ -153,6 +153,24 @@
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
       animation: glowBorder 3s infinite alternate;
     }
+
+    /* Vibrant Glowing Card for Flashcards on Main Menu */
+    .hub-card.flashcard-highlight {
+      border-color: #ec4899;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
+      animation: glowFlashCard 2.5s infinite alternate;
+    }
+    @keyframes glowFlashCard {
+      0% {
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        border-color: rgba(236, 72, 153, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), inset 0 0 15px rgba(236, 72, 153, 0.2);
+        border-color: #f472b6;
+      }
+    }
+
     @keyframes glowBorder {
       0% {
         box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
@@ -164,7 +182,7 @@
       }
     }
 
-    .hub-card.placement-highlight::after {
+    .hub-card.placement-highlight::after, .hub-card.flashcard-highlight::after {
       content: '';
       position: absolute;
       top: -50%;
@@ -924,6 +942,15 @@
         </div>
       </div>
 
+      <!-- FLASH CARDS Added to Main Menu with Glowing Style -->
+      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
+        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
+        <div class="hub-text">
+          <h3 style="color:#f472b6; font-size: 16px; letter-spacing: 0.5px;">FLASH CARDS</h3>
+          <p>جعبه لایتنر واژگان آکادمیک (مرور هوشمند و جعبه‌های ۵گانه)</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('materials')">
         <div class="hub-icon">📁</div>
         <div class="hub-text">
@@ -951,8 +978,8 @@
       <div class="hub-card" onclick="navTo('practice_menu')">
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
-          <h3>تمرین روزانه</h3>
-          <p>شبیه‌ساز هوشمند WFD، لایتنر واژگان و بانک سوالات RFIB</p>
+          <h3>PTE PRACTICE</h3>
+          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB</p>
         </div>
       </div>
     </div>
@@ -1323,7 +1350,7 @@
     </div>
   </div>
 
-  <!-- Practice Hub Screen -->
+  <!-- Practice Hub Screen (PTE Practice) -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('wfd')">
@@ -1341,21 +1368,13 @@
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
-
-      <div class="hub-card" onclick="navTo('flash_setup')">
-        <div class="hub-icon">🗂</div>
-        <div class="hub-text">
-          <h3>Academic Flashcards</h3>
-          <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (همراه با مرور هوشمند روزانه)</p>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- RFIB Practice Screen -->
+  <!-- RFIB Practice Screen (Restored Drag & Drop / Click-to-Drop Model) -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
-      <!-- Grammar Category Selection Bar (10 categories: Inversion & Conditional only in All) -->
+      <!-- Grammar Category Selection Bar -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
         <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
@@ -1482,7 +1501,7 @@
       <div class="done-message" id="doneMessage">
         <h3>🎉 عالی بود!</h3>
         <p>شما سهمیه لغات جدید امروز را به پایان رساندید.<br>فردا برای کلمات جدید برگردید.</p>
-        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('practice_menu')">بازگشت به منو</button>
+        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('home')">بازگشت به خانه</button>
       </div>
 
       <div class="leitner-actions" id="leitnerActions">
@@ -1923,7 +1942,7 @@
       stopWfdTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
-      title.innerText = "PTE ROOM • تمرین روزانه";
+      title.innerText = "PTE ROOM • PTE PRACTICE";
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
@@ -1939,7 +1958,7 @@
       stopWfdTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
-      title.innerText = "PTE ROOM • Academic Flashcards";
+      title.innerText = "PTE ROOM • FLASH CARDS";
       stopWfdTimer();
     }
   }
