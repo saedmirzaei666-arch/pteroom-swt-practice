@@ -67,7 +67,7 @@
     "title": "WFD #4",
     "text": "You will acquire many skills during your academic studies.",
     "audioUrl": "4.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "5",
@@ -193,7 +193,7 @@
     "title": "WFD #26",
     "text": "A massive accumulation of data was converted into a coherent argument.",
     "audioUrl": "26.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "27",
@@ -207,7 +207,7 @@
     "title": "WFD #29",
     "text": "The educational level is found to be related to social and economic background.",
     "audioUrl": "29.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "31",
@@ -270,7 +270,7 @@
     "title": "WFD #49",
     "text": "Our view is that all the educational reforms have been inadequately implemented.",
     "audioUrl": "49.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "51",
@@ -312,7 +312,7 @@
     "title": "WFD #76",
     "text": "Building trust is not something that can be achieved overnight.",
     "audioUrl": "76.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "78",
@@ -347,7 +347,7 @@
     "title": "WFD #87",
     "text": "Collaboration between departments is a feature of successful companies.",
     "audioUrl": "87.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "90",
@@ -368,7 +368,7 @@
     "title": "WFD #92",
     "text": "Consumer confidence has a direct influence on sales.",
     "audioUrl": "92.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "94",
@@ -396,7 +396,7 @@
     "title": "WFD #105",
     "text": "The economic strength of early Roman Republic will be examined.",
     "audioUrl": "105.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "113",
@@ -417,7 +417,7 @@
     "title": "WFD #118",
     "text": "Experts are now able to forecast weather over much longer periods.",
     "audioUrl": "118.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "124",
@@ -431,7 +431,7 @@
     "title": "WFD #136",
     "text": "He landed his job in a very prestigious law firm.",
     "audioUrl": "136.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "142",
@@ -480,14 +480,14 @@
     "title": "WFD #170",
     "text": "It is really a comprehensive program covering both theory and practice.",
     "audioUrl": "170.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "173",
     "title": "WFD #173",
     "text": "It may not be possible to solve the problem easily.",
     "audioUrl": "173.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "181",
@@ -536,7 +536,7 @@
     "title": "WFD #201",
     "text": "Most scientists believe that climate change threatens lives on the Earth.",
     "audioUrl": "201.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "211",
@@ -571,7 +571,7 @@
     "title": "WFD #218",
     "text": "One of the election promises is to decrease the income tax.",
     "audioUrl": "218.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "220",
@@ -585,7 +585,7 @@
     "title": "WFD #221",
     "text": "Organizational failure is considered from various perspectives in academic literature.",
     "audioUrl": "221.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "223",
@@ -613,7 +613,7 @@
     "title": "WFD #227",
     "text": "Our professor is hosting the Business Development Conference.",
     "audioUrl": "227.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "228",
@@ -641,7 +641,7 @@
     "title": "WFD #233",
     "text": "Parents talk to children tends to be simplified.",
     "audioUrl": "233.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "235",
@@ -739,14 +739,14 @@
     "title": "WFD #292",
     "text": "Some people argue that education is not that important.",
     "audioUrl": "292.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "293",
     "title": "WFD #293",
     "text": "Some people believe that education should be free for all.",
     "audioUrl": "293.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "294",
@@ -760,21 +760,21 @@
     "title": "WFD #297",
     "text": "Statistical results should be expressed in different ways depending on the circumstances.",
     "audioUrl": "297.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "299",
     "title": "WFD #299",
     "text": "Student representatives will be visiting classes with voting forums.",
     "audioUrl": "299.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "300",
     "title": "WFD #300",
     "text": "Students are advised to use multiple methods for this project.",
     "audioUrl": "300.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "301",
@@ -788,14 +788,14 @@
     "title": "WFD #302",
     "text": "Students are encouraged to monitor their own attendance.",
     "audioUrl": "302.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "303",
     "title": "WFD #303",
     "text": "Students are encouraged to think carefully about their accommodation needs.",
     "audioUrl": "303.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": 308,
@@ -823,14 +823,14 @@
     "title": "WFD #316",
     "text": "Students will focus on reporting news on the changing media world.",
     "audioUrl": "316.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "317",
     "title": "WFD #317",
     "text": "Studies show there is a positive correlation between two variables.",
     "audioUrl": "317.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "323",
@@ -851,7 +851,7 @@
     "title": "WFD #328",
     "text": "The ability to work with fellow students cannot be stressed enough.",
     "audioUrl": "328.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "331",
@@ -900,7 +900,7 @@
     "title": "WFD #354",
     "text": "The Business Policy Seminar includes an internship with a local firm.",
     "audioUrl": "354.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "357",
@@ -935,14 +935,14 @@
     "title": "WFD #375",
     "text": "The dance department stages elaborated performances each semester.",
     "audioUrl": "375.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "377",
     "title": "WFD #377",
     "text": "The department has a higher proportion of postgraduate students.",
     "audioUrl": "377.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "379",
@@ -1012,14 +1012,14 @@
     "title": "WFD #410",
     "text": "An introduction is an essential element of presentation.",
     "audioUrl": "410.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "412",
     "title": "WFD #412",
     "text": "The key difference between courses is the kind of assessment.",
     "audioUrl": "412.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "413",
@@ -1033,14 +1033,14 @@
     "title": "WFD #416",
     "text": "The lecture tomorrow will discuss the educational policy of the United States.",
     "audioUrl": "416.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "419",
     "title": "WFD #419",
     "text": "The marketing budget has doubled since the beginning of the year.",
     "audioUrl": "419.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "422",
@@ -1061,7 +1061,7 @@
     "title": "WFD #426",
     "text": "The museum is closed on the third Monday of every month.",
     "audioUrl": "426.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "427",
@@ -1082,7 +1082,7 @@
     "title": "WFD #435",
     "text": "The other book isn't thorough, but it's more insightful.",
     "audioUrl": "435.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "439",
@@ -1096,7 +1096,7 @@
     "title": "WFD #441",
     "text": "The professor took a year off to work on her book.",
     "audioUrl": "441.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "445",
@@ -1110,7 +1110,7 @@
     "title": "WFD #446",
     "text": "The railway makes long distance travel possible for everyone.",
     "audioUrl": "446.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "448",
@@ -1222,7 +1222,7 @@
     "title": "WFD #507",
     "text": "There is a pharmacy on campus near the bookstore.",
     "audioUrl": "507.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "508",
@@ -1236,7 +1236,7 @@
     "title": "WFD #511",
     "text": "There was a prize for the best student of the presentation.",
     "audioUrl": "511.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "518",
@@ -1271,7 +1271,7 @@
     "title": "WFD #531",
     "text": "Those who are considering a career in marketing should attend the talk.",
     "audioUrl": "531.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "532",
@@ -1285,7 +1285,7 @@
     "title": "WFD #539",
     "text": "Traffic is the main cause of air pollution in many cities.",
     "audioUrl": "539.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "540",
@@ -1334,7 +1334,7 @@
     "title": "WFD #554",
     "text": "We are able to work in a team.",
     "audioUrl": "554.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "555",
@@ -1383,7 +1383,7 @@
     "title": "WFD #580",
     "text": "You can use a laptop during the lecture.",
     "audioUrl": "580.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "581",
@@ -1418,7 +1418,7 @@
     "title": "WFD #598",
     "text": "Check the website if you are looking for discounted textbooks.",
     "audioUrl": "598.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "599",
@@ -1439,7 +1439,7 @@
     "title": "WFD #601",
     "text": "Distance learning allows you to develop a career around your commitments.",
     "audioUrl": "601.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "603",
@@ -1502,7 +1502,7 @@
     "title": "WFD #620",
     "text": "Mature students usually adapt to university life extremely well.",
     "audioUrl": "620.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": 621,
@@ -1516,7 +1516,7 @@
     "title": "WFD #624",
     "text": "Our courses help to improve critical thinking and independent learning skills.",
     "audioUrl": "624.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "626",
@@ -1544,7 +1544,7 @@
     "title": "WFD #631",
     "text": "Protective clothing must always be worn in the laboratory.",
     "audioUrl": "631.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "633",
@@ -1558,21 +1558,21 @@
     "title": "WFD #635",
     "text": "The Science Library is currently located on the ground floor of the library.",
     "audioUrl": "635.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "636",
     "title": "WFD #636",
     "text": "Several candidates will be qualified as the greatest scientists of all time.",
     "audioUrl": "636.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "637",
     "title": "WFD #637",
     "text": "Strangely, people are simultaneously impressed by and skeptical of statistics.",
     "audioUrl": "637.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "638",
@@ -1593,21 +1593,21 @@
     "title": "WFD #645",
     "text": "The department has a higher than normal proportion of postgraduate students.",
     "audioUrl": "645.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "646",
     "title": "WFD #646",
     "text": "The Industrial Revolution in Europe was driven by steam technology.",
     "audioUrl": "646.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "650",
     "title": "WFD #650",
     "text": "The office hours will be changed from next term.",
     "audioUrl": "650.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "653",
@@ -1621,14 +1621,14 @@
     "title": "WFD #654",
     "text": "The studies showed that Hong Kong people are the most active in Asia.",
     "audioUrl": "654.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "655",
     "title": "WFD #655",
     "text": "The teacher training includes observing the classes.",
     "audioUrl": "655.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "657",
@@ -1656,35 +1656,35 @@
     "title": "WFD #674",
     "text": "Unemployment rate has fallen to its lowest level in years.",
     "audioUrl": "674.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "675",
     "title": "WFD #675",
     "text": "Universities should invest in new technologies designed for learning.",
     "audioUrl": "675.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "676",
     "title": "WFD #676",
     "text": "Universities need to secure the grants for research subjects.",
     "audioUrl": "676.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "680",
     "title": "WFD #680",
     "text": "Without doubt, this theory has a number of limitations.",
     "audioUrl": "680.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "686",
     "title": "WFD #686",
     "text": "Library plays an important role in student's lives.",
     "audioUrl": "686.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "690",
@@ -1719,7 +1719,7 @@
     "title": "WFD #698",
     "text": "Despite their differences, all forms of life share certain characteristics.",
     "audioUrl": "698.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "699",
@@ -1775,7 +1775,7 @@
     "title": "WFD #717",
     "text": "Make sure you choose a course that provides great career opportunities.",
     "audioUrl": "717.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "722",
@@ -1859,14 +1859,14 @@
     "title": "WFD #737",
     "text": "Thanks charge interest on the money they lend to customers.",
     "audioUrl": "737.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "738",
     "title": "WFD #738",
     "text": "The student shop sells a range of stationery.",
     "audioUrl": "738.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "740",
@@ -1908,7 +1908,7 @@
     "title": "WFD #760",
     "text": "You need to put these books on the table over there.",
     "audioUrl": "760.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "763",
@@ -1950,7 +1950,7 @@
     "title": "WFD #798",
     "text": "Sugar is a compound including carbon, hydrogen and oxygen atoms.",
     "audioUrl": "798.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "806",
@@ -1971,14 +1971,14 @@
     "title": "WFD #819",
     "text": "Plants are able to continue growing throughout their lives.",
     "audioUrl": "819.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "835",
     "title": "WFD #835",
     "text": "We cannot consider an increase in our price at this stage.",
     "audioUrl": "835.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "842",
@@ -1992,7 +1992,7 @@
     "title": "WFD #845",
     "text": "We can have a lecture on the morning of Thursday.",
     "audioUrl": "845.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "847",
@@ -2048,7 +2048,7 @@
     "title": "WFD #866",
     "text": "Air pollution is a serious problem all over the world.",
     "audioUrl": "866.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "867",
@@ -2062,7 +2062,7 @@
     "title": "WFD #874",
     "text": "Marine environments have been destroyed through pollution and unsustainable development.",
     "audioUrl": "874.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "876",
@@ -2083,7 +2083,7 @@
     "title": "WFD #885",
     "text": "New media have transcended traditional national boundaries.",
     "audioUrl": "885.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "889",
@@ -2139,7 +2139,7 @@
     "title": "WFD #904",
     "text": "Academic libraries across the world are steadily incorporating social media.",
     "audioUrl": "904.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "905",
@@ -2202,14 +2202,14 @@
     "title": "WFD #932",
     "text": "Take the first step by applying for the University Scholarship now.",
     "audioUrl": "932.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "933",
     "title": "WFD #933",
     "text": "The course involves a combination of pure and applied mathematics.",
     "audioUrl": "933.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "934",
@@ -2230,14 +2230,14 @@
     "title": "WFD #941",
     "text": "They developed a unique approach to training their employees.",
     "audioUrl": "941.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "943",
     "title": "WFD #943",
     "text": "Farming methods across the world have greatly developed recently.",
     "audioUrl": "943.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "945",
@@ -2258,7 +2258,7 @@
     "title": "WFD #951",
     "text": "Honey can be used as food and health product.",
     "audioUrl": "951.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "953",
@@ -2300,7 +2300,7 @@
     "title": "WFD #964",
     "text": "You should provide examples to support your ideas and arguments.",
     "audioUrl": "964.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "965",
@@ -2314,7 +2314,7 @@
     "title": "WFD #971",
     "text": "Dealing with the growing population is a challenge for many governments.",
     "audioUrl": "971.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "974",
@@ -2349,7 +2349,7 @@
     "title": "WFD #980",
     "text": "Your ideas have been discussed and debated in seminars and tutorials.",
     "audioUrl": "980.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "981",
@@ -2377,7 +2377,7 @@
     "title": "WFD #986",
     "text": "The library will be closed for staff training tomorrow morning.",
     "audioUrl": "986.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "987",
@@ -2419,7 +2419,7 @@
     "title": "WFD #999",
     "text": "Photography can be really useful in geographical resage.",
     "audioUrl": "999.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": 1000,
@@ -2482,7 +2482,7 @@
     "title": "WFD #1013",
     "text": "Social media is criticized for causing internet addiction.",
     "audioUrl": "1013.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": 1014,
@@ -2496,7 +2496,7 @@
     "title": "WFD #1016",
     "text": "The university has invested in the new technology designed for learning.",
     "audioUrl": "1016.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1021",
@@ -2566,7 +2566,7 @@
     "title": "WFD #1032",
     "text": "The digital camera has some advantages over traditional film.",
     "audioUrl": "1032.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1033",
@@ -2580,7 +2580,7 @@
     "title": "WFD #1034",
     "text": "The farmers need to adapt to the changes in the climate.",
     "audioUrl": "1034.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1035",
@@ -2650,14 +2650,14 @@
     "title": "WFD #1065",
     "text": "An effective business manager is always open to new ideas.",
     "audioUrl": "1065.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1069",
     "title": "WFD #1069",
     "text": "Many diseases that were once serious have now been eradicated.",
     "audioUrl": "1069.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1070",
@@ -2720,14 +2720,14 @@
     "title": "WFD #1092",
     "text": "When the root system of a plant fails, foliage suffers.",
     "audioUrl": "1092.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1094",
     "title": "WFD #1094",
     "text": "The use of mobile phones is not permitted in the library.",
     "audioUrl": "1094.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1095",
@@ -2769,7 +2769,7 @@
     "title": "WFD #1105",
     "text": "Many university lectures can now be viewed on the internet.",
     "audioUrl": "1105.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1110",
@@ -2832,7 +2832,7 @@
     "title": "WFD #1127",
     "text": "A university degree is a requirement to enter many professions.",
     "audioUrl": "1127.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1128",
@@ -3224,7 +3224,7 @@
     "title": "WFD #1238",
     "text": "He wrote poetry and plays as well as scientific papers.",
     "audioUrl": "1238.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1244",
@@ -3350,7 +3350,7 @@
     "title": "WFD #1345",
     "text": "We are continuing to provide postgraduate online learning resources.",
     "audioUrl": "1345.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1346",
@@ -3378,7 +3378,7 @@
     "title": "WFD #1359",
     "text": "All industries consist of systems of inputs, processes, outputs and feedback.",
     "audioUrl": "1359.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1361",
@@ -3462,7 +3462,7 @@
     "title": "WFD #1404",
     "text": "The Rising Inflation Rate indicates a decrease in demand for consumer products.",
     "audioUrl": "1404.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1406",
@@ -3490,7 +3490,7 @@
     "title": "WFD #1411",
     "text": "Food containing ample calories provides little or no nutritional value.",
     "audioUrl": "1411.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1412",
@@ -3518,7 +3518,7 @@
     "title": "WFD #1422",
     "text": "We are looking for new ways to engage learners.",
     "audioUrl": "1422.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1425",
@@ -3539,7 +3539,7 @@
     "title": "WFD #1429",
     "text": "When you attend a job interview, punctuality is the key.",
     "audioUrl": "1429.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1431",
@@ -3616,7 +3616,7 @@
     "title": "WFD #1459",
     "text": "All experiments and procedures have been outlined in the menus.",
     "audioUrl": "1459.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1461",
@@ -3630,7 +3630,7 @@
     "title": "WFD #1465",
     "text": "You can find the complaint form on the website.",
     "audioUrl": "1465.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1472",
@@ -3672,7 +3672,7 @@
     "title": "WFD #1485",
     "text": "Course work gives students the chances to thoroughly explore the subject.",
     "audioUrl": "1485.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1488",
@@ -3819,7 +3819,7 @@
     "title": "WFD #1986",
     "text": "A good academic paper should present a clear argument.",
     "audioUrl": "1986.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "1994",
@@ -3903,14 +3903,14 @@
     "title": "WFD #2468",
     "text": "Mixture is defined as the compound of chemically separate parts.",
     "audioUrl": "2468.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "2486",
     "title": "WFD #2486",
     "text": "It is quite clear that our facial expressions are different across the world.",
     "audioUrl": "2486.mp3",
-    "isPrediction": false
+    "isPrediction": true
   },
   {
     "id": "3225",
