@@ -625,9 +625,7 @@
   <div class="modal-overlay" id="placementIntroModal" onclick="closeModal('placementIntroModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header"><span class="modal-title">🌟 راهنمای آزمون تعیین سطح PTE ROOM</span><button class="close-btn" onclick="closeModal('placementIntroModal')">✕</button></div>
-      <div class="modal-body">
-        <div style="font-size:13.5px; line-height:1.8; color:#cbd5e1; margin-bottom:10px;">به بخش ارزیابی استاندارد و دقیق مهارت‌های زبانی خوش آمدید!</div>
-      </div>
+      <div class="modal-body"><div style="font-size:13.5px; line-height:1.8; color:#cbd5e1; margin-bottom:10px;">به بخش ارزیابی استاندارد و دقیق مهارت‌های زبانی خوش آمدید!</div></div>
       <button class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startPlacementTest()">🚀 متوجه شدم • شروع آزمون</button>
     </div>
   </div>
@@ -691,7 +689,7 @@
     </div>
   </div>
 
-  <!-- SWT Practice Screen (English Feedback, Corrected Button Order & Added New Question) -->
+  <!-- SWT Practice Screen (Strict Evaluation & Correct Button Order) -->
   <div class="view-screen" id="viewSwt">
     <div class="wfd-box">
       <select id="swtSelect" onchange="onSelectSwt()"></select>
@@ -856,13 +854,13 @@
     }
   ];
 
-  /* SWT Data Engine with your new prompt question */
+  /* SWT Data Engine with 60-66 words sample answer */
   let swtQuestions = [
     {
       id: 1,
       title: "SWT: 1920s Movie Goers & Silent Films",
       passage: "The 1920's movie goers experience was largely dominated by silent movies but saw the introduction of synchronized sound. In the 1920's movie stars were really stars - with huge salaries, the fashions and activities of the Hollywood greats echoed around the world and 100,000 people would gather in cities all over the world, including such diverse cities as London and Moscow, to greet Mary Pickford and Douglas Fairbanks when they toured of Europe. Early silent movies were often accompanied by live piano or organ music and provided enormous entertainment value to audiences captivated by the experience of watching moving pictures on the silver screen. Although there had been previous attempts to introduce sound, it wasn't until 1923 that a synchronized soundtrack was photographically recorded and printed on to the side of the strip of motion picture film and made it on to a commercially distributed movie. It would still be seven long years before talking pictures gained total supremacy and finally replaced the silent film era.\nThe first movie theatres were called Nickelodeons, and were very basic compared to the luxurious picture palaces that followed but what an aura of excitement, of laughter, fun and tears surrounded them! Before the introduction of movie soundtracks, movies were often accompanied by scripted music from a piano.",
-      sampleAnswer: "The passage discusses the transition from silent movies to synchronized sound during the 1920s, explaining that Hollywood stars achieved global fame with massive salaries, while also referring to the live musical accompaniments in early cinemas and ending with the eventual commercial introduction of synchronized soundtracks in 1923."
+      sampleAnswer: "The passage discusses the transition from silent films to synchronized sound during the 1920s, explaining that Hollywood movie stars achieved massive global popularity with huge salaries, while also referring to the traditional live musical accompaniments in early cinemas, presenting the technical introduction of soundtracks in 1923, and ending with the complete replacement of silent movies." // 62 words
     }
   ];
   let currentSwtIndex = 0;
@@ -937,7 +935,7 @@
     document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
   }
 
-  /* Strict PTE Room Structure Evaluation for SWT (English Feedback & Accurate Sentence Parser) */
+  /* Strict PTE Room Structure Evaluation for SWT */
   function evaluateSwtAnswer() {
     const userText = document.getElementById('swtInput').value.trim();
     if (!userText) {
@@ -958,17 +956,15 @@
       errors.push(`❌ Form Error: Word count (${wordCount}) is out of the 5-75 range.`);
     }
 
-    // Accurate Single Sentence Check: remove trailing dot, then check for internal sentence-ending punctuation (. ! ?)
-    const cleanText = userText.endsWith('.') ? userText.slice(0, -1) : userText;
-    const hasInternalSentenceBreak = /[.!?]/.test(cleanText);
-    
-    if (hasInternalSentenceBreak || !userText.endsWith('.')) {
+    // Single Sentence Validation (Ignoring standard abbreviations)
+    const cleanSentences = userText.split(/(?<!\b(?:Mr|Dr|Mrs|Ms|Prof|Sr|Jr))\.\s+/).filter(Boolean);
+    const isSingleSentence = (cleanSentences.length === 1 && userText.endsWith('.'));
+
+    if (!isSingleSentence) {
       errors.push(`❌ Sentence Structure Error: Summary must be written in ONE single complete sentence ending with a full stop.`);
     }
 
-    const isSingleSentence = !hasInternalSentenceBreak && userText.endsWith('.');
-
-    // 2. PTE Room Template & Grammar Check
+    // 2. Template & Structure Check
     const hasTemplateStart = userText.toLowerCase().startsWith("the passage discusses");
     if (!hasTemplateStart) {
       warnings.push(`⚠️ PTE Room Structure: It is recommended to start your sentence with: <b>"The passage discusses [NP]..."</b>`);
@@ -1017,7 +1013,7 @@
     loadSwtQuestion(nextIdx);
   }
 
-  /* RFIB Dynamic Data Engine loaded via fetch from rwfib_questions.json */
+  /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
   let rfibAllQuestions = [];
   let currentRfibList = [];
   let activeRfibIndex = 0;
@@ -1432,7 +1428,7 @@
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
-      stopSwtTimer();
+      stopWfdTimer();
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
