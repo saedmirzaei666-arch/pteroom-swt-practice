@@ -620,19 +620,19 @@
       gap: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .wfd-category-bar { display: flex; gap: 6px; flex-shrink: 0; }
+    .wfd-category-bar { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
     .cat-btn {
-      flex: 1;
       background: #1e293b;
       border: 1px solid #334155;
-      padding: 8px 4px;
-      border-radius: 8px;
-      font-size: 11px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 10.5px;
       font-weight: 700;
       color: #94a3b8;
       cursor: pointer;
       transition: all 0.2s;
       text-align: center;
+      flex-grow: 1;
     }
     .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
@@ -1338,7 +1338,7 @@
         <div class="hub-icon">📖</div>
         <div class="hub-text">
           <h3 style="color:#38bdf8;">Reading: Fill in the Blanks</h3>
-          <p>بانک سوالات RFIB دسته‌بندی شده با گرامرهای مختلف و قابلیت Drag & Drop</p>
+          <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
 
@@ -1355,13 +1355,18 @@
   <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
-      <!-- Grammar Category Selection Bar -->
+      <!-- Grammar Category Selection Bar (10 categories, Inversion & Conditional only in All) -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
-        <button class="cat-btn" onclick="filterRfibCategory('Verb')">🔥 Verb</button>
-        <button class="cat-btn" onclick="filterRfibCategory('Preposition')">📌 Prep</button>
-        <button class="cat-btn" onclick="filterRfibCategory('Parallelism')">⚡ Parallel</button>
-        <button class="cat-btn" onclick="filterRfibCategory('Adjective')">🌟 Adj</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Preposition')">Prep</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Connector')">Connector</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Adjective')">Adj</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Parallelism')">Parallel</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Participle')">Participle</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Quantifiers')">Quantifier</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Reduced')">Reduced</button>
+        <button class="cat-btn" onclick="filterRfibCategory('Adverb')">Adverb</button>
       </div>
 
       <select id="rfibSelect" onchange="onSelectRfibQuestion()"></select>
@@ -1373,8 +1378,9 @@
       </div>
 
       <div class="wfd-action-buttons" style="margin-top:10px;">
+        <button class="btn-secondary" style="flex: 1;" onclick="prevRfibQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="checkRfibAnswer()">Check Answer 🎯</button>
-        <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ⏭</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ▶️</button>
       </div>
     </div>
   </div>
@@ -1514,7 +1520,7 @@
     }
   ];
 
-  /* 5 Sample RFIB Questions from PDF */
+  /* RFIB Sample Questions covering all 10 categories + Inversion & Conditional in All */
   const rfibSampleQuestions = [
     {
       id: 753,
@@ -1533,28 +1539,76 @@
       answers: { "A": "essential", "B": "assistance", "C": "stressors", "D": "witness" }
     },
     {
-      id: 751,
-      title: "751. Giant Pandas",
-      grammar: "Parallelism",
-      text: "The panda, with its [A] black and white coat, is adored by the world and [B] a national treasure in China. Pandas live mainly in temperate forests high in the mountains of southwest China, where they [C] almost entirely on bamboo. They must eat around 26 to 84 pounds of it every day.",
-      options: ["considered", "distinctive", "subsist", "narrated", "defensive", "insist", "locate"],
-      answers: { "A": "distinctive", "B": "considered", "C": "subsist" }
-    },
-    {
-      id: 750,
-      title: "750. Forests",
-      grammar: "Verb",
-      text: "Forests [A] 31% of the land area on our planet. They help people thrive and survive by, for example, [B] water and air and providing people with jobs; some 13.2 million people across the world have a job in the forest [C]. Forests are also [D] to more than three-quarters of the world's life on land.",
-      options: ["segment", "sector", "purifying", "cover", "engaging", "home", "locate"],
-      answers: { "A": "cover", "B": "purifying", "C": "sector", "D": "home" }
-    },
-    {
       id: 749,
       title: "749. Climate Finance",
       grammar: "Preposition",
       text: "Financial resources and sound investments are needed to [A] climate change, to both reduce emissions, [B] adaptation to the impacts that are already occurring, and to build resilience. The benefits that flow from these investments, however, dramatically [C] any upfront costs. According to a study, the world will need to make significant investment in infrastructure over the next 15 years, but it can [D] those investments.",
       options: ["outweigh", "outline", "recoup", "derange", "promote", "recruit", "address"],
       answers: { "A": "address", "B": "fund", "C": "outweigh", "D": "recoup" }
+    },
+    {
+      id: 739,
+      title: "739. Internet Cafes",
+      grammar: "Connector",
+      text: "Internet cafes are particularly useful for travelers who don't want to [A] laptops along on their trip. In many countries where computers and internet access are not widely available or [B], cybercafes also provide an important service to the local population. Internet cafes usually [C] customers based on the amount of time they use a computer.",
+      options: ["enable", "carry", "affordable", "charge", "equivalent", "purchase"],
+      answers: { "A": "carry", "B": "affordable", "C": "charge" }
+    },
+    {
+      id: 732,
+      title: "732. Plastic",
+      grammar: "Adjective",
+      text: "Plastic has [A] the way we manufacture, package, transport, and use different products [B] from groceries to cosmetics and vaccines. It is a tool and like any tool, it can offer great [C] but it can also pose problems when being used [D].",
+      options: ["conditions", "advantages", "resulting", "transgressed", "transformed", "ranging", "improperly"],
+      answers: { "A": "transformed", "B": "ranging", "C": "advantages", "D": "improperly" }
+    },
+    {
+      id: 731,
+      title: "731. Decision Paralysis",
+      grammar: "Participle",
+      text: "Decision paralysis is a state of over-analyzing a situation or decision up to the point where it actually [A] you from taking a decision, or it influences you significantly. This phenomenon typically [B] through inaction, indecision, and an excessive tendency to [C] the options and consequences you have at hand before making up your mind. This experience can be [D] and dangerous, and it can affect your professional and even personal life.",
+      options: ["weigh", "access", "frustrating", "indoctrinates", "physical", "manifests", "prevents"],
+      answers: { "A": "prevents", "B": "manifests", "C": "weigh", "D": "frustrating" }
+    },
+    {
+      id: 469,
+      title: "469. Nigerian Libraries",
+      grammar: "Quantifiers",
+      text: "Nigerian law libraries, despite the intervention of Council of Legal education, are still not endowed with every resource needed to satisfy information needs of [A] users. This is [B] with the fact that Nigerian universities are still struggling to manage [C] funds normally received from government. Resource sharing is [D] to be a solution.",
+      options: ["diverse", "supposed", "coupled", "scientific", "insufficient", "sponsored", "continued"],
+      answers: { "A": "diverse", "B": "coupled", "C": "insufficient", "D": "supposed" }
+    },
+    {
+      id: 748,
+      title: "748. Mobility Service",
+      grammar: "Reduced",
+      text: "Traditionally, when [A] a trip, travelers would have to use separate companies or services to book individual parts of a journey. This outdated system is considered to be inconvenient and [B] for the consumer. The 'Mobility as a Service' philosophy aims to [C] the entire travel experience by moving away from the focus on companies and approaching travel as more of a service that can [D] to citizens' individual needs.",
+      options: ["planning", "cater", "marching", "frustrating", "streamline", "approve", "design"],
+      answers: { "A": "planning", "B": "frustrating", "C": "streamline", "D": "cater" }
+    },
+    {
+      id: 734,
+      title: "734. Rainbows",
+      grammar: "Adverb",
+      text: "\"Climate change is [A] rainbows [B] now we know that's true,\" says Carlson, the lead author on a paper, which used computer models to [C] future rainbow-ready conditions. As major weather patterns [D] because of climate change, many parts of the world [E] places nearer to the poles, like Alaska or Siberia, will get more rain adding dozens more rainbow-rich days by the end of the century.",
+      options: ["simulate", "affecting", "stocking", "potentially", "significantly", "morph", "preserve"],
+      answers: { "A": "affecting", "B": "significantly", "C": "simulate", "D": "morph", "E": "potentially" }
+    },
+    {
+      id: 239,
+      title: "239. Feature Films",
+      grammar: "Inversion",
+      text: "Feature films in cinema history have always [A] audiences with visual storytelling. Seldom [B] we witness such a profound breakthrough in cinematic technology as we did in the 20th century.",
+      options: ["captivated", "do", "did", "engages"],
+      answers: { "A": "captivated", "B": "did" }
+    },
+    {
+      id: 528,
+      title: "528. Class Levels",
+      grammar: "Conditional",
+      text: "If students [A] diligent throughout the term, they would [B] higher grades in their final examinations. Future research may [C] the findings.",
+      options: ["were", "achieve", "re-explore", "had been"],
+      answers: { "A": "were", "B": "achieve", "C": "re-explore" }
     }
   ];
 
@@ -1706,6 +1760,13 @@
     }
 
     showToast(`🎯 نتیجه: ${correctCount} از ${totalBlanks} پاسخ صحیح بود.`);
+  }
+
+  function prevRfibQuestion() {
+    let prevIdx = parseInt(activeRfibIndex) - 1;
+    if (prevIdx < 0) prevIdx = currentRfibList.length - 1;
+    document.getElementById('rfibSelect').value = prevIdx;
+    loadRfibQuestion(prevIdx);
   }
 
   function nextRfibQuestion() {
