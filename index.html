@@ -1412,7 +1412,7 @@
     </div>
   </div>
 
-  <!-- SWT Practice Screen (Fully Integrated with PTE Room Rules & Timer) -->
+  <!-- SWT Practice Screen (English Feedback & Corrected Button Order) -->
   <div class="view-screen" id="viewSwt">
     <div class="wfd-box">
       <select id="swtSelect" onchange="onSelectSwt()"></select>
@@ -1582,13 +1582,13 @@
     }
   ];
 
-  /* SWT Data Engine */
+  /* SWT Data Engine with your specific prompt question */
   let swtQuestions = [
     {
       id: 1,
-      title: "SWT Sample 1: Modern Technology",
-      passage: "Modern technology has significantly transformed communication channels, enabling instant global connectivity while raising concerns about digital addiction and superficial relationships. Governments and educators are increasingly struggling to balance technological integration with traditional social development among younger generations.",
-      sampleAnswer: "The passage discusses technological advancements, explaining that communication channels have been transformed and raising concerns about digital addiction, while also referring to government policies and addressing social development challenges."
+      title: "SWT: 1920s Movie Goers & Silent Films",
+      passage: "The 1920's movie goers experience was largely dominated by silent movies but saw the introduction of synchronized sound. In the 1920's movie stars were really stars - with huge salaries, the fashions and activities of the Hollywood greats echoed around the world and 100,000 people would gather in cities all over the world, including such diverse cities as London and Moscow, to greet Mary Pickford and Douglas Fairbanks when they toured of Europe. Early silent movies were often accompanied by live piano or organ music and provided enormous entertainment value to audiences captivated by the experience of watching moving pictures on the silver screen. Although there had been previous attempts to introduce sound, it wasn't until 1923 that a synchronized soundtrack was photographically recorded and printed on to the side of the strip of motion picture film and made it on to a commercially distributed movie. It would still be seven long years before talking pictures gained total supremacy and finally replaced the silent film era.\nThe first movie theatres were called Nickelodeons, and were very basic compared to the luxurious picture palaces that followed but what an aura of excitement, of laughter, fun and tears surrounded them! Before the introduction of movie soundtracks, movies were often accompanied by scripted music from a piano.",
+      sampleAnswer: "The passage discusses the transition from silent movies to synchronized sound during the 1920s, explaining that Hollywood stars achieved global fame with massive salaries, while also referring to the live musical accompaniments in early cinemas and ending with the eventual commercial introduction of synchronized soundtracks in 1923."
     }
   ];
   let currentSwtIndex = 0;
@@ -1651,9 +1651,9 @@
     badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     badge.classList.remove('warning', 'danger');
     if (swtElapsedSeconds >= 600) {
-      badge.classList.add('danger'); // از 10 دقیقه قرمز
+      badge.classList.add('danger'); // From 10 mins: Red
     } else if (swtElapsedSeconds >= 480) {
-      badge.classList.add('warning'); // از 8 دقیقه زرد
+      badge.classList.add('warning'); // From 8 mins: Yellow
     }
   }
 
@@ -1663,11 +1663,11 @@
     document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
   }
 
-  /* Strict PTE Room Structure Evaluation for SWT */
+  /* Strict PTE Room Structure Evaluation for SWT (English Feedback) */
   function evaluateSwtAnswer() {
     const userText = document.getElementById('swtInput').value.trim();
     if (!userText) {
-      showToast("⚠️ لطفاً خلاصه خود را وارد کنید.");
+      showToast("⚠️ Please type your summary first.");
       return;
     }
 
@@ -1678,27 +1678,26 @@
     let errors = [];
     let warnings = [];
 
-    // ۱. بررسی فرم (Form): بین ۵ تا ۷۵ کلمه و تک‌جمله‌ای بودن
+    // 1. Form Check: 5 to 75 words & single sentence
     const isWordCountValid = (wordCount >= 5 && wordCount <= 75);
     if (!isWordCountValid) {
-      errors.push(`❌ خطای فرم (Form): تعداد کلمات شما (${wordCount}) خارج از بازه مجاز ۵ تا ۷۵ کلمه است.`);
+      errors.push(`❌ Form Error: Word count (${wordCount}) is out of the 5-75 range.`);
     }
 
     const internalSentences = userText.slice(0, -1).split(/[.!?]+/).filter(Boolean);
     const isSingleSentence = (internalSentences.length === 0 && userText.endsWith('.'));
     if (!isSingleSentence) {
-      errors.push(`❌ خطای ساختار جمله: خلاصه شما باید صرفاً **یک جمله کامل و واحد** باشد و با یک نقطه پایان یابد.`);
+      errors.push(`❌ Sentence Structure Error: Summary must be written in ONE single complete sentence ending with a full stop.`);
     }
 
-    // ۲. بررسی استراکچر اختصاصی PTE Room
+    // 2. PTE Room Template & Grammar Check
     const hasTemplateStart = userText.toLowerCase().startsWith("the passage discusses");
     if (!hasTemplateStart) {
-      warnings.push(`⚠️ استراکچر PTE Room: پیشنهاد می‌شود جمله با الگوی استاندارد آغاز شود: <b>"The passage discusses [NP]..."</b>`);
+      warnings.push(`⚠️ PTE Room Structure: It is recommended to start your sentence with: <b>"The passage discusses [NP]..."</b>`);
     }
 
-    // بررسی استفاده از that قبل از Clause
     if (userText.toLowerCase().includes("explaining") && !userText.toLowerCase().includes("explaining that") && !userText.toLowerCase().includes("explaining the")) {
-      warnings.push(`⚠️ قانون نگارشی PTE Room: زمانی که از جمله کامل (Clause) بعد از explaining استفاده می‌کنید، حتماً باید قبل از آن کلمه <b>that</b> بیاورید.`);
+      warnings.push(`⚠️ Grammar Rule: When using a clause after explaining, make sure to include the word <b>that</b>.`);
     }
 
     const q = swtQuestions[currentSwtIndex];
@@ -1708,13 +1707,13 @@
     const tipsContainer = document.getElementById('swtTipsContainer');
 
     if (isWordCountValid && isSingleSentence) {
-      scoreBadge.innerText = "✅ تایید فرم پیرسون";
+      scoreBadge.innerText = "✅ Form Verified";
       scoreBadge.style.background = "#10b981";
-      feedbackEl.innerHTML = `پاسخ شما یک جمله کامل با ${wordCount} کلمه است.<br><br><b>💡 نمونه پاسخ استاندارد (PTE Room Sample):</b><br><i>${q.sampleAnswer}</i>`;
+      feedbackEl.innerHTML = `Your response is a single complete sentence with ${wordCount} words.<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
     } else {
-      scoreBadge.innerText = "❌ مردود در فرم";
+      scoreBadge.innerText = "❌ Form Failed";
       scoreBadge.style.background = "#ef4444";
-      feedbackEl.innerHTML = errors.join('<br>') + `<br><br><b>💡 نمونه پاسخ استاندارد (PTE Room Sample):</b><br><i>${q.sampleAnswer}</i>`;
+      feedbackEl.innerHTML = errors.join('<br>') + `<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
     }
 
     if (warnings.length > 0) {
@@ -1901,7 +1900,7 @@
       }
     }
 
-    showToast(`🎯 نتیجه: ${correctCount} از ${totalBlanks} پاسخ صحیح بود.`);
+    showToast(`🎯 Result: ${correctCount} of ${totalBlanks} correct.`);
   }
 
   function prevRfibQuestion() {
