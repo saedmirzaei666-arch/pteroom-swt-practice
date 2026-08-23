@@ -942,7 +942,6 @@
         </div>
       </div>
 
-      <!-- FLASH CARDS Added to Main Menu with Glowing Style -->
       <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
         <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
         <div class="hub-text">
@@ -979,7 +978,7 @@
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
           <h3>PTE PRACTICE</h3>
-          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB</p>
+          <p>شبیه‌ساز هوشمند WFD، بانک سوالات RFIB و تسک SWT</p>
         </div>
       </div>
     </div>
@@ -1368,10 +1367,19 @@
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
+
+      <!-- SWT Card added here -->
+      <div class="hub-card" onclick="navTo('swt')">
+        <div class="hub-icon">📝</div>
+        <div class="hub-text">
+          <h3 style="color:#38bdf8;">Summarize Written Text (SWT)</h3>
+          <p>ارزیابی سخت‌گیرانه تک‌جمله‌ای، بازه کلمات و استراکچر آکادمیک</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- RFIB Practice Screen (Restored Drag & Drop / Click-to-Drop Model) -->
+  <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
       <!-- Grammar Category Selection Bar -->
@@ -1400,6 +1408,41 @@
         <button class="btn-secondary" style="flex: 1;" onclick="prevRfibQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="checkRfibAnswer()">Check Answer 🎯</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ▶️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWT Practice Screen (Added with timer 0-10 mins, English Feedback, Correct Button Order) -->
+  <div class="view-screen" id="viewSwt">
+    <div class="wfd-box">
+      <select id="swtSelect" onchange="onSelectSwt()"></select>
+
+      <div class="wfd-status-bar">
+        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="swtWordCount">Word Count: 0 / 75</span>
+        <span class="wfd-timer-badge" id="swtTimerBadge">⏱ 00:00</span>
+      </div>
+
+      <div class="quiz-card" style="flex:1; overflow-y:auto; margin-top:2px; border:none; background:transparent; padding:0; display: flex; flex-direction: column; gap: 8px;">
+        <div class="passage-box" id="swtPassageBox" style="font-size:13.5px; line-height:2.2; max-height: 140px; overflow-y: auto;">
+          Passage loading...
+        </div>
+
+        <textarea id="swtInput" style="height: 85px; min-height: 85px;" placeholder="Type your single-sentence summary here (The passage discusses...)" oninput="calcSwtWords()"></textarea>
+
+        <div class="wfd-result-card" id="swtResultBox">
+          <div class="wfd-score-header">
+            <span>📊 SWT Strict Analysis (PTE Room):</span>
+            <span id="swtScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">Status</span>
+          </div>
+          <div class="wfd-sentence-display" id="swtFeedbackDisplay" style="font-size: 13px; line-height: 1.6;"></div>
+          <div class="wfd-tips-container" id="swtTipsContainer" style="margin-top: 4px;"></div>
+        </div>
+      </div>
+
+      <div class="wfd-action-buttons" id="swtCheckActionBox" style="margin-top:8px;">
+        <button class="btn-secondary" style="flex: 1;" onclick="prevSwtQuestion()">◀️ Prev</button>
+        <button class="btn-primary" style="flex: 2;" onclick="evaluateSwtAnswer()">Check Answer 🎯</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextSwtQuestion()">Next ▶️</button>
       </div>
     </div>
   </div>
@@ -1539,7 +1582,165 @@
     }
   ];
 
-  /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
+  /* SWT Data Engine with 60-66 words sample answer and prompt question */
+  let swtQuestions = [
+    {
+      id: 1,
+      title: "SWT: 1920s Movie Goers & Silent Films",
+      passage: "The 1920's movie goers experience was largely dominated by silent movies but saw the introduction of synchronized sound. In the 1920's movie stars were really stars - with huge salaries, the fashions and activities of the Hollywood greats echoed around the world and 100,000 people would gather in cities all over the world, including such diverse cities as London and Moscow, to greet Mary Pickford and Douglas Fairbanks when they toured of Europe. Early silent movies were often accompanied by live piano or organ music and provided enormous entertainment value to audiences captivated by the experience of watching moving pictures on the silver screen. Although there had been previous attempts to introduce sound, it wasn't until 1923 that a synchronized soundtrack was photographically recorded and printed on to the side of the strip of motion picture film and made it on to a commercially distributed movie. It would still be seven long years before talking pictures gained total supremacy and finally replaced the silent film era.\nThe first movie theatres were called Nickelodeons, and were very basic compared to the luxurious picture palaces that followed but what an aura of excitement, of laughter, fun and tears surrounded them! Before the introduction of movie soundtracks, movies were often accompanied by scripted music from a piano.",
+      sampleAnswer: "The passage discusses the transition from silent films to synchronized sound during the 1920s, explaining that Hollywood movie stars achieved massive global popularity with huge salaries, while also referring to the traditional live musical accompaniments in early cinemas, presenting the technical introduction of soundtracks in 1923, and ending with the complete replacement of silent movies." // 62 words
+    }
+  ];
+  let currentSwtIndex = 0;
+  let swtTimerInterval = null;
+  let swtElapsedSeconds = 0;
+
+  function loadSwtList() {
+    const select = document.getElementById('swtSelect');
+    if (!select) return;
+    select.innerHTML = "";
+    swtQuestions.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title;
+      select.appendChild(opt);
+    });
+    currentSwtIndex = 0;
+    loadSwtQuestion(0);
+  }
+
+  function loadSwtQuestion(idx) {
+    currentSwtIndex = idx;
+    const q = swtQuestions[idx];
+    if (!q) return;
+
+    document.getElementById('swtPassageBox').innerText = q.passage;
+    document.getElementById('swtInput').value = "";
+    document.getElementById('swtResultBox').style.display = 'none';
+    calcSwtWords();
+    startSwtTimer();
+  }
+
+  function onSelectSwt() {
+    const idx = document.getElementById('swtSelect').value;
+    loadSwtQuestion(idx);
+  }
+
+  function startSwtTimer() {
+    stopSwtTimer();
+    swtElapsedSeconds = 0;
+    updateSwtTimerDisplay();
+    swtTimerInterval = setInterval(() => {
+      swtElapsedSeconds++;
+      updateSwtTimerDisplay();
+    }, 1000);
+  }
+
+  function stopSwtTimer() {
+    if (swtTimerInterval) {
+      clearInterval(swtTimerInterval);
+      swtTimerInterval = null;
+    }
+  }
+
+  function updateSwtTimerDisplay() {
+    const badge = document.getElementById('swtTimerBadge');
+    if (!badge) return;
+    const mins = Math.floor(swtElapsedSeconds / 60);
+    const secs = swtElapsedSeconds % 60;
+    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    badge.classList.remove('warning', 'danger');
+    if (swtElapsedSeconds >= 600) {
+      badge.classList.add('danger'); // From 10 mins: Red
+    } else if (swtElapsedSeconds >= 480) {
+      badge.classList.add('warning'); // From 8 mins: Yellow
+    }
+  }
+
+  function calcSwtWords() {
+    const val = document.getElementById('swtInput').value.trim();
+    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
+    document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
+  }
+
+  function evaluateSwtAnswer() {
+    const userText = document.getElementById('swtInput').value.trim();
+    if (!userText) {
+      showToast("⚠️ Please type your summary first.");
+      return;
+    }
+
+    stopSwtTimer();
+
+    const words = userText.split(/\s+/).filter(Boolean);
+    const wordCount = words.length;
+    let errors = [];
+    let warnings = [];
+
+    // 1. Form Check: 5 to 75 words
+    const isWordCountValid = (wordCount >= 5 && wordCount <= 75);
+    if (!isWordCountValid) {
+      errors.push(`❌ Form Error: Word count (${wordCount}) is out of the 5-75 range.`);
+    }
+
+    // Single Sentence Check (Ignoring standard abbreviations)
+    const cleanSentences = userText.split(/(?<!\b(?:Mr|Dr|Mrs|Ms|Prof|Sr|Jr))\.\s+/).filter(Boolean);
+    const isSingleSentence = (cleanSentences.length === 1 && userText.endsWith('.'));
+
+    if (!isSingleSentence) {
+      errors.push(`❌ Sentence Structure Error: Summary must be written in ONE single complete sentence ending with a full stop.`);
+    }
+
+    // 2. Template & Structure Check
+    const hasTemplateStart = userText.toLowerCase().startsWith("the passage discusses");
+    if (!hasTemplateStart) {
+      warnings.push(`⚠️ PTE Room Structure: It is recommended to start your sentence with: <b>"The passage discusses [NP]..."</b>`);
+    }
+
+    if (userText.toLowerCase().includes("explaining") && !userText.toLowerCase().includes("explaining that") && !userText.toLowerCase().includes("explaining the")) {
+      warnings.push(`⚠️ Grammar Rule: When using a clause after explaining, make sure to include the word <b>that</b>.`);
+    }
+
+    const q = swtQuestions[currentSwtIndex];
+    const resultBox = document.getElementById('swtResultBox');
+    const scoreBadge = document.getElementById('swtScoreBadge');
+    const feedbackEl = document.getElementById('swtFeedbackDisplay');
+    const tipsContainer = document.getElementById('swtTipsContainer');
+
+    if (isWordCountValid && isSingleSentence) {
+      scoreBadge.innerText = "✅ Form Verified";
+      scoreBadge.style.background = "#10b981";
+      feedbackEl.innerHTML = `Your response is a single complete sentence with ${wordCount} words.<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
+    } else {
+      scoreBadge.innerText = "❌ Form Failed";
+      scoreBadge.style.background = "#ef4444";
+      feedbackEl.innerHTML = errors.join('<br>') + `<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
+    }
+
+    if (warnings.length > 0) {
+      tipsContainer.innerHTML = warnings.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
+      tipsContainer.style.display = 'flex';
+    } else {
+      tipsContainer.innerHTML = '';
+      tipsContainer.style.display = 'none';
+    }
+
+    resultBox.style.display = 'flex';
+  }
+
+  function prevSwtQuestion() {
+    let prevIdx = currentSwtIndex - 1;
+    if (prevIdx < 0) prevIdx = swtQuestions.length - 1;
+    loadSwtQuestion(prevIdx);
+  }
+
+  function nextSwtQuestion() {
+    let nextIdx = currentSwtIndex + 1;
+    if (nextIdx >= swtQuestions.length) nextIdx = 0;
+    loadSwtQuestion(nextIdx);
+  }
+
+  /* RFIB Dynamic Data Engine loaded via fetch from rwfib_questions.json */
   let rfibAllQuestions = [];
   let currentRfibList = [];
   let activeRfibIndex = 0;
@@ -1548,15 +1749,15 @@
 
   async function initRfibModule() {
     try {
-      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         rfibAllQuestions = await res.json();
         filterRfibCategory('All');
       } else {
-        console.warn("Could not load rfib_questions.json");
+        console.warn("Could not load rwfib_questions.json");
       }
     } catch (err) {
-      console.error("Error loading RFIB JSON:", err);
+      console.error("Error loading RWFIB JSON:", err);
     }
   }
 
@@ -1700,7 +1901,7 @@
       }
     }
 
-    showToast(`🎯 نتیجه: ${correctCount} از ${totalBlanks} پاسخ صحیح بود.`);
+    showToast(`🎯 Result: ${correctCount} of ${totalBlanks} correct.`);
   }
 
   function prevRfibQuestion() {
@@ -1853,6 +2054,7 @@
     const ts = Date.now();
     initRfib();
     initRfibModule();
+    loadSwtList();
     checkForceJoinOnStart();
 
     try {
@@ -1924,42 +2126,57 @@
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'placement') {
       document.getElementById('viewPlacement').classList.add('active');
       title.innerText = "PTE ROOM • آزمون تعیین سطح";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'materials') {
       document.getElementById('viewMaterials').classList.add('active');
       title.innerText = "PTE ROOM • متریال آموزشی";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'schedule') {
       document.getElementById('viewSchedule').classList.add('active');
       title.innerText = "PTE ROOM • برنامه تمرینی هفته";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
       title.innerText = "PTE ROOM • دوره‌های آموزشی";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
       title.innerText = "PTE ROOM • PTE PRACTICE";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
+      stopSwtTimer();
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
       title.innerText = "PTE ROOM • Reading FIB";
       stopWfdTimer();
+      stopSwtTimer();
+    } else if (current === 'swt') {
+      document.getElementById('viewSwt').classList.add('active');
+      title.innerText = "PTE ROOM • Summarize Written Text";
+      stopWfdTimer();
+      loadSwtQuestion(currentSwtIndex);
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • FLASH CARDS";
       stopWfdTimer();
+      stopSwtTimer();
     }
   }
 
@@ -2533,7 +2750,165 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     document.getElementById('doneMessage').style.display = 'flex';
   }
 
-  window.onload = initApp;
+  /* SWT Engine & Timers */
+  let swtQuestions = [
+    {
+      id: 1,
+      title: "SWT: 1920s Movie Goers & Silent Films",
+      passage: "The 1920's movie goers experience was largely dominated by silent movies but saw the introduction of synchronized sound. In the 1920's movie stars were really stars - with huge salaries, the fashions and activities of the Hollywood greats echoed around the world and 100,000 people would gather in cities all over the world, including such diverse cities as London and Moscow, to greet Mary Pickford and Douglas Fairbanks when they toured of Europe. Early silent movies were often accompanied by live piano or organ music and provided enormous entertainment value to audiences captivated by the experience of watching moving pictures on the silver screen. Although there had been previous attempts to introduce sound, it wasn't until 1923 that a synchronized soundtrack was photographically recorded and printed on to the side of the strip of motion picture film and made it on to a commercially distributed movie. It would still be seven long years before talking pictures gained total supremacy and finally replaced the silent film era.\nThe first movie theatres were called Nickelodeons, and were very basic compared to the luxurious picture palaces that followed but what an aura of excitement, of laughter, fun and tears surrounded them! Before the introduction of movie soundtracks, movies were often accompanied by scripted music from a piano.",
+      sampleAnswer: "The passage discusses the transition from silent films to synchronized sound during the 1920s, explaining that Hollywood movie stars achieved massive global popularity with huge salaries, while also referring to the traditional live musical accompaniments in early cinemas, presenting the technical introduction of soundtracks in 1923, and ending with the complete replacement of silent movies."
+    }
+  ];
+  let currentSwtIndex = 0;
+  let swtTimerInterval = null;
+  let swtElapsedSeconds = 0;
+
+  function loadSwtList() {
+    const select = document.getElementById('swtSelect');
+    if (!select) return;
+    select.innerHTML = "";
+    swtQuestions.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title;
+      select.appendChild(opt);
+    });
+    currentSwtIndex = 0;
+    loadSwtQuestion(0);
+  }
+
+  function loadSwtQuestion(idx) {
+    currentSwtIndex = idx;
+    const q = swtQuestions[idx];
+    if (!q) return;
+
+    document.getElementById('swtPassageBox').innerText = q.passage;
+    document.getElementById('swtInput').value = "";
+    document.getElementById('swtResultBox').style.display = 'none';
+    calcSwtWords();
+    startSwtTimer();
+  }
+
+  function onSelectSwt() {
+    const idx = document.getElementById('swtSelect').value;
+    loadSwtQuestion(idx);
+  }
+
+  function startSwtTimer() {
+    stopSwtTimer();
+    swtElapsedSeconds = 0;
+    updateSwtTimerDisplay();
+    swtTimerInterval = setInterval(() => {
+      swtElapsedSeconds++;
+      updateSwtTimerDisplay();
+    }, 1000);
+  }
+
+  function stopSwtTimer() {
+    if (swtTimerInterval) {
+      clearInterval(swtTimerInterval);
+      swtTimerInterval = null;
+    }
+  }
+
+  function updateSwtTimerDisplay() {
+    const badge = document.getElementById('swtTimerBadge');
+    if (!badge) return;
+    const mins = Math.floor(swtElapsedSeconds / 60);
+    const secs = swtElapsedSeconds % 60;
+    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    badge.classList.remove('warning', 'danger');
+    if (swtElapsedSeconds >= 600) {
+      badge.classList.add('danger');
+    } else if (swtElapsedSeconds >= 480) {
+      badge.classList.add('warning');
+    }
+  }
+
+  function calcSwtWords() {
+    const val = document.getElementById('swtInput').value.trim();
+    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
+    document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
+  }
+
+  function evaluateSwtAnswer() {
+    const userText = document.getElementById('swtInput').value.trim();
+    if (!userText) {
+      showToast("⚠️ Please type your summary first.");
+      return;
+    }
+
+    stopSwtTimer();
+
+    const words = userText.split(/\s+/).filter(Boolean);
+    const wordCount = words.length;
+    let errors = [];
+    let warnings = [];
+
+    const isWordCountValid = (wordCount >= 5 && wordCount <= 75);
+    if (!isWordCountValid) {
+      errors.push(`❌ Form Error: Word count (${wordCount}) is out of the 5-75 range.`);
+    }
+
+    const cleanSentences = userText.split(/(?<!\b(?:Mr|Dr|Mrs|Ms|Prof|Sr|Jr))\.\s+/).filter(Boolean);
+    const isSingleSentence = (cleanSentences.length === 1 && userText.endsWith('.'));
+
+    if (!isSingleSentence) {
+      errors.push(`❌ Sentence Structure Error: Summary must be written in ONE single complete sentence ending with a full stop.`);
+    }
+
+    const hasTemplateStart = userText.toLowerCase().startsWith("the passage discusses");
+    if (!hasTemplateStart) {
+      warnings.push(`⚠️ PTE Room Structure: It is recommended to start your sentence with: <b>"The passage discusses [NP]..."</b>`);
+    }
+
+    if (userText.toLowerCase().includes("explaining") && !userText.toLowerCase().includes("explaining that") && !userText.toLowerCase().includes("explaining the")) {
+      warnings.push(`⚠️ Grammar Rule: When using a clause after explaining, make sure to include the word <b>that</b>.`);
+    }
+
+    const q = swtQuestions[currentSwtIndex];
+    const resultBox = document.getElementById('swtResultBox');
+    const scoreBadge = document.getElementById('swtScoreBadge');
+    const feedbackEl = document.getElementById('swtFeedbackDisplay');
+    const tipsContainer = document.getElementById('swtTipsContainer');
+
+    if (isWordCountValid && isSingleSentence) {
+      scoreBadge.innerText = "✅ Form Verified";
+      scoreBadge.style.background = "#10b981";
+      feedbackEl.innerHTML = `Your response is a single complete sentence with ${wordCount} words.<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
+    } else {
+      scoreBadge.innerText = "❌ Form Failed";
+      scoreBadge.style.background = "#ef4444";
+      feedbackEl.innerHTML = errors.join('<br>') + `<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
+    }
+
+    if (warnings.length > 0) {
+      tipsContainer.innerHTML = warnings.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
+      tipsContainer.style.display = 'flex';
+    } else {
+      tipsContainer.innerHTML = '';
+      tipsContainer.style.display = 'none';
+    }
+
+    resultBox.style.display = 'flex';
+  }
+
+  function prevSwtQuestion() {
+    let prevIdx = currentSwtIndex - 1;
+    if (prevIdx < 0) prevIdx = swtQuestions.length - 1;
+    loadSwtQuestion(prevIdx);
+  }
+
+  function nextSwtQuestion() {
+    let nextIdx = currentSwtIndex + 1;
+    if (nextIdx >= swtQuestions.length) nextIdx = 0;
+    loadSwtQuestion(nextIdx);
+  }
+
+  window.onload = () => {
+    initApp();
+    loadSwtList();
+  };
 </script>
 
 </body>
