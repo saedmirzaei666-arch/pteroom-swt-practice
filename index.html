@@ -147,31 +147,48 @@
     }
     .hub-card:active { transform: scale(0.98); }
 
+    /* Animated Neon Card for Placement Test */
     .hub-card.placement-highlight {
       border-color: #38bdf8;
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
       animation: glowBorder 3s infinite alternate;
     }
 
+    /* Vibrant Glowing Card for Flashcards on Main Menu */
     .hub-card.flashcard-highlight {
       border-color: #ec4899;
       background: linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
       animation: glowFlashCard 2.5s infinite alternate;
     }
     @keyframes glowFlashCard {
-      0% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.3); border-color: rgba(236, 72, 153, 0.6); }
-      100% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), inset 0 0 15px rgba(236, 72, 153, 0.2); border-color: #f472b6; }
+      0% {
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        border-color: rgba(236, 72, 153, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), inset 0 0 15px rgba(236, 72, 153, 0.2);
+        border-color: #f472b6;
+      }
     }
 
     @keyframes glowBorder {
-      0% { box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); }
-      100% { box-shadow: 0 0 24px rgba(56, 189, 248, 0.55); border-color: #38bdf8; }
+      0% {
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        border-color: rgba(56, 189, 248, 0.5);
+      }
+      100% {
+        box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
+        border-color: #38bdf8;
+      }
     }
 
     .hub-card.placement-highlight::after, .hub-card.flashcard-highlight::after {
       content: '';
       position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
       background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
       transform: rotate(30deg);
       animation: lightSweep 4s infinite linear;
@@ -186,115 +203,420 @@
       font-size: 26px;
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 50px; height: 50px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 12px; flex-shrink: 0;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
       transition: transform 0.3s ease;
     }
     .hub-card:hover .hub-icon { transform: scale(1.08) rotate(3deg); }
     .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    .materials-container { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-bottom: 8px; }
+    /* Materials View Styles */
+    .materials-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
     .material-item-card {
-      background: var(--card-bg); border: 1.5px solid var(--card-border);
-      border-radius: 14px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.15s ease;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
     .material-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
     .material-info { display: flex; flex-direction: column; gap: 4px; }
     .material-badge {
-      align-self: flex-start; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px;
+      align-self: flex-start;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
     }
     .material-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
 
-    .placement-container { display: flex; flex-direction: column; gap: 14px; overflow-y: auto; flex: 1; padding-bottom: 14px; }
-    .quiz-card {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px;
+    /* Placement Test Styles */
+    .placement-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 14px;
     }
-    .quiz-title { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; justify-content: space-between; align-items: center; }
+    .quiz-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .passage-box {
-      font-size: 14.5px; line-height: 2.3; color: #f8fafc; direction: ltr; text-align: left; background: #0f172a; padding: 14px; border-radius: 10px; border: 1px solid #1e293b; word-spacing: 1px;
+      font-size: 14.5px;
+      line-height: 2.3;
+      color: #f8fafc;
+      direction: ltr;
+      text-align: left;
+      background: #0f172a;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      word-spacing: 1px;
     }
 
     .inline-select {
-      display: inline-block !important; width: auto !important; min-width: 90px !important; max-width: 140px !important; padding: 3px 6px !important; margin: 0 4px !important; background: #1e293b !important; color: #38bdf8 !important; border: 1.5px solid #0284c7 !important; border-radius: 6px !important; font-size: 13.5px !important; font-weight: 700 !important; outline: none !important; vertical-align: middle !important; direction: ltr !important; height: 32px !important;
+      display: inline-block !important;
+      width: auto !important;
+      min-width: 90px !important;
+      max-width: 140px !important;
+      padding: 3px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      vertical-align: middle !important;
+      direction: ltr !important;
+      height: 32px !important;
     }
 
     .inline-input {
-      display: inline-block !important; width: 110px !important; height: 30px !important; padding: 2px 6px !important; margin: 0 4px !important; background: #1e293b !important; color: #38bdf8 !important; border: 1.5px solid #0284c7 !important; border-radius: 6px !important; font-size: 13.5px !important; font-weight: 700 !important; outline: none !important; direction: ltr !important; text-align: center !important; vertical-align: middle !important;
+      display: inline-block !important;
+      width: 110px !important;
+      height: 30px !important;
+      padding: 2px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      direction: ltr !important;
+      text-align: center !important;
+      vertical-align: middle !important;
     }
     .inline-input:focus { border-color: #38bdf8 !important; }
 
+    /* RFIB Practice Screen Styles */
     .rfib-drop-zone {
-      display: inline-flex; align-items: center; justify-content: center; min-width: 95px; height: 32px; padding: 2px 8px; margin: 0 4px; background: #1e293b; border: 1.5px dashed #0284c7; border-radius: 6px; font-weight: 700; color: #38bdf8; vertical-align: middle; cursor: pointer; font-size: 13.5px; transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 95px;
+      height: 32px;
+      padding: 2px 8px;
+      margin: 0 4px;
+      background: #1e293b;
+      border: 1.5px dashed #0284c7;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #38bdf8;
+      vertical-align: middle;
+      cursor: pointer;
+      font-size: 13.5px;
+      transition: all 0.2s;
     }
-    .rfib-drop-zone.filled { border-style: solid; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; }
+    .rfib-drop-zone.filled {
+      border-style: solid;
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+    }
     .rfib-drop-zone.correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
     .rfib-drop-zone.wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
 
     .rfib-word-bank {
-      display: flex; flex-wrap: wrap; gap: 8px; background: #0b1120; border: 1px solid #1e293b; padding: 12px; border-radius: 10px; direction: ltr; justify-content: flex-start; margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      padding: 12px;
+      border-radius: 10px;
+      direction: ltr;
+      justify-content: flex-start;
+      margin-top: 10px;
     }
     .rfib-chip {
-      background: #1e293b; border: 1.5px solid #334155; color: #f1f5f9; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; user-select: none; transition: all 0.15s;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      color: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
     }
-    .rfib-chip.selected { background: #0284c7; border-color: #38bdf8; color: #fff; transform: scale(0.96); }
-    .rfib-chip.used { opacity: 0.25; pointer-events: none; border-style: dashed; }
+    .rfib-chip.selected {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
+      transform: scale(0.96);
+    }
+    .rfib-chip.used {
+      opacity: 0.25;
+      pointer-events: none;
+      border-style: dashed;
+    }
 
-    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .opt-label {
-      display: flex; align-items: center; gap: 8px; background: #0f172a; border: 1px solid #334155; padding: 9px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; direction: ltr; color: #cbd5e1;
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
-    .opt-label:has(input:checked) { border-color: #38bdf8; background: rgba(56, 189, 248, 0.15); color: #fff; }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      direction: ltr;
+      color: #cbd5e1;
+    }
+    .opt-label:has(input:checked) {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      color: #fff;
+    }
     .opt-label input { accent-color: #38bdf8; }
 
-    .user-info-field { background: #0f172a; border: 1.5px solid #334155; padding: 10px 14px; border-radius: 10px; color: #fff; font-size: 13.5px; outline: none; width: 100%; }
+    .user-info-field {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      width: 100%;
+    }
     .user-info-field:focus { border-color: #38bdf8; }
 
-    .schedule-container { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-bottom: 8px; }
-    .schedule-banner {
-      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 10px 14px; border-radius: 12px; text-align: center; font-size: 13px; font-weight: 800; color: #38bdf8; flex-shrink: 0;
+    /* Schedule View Styles */
+    .schedule-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
     }
-    .schedule-day-card { background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-    .day-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 6px; }
+    .schedule-banner {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #38bdf8;
+      flex-shrink: 0;
+    }
+    .schedule-day-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 6px;
+    }
     .day-title { font-weight: 800; font-size: 14px; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
     .day-date { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
     .day-events { display: flex; flex-direction: column; gap: 6px; }
-    .event-row { display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 8px 10px; border-radius: 8px; font-size: 12.5px; }
+    .event-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+    }
     .event-info { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #e2e8f0; }
-    .event-time { font-weight: 800; color: #38bdf8; direction: ltr; font-size: 12.5px; background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 6px; }
-    .schedule-footer-note { font-size: 11.5px; color: #facc15; text-align: center; padding: 6px; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.25); border-radius: 8px; flex-shrink: 0; }
+    .event-time {
+      font-weight: 800;
+      color: #38bdf8;
+      direction: ltr;
+      font-size: 12.5px;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .schedule-footer-note {
+      font-size: 11.5px;
+      color: #facc15;
+      text-align: center;
+      padding: 6px;
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
 
-    .courses-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-bottom: 8px; }
+    /* Courses View Styles */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
     .course-item-card {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px; backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.15s ease;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
     .course-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
     .course-info { display: flex; flex-direction: column; gap: 6px; }
-    .course-badge { align-self: flex-start; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+    .course-badge {
+      align-self: flex-start;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
     .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
+    /* Modal Styles */
     .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: flex-start;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: flex-start;
     }
     .modal-overlay.active { display: flex; }
     .modal-content {
-      background: #111827; border-bottom: 2px solid #0284c7; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; width: 100%; max-height: 90vh; border-radius: 0 0 24px 24px; padding: max(20px, env(safe-area-inset-top, 20px)) 20px 22px 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7); animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto;
+      background: #111827;
+      border-bottom: 2px solid #0284c7;
+      border-left: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 0 0 24px 24px;
+      padding: max(20px, env(safe-area-inset-top, 20px)) 20px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+      animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
     }
-    @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #1f2937; padding-bottom: 12px; }
     .modal-title { font-size: 16.5px; font-weight: 800; color: #38bdf8; }
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
     .modal-body { font-size: 14.5px; line-height: 1.9; color: #e2e8f0; text-align: justify; white-space: pre-line; font-weight: 500; }
-    .modal-action-btn { background: #0284c7; color: #ffffff; border: none; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 14.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin-top: 6px; }
 
+    .modal-action-btn {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-top: 6px;
+    }
+
+    /* Force Join Modal Styles */
     .force-join-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(8, 12, 20, 0.96); backdrop-filter: blur(14px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(8, 12, 20, 0.96);
+      backdrop-filter: blur(14px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
     .force-join-overlay.active { display: flex; }
     .force-join-box {
-      background: var(--card-bg); border: 1.5px solid #38bdf8; border-radius: 20px; padding: 24px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 16px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+      background: var(--card-bg);
+      border: 1.5px solid #38bdf8;
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
     }
     .force-join-title { font-size: 17px; font-weight: 900; color: #38bdf8; }
     .force-join-desc { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; }
@@ -303,34 +625,102 @@
     .btn-group { background: #059669; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; display: block; }
     .btn-check-join { background: #1e293b; border: 1.5px solid #38bdf8; color: #38bdf8; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; margin-top: 6px; }
 
+    /* WFD Simulator Styles */
     .wfd-box {
-      display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border); padding: 14px; flex: 1; min-height: 0; gap: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .wfd-category-bar { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
     .cat-btn {
-      background: #1e293b; border: 1px solid #334155; padding: 6px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 700; color: #94a3b8; cursor: pointer; transition: all 0.2s; text-align: center; flex-grow: 1;
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      flex-grow: 1;
     }
     .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
-    select { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1.5px solid #0284c7; font-size: 13px; font-weight: 700; background: #0f172a; color: #38bdf8; outline: none; direction: ltr; }
-    .audio-wrapper { background: #0f172a; border: 1px solid var(--card-border); padding: 6px 10px; border-radius: 8px; flex-shrink: 0; }
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1.5px solid #0284c7;
+      font-size: 13px;
+      font-weight: 700;
+      background: #0f172a;
+      color: #38bdf8;
+      outline: none;
+      direction: ltr;
+    }
+    .audio-wrapper {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      padding: 6px 10px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
     audio { width: 100%; height: 32px; outline: none; }
 
     .wfd-status-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 2px; flex-shrink: 0; }
     .wfd-timer-badge {
-      font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #0284c7; transition: all 0.3s;
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid #0284c7;
+      transition: all 0.3s;
     }
     .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
     .wfd-timer-badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; animation: pulse 1s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     textarea {
-      height: 75px; min-height: 75px; max-height: 85px; width: 100%; padding: 10px 12px; font-size: 14px; line-height: 1.4; background: #0f172a; color: #f8fafc; border: 1.5px solid #334155; border-radius: 10px; resize: none; outline: none; direction: ltr; text-align: left; flex-shrink: 0;
+      height: 75px;
+      min-height: 75px;
+      max-height: 85px;
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      resize: none;
+      outline: none;
+      direction: ltr;
+      text-align: left;
+      flex-shrink: 0;
     }
     textarea:focus { border-color: #38bdf8; }
 
     .wfd-result-card {
-      display: none; flex-direction: column; gap: 6px; background: #0f172a; border: 1.5px solid #334155; padding: 10px 12px; border-radius: 10px; overflow-y: auto; flex: 1; min-height: 0;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 12px;
+      border-radius: 10px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
     }
     .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
     .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
@@ -340,12 +730,69 @@
     .wfd-warning-tip { font-size: 11px; font-weight: 700; color: #facc15; background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); padding: 4px 8px; border-radius: 6px; direction: ltr; text-align: left; }
     .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
     .btn-secondary {
-      background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s;
     }
     .btn-secondary:active { background: #334155; }
 
+    /* Difficulty Rating Buttons */
+    .wfd-diff-buttons {
+      display: none;
+      gap: 8px;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    .btn-diff-hard {
+      flex: 1;
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1.5px solid #ef4444;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-diff-hard:active { background: rgba(239, 68, 68, 0.35); }
+    .btn-diff-easy {
+      flex: 1;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1.5px solid #10b981;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-diff-easy:active { background: rgba(16, 185, 129, 0.35); }
+
+    /* Flashcard Styles */
     .flashcard-box {
-      display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border); padding: 14px; flex: 1; min-height: 0; align-items: center; justify-content: space-between; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
     .stats-info { font-size: 11px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
@@ -372,27 +819,76 @@
     .btn-good { background: #059669; }
 
     .btn-primary {
-      background: #0284c7; color: #fff; border: none; padding: 12px 16px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 14px; transition: all 0.2s;
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      transition: all 0.2s;
     }
     .btn-primary:active { transform: scale(0.98); background: #0369a1; }
     
-    .settings-panel { background: #0f172a; border: 1.5px solid var(--card-border); border-radius: 14px; padding: 18px; margin-bottom: 14px; width: 100%; }
+    .settings-panel {
+      background: #0f172a;
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
     .settings-panel label { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: block; margin-bottom: 8px; }
     .quota-info { font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.6; }
     .quota-options { display: flex; gap: 8px; margin-bottom: 4px; }
     .quota-btn {
-      flex: 1; padding: 11px 0; background: #1e293b; border: 1.5px solid #334155; border-radius: 10px; font-weight: 800; font-size: 14px; color: #cbd5e1; cursor: pointer; transition: all 0.2s ease;
+      flex: 1;
+      padding: 11px 0;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
     .quota-btn.selected { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
     .done-message {
-      display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1; background: rgba(16, 185, 129, 0.1); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1.5px solid rgba(16, 185, 129, 0.3);
+      border-radius: 16px;
+      padding: 24px;
     }
     .done-message h3 { color: #34d399; font-size: 19px; margin-bottom: 10px; }
     .done-message p { color: #cbd5e1; font-size: 13.5px; line-height: 1.7; }
 
     .app-toast {
-      position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 23, 42, 0.95); border: 1px solid #38bdf8; color: #f8fafc; padding: 10px 18px; border-radius: 25px; font-size: 12.5px; font-weight: 700; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); opacity: 0; pointer-events: none; transition: all 0.25s ease-out; z-index: 2000; white-space: nowrap;
+      position: absolute;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8;
+      color: #f8fafc;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease-out;
+      z-index: 2000;
+      white-space: nowrap;
     }
     .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
@@ -446,6 +942,7 @@
         </div>
       </div>
 
+      <!-- FLASH CARDS Added to Main Menu with Glowing Style -->
       <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
         <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
         <div class="hub-text">
@@ -491,62 +988,168 @@
   <!-- Materials View Screen -->
   <div class="view-screen" id="viewMaterials">
     <div class="materials-container">
-      <div class="schedule-banner">📁 بانک متریال و پردیکشن‌های رسمی PTE ROOM</div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RA</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RS</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2865')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RL</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2866')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RTS</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2845')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن DI</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2867')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن WE</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2871')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن SWT</div></div><div class="arrow-icon">‹</div></div>
+      <div class="schedule-banner">
+        📁 بانک متریال و پردیکشن‌های رسمی PTE ROOM
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RA</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RS</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2865')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RL</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2866')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RTS</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2845')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن DI</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2867')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن WE</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2871')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن SWT</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
     </div>
   </div>
 
   <!-- Placement Test Screen -->
   <div class="view-screen" id="viewPlacement">
     <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
+      
+      <!-- Section 1: R&W FIB (Dropdown) -->
       <div class="quiz-card">
-        <div class="quiz-title"><span>📖 Reading & Writing: Fill in the Blanks</span></div>
+        <div class="quiz-title">
+          <span>📖 Reading & Writing: Fill in the Blanks</span>
+        </div>
         <div class="passage-box">
           Modern humans are masters of multitasking. We eat while driving, watch TV while 
-          <select name="rw_a" class="inline-select" required><option value="">Select...</option><option value="volleying">volleying</option><option value="studying">studying</option><option value="couriering">couriering</option><option value="lobbying">lobbying</option></select>, 
+          <select name="rw_a" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="volleying">volleying</option>
+            <option value="studying">studying</option>
+            <option value="couriering">couriering</option>
+            <option value="lobbying">lobbying</option>
+          </select>, 
           and of course talk on our cell phones while doing, well, 
-          <select name="rw_b" class="inline-select" required><option value="">Select...</option><option value="antonym">antonym</option><option value="rpm">rpm</option><option value="everything">everything</option><option value="sen">sen</option></select>. 
+          <select name="rw_b" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="antonym">antonym</option>
+            <option value="rpm">rpm</option>
+            <option value="everything">everything</option>
+            <option value="sen">sen</option>
+          </select>. 
           How do we do it? A study in the July 16th issue of Neuron suggests that though we can train our brains to work faster as we juggle, we never 
-          <select name="rw_c" class="inline-select" required><option value="">Select...</option><option value="intramuscularly">intramuscularly</option><option value="incorrigibly">incorrigibly</option><option value="dispassionately">dispassionately</option><option value="actually">actually</option></select> 
+          <select name="rw_c" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="intramuscularly">intramuscularly</option>
+            <option value="incorrigibly">incorrigibly</option>
+            <option value="dispassionately">dispassionately</option>
+            <option value="actually">actually</option>
+          </select> 
           manage to do more than one thing at a time. Our brains aren't really built to handle the sort of 
-          <select name="rw_d" class="inline-select" required><option value="">Select...</option><option value="smear">smear</option><option value="parallel">parallel</option><option value="clientele">clientele</option><option value="noel">noel</option></select> 
+          <select name="rw_d" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="smear">smear</option>
+            <option value="parallel">parallel</option>
+            <option value="clientele">clientele</option>
+            <option value="noel">noel</option>
+          </select> 
           processing we think we're capable of. The good news is: studies have shown that extensive training can make us better at doing two things at once. But how? One theory is that with lots of 
-          <select name="rw_e" class="inline-select" required><option value="">Select...</option><option value="disservice">disservice</option><option value="practice">practice</option><option value="audits">audits</option><option value="comforts">comforts</option></select> 
+          <select name="rw_e" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="disservice">disservice</option>
+            <option value="practice">practice</option>
+            <option value="audits">audits</option>
+            <option value="comforts">comforts</option>
+          </select> 
           some routines become "automatic." And if we don't need to run every little thing past the part of the brain that spends time 
-          <select name="rw_f" class="inline-select" required><option value="">Select...</option><option value="dipping">dipping</option><option value="gripping">gripping</option><option value="deflecting">deflecting</option><option value="thinking">thinking</option></select> 
+          <select name="rw_f" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="dipping">dipping</option>
+            <option value="gripping">gripping</option>
+            <option value="deflecting">deflecting</option>
+            <option value="thinking">thinking</option>
+          </select> 
           about stuff, we can multitask just fine.
         </div>
       </div>
 
+      <!-- Section 2: R FIB (Interactive Drag/Click to Drop) -->
       <div class="quiz-card">
-        <div class="quiz-title"><span>📖 Reading: Fill in the Blanks</span></div>
+        <div class="quiz-title">
+          <span>📖 Reading: Fill in the Blanks</span>
+        </div>
         <div class="passage-box">
           With about one and a half billion non-native speakers, English is the world’s language. Such 
-          <span class="rfib-drop-zone" id="dropA" onclick="handleZoneClick('A')"></span> has its downside, of course. There are now about 6,800 languages left in the world, compared with perhaps 
-          <span class="rfib-drop-zone" id="dropB" onclick="handleZoneClick('B')"></span> that number back at the dawn of agriculture. Thanks in 
-          <span class="rfib-drop-zone" id="dropC" onclick="handleZoneClick('C')"></span> to the rise of uber-languages, most importantly English, the remaining languages are now dying at the 
-          <span class="rfib-drop-zone" id="dropD" onclick="handleZoneClick('D')"></span> of about one a fortnight.
+          <span class="rfib-drop-zone" id="dropA" onclick="handleZoneClick('A')"></span> 
+          has its downside, of course. There are now about 6,800 languages left in the world, compared with perhaps 
+          <span class="rfib-drop-zone" id="dropB" onclick="handleZoneClick('B')"></span> 
+          that number back at the dawn of agriculture. Thanks in 
+          <span class="rfib-drop-zone" id="dropC" onclick="handleZoneClick('C')"></span> 
+          to the rise of uber-languages, most importantly English, the remaining languages are now dying at the 
+          <span class="rfib-drop-zone" id="dropD" onclick="handleZoneClick('D')"></span> 
+          of about one a fortnight.
         </div>
-        <div style="font-size:12px; color:#94a3b8; margin-top:2px;">💡 روی کلمه و سپس روی جای خالی کلیک کنید:</div>
+        <div style="font-size:12px; color:#94a3b8; margin-top:2px;">💡 روی کلمه و سپس روی جای خالی کلیک کنید (یا کلمه را به داخل کادر بکشید):</div>
         <div class="rfib-word-bank" id="rfibWordBank"></div>
       </div>
 
+      <!-- Section 3: Listening FIB -->
       <div class="quiz-card">
-        <div class="quiz-title"><span>🎧 Listening: Fill in the Blanks</span></div>
-        <div class="audio-wrapper"><audio controls src="determination.mp3"></audio></div>
+        <div class="quiz-title">
+          <span>🎧 Listening: Fill in the Blanks</span>
+        </div>
+        <div class="audio-wrapper">
+          <audio controls src="determination.mp3"></audio>
+        </div>
         <div class="passage-box">
           And an emotion consists of a very well <input type="text" name="lfib_1" class="inline-input" placeholder="..." required> set of alterations in the body that has, as a general purpose, making life more survivable by taking care of a danger, of taking care of an opportunity, either/or, or something in between. And it’s something that is set in our <input type="text" name="lfib_2" class="inline-input" placeholder="..." required> and that we all have with a certain <input type="text" name="lfib_3" class="inline-input" placeholder="..." required> nature that is modified by our experience so individually we have variations on the pattern. But in <input type="text" name="lfib_4" class="inline-input" placeholder="..." required>, your emotion of joy and mine are going to be extremely similar. We may express them physically slightly differently, and it’s of course graded depending on the circumstance, but the essence of the process is going to be the same, unless one of us is not <input type="text" name="lfib_5" class="inline-input" placeholder="..." required> well put together and is missing something, otherwise it’s going to be the same.
         </div>
       </div>
 
+      <!-- Section 4: Vocab & Spelling -->
       <div class="quiz-card">
-        <div class="quiz-title"><span>🔤 Spelling & Vocabulary</span></div>
+        <div class="quiz-title">
+          <span>🔤 Spelling & Vocabulary</span>
+        </div>
         <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left;">Choose the word with the correct spelling:</div>
         <div class="quiz-options">
           <label class="opt-label"><input type="radio" name="spell_q" value="Accomodation" required> Accomodation</label>
@@ -554,6 +1157,7 @@
           <label class="opt-label"><input type="radio" name="spell_q" value="Acommodation"> Acommodation</label>
           <label class="opt-label"><input type="radio" name="spell_q" value="Acomodation"> Acomodation</label>
         </div>
+
         <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left; margin-top:8px;">The government announced strict measures to _______ the rapid spread of the disease.</div>
         <div class="quiz-options">
           <label class="opt-label"><input type="radio" name="vocab_q" value="curb" required> curb</label>
@@ -563,16 +1167,23 @@
         </div>
       </div>
 
+      <!-- Section 5: Short Writing Task -->
       <div class="quiz-card">
-        <div class="quiz-title"><span>✍️ Short Writing Task</span><span id="writingWordCount" style="font-size:11.5px; color:#38bdf8; font-weight:800; direction:ltr;">Word Count: 0</span></div>
+        <div class="quiz-title">
+          <span>✍️ Short Writing Task</span>
+          <span id="writingWordCount" style="font-size:11.5px; color:#38bdf8; font-weight:800; direction:ltr;">Word Count: 0</span>
+        </div>
         <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1; direction:ltr; text-align:left;">
           <b>Topic:</b> Some people believe that artificial intelligence (AI) will completely replace human teachers in the future, while others think traditional classrooms are irreplaceable. Write a short paragraph (50–100 words) giving your opinion.
         </div>
         <textarea id="placementWriting" style="height:110px; min-height:110px;" placeholder="Type your 50-100 words paragraph here in English..." oninput="updateWritingCount()"></textarea>
       </div>
 
+      <!-- Contact & Goal Selection -->
       <div class="quiz-card">
-        <div class="quiz-title"><span>🎯 هدف و اطلاعات تماس داوطلب</span></div>
+        <div class="quiz-title">
+          <span>🎯 هدف و اطلاعات تماس داوطلب</span>
+        </div>
         <select id="userTarget" class="user-info-field" style="direction:rtl;">
           <option value="PTE Target +50 (معادل 6 آیلتس)">PTE Target +50 (معادل 6 آیلتس)</option>
           <option value="PTE Target +65 (معادل 7 آیلتس)">PTE Target +65 (معادل 7 آیلتس)</option>
@@ -583,21 +1194,74 @@
         <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا آیدی تلگرام جهت ارسال نتیجه مشاوره *" required>
       </div>
 
-      <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">🚀 ثبت نهایی و ارسال آزمون تعیین سطح</button>
+      <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
+        🚀 ثبت نهایی و ارسال آزمون تعیین سطح
+      </button>
     </form>
   </div>
 
   <!-- Weekly Schedule Screen -->
   <div class="view-screen" id="viewSchedule">
     <div class="schedule-container">
-      <div class="schedule-banner">📅 برنامه تمرینی هفته – تیم PTE ROOM<br><span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div><div class="day-events"><div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 یکشنبه</span><span class="day-date">۱ شهریور</span></div><div class="day-events"><div class="event-row"><span class="event-info">📖 RA – بهنام حق گویی</span><span class="event-time">18:00</span></div><div class="event-row"><span class="event-info">🎧 DI – محمد حسین نیرومند</span><span class="event-time">20:00</span></div><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 دوشنبه</span><span class="day-date">۲ شهریور</span></div><div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 سه‌شنبه</span><span class="day-date">۳ شهریور</span></div><div class="day-events"><div class="event-row"><span class="event-info">📖 RA – سعید میرزایی</span><span class="event-time">09:00</span></div><div class="event-row"><span class="event-info">📖 RTS – بهنام حق گویی</span><span class="event-time">18:00</span></div><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 چهارشنبه</span><span class="day-date">۴ شهریور</span></div><div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 پنج‌شنبه</span><span class="day-date">۵ شهریور</span></div><div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
-      <div class="schedule-day-card"><div class="day-header"><span class="day-title">📌 جمعه</span><span class="day-date">۶ شهریور</span></div><div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div></div>
+      <div class="schedule-banner">
+        📅 برنامه تمرینی هفته – تیم PTE ROOM<br>
+        <span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 یکشنبه</span><span class="day-date">۱ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">📖 RA – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🎧 DI – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 دوشنبه</span><span class="day-date">۲ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 سه‌شنبه</span><span class="day-date">۳ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">📖 RA – سعید میرزایی</span><span class="event-time">09:00</span></div>
+          <div class="event-row"><span class="event-info">📖 RTS – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 چهارشنبه</span><span class="day-date">۴ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 پنج‌شنبه</span><span class="day-date">۵ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 جمعه</span><span class="day-date">۶ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
       <div class="schedule-footer-note">⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال و گروه انجام خواهد شد.</div>
     </div>
   </div>
@@ -605,17 +1269,32 @@
   <!-- Courses View Screen -->
   <div class="view-screen" id="viewCourses">
     <div class="courses-list">
-      <div class="course-item-card" onclick="openCourseModal(0)"><div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div><div class="arrow-icon">‹</div></div>
-      <div class="course-item-card" onclick="openCourseModal(1)"><div class="course-info"><span class="course-badge">SPECIALIZED MASTERCLASS</span><div class="course-title">2. PTE Write Essay Mastery</div></div><div class="arrow-icon">‹</div></div>
-      <div class="course-item-card" onclick="openCourseModal(2)"><div class="course-info"><span class="course-badge">1-ON-1 SESSIONS</span><div class="course-title">3. PTE Private Lessons</div></div><div class="arrow-icon">‹</div></div>
-      <div class="course-item-card" onclick="openCourseModal(3)"><div class="course-info"><span class="course-badge">FOUNDATION & FLUENCY</span><div class="course-title">4. General English</div></div><div class="arrow-icon">‹</div></div>
+      <div class="course-item-card" onclick="openCourseModal(0)">
+        <div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+      <div class="course-item-card" onclick="openCourseModal(1)">
+        <div class="course-info"><span class="course-badge">SPECIALIZED MASTERCLASS</span><div class="course-title">2. PTE Write Essay Mastery</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+      <div class="course-item-card" onclick="openCourseModal(2)">
+        <div class="course-info"><span class="course-badge">1-ON-1 SESSIONS</span><div class="course-title">3. PTE Private Lessons</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+      <div class="course-item-card" onclick="openCourseModal(3)">
+        <div class="course-info"><span class="course-badge">FOUNDATION & FLUENCY</span><div class="course-title">4. General English</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
     </div>
   </div>
 
   <!-- Course Details Modal -->
   <div class="modal-overlay" id="courseModal" onclick="closeModal('courseModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header"><span class="modal-title" id="modalCourseTitle">عنوان دوره</span><button class="close-btn" onclick="closeModal('courseModal')">✕</button></div>
+      <div class="modal-header">
+        <span class="modal-title" id="modalCourseTitle">عنوان دوره</span>
+        <button class="close-btn" onclick="closeModal('courseModal')">✕</button>
+      </div>
       <div class="modal-body" id="modalCourseDesc"></div>
       <button class="modal-action-btn" onclick="redirectToSupport()">💬 دریافت مشاوره و ثبت‌نام در تلگرام</button>
     </div>
@@ -624,8 +1303,24 @@
   <!-- Placement Test Intro Modal -->
   <div class="modal-overlay" id="placementIntroModal" onclick="closeModal('placementIntroModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header"><span class="modal-title">🌟 راهنمای آزمون تعیین سطح PTE ROOM</span><button class="close-btn" onclick="closeModal('placementIntroModal')">✕</button></div>
-      <div class="modal-body"><div style="font-size:13.5px; line-height:1.8; color:#cbd5e1; margin-bottom:10px;">به بخش ارزیابی استاندارد و دقیق مهارت‌های زبانی خوش آمدید!</div></div>
+      <div class="modal-header">
+        <span class="modal-title">🌟 راهنمای آزمون تعیین سطح PTE ROOM</span>
+        <button class="close-btn" onclick="closeModal('placementIntroModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:13.5px; line-height:1.8; color:#cbd5e1; margin-bottom:10px;">
+          به بخش ارزیابی استاندارد و دقیق مهارت‌های زبانی خوش آمدید! این آزمون کمک می‌کند تا سطح واقعی خود را برای آزمون بین‌المللی PTE بسنجید.
+        </div>
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:13.5px; margin-bottom:6px;">📌 نکات کلیدی پیش از شروع:</div>
+          <div style="font-size:13px; line-height:1.8; color:#cbd5e1;">
+            • 🎯 <b>هدف آزمون:</b> ارزیابی مهارت‌های کلیدی (Reading، Listening، Spelling و Writing) جهت تعیین دقیق پلن مطالعاتی.<br>
+            • ⏱ <b>زمان تقریبی:</b> حدود ۵ الی ۷ دقیقه تمرکز کامل.<br>
+            • 📊 <b>ساختار بخش‌ها:</b> شامل ریدینگ، لیسنینگ، واژگان، املا و رایتینگ کوتاه.<br>
+            • 🚀 <b>گام بعدی:</b> پس از ثبت نهایی، پاسخ‌ها همراه با تحلیل دقیق و کد رهگیری برای تیم پشتیبانی ارسال می‌شود تا مشاوره اختصاصی دریافت کنید.
+          </div>
+        </div>
+      </div>
       <button class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startPlacementTest()">🚀 متوجه شدم • شروع آزمون</button>
     </div>
   </div>
@@ -633,8 +1328,24 @@
   <!-- Flashcards Guide Modal -->
   <div class="modal-overlay" id="flashGuideModal" onclick="closeModal('flashGuideModal', event)">
     <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header"><span class="modal-title">📖 راهنمای سیستم لایتنر واژگان</span><button class="close-btn" onclick="closeModal('flashGuideModal')">✕</button></div>
-      <div class="modal-body"><div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است.</div></div>
+      <div class="modal-header">
+        <span class="modal-title">📖 راهنمای سیستم لایتنر واژگان</span>
+        <button class="close-btn" onclick="closeModal('flashGuideModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.</div>
+        </div>
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
+            • تمام لغات جدید در ابتدا در <b>سطح ۱ (Box 1)</b> قرار دارند.<br><br>
+            • 🟢 <b>دکمه Mastered:</b> در صورت یادگیری، لغت ۱ سطح ارتقا می‌یابد (Box 1 ➔ Box 5).<br><br>
+            • 🔴 <b>دکمه Needs Review:</b> در صورت فراموشی، به Box 1 بازمی‌گردد تا مجدداً تکرار شود.
+          </div>
+        </div>
+      </div>
       <button class="btn-primary" style="padding:12px; width:100%; border-radius:10px;" onclick="closeModal('flashGuideModal')">متوجه شدم • بستن</button>
     </div>
   </div>
@@ -644,22 +1355,26 @@
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('wfd')">
         <div class="hub-icon">✍️</div>
-        <div class="hub-text"><h3>Write From Dictation</h3><p>شبیه‌ساز رسمی پخش صوت، نگارش و تصحیح هوشمند تطبیق کلمات</p></div>
+        <div class="hub-text">
+          <h3>Write From Dictation</h3>
+          <p>شبیه‌ساز رسمی پخش صوت، نگارش و تصحیح هوشمند تطبیق کلمات</p>
+        </div>
       </div>
+
       <div class="hub-card" onclick="navTo('rfib')">
         <div class="hub-icon">📖</div>
-        <div class="hub-text"><h3 style="color:#38bdf8;">Reading: Fill in the Blanks</h3><p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p></div>
-      </div>
-      <div class="hub-card" onclick="navTo('swt')">
-        <div class="hub-icon">📝</div>
-        <div class="hub-text"><h3 style="color:#38bdf8;">Summarize Written Text (SWT)</h3><p>ارزیابی سخت‌گیرانه تک‌جمله‌ای، بازه کلمات و استراکچر آکادمیک</p></div>
+        <div class="hub-text">
+          <h3 style="color:#38bdf8;">Reading: Fill in the Blanks</h3>
+          <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- RFIB Practice Screen -->
+  <!-- RFIB Practice Screen (Restored Drag & Drop / Click-to-Drop Model) -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
+      <!-- Grammar Category Selection Bar -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
         <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
@@ -685,41 +1400,6 @@
         <button class="btn-secondary" style="flex: 1;" onclick="prevRfibQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="checkRfibAnswer()">Check Answer 🎯</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ▶️</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SWT Practice Screen (Strict Evaluation & Correct Button Order) -->
-  <div class="view-screen" id="viewSwt">
-    <div class="wfd-box">
-      <select id="swtSelect" onchange="onSelectSwt()"></select>
-
-      <div class="wfd-status-bar">
-        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="swtWordCount">Word Count: 0 / 75</span>
-        <span class="wfd-timer-badge" id="swtTimerBadge">⏱ 00:00</span>
-      </div>
-
-      <div class="quiz-card" style="flex:1; overflow-y:auto; margin-top:2px; border:none; background:transparent; padding:0; display: flex; flex-direction: column; gap: 8px;">
-        <div class="passage-box" id="swtPassageBox" style="font-size:13.5px; line-height:2.2; max-height: 140px; overflow-y: auto;">
-          Passage loading...
-        </div>
-
-        <textarea id="swtInput" style="height: 85px; min-height: 85px;" placeholder="Type your single-sentence summary here (The passage discusses...)" oninput="calcSwtWords()"></textarea>
-
-        <div class="wfd-result-card" id="swtResultBox">
-          <div class="wfd-score-header">
-            <span>📊 SWT Strict Analysis (PTE Room):</span>
-            <span id="swtScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">Status</span>
-          </div>
-          <div class="wfd-sentence-display" id="swtFeedbackDisplay" style="font-size: 13px; line-height: 1.6;"></div>
-          <div class="wfd-tips-container" id="swtTipsContainer" style="margin-top: 4px;"></div>
-        </div>
-      </div>
-
-      <div class="wfd-action-buttons" id="swtCheckActionBox" style="margin-top:8px;">
-        <button class="btn-secondary" style="flex: 1;" onclick="prevSwtQuestion()">◀️ Prev</button>
-        <button class="btn-primary" style="flex: 2;" onclick="evaluateSwtAnswer()">Check Answer 🎯</button>
-        <button class="btn-secondary" style="flex: 1;" onclick="nextSwtQuestion()">Next ▶️</button>
       </div>
     </div>
   </div>
@@ -754,7 +1434,9 @@
 
       <select id="wfdSelect" onchange="onSelectWfd()"></select>
 
-      <div class="audio-wrapper"><audio id="wfdAudioPlayer" controls></audio></div>
+      <div class="audio-wrapper">
+        <audio id="wfdAudioPlayer" controls></audio>
+      </div>
 
       <div class="wfd-status-bar">
         <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="wfdWordCount">Word Count: 0</span>
@@ -764,7 +1446,10 @@
       <textarea id="wfdInput" placeholder="Type the exact sentence you heard here..." oninput="calcWfdWords()"></textarea>
 
       <div class="wfd-result-card" id="wfdResultBox">
-        <div class="wfd-score-header"><span>📊 Score Analysis:</span><span id="wfdScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span></div>
+        <div class="wfd-score-header">
+          <span>📊 Score Analysis:</span>
+          <span id="wfdScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
+        </div>
         <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
         <div class="wfd-tips-container" id="wfdTipsContainer"></div>
       </div>
@@ -854,165 +1539,6 @@
     }
   ];
 
-  /* SWT Data Engine with 60-66 words sample answer */
-  let swtQuestions = [
-    {
-      id: 1,
-      title: "SWT: 1920s Movie Goers & Silent Films",
-      passage: "The 1920's movie goers experience was largely dominated by silent movies but saw the introduction of synchronized sound. In the 1920's movie stars were really stars - with huge salaries, the fashions and activities of the Hollywood greats echoed around the world and 100,000 people would gather in cities all over the world, including such diverse cities as London and Moscow, to greet Mary Pickford and Douglas Fairbanks when they toured of Europe. Early silent movies were often accompanied by live piano or organ music and provided enormous entertainment value to audiences captivated by the experience of watching moving pictures on the silver screen. Although there had been previous attempts to introduce sound, it wasn't until 1923 that a synchronized soundtrack was photographically recorded and printed on to the side of the strip of motion picture film and made it on to a commercially distributed movie. It would still be seven long years before talking pictures gained total supremacy and finally replaced the silent film era.\nThe first movie theatres were called Nickelodeons, and were very basic compared to the luxurious picture palaces that followed but what an aura of excitement, of laughter, fun and tears surrounded them! Before the introduction of movie soundtracks, movies were often accompanied by scripted music from a piano.",
-      sampleAnswer: "The passage discusses the transition from silent films to synchronized sound during the 1920s, explaining that Hollywood movie stars achieved massive global popularity with huge salaries, while also referring to the traditional live musical accompaniments in early cinemas, presenting the technical introduction of soundtracks in 1923, and ending with the complete replacement of silent movies." // 62 words
-    }
-  ];
-  let currentSwtIndex = 0;
-  let swtTimerInterval = null;
-  let swtElapsedSeconds = 0;
-
-  function loadSwtList() {
-    const select = document.getElementById('swtSelect');
-    if (!select) return;
-    select.innerHTML = "";
-    swtQuestions.forEach((q, idx) => {
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.innerText = q.title;
-      select.appendChild(opt);
-    });
-    currentSwtIndex = 0;
-    loadSwtQuestion(0);
-  }
-
-  function loadSwtQuestion(idx) {
-    currentSwtIndex = idx;
-    const q = swtQuestions[idx];
-    if (!q) return;
-
-    document.getElementById('swtPassageBox').innerText = q.passage;
-    document.getElementById('swtInput').value = "";
-    document.getElementById('swtResultBox').style.display = 'none';
-    calcSwtWords();
-    startSwtTimer();
-  }
-
-  function onSelectSwt() {
-    const idx = document.getElementById('swtSelect').value;
-    loadSwtQuestion(idx);
-  }
-
-  function startSwtTimer() {
-    stopSwtTimer();
-    swtElapsedSeconds = 0;
-    updateSwtTimerDisplay();
-    swtTimerInterval = setInterval(() => {
-      swtElapsedSeconds++;
-      updateSwtTimerDisplay();
-    }, 1000);
-  }
-
-  function stopSwtTimer() {
-    if (swtTimerInterval) {
-      clearInterval(swtTimerInterval);
-      swtTimerInterval = null;
-    }
-  }
-
-  function updateSwtTimerDisplay() {
-    const badge = document.getElementById('swtTimerBadge');
-    if (!badge) return;
-    const mins = Math.floor(swtElapsedSeconds / 60);
-    const secs = swtElapsedSeconds % 60;
-    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    badge.classList.remove('warning', 'danger');
-    if (swtElapsedSeconds >= 600) {
-      badge.classList.add('danger');
-    } else if (swtElapsedSeconds >= 480) {
-      badge.classList.add('warning');
-    }
-  }
-
-  function calcSwtWords() {
-    const val = document.getElementById('swtInput').value.trim();
-    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
-    document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
-  }
-
-  /* Strict PTE Room Structure Evaluation for SWT */
-  function evaluateSwtAnswer() {
-    const userText = document.getElementById('swtInput').value.trim();
-    if (!userText) {
-      showToast("⚠️ Please type your summary first.");
-      return;
-    }
-
-    stopSwtTimer();
-
-    const words = userText.split(/\s+/).filter(Boolean);
-    const wordCount = words.length;
-    let errors = [];
-    let warnings = [];
-
-    // 1. Form Check: 5 to 75 words
-    const isWordCountValid = (wordCount >= 5 && wordCount <= 75);
-    if (!isWordCountValid) {
-      errors.push(`❌ Form Error: Word count (${wordCount}) is out of the 5-75 range.`);
-    }
-
-    // Single Sentence Validation (Ignoring standard abbreviations)
-    const cleanSentences = userText.split(/(?<!\b(?:Mr|Dr|Mrs|Ms|Prof|Sr|Jr))\.\s+/).filter(Boolean);
-    const isSingleSentence = (cleanSentences.length === 1 && userText.endsWith('.'));
-
-    if (!isSingleSentence) {
-      errors.push(`❌ Sentence Structure Error: Summary must be written in ONE single complete sentence ending with a full stop.`);
-    }
-
-    // 2. Template & Structure Check
-    const hasTemplateStart = userText.toLowerCase().startsWith("the passage discusses");
-    if (!hasTemplateStart) {
-      warnings.push(`⚠️ PTE Room Structure: It is recommended to start your sentence with: <b>"The passage discusses [NP]..."</b>`);
-    }
-
-    if (userText.toLowerCase().includes("explaining") && !userText.toLowerCase().includes("explaining that") && !userText.toLowerCase().includes("explaining the")) {
-      warnings.push(`⚠️ Grammar Rule: When using a clause after explaining, make sure to include the word <b>that</b>.`);
-    }
-
-    const q = swtQuestions[currentSwtIndex];
-    const resultBox = document.getElementById('swtResultBox');
-    const scoreBadge = document.getElementById('swtScoreBadge');
-    const feedbackEl = document.getElementById('swtFeedbackDisplay');
-    const tipsContainer = document.getElementById('swtTipsContainer');
-
-    if (isWordCountValid && isSingleSentence) {
-      scoreBadge.innerText = "✅ Form Verified";
-      scoreBadge.style.background = "#10b981";
-      feedbackEl.innerHTML = `Your response is a single complete sentence with ${wordCount} words.<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
-    } else {
-      scoreBadge.innerText = "❌ Form Failed";
-      scoreBadge.style.background = "#ef4444";
-      feedbackEl.innerHTML = errors.join('<br>') + `<br><br><b>💡 PTE Room Sample Answer:</b><br><i>${q.sampleAnswer}</i>`;
-    }
-
-    if (warnings.length > 0) {
-      tipsContainer.innerHTML = warnings.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
-      tipsContainer.style.display = 'flex';
-    } else {
-      tipsContainer.innerHTML = '';
-      tipsContainer.style.display = 'none';
-    }
-
-    resultBox.style.display = 'flex';
-  }
-
-  function prevSwtQuestion() {
-    let prevIdx = currentSwtIndex - 1;
-    if (prevIdx < 0) prevIdx = swtQuestions.length - 1;
-    loadSwtQuestion(prevIdx);
-  }
-
-  function nextSwtQuestion() {
-    let nextIdx = currentSwtIndex + 1;
-    if (nextIdx >= swtQuestions.length) nextIdx = 0;
-    loadSwtQuestion(nextIdx);
-  }
-
   /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
   let rfibAllQuestions = [];
   let currentRfibList = [];
@@ -1022,15 +1548,15 @@
 
   async function initRfibModule() {
     try {
-      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         rfibAllQuestions = await res.json();
         filterRfibCategory('All');
       } else {
-        console.warn("Could not load rwfib_questions.json");
+        console.warn("Could not load rfib_questions.json");
       }
     } catch (err) {
-      console.error("Error loading RWFIB JSON:", err);
+      console.error("Error loading RFIB JSON:", err);
     }
   }
 
@@ -1174,7 +1700,7 @@
       }
     }
 
-    showToast(`🎯 Result: ${correctCount} of ${totalBlanks} correct.`);
+    showToast(`🎯 نتیجه: ${correctCount} از ${totalBlanks} پاسخ صحیح بود.`);
   }
 
   function prevRfibQuestion() {
@@ -1327,7 +1853,6 @@
     const ts = Date.now();
     initRfib();
     initRfibModule();
-    loadSwtList();
     checkForceJoinOnStart();
 
     try {
@@ -1399,57 +1924,42 @@
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'placement') {
       document.getElementById('viewPlacement').classList.add('active');
       title.innerText = "PTE ROOM • آزمون تعیین سطح";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'materials') {
       document.getElementById('viewMaterials').classList.add('active');
       title.innerText = "PTE ROOM • متریال آموزشی";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'schedule') {
       document.getElementById('viewSchedule').classList.add('active');
       title.innerText = "PTE ROOM • برنامه تمرینی هفته";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
       title.innerText = "PTE ROOM • دوره‌های آموزشی";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
       title.innerText = "PTE ROOM • PTE PRACTICE";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
-      stopWfdTimer();
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
       title.innerText = "PTE ROOM • Reading FIB";
       stopWfdTimer();
-      stopSwtTimer();
-    } else if (current === 'swt') {
-      document.getElementById('viewSwt').classList.add('active');
-      title.innerText = "PTE ROOM • Summarize Written Text";
-      stopWfdTimer();
-      loadSwtQuestion(currentSwtIndex);
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
       stopWfdTimer();
-      stopSwtTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • FLASH CARDS";
       stopWfdTimer();
-      stopSwtTimer();
     }
   }
 
