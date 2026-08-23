@@ -1,0 +1,63 @@
+{
+  "rwfib": {
+    "all_questions": {
+      "Prepositions": [
+        {
+          "id": 765,
+          "title": "Risk of Dying",
+          "text": "Data from just 6 minutes of walking, collected <select class='inline-select' data-correct='via'><option value=''>Select...</option><option value='of'>of</option><option value='down'>down</option><option value='off'>off</option><option value='via'>via</option></select> motion sensors in smartphones, may be enough to predict someone's risk of dying in the next five years."
+        }
+      ],
+      "Verbs": [
+        {
+          "id": 780,
+          "title": "Sleep More",
+          "text": "Wendy Hall, at King's College London, and her team <select class='inline-select' data-correct='enlisted'><option value=''>Select...</option><option value='collided'>collided</option><option value='enlisted'>enlisted</option><option value='summarized'>summarized</option><option value='indicted'>indicted</option></select> 42 volunteers to help them investigate the link between sleep and diet."
+        }
+      ],
+      "Adjectives": [
+        {
+          "id": 777,
+          "title": "Video Games",
+          "text": "Video gaming is highly <select class='inline-select' data-correct='prevalent'><option value=''>Select...</option><option value='visible'>visible</option><option value='selective'>selective</option><option value='targeted'>targeted</option><option value='prevalent'>prevalent</option></select> in modern culture, particularly among young people."
+        }
+      ],
+      "Connectors": [
+        {
+          "id": 772,
+          "title": "Climate Migration",
+          "text": "For years, we've been worried about climate migration. Fiji, an archipelago in the south Pacific, has over 300 islands, and a population of under one million people."
+        }
+      ]
+    },
+    "prediction": [
+      {
+        "id": "pred_1",
+        "title": "Monthly Prediction Sample 1",
+        "text": "Sample prediction text for RWFIB..."
+      }
+    ]
+  },
+  "rfib": {
+    "all_questions": {
+      "Prepositions": [
+        {
+          "id": 753,
+          "title": "Traffic Jams",
+          "text": "For the first time Japanese researchers have <span class='rfib-drop-zone' data-zone='A'></span> a real-life experiment that shows how some traffic jams appear for no apparent reason.",
+          "bank": ["cruise", "smoothly", "sustained", "spread", "abruptly", "conducted"],
+          "answers": { "A": "conducted" }
+        }
+      ]
+    },
+    "prediction": [
+      {
+        "id": "pred_rfib_1",
+        "title": "Monthly Prediction RFIB Sample",
+        "text": "Sample prediction text for RFIB...",
+        "bank": [],
+        "answers": {}
+      }
+    ]
+  }
+}
