@@ -16,7 +16,6 @@
       --text-muted: #94a3b8; 
       --success: #10b981; 
       --danger: #ef4444; 
-      --warning: #f59e0b;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "IRANSans", sans-serif; margin: 0; padding: 0; }
     
@@ -54,157 +53,750 @@
     }
     .brand-title { font-weight: 900; color: #38bdf8; font-size: 14px; letter-spacing: 0.5px; }
     .back-home-btn {
-      background: #1e293b; color: #94a3b8; border: 1px solid #334155;
-      padding: 5px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: none; transition: all 0.2s;
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: none;
+      transition: all 0.2s;
     }
     .back-home-btn:hover { background: #334155; color: #fff; }
 
     /* Top Performers Ticker Bar */
     .news-ticker-bar {
-      background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px;
-      padding: 7px 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; overflow: hidden; flex-shrink: 0;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 10px;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
     }
-    .ticker-tag { background: #059669; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
-    .ticker-content { flex: 1; white-space: nowrap; overflow: hidden; display: flex; }
+    .ticker-tag {
+      background: #059669;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .ticker-content {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      display: flex;
+    }
     .ticker-text {
-      display: inline-block; font-size: 12px; color: #e2e8f0; direction: ltr; text-align: left; font-weight: 600;
+      display: inline-block;
+      font-size: 12px;
+      color: #e2e8f0;
+      direction: ltr;
+      text-align: left;
+      font-weight: 600;
       animation: tickerSlide 22s linear infinite;
     }
-    .ticker-text span { color: #38bdf8; font-weight: 800; margin-left: 15px; margin-right: 15px; }
-    @keyframes tickerSlide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-text span {
+      color: #38bdf8;
+      font-weight: 800;
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+    @keyframes tickerSlide {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
 
-    .view-screen { display: none; flex-direction: column; flex: 1; min-height: 0; }
+    .view-screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
     .view-screen.active { display: flex; }
 
-    .hub-grid { display: flex; flex-direction: column; gap: 12px; justify-content: center; flex: 1; overflow-y: auto; }
+    .hub-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      flex: 1;
+      overflow-y: auto;
+    }
     .hub-card {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); backdrop-filter: blur(14px);
-      border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4); transition: all 0.25s ease; position: relative; overflow: hidden;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
     }
     .hub-card:active { transform: scale(0.98); }
 
+    /* Animated Neon Card for Placement Test */
     .hub-card.placement-highlight {
-      border-color: #38bdf8; background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
       animation: glowBorder 3s infinite alternate;
     }
     @keyframes glowBorder {
-      0% { box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); }
-      100% { box-shadow: 0 0 24px rgba(56, 189, 248, 0.55); border-color: #38bdf8; }
+      0% {
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        border-color: rgba(56, 189, 248, 0.5);
+      }
+      100% {
+        box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
+        border-color: #38bdf8;
+      }
+    }
+
+    .hub-card.placement-highlight::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+      transform: rotate(30deg);
+      animation: lightSweep 4s infinite linear;
+      pointer-events: none;
+    }
+    @keyframes lightSweep {
+      0% { transform: translate(-100%, -100%) rotate(30deg); }
+      100% { transform: translate(100%, 100%) rotate(30deg); }
     }
 
     .hub-icon {
-      font-size: 26px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0;
+      font-size: 26px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
     }
+    .hub-card:hover .hub-icon { transform: scale(1.08) rotate(3deg); }
     .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
     .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* Materials, Schedule, Courses */
-    .materials-container, .schedule-container, .courses-list, .list-container-box {
-      display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-bottom: 8px;
+    /* Materials View Styles */
+    .materials-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
     }
-    .material-item-card, .course-item-card, .list-row-card {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px;
-      display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.15s ease;
+    .material-item-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
-    .material-item-card:active, .course-item-card:active, .list-row-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
-    .material-info, .course-info { display: flex; flex-direction: column; gap: 4px; }
-    .material-badge, .course-badge {
-      align-self: flex-start; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px;
+    .material-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .material-info { display: flex; flex-direction: column; gap: 4px; }
+    .material-badge {
+      align-self: flex-start;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
     }
-    .material-title, .course-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
+    .material-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
+
+    /* Placement Test Styles */
+    .placement-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 14px;
+    }
+    .quiz-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #38bdf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .passage-box {
+      font-size: 14.5px;
+      line-height: 2.3;
+      color: #f8fafc;
+      direction: ltr;
+      text-align: left;
+      background: #0f172a;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      word-spacing: 1px;
+    }
+
+    .inline-select {
+      display: inline-block !important;
+      width: auto !important;
+      min-width: 90px !important;
+      max-width: 140px !important;
+      padding: 3px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      vertical-align: middle !important;
+      direction: ltr !important;
+      height: 32px !important;
+    }
+
+    .inline-input {
+      display: inline-block !important;
+      width: 110px !important;
+      height: 30px !important;
+      padding: 2px 6px !important;
+      margin: 0 4px !important;
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
+      border-radius: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      direction: ltr !important;
+      text-align: center !important;
+      vertical-align: middle !important;
+    }
+    .inline-input:focus { border-color: #38bdf8 !important; }
+
+    .rfib-drop-zone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 95px;
+      height: 32px;
+      padding: 2px 8px;
+      margin: 0 4px;
+      background: #1e293b;
+      border: 1.5px dashed #0284c7;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #38bdf8;
+      vertical-align: middle;
+      cursor: pointer;
+      font-size: 13.5px;
+      transition: all 0.2s;
+    }
+    .rfib-drop-zone.filled {
+      border-style: solid;
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+    }
+    .rfib-word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      padding: 10px;
+      border-radius: 10px;
+      direction: ltr;
+      justify-content: flex-start;
+      margin-top: 6px;
+    }
+    .rfib-chip {
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      color: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .rfib-chip.selected {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
+      transform: scale(0.96);
+    }
+    .rfib-chip.used {
+      opacity: 0.25;
+      pointer-events: none;
+      border-style: dashed;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      direction: ltr;
+      color: #cbd5e1;
+    }
+    .opt-label:has(input:checked) {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      color: #fff;
+    }
+    .opt-label input { accent-color: #38bdf8; }
+
+    .user-info-field {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      width: 100%;
+    }
+    .user-info-field:focus { border-color: #38bdf8; }
+
+    /* Schedule View Styles */
+    .schedule-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
+    .schedule-banner {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #38bdf8;
+      flex-shrink: 0;
+    }
+    .schedule-day-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 6px;
+    }
+    .day-title { font-weight: 800; font-size: 14px; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
+    .day-date { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+    .day-events { display: flex; flex-direction: column; gap: 6px; }
+    .event-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+    }
+    .event-info { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #e2e8f0; }
+    .event-time {
+      font-weight: 800;
+      color: #38bdf8;
+      direction: ltr;
+      font-size: 12.5px;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .schedule-footer-note {
+      font-size: 11.5px;
+      color: #facc15;
+      text-align: center;
+      padding: 6px;
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Courses View Styles */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 8px;
+    }
+    .course-item-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .course-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .course-info { display: flex; flex-direction: column; gap: 6px; }
+    .course-badge {
+      align-self: flex-start;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
-    /* Placement & Quiz Styles */
-    .placement-container { display: flex; flex-direction: column; gap: 14px; overflow-y: auto; flex: 1; padding-bottom: 14px; }
-    .quiz-card { background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-    .quiz-title { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; justify-content: space-between; align-items: center; }
-    .passage-box { font-size: 14.5px; line-height: 2.3; color: #f8fafc; direction: ltr; text-align: left; background: #0f172a; padding: 14px; border-radius: 10px; border: 1px solid #1e293b; }
-
-    .inline-select, .inline-select-custom {
-      display: inline-block !important; width: auto !important; min-width: 100px !important; padding: 4px 8px !important;
-      margin: 0 4px !important; background: #1e293b !important; color: #38bdf8 !important; border: 1.5px solid #0284c7 !important;
-      border-radius: 6px !important; font-size: 13.5px !important; font-weight: 700 !important; outline: none !important; vertical-align: middle !important; direction: ltr !important;
+    /* Modal Styles - Top Down Dropdown */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: flex-start;
     }
-    .inline-select-custom.correct, .inline-select.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
-    .inline-select-custom.incorrect, .inline-select.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
-
-    /* Reading Practice Container */
-    .reading-practice-container { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 10px; }
-    .practice-header-bar {
-      display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);
-      border: 1px solid var(--card-border); padding: 10px 14px; border-radius: 12px; flex-shrink: 0; font-size: 13.5px; font-weight: 800;
-    }
-    .timer-display-box {
-      background: #0f172a; border: 1px solid #334155; padding: 4px 10px; border-radius: 8px; font-family: monospace; font-size: 14px; color: #38bdf8;
-    }
-    .timer-display-box.warning { background: rgba(245, 158, 11, 0.2); border-color: var(--warning); color: var(--warning); }
-    .passage-content-box {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px;
-      overflow-y: auto; flex: 1; font-size: 14.5px; line-height: 2.5; direction: ltr; text-align: left;
-    }
-    .practice-footer-buttons { display: flex; gap: 10px; flex-shrink: 0; }
-    .btn-nav-action {
-      flex: 1; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 13.5px; cursor: pointer;
-    }
-    .btn-nav-action.submit-btn { background: #059669; border-color: #059669; }
-
-    .rfib-drop-zone-custom {
-      display: inline-flex; align-items: center; justify-content: center; min-width: 95px; height: 32px; padding: 2px 8px;
-      margin: 0 4px; background: #1e293b; border: 1.5px dashed #0284c7; border-radius: 6px; font-weight: 700; color: #38bdf8; vertical-align: middle; cursor: pointer; font-size: 13.5px;
-    }
-    .rfib-drop-zone-custom.filled { border-style: solid; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; }
-    .rfib-drop-zone-custom.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: var(--success) !important; }
-    .rfib-drop-zone-custom.incorrect { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
-
-    .rfib-bank-container { display: flex; flex-wrap: wrap; gap: 8px; background: #0b1120; border: 1px solid #1e293b; padding: 10px; border-radius: 10px; direction: ltr; justify-content: flex-start; margin-top: 14px; }
-    .rfib-chip-item { background: #1e293b; border: 1.5px solid #334155; color: #f1f5f9; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; user-select: none; }
-    .rfib-chip-item.selected { background: #0284c7; border-color: #38bdf8; color: #fff; }
-    .rfib-chip-item.used { opacity: 0.25; pointer-events: none; border-style: dashed; }
-
-    /* Schedule & Courses */
-    .schedule-container { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-bottom: 8px; }
-    .schedule-banner { background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 10px 14px; border-radius: 12px; text-align: center; font-size: 13px; font-weight: 800; color: #38bdf8; flex-shrink: 0; }
-    .schedule-day-card { background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-    .day-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 6px; }
-    .day-title { font-weight: 800; font-size: 14px; color: #f8fafc; }
-    .day-date { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
-    .event-row { display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 8px 10px; border-radius: 8px; font-size: 12.5px; }
-    .event-info { font-weight: 700; color: #e2e8f0; }
-    .event-time { font-weight: 800; color: #38bdf8; direction: ltr; background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 6px; }
-    .schedule-footer-note { font-size: 11.5px; color: #facc15; text-align: center; padding: 6px; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.25); border-radius: 8px; flex-shrink: 0; }
-
-    .courses-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-bottom: 8px; }
-    .course-item-card { background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 14px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .course-info { display: flex; flex-direction: column; gap: 6px; }
-    .course-badge { align-self: flex-start; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; }
-    .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
-
-    /* Modal Styles */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: flex-start; }
     .modal-overlay.active { display: flex; }
-    .modal-content { background: #111827; border-bottom: 2px solid #0284c7; width: 100%; max-height: 90vh; border-radius: 0 0 24px 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+    .modal-content {
+      background: #111827;
+      border-bottom: 2px solid #0284c7;
+      border-left: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 0 0 24px 24px;
+      padding: max(20px, env(safe-area-inset-top, 20px)) 20px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+      animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #1f2937; padding-bottom: 12px; }
     .modal-title { font-size: 16.5px; font-weight: 800; color: #38bdf8; }
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
-    .modal-body { font-size: 14.5px; line-height: 1.9; color: #e2e8f0; text-align: justify; white-space: pre-line; }
-    .modal-action-btn { background: #0284c7; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 800; text-decoration: none; display: flex; justify-content: center; }
+    .modal-body { font-size: 14.5px; line-height: 1.9; color: #e2e8f0; text-align: justify; white-space: pre-line; font-weight: 500; }
 
-    /* Wfd & Flashcards */
-    .wfd-box, .flashcard-box { display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border); padding: 14px; flex: 1; min-height: 0; gap: 8px; }
+    .modal-action-btn {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-top: 6px;
+    }
+
+    /* WFD Simulator Styles */
+    .wfd-box {
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
     .wfd-category-bar { display: flex; gap: 8px; flex-shrink: 0; }
-    .cat-btn { flex: 1; background: #1e293b; border: 1px solid #334155; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 700; color: #94a3b8; cursor: pointer; }
+    .cat-btn {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
     .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
-    select { width: 100%; padding: 8px; border-radius: 8px; border: 1.5px solid #0284c7; background: #0f172a; color: #38bdf8; font-weight: 700; }
-    .audio-wrapper { background: #0f172a; border: 1px solid var(--card-border); padding: 6px; border-radius: 8px; }
-    audio { width: 100%; height: 32px; }
-    textarea { height: 75px; width: 100%; padding: 10px; background: #0f172a; color: #f8fafc; border: 1.5px solid #334155; border-radius: 10px; resize: none; direction: ltr; }
-    .wfd-timer-badge { font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #0284c7; }
-    .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
-    .wfd-timer-badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
+    
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1.5px solid #0284c7;
+      font-size: 13px;
+      font-weight: 700;
+      background: #0f172a;
+      color: #38bdf8;
+      outline: none;
+      direction: ltr;
+    }
+    .audio-wrapper {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      padding: 6px 10px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    audio { width: 100%; height: 32px; outline: none; }
 
-    .app-toast { position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 23, 42, 0.95); border: 1px solid #38bdf8; color: #f8fafc; padding: 10px 18px; border-radius: 25px; font-size: 12.5px; font-weight: 700; opacity: 0; pointer-events: none; transition: all 0.25s ease-out; z-index: 2000; }
+    .wfd-status-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 2px; flex-shrink: 0; }
+    .wfd-timer-badge {
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid #0284c7;
+      transition: all 0.3s;
+    }
+    .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
+    .wfd-timer-badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+    textarea {
+      height: 75px;
+      min-height: 75px;
+      max-height: 85px;
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      resize: none;
+      outline: none;
+      direction: ltr;
+      text-align: left;
+      flex-shrink: 0;
+    }
+    textarea:focus { border-color: #38bdf8; }
+
+    .wfd-result-card {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 12px;
+      border-radius: 10px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+    .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
+    .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
+    .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
+    .wfd-tips-container { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+    .wfd-warning-tip { font-size: 11px; font-weight: 700; color: #facc15; background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); padding: 4px 8px; border-radius: 6px; direction: ltr; text-align: left; }
+    .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
+    .btn-secondary {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .btn-secondary:active { background: #334155; }
+
+    /* Flashcard Styles */
+    .flashcard-box {
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
+    .stats-info { font-size: 11px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
+    .action-top-btn { background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .card-scene { width: 100%; flex: 1; perspective: 1000px; cursor: pointer; }
+    .card { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; border-radius: 16px; }
+    .card.is-flipped { transform: rotateY(180deg); }
+    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1.5px solid var(--card-border); overflow-y: auto; }
+    .card-front { background: linear-gradient(145deg, #0284c7, #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
+    .card-front .word-title { font-size: 34px; font-weight: 900; margin-bottom: 12px; letter-spacing: 0.5px; color: #f8fafc; }
+    .card-front .tap-hint { font-size: 12px; color: #cbd5e1; background: rgba(0,0,0,0.35); padding: 6px 16px; border-radius: 20px; }
+    .card-back { background: #0f172a; transform: rotateY(180deg); justify-content: center; gap: 8px; direction: ltr; text-align: left; }
+    .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #1e293b; padding-bottom: 6px; }
+    .card-back .pronunciation { font-style: italic; color: #94a3b8; font-size: 14.5px; font-weight: 600; }
+    .card-back .pos { background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .card-back .persian-meaning { font-size: 17px; font-weight: 800; color: #38bdf8; direction: rtl; text-align: right; margin: 4px 0; }
+    .card-back .section-title { font-size: 12px; font-weight: 800; color: #94a3b8; }
+    .card-back .collocations { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+    .card-back .example-sentence { font-size: 12.5px; line-height: 1.5; color: #f1f5f9; background: #1e293b; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #38bdf8; }
+
+    .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
+    .leitner-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13.5px; border: none; cursor: pointer; color: #fff; }
+    .btn-again { background: #dc2626; }
+    .btn-good { background: #059669; }
+
+    .btn-primary {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-primary:active { transform: scale(0.98); background: #0369a1; }
+    
+    .settings-panel {
+      background: #0f172a;
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+    .settings-panel label { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: block; margin-bottom: 8px; }
+    .quota-info { font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.6; }
+    .quota-options { display: flex; gap: 8px; margin-bottom: 4px; }
+    .quota-btn {
+      flex: 1;
+      padding: 11px 0;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .quota-btn.selected { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    
+    .done-message {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1.5px solid rgba(16, 185, 129, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .done-message h3 { color: #34d399; font-size: 19px; margin-bottom: 10px; }
+    .done-message p { color: #cbd5e1; font-size: 13.5px; line-height: 1.7; }
+
+    .app-toast {
+      position: absolute;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8;
+      color: #f8fafc;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease-out;
+      z-index: 2000;
+      white-space: nowrap;
+    }
     .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
@@ -221,7 +813,12 @@
     <span class="ticker-tag">🏆 Top Students</span>
     <div class="ticker-content">
       <span class="ticker-text">
-        <span>Saeid: 75% WFD</span> • <span>Majid: 17/20 Vocab</span> • <span>Reza: 90% WFD</span> • <span>Sara: 19/20 Vocab</span>
+        <span>Saeid: 75% WFD</span> • 
+        <span>Majid: 17/20 Vocab</span> • 
+        <span>Reza: 90% WFD</span> • 
+        <span>Sara: 19/20 Vocab</span> • 
+        <span>Ali: 82% WFD</span> • 
+        <span>Armin: 18/20 Vocab</span>
       </span>
     </div>
   </div>
@@ -265,31 +862,355 @@
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
           <h3>تمرین روزانه</h3>
-          <p>بخش Reading (Dropdown RWFIB و Drag Drop RFIB)، شبیه‌ساز WFD و لایتنر</p>
+          <p>شبیه‌ساز هوشمند Write From Dictation و جعبه لایتنر واژگان</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Practice Hub Menu (ترتیب جدید: اول Reading بعد بقیه) -->
+  <!-- Materials View Screen -->
+  <div class="view-screen" id="viewMaterials">
+    <div class="materials-container">
+      <div class="schedule-banner">
+        📁 بانک متریال و پردیکشن‌های رسمی PTE ROOM
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RA</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RS</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2865')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RL</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2866')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن RTS</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2845')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن DI</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2867')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن WE</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2871')">
+        <div class="material-info">
+          <span class="material-badge">PREDICTION</span>
+          <div class="material-title">آخرین ورژن سوالات پردیکشن SWT</div>
+        </div>
+        <div class="arrow-icon">‹</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placement Test Screen -->
+  <div class="view-screen" id="viewPlacement">
+    <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
+      
+      <!-- Section 1: R&W FIB (Dropdown) -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>📖 Reading & Writing: Fill in the Blanks</span>
+        </div>
+        <div class="passage-box">
+          Modern humans are masters of multitasking. We eat while driving, watch TV while 
+          <select name="rw_a" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="volleying">volleying</option>
+            <option value="studying">studying</option>
+            <option value="couriering">couriering</option>
+            <option value="lobbying">lobbying</option>
+          </select>, 
+          and of course talk on our cell phones while doing, well, 
+          <select name="rw_b" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="antonym">antonym</option>
+            <option value="rpm">rpm</option>
+            <option value="everything">everything</option>
+            <option value="sen">sen</option>
+          </select>. 
+          How do we do it? A study in the July 16th issue of Neuron suggests that though we can train our brains to work faster as we juggle, we never 
+          <select name="rw_c" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="intramuscularly">intramuscularly</option>
+            <option value="incorrigibly">incorrigibly</option>
+            <option value="dispassionately">dispassionately</option>
+            <option value="actually">actually</option>
+          </select> 
+          manage to do more than one thing at a time. Our brains aren't really built to handle the sort of 
+          <select name="rw_d" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="smear">smear</option>
+            <option value="parallel">parallel</option>
+            <option value="clientele">clientele</option>
+            <option value="noel">noel</option>
+          </select> 
+          processing we think we're capable of. The good news is: studies have shown that extensive training can make us better at doing two things at once. But how? One theory is that with lots of 
+          <select name="rw_e" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="disservice">disservice</option>
+            <option value="practice">practice</option>
+            <option value="audits">audits</option>
+            <option value="comforts">comforts</option>
+          </select> 
+          some routines become "automatic." And if we don't need to run every little thing past the part of the brain that spends time 
+          <select name="rw_f" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="dipping">dipping</option>
+            <option value="gripping">gripping</option>
+            <option value="deflecting">deflecting</option>
+            <option value="thinking">thinking</option>
+          </select> 
+          about stuff, we can multitask just fine.
+        </div>
+      </div>
+
+      <!-- Section 2: R FIB (Interactive Drag/Click to Drop) -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>📖 Reading: Fill in the Blanks</span>
+        </div>
+        <div class="passage-box">
+          With about one and a half billion non-native speakers, English is the world’s language. Such 
+          <span class="rfib-drop-zone" id="dropA" onclick="handleZoneClick('A')"></span> 
+          has its downside, of course. There are now about 6,800 languages left in the world, compared with perhaps 
+          <span class="rfib-drop-zone" id="dropB" onclick="handleZoneClick('B')"></span> 
+          that number back at the dawn of agriculture. Thanks in 
+          <span class="rfib-drop-zone" id="dropC" onclick="handleZoneClick('C')"></span> 
+          to the rise of uber-languages, most importantly English, the remaining languages are now dying at the 
+          <span class="rfib-drop-zone" id="dropD" onclick="handleZoneClick('D')"></span> 
+          of about one a fortnight.
+        </div>
+        <div style="font-size:12px; color:#94a3b8; margin-top:2px;">💡 روی کلمه و سپس روی جای خالی کلیک کنید (یا کلمه را به داخل کادر بکشید):</div>
+        <div class="rfib-word-bank" id="rfibWordBank"></div>
+      </div>
+
+      <!-- Section 3: Listening FIB -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎧 Listening: Fill in the Blanks</span>
+        </div>
+        <div class="audio-wrapper">
+          <audio controls src="determination.mp3"></audio>
+        </div>
+        <div class="passage-box">
+          And an emotion consists of a very well <input type="text" name="lfib_1" class="inline-input" placeholder="..." required> set of alterations in the body that has, as a general purpose, making life more survivable by taking care of a danger, of taking care of an opportunity, either/or, or something in between. And it’s something that is set in our <input type="text" name="lfib_2" class="inline-input" placeholder="..." required> and that we all have with a certain <input type="text" name="lfib_3" class="inline-input" placeholder="..." required> nature that is modified by our experience so individually we have variations on the pattern. But in <input type="text" name="lfib_4" class="inline-input" placeholder="..." required>, your emotion of joy and mine are going to be extremely similar. We may express them physically slightly differently, and it’s of course graded depending on the circumstance, but the essence of the process is going to be the same, unless one of us is not <input type="text" name="lfib_5" class="inline-input" placeholder="..." required> well put together and is missing something, otherwise it’s going to be the same.
+        </div>
+      </div>
+
+      <!-- Section 4: Vocab & Spelling -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🔤 Spelling & Vocabulary</span>
+        </div>
+        <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left;">Choose the word with the correct spelling:</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="spell_q" value="Accomodation" required> Accomodation</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Accommodation"> Accommodation</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Acommodation"> Acommodation</label>
+          <label class="opt-label"><input type="radio" name="spell_q" value="Acomodation"> Acomodation</label>
+        </div>
+
+        <div style="font-size:14px; font-weight:600; direction:ltr; text-align:left; margin-top:8px;">The government announced strict measures to _______ the rapid spread of the disease.</div>
+        <div class="quiz-options">
+          <label class="opt-label"><input type="radio" name="vocab_q" value="curb" required> curb</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="induce"> induce</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="foster"> foster</label>
+          <label class="opt-label"><input type="radio" name="vocab_q" value="yield"> yield</label>
+        </div>
+      </div>
+
+      <!-- Section 5: Short Writing Task -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>✍️ Short Writing Task</span>
+          <span id="writingWordCount" style="font-size:11.5px; color:#38bdf8; font-weight:800; direction:ltr;">Word Count: 0</span>
+        </div>
+        <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1; direction:ltr; text-align:left;">
+          <b>Topic:</b> Some people believe that artificial intelligence (AI) will completely replace human teachers in the future, while others think traditional classrooms are irreplaceable. Write a short paragraph (50–100 words) giving your opinion.
+        </div>
+        <textarea id="placementWriting" style="height:110px; min-height:110px;" placeholder="Type your 50-100 words paragraph here in English..." oninput="updateWritingCount()"></textarea>
+      </div>
+
+      <!-- Contact & Goal Selection -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎯 هدف و اطلاعات تماس داوطلب</span>
+        </div>
+        <select id="userTarget" class="user-info-field" style="direction:rtl;">
+          <option value="PTE Target +50 (معادل 6 آیلتس)">PTE Target +50 (معادل 6 آیلتس)</option>
+          <option value="PTE Target +65 (معادل 7 آیلتس)">PTE Target +65 (معادل 7 آیلتس)</option>
+          <option value="PTE Target +79 (معادل 8 آیلتس)">PTE Target +79 (معادل 8 آیلتس)</option>
+          <option value="General English (تقویت پایه)">General English (تقویت پایه)</option>
+          <option value="سایر موارد (آیلتس، تافل یا ارزیابی کلی)">سایر موارد (آیلتس، تافل یا ارزیابی کلی)</option>
+        </select>
+        <input type="text" id="userContact" class="user-info-field" placeholder="شماره تماس یا آیدی تلگرام جهت ارسال نتیجه مشاوره *" required>
+      </div>
+
+      <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
+        🚀 ثبت نهایی و ارسال آزمون تعیین سطح
+      </button>
+    </form>
+  </div>
+
+  <!-- Weekly Schedule Screen -->
+  <div class="view-screen" id="viewSchedule">
+    <div class="schedule-container">
+      <div class="schedule-banner">
+        📅 برنامه تمرینی هفته – تیم PTE ROOM<br>
+        <span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 یکشنبه</span><span class="day-date">۱ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">📖 RA – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🎧 DI – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 دوشنبه</span><span class="day-date">۲ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 سه‌شنبه</span><span class="day-date">۳ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">📖 RA – سعید میرزایی</span><span class="event-time">09:00</span></div>
+          <div class="event-row"><span class="event-info">📖 RTS – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 چهارشنبه</span><span class="day-date">۴ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 پنج‌شنبه</span><span class="day-date">۵ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 جمعه</span><span class="day-date">۶ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+
+      <div class="schedule-footer-note">⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال و گروه انجام خواهد شد.</div>
+    </div>
+  </div>
+
+  <!-- Courses View Screen -->
+  <div class="view-screen" id="viewCourses">
+    <div class="courses-list">
+      <div class="course-item-card" onclick="openCourseModal(0)">
+        <div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+      <div class="course-item-card" onclick="openCourseModal(1)">
+        <div class="course-info"><span class="course-badge">SPECIALIZED MASTERCLASS</span><div class="course-title">2. PTE Write Essay Mastery</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+      <div class="course-item-card" onclick="openCourseModal(2)">
+        <div class="course-info"><span class="course-badge">1-ON-1 SESSIONS</span><div class="course-title">3. PTE Private Lessons</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+      <div class="course-item-card" onclick="openCourseModal(3)">
+        <div class="course-info"><span class="course-badge">FOUNDATION & FLUENCY</span><div class="course-title">4. General English</div></div>
+        <div class="arrow-icon">‹</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Details Modal -->
+  <div class="modal-overlay" id="courseModal" onclick="closeModal('courseModal', event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title" id="modalCourseTitle">عنوان دوره</span>
+        <button class="close-btn" onclick="closeModal('courseModal')">✕</button>
+      </div>
+      <div class="modal-body" id="modalCourseDesc"></div>
+      <button class="modal-action-btn" onclick="redirectToSupport()">💬 دریافت مشاوره و ثبت‌نام در تلگرام</button>
+    </div>
+  </div>
+
+  <!-- Flashcards Guide Modal -->
+  <div class="modal-overlay" id="flashGuideModal" onclick="closeModal('flashGuideModal', event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">📖 راهنمای سیستم لایتنر واژگان</span>
+        <button class="close-btn" onclick="closeModal('flashGuideModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.</div>
+        </div>
+        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
+          <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
+            • تمام لغات جدید در ابتدا در <b>سطح ۱ (Box 1)</b> قرار دارند.<br><br>
+            • 🟢 <b>دکمه Mastered:</b> در صورت یادگیری، لغت ۱ سطح ارتقا می‌یابد (Box 1 ➔ Box 5).<br><br>
+            • 🔴 <b>دکمه Needs Review:</b> در صورت فراموشی، به Box 1 بازمی‌گردد تا مجدداً تکرار شود.
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" style="padding:12px; width:100%; border-radius:10px;" onclick="closeModal('flashGuideModal')">متوجه شدم • بستن</button>
+    </div>
+  </div>
+
+  <!-- Practice Hub Screen -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
-      <div class="hub-card" onclick="openReadingMain('rwfib')">
-        <div class="hub-icon">📖</div>
-        <div class="hub-text">
-          <h3>Dropdown RWFIB</h3>
-          <p>تمرین‌های جای‌خالی ریدینگ و رایتینگ (همه سوالات گرامری و پردیکشن)</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="openReadingMain('rfib')">
-        <div class="hub-icon">🧩</div>
-        <div class="hub-text">
-          <h3>Drag Drop RFIB</h3>
-          <p>تمرین‌های جای‌خالی ریدینگ (دسته‌بندی گرامری و پردیکشن ماهانه)</p>
-        </div>
-      </div>
-
       <div class="hub-card" onclick="navTo('wfd')">
         <div class="hub-icon">✍️</div>
         <div class="hub-text">
@@ -308,92 +1229,23 @@
     </div>
   </div>
 
-  <!-- Reading Section Hub (All Questions vs Monthly Prediction) -->
-  <div class="view-screen" id="viewReadingHub">
-    <div class="hub-grid">
-      <div class="hub-card" onclick="openReadingSub('all')">
-        <div class="hub-icon">📂</div>
-        <div class="hub-text">
-          <h3 id="readingHubAllTitle">All Questions (دسته‌بندی گرامری)</h3>
-          <p>تفکیک‌شده بر اساس Prepositions، Adjectives، Verbs و...</p>
+  <!-- Flashcards Quota Setup Screen -->
+  <div class="view-screen" id="viewFlashSetup">
+    <div class="flashcard-box" style="justify-content: flex-start;">
+      <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
+      <div class="settings-panel">
+        <label>تعداد کلمات جدید (جعبه ۱) در روز:</label>
+        <div class="quota-info">💡 برای بازدهی مطلوب، بین <b>۱۵ تا ۲۵ کلمه جدید</b> در روز مناسب است.</div>
+        <div class="quota-options" id="quotaOptions">
+          <button type="button" class="quota-btn" onclick="selectQuota(10)">10</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(15)">15</button>
+          <button type="button" class="quota-btn selected" onclick="selectQuota(20)">20</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(25)">25</button>
+          <button type="button" class="quota-btn" onclick="selectQuota(30)">30</button>
         </div>
       </div>
-      <div class="hub-card" onclick="openReadingSub('prediction')">
-        <div class="hub-icon">⭐</div>
-        <div class="hub-text">
-          <h3>Monthly Prediction (پردیکشن ماهانه)</h3>
-          <p>مجموعه سوالات گلچین‌شده بدون دسته‌بندی</p>
-        </div>
-      </div>
+      <button type="button" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startFlashcards()">🚀 شروع تمرین روزانه</button>
     </div>
-  </div>
-
-  <!-- Grammar Categories List Screen -->
-  <div class="view-screen" id="viewCategoriesList">
-    <div class="list-container-box" id="categoriesContainerBox"></div>
-  </div>
-
-  <!-- Reading Interactive Practice Screen -->
-  <div class="view-screen" id="viewReadingPractice">
-    <div class="reading-practice-container">
-      <div class="practice-header-bar">
-        <span id="readingPracticeTitle">سوال ۱ از ۱</span>
-        <div class="timer-display-box" id="readingTimerDisplay">00:00</div>
-      </div>
-
-      <div class="passage-content-box" id="readingPassageBox"></div>
-
-      <div class="practice-footer-buttons">
-        <button class="btn-nav-action" onclick="changeReadingQuestion(-1)">قبلی ‹</button>
-        <button class="btn-nav-action submit-btn" onclick="submitReadingAnswers()">ثبت و بررسی</button>
-        <button class="btn-nav-action" onclick="changeReadingQuestion(1)">بعدی ›</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Materials View Screen -->
-  <div class="view-screen" id="viewMaterials">
-    <div class="materials-container">
-      <div class="schedule-banner">📁 بانک متریال و پردیکشن‌های رسمی PTE ROOM</div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RA</div></div><div class="arrow-icon">‹</div></div>
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RS</div></div><div class="arrow-icon">‹</div></div>
-    </div>
-  </div>
-
-  <!-- Schedule Screen -->
-  <div class="view-screen" id="viewSchedule">
-    <div class="schedule-container">
-      <div class="schedule-banner">📅 برنامه تمرینی هفته – تیم PTE ROOM</div>
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div>
-        <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Courses View Screen -->
-  <div class="view-screen" id="viewCourses">
-    <div class="courses-list">
-      <div class="course-item-card" onclick="openCourseModal(0)"><div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div><div class="arrow-icon">‹</div></div>
-    </div>
-  </div>
-
-  <!-- Placement Test Screen -->
-  <div class="view-screen" id="viewPlacement">
-    <form id="placementForm" class="placement-container" onsubmit="handlePlacementSubmit(event)">
-      <div class="quiz-card">
-        <div class="quiz-title"><span>📖 Reading & Writing: Fill in the Blanks</span></div>
-        <div class="passage-box">
-          Modern humans are masters of multitasking. We eat while driving, watch TV while 
-          <select name="rw_a" class="inline-select" required>
-            <option value="">Select...</option>
-            <option value="volleying">volleying</option>
-            <option value="studying">studying</option>
-          </select>.
-        </div>
-      </div>
-      <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px;">🚀 ثبت نهایی و ارسال آزمون تعیین سطح</button>
-    </form>
   </div>
 
   <!-- WFD Simulator Screen -->
@@ -403,13 +1255,29 @@
         <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
         <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
       </div>
+
       <select id="wfdSelect" onchange="onSelectWfd()"></select>
-      <div class="audio-wrapper"><audio id="wfdAudioPlayer" controls></audio></div>
+
+      <div class="audio-wrapper">
+        <audio id="wfdAudioPlayer" controls></audio>
+      </div>
+
       <div class="wfd-status-bar">
         <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="wfdWordCount">Word Count: 0</span>
         <span class="wfd-timer-badge" id="wfdTimerBadge">⏱ 00:00</span>
       </div>
-      <textarea id="wfdInput" placeholder="Type sentence..." oninput="calcWfdWords()"></textarea>
+
+      <textarea id="wfdInput" placeholder="Type the exact sentence you heard here..." oninput="calcWfdWords()"></textarea>
+
+      <div class="wfd-result-card" id="wfdResultBox">
+        <div class="wfd-score-header">
+          <span>📊 Score Analysis:</span>
+          <span id="wfdScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
+        </div>
+        <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
+        <div class="wfd-tips-container" id="wfdTipsContainer"></div>
+      </div>
+
       <div class="wfd-action-buttons">
         <button class="btn-primary" style="flex: 2;" onclick="evaluateWfdAnswer()">Check Answer</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextWfdQuestion()">Next ⏭</button>
@@ -417,78 +1285,227 @@
     </div>
   </div>
 
-  <!-- Flashcards Setup Screen -->
-  <div class="view-screen" id="viewFlashSetup">
-    <div class="flashcard-box" style="justify-content: flex-start;">
-      <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
-      <button type="button" class="btn-primary" style="padding:14px; width:100%; border-radius:12px;" onclick="navTo('flash')">🚀 شروع تمرین روزانه</button>
-    </div>
-  </div>
-
+  <!-- Flashcards Practice Screen -->
   <div class="view-screen" id="viewFlash">
     <div class="flashcard-box">
-      <div class="leitner-progress"><div><span id="cardCounter">Card 1</span></div></div>
-      <div class="done-message" id="doneMessage" style="display:flex;"><h3>🎉 آماده تمرین!</h3><button class="btn-primary" onclick="navTo('practice_menu')">بازگشت</button></div>
-    </div>
-  </div>
-
-  <!-- Course Details Modal -->
-  <div class="modal-overlay" id="courseModal" onclick="closeModal('courseModal', event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <span class="modal-title" id="modalCourseTitle">عنوان دوره</span>
-        <button class="close-btn" onclick="closeModal('courseModal')">✕</button>
+      <div class="leitner-progress">
+        <div>
+          <span id="cardCounter">Card 1</span>
+          <span id="boxLevel" style="margin-right:8px;">📦 Box: 1/5</span>
+          <span class="stats-info" id="quotaDisplay"></span>
+        </div>
+        <button class="action-top-btn" onclick="openModal('flashGuideModal')">💡 راهنما</button>
       </div>
-      <div class="modal-body" id="modalCourseDesc"></div>
-      <a class="modal-action-btn" id="modalSupportLink" href="#" target="_blank">💬 مشاوره و ثبت‌نام</a>
+
+      <div class="card-scene" onclick="flipCard()" id="cardScene">
+        <div class="card" id="activeCard">
+          <div class="card-face card-front">
+            <div class="word-title" id="frontWord">Loading...</div>
+            <div class="tap-hint">👆 Tap to flip card</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="meta-row">
+              <span class="pronunciation" id="backPhonetic"></span>
+              <span class="pos" id="backPos"></span>
+            </div>
+            <div class="persian-meaning" id="backMeaning"></div>
+            <div class="section-title">Collocations:</div>
+            <div class="collocations" id="backCollocations"></div>
+            <div class="section-title">Example Sentence:</div>
+            <div class="example-sentence" id="backSentence"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="done-message" id="doneMessage">
+        <h3>🎉 عالی بود!</h3>
+        <p>شما سهمیه لغات جدید امروز را به پایان رساندید.<br>فردا برای کلمات جدید برگردید.</p>
+        <button class="btn-primary" style="margin-top:14px;" onclick="navTo('practice_menu')">بازگشت به منو</button>
+      </div>
+
+      <div class="leitner-actions" id="leitnerActions">
+        <button class="leitner-btn btn-again" onclick="answerCard(false)">🔴 Needs Review</button>
+        <button class="leitner-btn btn-good" onclick="answerCard(true)">🟢 Mastered (+1)</button>
+      </div>
     </div>
   </div>
 
-  <div class="app-toast" id="appToast">پیام سیستم</div>
+  <div class="app-toast" id="appToast">Please type your answer first!</div>
 </div>
 
 <script>
   const BOT_TOKEN = "8953110530:AAEAsaVEEsId6NE_CXAIWleIRqY0_6kt5us";
   const ADMIN_CHAT_ID = "600029017";
 
+  let isSubmitting = false;
+
   const coursesData = [
-    { title: "1. PTE Personal Mentoring", desc: "جامع‌ترین مسیر قبولی در آزمون PTE همراه با برنامه‌ریزی و فیدبک اختصاصی." },
-    { title: "2. PTE Write Essay Mastery", desc: "مسترکلاس تخصصی تسلط بر بخش Writing و کسب نمره ۹۰." },
-    { title: "3. PTE Private Lessons", desc: "کلاس‌های خصوصی آنلاین و رفع اشکال فشرده تک‌نفره." },
-    { title: "4. General English", desc: "تقویت پایه زبان و ارتقای روانی کلام." }
+    {
+      title: "1. PTE Personal Mentoring",
+      desc: "🌟 جامع‌ترین و مطمئن‌ترین مسیر قبولی در آزمون PTE:\n\n• 🎯 تعیین سطح و نقشه راه اختصاصی: تحلیل دقیق سطح زبان و طراحی پلن گام‌به‌گام تا کسب نمره هدف (+65 یا +79).\n\n• 📅 برنامه‌ریزی منعطف روزانه: زمان‌بندی هوشمند متناسب با مشغله‌های کاری و تحصیلی شما.\n\n• ✍️ فیدبک و تصحیح نامحدود: تحلیل ریزبه‌ریز و روزانه تمرین‌ها در تمام تسک‌ها همراه با نمره‌دهی استاندارد الگوریتم پیرسون.\n\n• 📊 تحلیل کارنامه و ماک‌تست‌ها: ریشه‌یابی خطاهای ماک‌تست‌ها و رفع سریع نقاط ضعف قبل از آزمون اصلی.\n\n• 🤝 پشتیبانی مستقیم و مستمر: همراهی گام‌به‌گام منتور تا لحظه ورود به سنتر و کسب نتیجه نهایی."
+    },
+    {
+      title: "2. PTE Write Essay Mastery",
+      desc: "✍️ مسترکلاس تخصصی تسلط بر بخش Writing و کسب نمره ۹۰:\n\n• 📐 ساختارهای استاندارد و تست‌شده: آموزش چارچوب‌های مطمئن برای نگارش دقیق و پوشش کامل ساختاری بدون ریسک خطای الگوریتم پیرسون.\n\n• 💡 اصول توسعه ایده و نگارش: آموزش بسط منطقی پاراگراف‌ها متناسب با هر نوع موضوع (Agree/Disagree, Advantage/Disadvantage و...).\n\n• 🔤 مدیریت نمره گرامر و واژگان: تکنیک‌های استفاده از ساختارهای پیشرفته و کالوکیشن‌های مناسب بدون خطای املا (Spelling).\n\n• 🔥 پوشش موضوعات پرتکرار: بررسی و تحلیل مستقیم سوالات پرتکرار و پردیکشن‌های جدید آزمون اصلی.\n\n• 🔍 تحلیل و تصحیح زنده: بررسی نمونه Writing داوطلبان و اصلاح خطاهای متداول نمره‌سوز."
+    },
+    {
+      title: "3. PTE Private Lessons",
+      desc: "🎯 کلاس‌های خصوصی آنلاین و رفع اشکال فشرده تک‌نفره:\n\n• ⚡ تمرکز هدفمند بر تسک‌های کلیدی: تقویت تخصصی تسک‌های نمره‌ساز آزمون.\n\n• 🧪 شبیه‌سازی شرایط آزمون: اجرای زنده تست‌ها زیر نظر استاد و دریافت آنی فیدبک‌های کاربردی.\n\n• ⏰ انعطاف کامل در زمان‌بندی: امکان هماهنگی ساعات کلاس متناسب با تایم آزاد شما.\n\n• 📌 تعداد جلسات انتخابی: متناسب با نیاز به رفع اشکال مقطعی یا جمع‌بندی نهایی قبل از آزمون."
+    },
+    {
+      title: "4. General English",
+      desc: "🚀 تقویت پایه زبان و ارتقای روانی کلام:\n\n• 📚 گسترش دایره واژگان آکادمیک: یادگیری لغات پرکاربرد، اصطلاحات روزمره و هم‌آیی‌ها (Collocations).\n\n• 🛠 تقویت گرامر کاربردی: تسلط عملی بر ساختارهای دستوری زبان جهت استفاده صحیح در مکالمه و نگارش.\n\n• 🗣 تقویت روانی گفتار و شنیدار: تکنیک‌های افزایش اعتمادبه‌نفس در مکالمه، تلفظ شفاف و فهم لهجه‌های مختلف صوتی.\n\n• 🌍 پایه‌ریزی اصولی برای آزمون‌های بین‌المللی: آمادگی ذهنی و زبانی لازم جهت شروع پرقدرت مسیر آزمون‌های بین‌المللی."
+    }
   ];
 
+  /* Reading FIB Drag/Drop Engine */
+  const rfibBankWords = ["rate", "part", "dominance", "margin", "twice", "relation", "more", "reign"];
+  let rfibUserAnswers = { A: null, B: null, C: null, D: null };
+  let activeSelectedWord = null;
+
+  function initRfib() {
+    const bankContainer = document.getElementById('rfibWordBank');
+    if (!bankContainer) return;
+    bankContainer.innerHTML = "";
+    
+    rfibBankWords.forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'rfib-chip';
+      chip.innerText = w;
+      chip.draggable = true;
+      chip.id = `chip_${w}`;
+
+      chip.onclick = () => {
+        if (chip.classList.contains('used')) return;
+        document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('selected'));
+        if (activeSelectedWord === w) {
+          activeSelectedWord = null;
+        } else {
+          activeSelectedWord = w;
+          chip.classList.add('selected');
+        }
+      };
+
+      chip.ondragstart = (e) => {
+        e.dataTransfer.setData("text/plain", w);
+      };
+
+      bankContainer.appendChild(chip);
+    });
+
+    ['A', 'B', 'C', 'D'].forEach(zoneKey => {
+      const zone = document.getElementById(`drop${zoneKey}`);
+      if (!zone) return;
+
+      zone.ondragover = (e) => e.preventDefault();
+      zone.ondrop = (e) => {
+        e.preventDefault();
+        const word = e.dataTransfer.getData("text/plain");
+        placeWordInZone(zoneKey, word);
+      };
+    });
+  }
+
+  function handleZoneClick(zoneKey) {
+    const zone = document.getElementById(`drop${zoneKey}`);
+    if (rfibUserAnswers[zoneKey]) {
+      const prevWord = rfibUserAnswers[zoneKey];
+      rfibUserAnswers[zoneKey] = null;
+      zone.innerText = "";
+      zone.classList.remove('filled');
+      const prevChip = document.getElementById(`chip_${prevWord}`);
+      if (prevChip) prevChip.classList.remove('used');
+      return;
+    }
+
+    if (activeSelectedWord) {
+      placeWordInZone(zoneKey, activeSelectedWord);
+      activeSelectedWord = null;
+      document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('selected'));
+    }
+  }
+
+  function placeWordInZone(zoneKey, word) {
+    const zone = document.getElementById(`drop${zoneKey}`);
+    
+    if (rfibUserAnswers[zoneKey]) {
+      const oldWord = rfibUserAnswers[zoneKey];
+      const oldChip = document.getElementById(`chip_${oldWord}`);
+      if (oldChip) oldChip.classList.remove('used');
+    }
+
+    for (let k in rfibUserAnswers) {
+      if (rfibUserAnswers[k] === word) {
+        rfibUserAnswers[k] = null;
+        const z = document.getElementById(`drop${k}`);
+        if (z) { z.innerText = ""; z.classList.remove('filled'); }
+      }
+    }
+
+    rfibUserAnswers[zoneKey] = word;
+    zone.innerText = word;
+    zone.classList.add('filled');
+
+    const chip = document.getElementById(`chip_${word}`);
+    if (chip) chip.classList.add('used');
+  }
+
   let navHistory = ['home'];
-  let currentReadingType = ''; // 'rwfib' or 'rfib'
-  let currentSubMode = ''; // 'all' or 'prediction'
-  let activeCategory = '';
-  let readingQuestionsList = [];
-  let currentReadingIndex = 0;
-  let readingTimerInterval = null;
-  let readingSeconds = 0;
-  let rfibActiveSelectedChip = null;
-  let rfibUserAnswersMap = {};
-  let remoteReadingData = null;
+  let selectedCourseIndex = 0;
+  let wfdQuestions = [];
+  let currentWfdCat = 'all';
+  let academicVocab = [];
+  let sessionQueue = []; 
+  let currentCardIndex = 0;
+  let selectedDailyQuota = 20;
+
+  let wfdTimerInterval = null;
+  let wfdElapsedSeconds = 0;
+  let toastTimeout = null;
+
+  let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v15')) || {};
+  let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v15')) || { date: "", newCardsSeen: 0 };
 
   const tg = window.Telegram?.WebApp;
-  if (tg) { tg.ready(); tg.expand(); }
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (tg.requestFullscreen) tg.requestFullscreen();
+    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+    if (tg.BackButton) {
+      tg.BackButton.onClick(() => navBack());
+    }
+  }
 
   function showToast(msg) {
     const toast = document.getElementById('appToast');
     toast.innerText = msg;
     toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 2200);
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2400);
   }
 
-  async function initPlatform() {
+  async function initApp() {
+    const ts = Date.now();
+    initRfib();
+
     try {
-      const res = await fetch(`data/reading_data.json?t=${Date.now()}`, { cache: "no-store" });
-      if (res.ok) {
-        remoteReadingData = await res.json();
+      const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
+      if (resFlash.ok) {
+        academicVocab = await resFlash.json();
+        academicVocab.forEach((card) => {
+          if (!leitnerData[card.id]) leitnerData[card.id] = { box: 1 };
+        });
       }
-    } catch (err) {
-      console.warn("Could not load reading_data.json:", err);
-    }
+    } catch (e) { console.warn("Flashcards load error:", e); }
+
+    try {
+      const resWFD = await fetch(`data/wfd_questions.json?t=${ts}`, { cache: "no-store" });
+      if (resWFD.ok) {
+        wfdQuestions = await resWFD.json();
+        filterWfdCategory('all');
+      }
+    } catch (e) { console.warn("WFD load error:", e); }
   }
 
   function navTo(screen) {
@@ -499,7 +1516,6 @@
   function navBack() {
     if (navHistory.length > 1) {
       navHistory.pop();
-      stopReadingTimer();
       renderCurrentScreen();
     }
   }
@@ -508,261 +1524,511 @@
     const current = navHistory[navHistory.length - 1];
     document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
     const backBtn = document.getElementById('backHomeBtn');
+    const title = document.getElementById('pageTitle');
     const ticker = document.getElementById('newsTickerBar');
 
-    const isSub = (navHistory.length > 1);
-    backBtn.style.display = isSub ? 'block' : 'none';
-    if (ticker) ticker.style.display = isSub ? 'none' : 'flex';
+    const isSubPage = (navHistory.length > 1);
+    backBtn.style.display = isSubPage ? 'block' : 'none';
+    if (ticker) ticker.style.display = isSubPage ? 'none' : 'flex';
 
-    if (current === 'home') document.getElementById('viewHome').classList.add('active');
-    else if (current === 'practice_menu') document.getElementById('viewPracticeMenu').classList.add('active');
-    else if (current === 'reading_hub') document.getElementById('viewReadingHub').classList.add('active');
-    else if (current === 'categories_list') document.getElementById('viewCategoriesList').classList.add('active');
-    else if (current === 'reading_practice') document.getElementById('viewReadingPractice').classList.add('active');
-    else if (current === 'materials') document.getElementById('viewMaterials').classList.add('active');
-    else if (current === 'schedule') document.getElementById('viewSchedule').classList.add('active');
-    else if (current === 'courses') document.getElementById('viewCourses').classList.add('active');
-    else if (current === 'placement') document.getElementById('viewPlacement').classList.add('active');
-    else if (current === 'wfd') document.getElementById('viewWfd').classList.add('active');
-    else if (current === 'flash_setup') document.getElementById('viewFlashSetup').classList.add('active');
-    else if (current === 'flash') document.getElementById('viewFlash').classList.add('active');
-  }
-
-  function openReadingMain(type) {
-    currentReadingType = type;
-    document.getElementById('readingHubAllTitle').innerText = type === 'rwfib' ? 'All Questions (RWFIB - گرامری)' : 'All Questions (RFIB - گرامری)';
-    navTo('reading_hub');
-  }
-
-  function openReadingSub(mode) {
-    currentSubMode = mode;
-    if (mode === 'all') {
-      const cats = [
-        { name: "Prepositions", count: 45 },
-        { name: "Adjectives", count: 38 },
-        { name: "Verbs", count: 62 },
-        { name: "Connectors", count: 29 },
-        { name: "Adjective Clauses", count: 24 }
-      ];
-      document.getElementById('categoriesContainerBox').innerHTML = cats.map(c => `
-        <div class="list-row-card" onclick="selectGrammarCategory('${c.name}')">
-          <span>${c.name}</span>
-          <span style="color:var(--text-muted); font-size:12px;">${c.count} سوال ‹</span>
-        </div>
-      `).join('');
-      navTo('categories_list');
-    } else {
-      loadPredictionData();
-      currentReadingIndex = 0;
-      navTo('reading_practice');
-      startReadingTimer();
-      renderReadingQuestion();
+    if (tg?.BackButton) {
+      if (isSubPage) tg.BackButton.show();
+      else tg.BackButton.hide();
     }
-  }
 
-  function selectGrammarCategory(catName) {
-    activeCategory = catName;
-    loadCategoryData(catName);
-    currentReadingIndex = 0;
-    navTo('reading_practice');
-    startReadingTimer();
-    renderReadingQuestion();
-  }
-
-  function loadCategoryData(category) {
-    if (remoteReadingData && remoteReadingData[currentReadingType] && remoteReadingData[currentReadingType].all_questions) {
-      const qGroup = remoteReadingData[currentReadingType].all_questions[category];
-      if (qGroup && qGroup.length > 0) {
-        readingQuestionsList = qGroup;
-        return;
-      }
-    }
-    if (currentReadingType === 'rwfib') {
-      readingQuestionsList = [
-        {
-          title: `RWFIB - ${category} (Sample)`,
-          text: `The International Monetary Fund (IMF) works to foster global growth and economic stability by providing policy advice and <select class='inline-select-custom' data-correct='financing'><option value=''>Select...</option><option value='financing'>financing</option><option value='preventing'>preventing</option></select> to its members.`,
-          type: 'rwfib'
-        }
-      ];
-    } else {
-      readingQuestionsList = [
-        {
-          title: `RFIB - ${category} (Sample)`,
-          text: `With about one and a half billion non-native speakers, English is the world’s language. Such <span class='rfib-drop-zone-custom' data-zone='A'></span> has its downside.`,
-          bank: ["dominance", "twice", "part", "rate"],
-          answers: { "A": "dominance" },
-          type: 'rfib'
-        }
-      ];
-    }
-  }
-
-  function loadPredictionData() {
-    if (remoteReadingData && remoteReadingData[currentReadingType] && remoteReadingData[currentReadingType].prediction) {
-      readingQuestionsList = remoteReadingData[currentReadingType].prediction;
-      if (readingQuestionsList.length > 0) return;
-    }
-    readingQuestionsList = [
-      {
-        title: `${currentReadingType.toUpperCase()} - Monthly Prediction (Empty)`,
-        text: `این بخش پردیکشن ماهانه است و فعلاً خالی می‌باشد. سوالات به زودی از فایل گیت‌هاب بارگذاری خواهند شد.`,
-        type: currentReadingType
-      }
-    ];
-  }
-
-  function startReadingTimer() {
-    stopReadingTimer();
-    readingSeconds = 0;
-    updateReadingTimerDisplay();
-    
-    // RWFIB limit: 2:30 (150s), RFIB limit: 2:00 (120s)
-    const limitSec = currentReadingType === 'rwfib' ? 150 : 120;
-
-    readingTimerInterval = setInterval(() => {
-      readingSeconds++;
-      updateReadingTimerDisplay();
-      const tBox = document.getElementById('readingTimerDisplay');
-      if (readingSeconds >= limitSec) {
-        tBox.classList.add('warning');
-      } else {
-        tBox.classList.remove('warning');
-      }
-    }, 1000);
-  }
-
-  function stopReadingTimer() {
-    if (readingTimerInterval) clearInterval(readingTimerInterval);
-    const tBox = document.getElementById('readingTimerDisplay');
-    if (tBox) tBox.classList.remove('warning');
-  }
-
-  function updateReadingTimerDisplay() {
-    const m = Math.floor(readingSeconds / 60).toString().padStart(2, '0');
-    const s = (readingSeconds % 60).toString().padStart(2, '0');
-    const el = document.getElementById('readingTimerDisplay');
-    if (el) el.innerText = `${m}:${s}`;
-  }
-
-  function renderReadingQuestion() {
-    if (!readingQuestionsList.length) return;
-    const q = readingQuestionsList[currentReadingIndex];
-    document.getElementById('readingPracticeTitle').innerText = `${q.title || 'تمرین'} (${currentReadingIndex + 1}/${readingQuestionsList.length})`;
-    
-    const passageBox = document.getElementById('readingPassageBox');
-    const qType = q.type || currentReadingType;
-    
-    if (qType === 'rwfib' || !q.bank) {
-      passageBox.innerHTML = q.text;
-    } else {
-      rfibUserAnswersMap = {};
-      let html = q.text;
-      html += `<div class="rfib-bank-container">`;
-      (q.bank || []).forEach(w => {
-        html += `<div class="rfib-chip-item" onclick="onRfibChipClick(this, '${w}')">${w}</div>`;
-      });
-      html += `</div>`;
-      passageBox.innerHTML = html;
-
-      document.querySelectorAll('.rfib-drop-zone-custom').forEach(zone => {
-        zone.onclick = () => {
-          const zoneKey = zone.getAttribute('data-zone');
-          if (rfibUserAnswersMap[zoneKey]) {
-            const oldW = rfibUserAnswersMap[zoneKey];
-            rfibUserAnswersMap[zoneKey] = null;
-            zone.innerText = "";
-            zone.classList.remove('filled');
-            document.querySelectorAll('.rfib-chip-item').forEach(c => {
-              if (c.innerText === oldW) c.classList.remove('used');
-            });
-          } else if (rfibActiveSelectedChip) {
-            rfibUserAnswersMap[zoneKey] = rfibActiveSelectedChip.word;
-            zone.innerText = rfibActiveSelectedChip.word;
-            zone.classList.add('filled');
-            rfibActiveSelectedChip.element.classList.add('used');
-            rfibActiveSelectedChip.element.classList.remove('selected');
-            rfibActiveSelectedChip = null;
-          }
-        };
-      });
-    }
-  }
-
-  function onRfibChipClick(chipEl, word) {
-    if (chipEl.classList.contains('used')) return;
-    document.querySelectorAll('.rfib-chip-item').forEach(c => c.classList.remove('selected'));
-    if (rfibActiveSelectedChip && rfibActiveSelectedChip.word === word) {
-      rfibActiveSelectedChip = null;
-    } else {
-      rfibActiveSelectedChip = { element: chipEl, word: word };
-      chipEl.classList.add('selected');
-    }
-  }
-
-  function changeReadingQuestion(dir) {
-    currentReadingIndex += dir;
-    if (currentReadingIndex < 0) currentReadingIndex = 0;
-    if (currentReadingIndex >= readingQuestionsList.length) currentReadingIndex = readingQuestionsList.length - 1;
-    startReadingTimer();
-    renderReadingQuestion();
-  }
-
-  function submitReadingAnswers() {
-    const q = readingQuestionsList[currentReadingIndex];
-    const qType = q.type || currentReadingType;
-    if (qType === 'rwfib' || !q.answers) {
-      document.querySelectorAll('.inline-select-custom').forEach(sel => {
-        const correct = sel.getAttribute('data-correct');
-        if (sel.value === correct) {
-          sel.classList.add('correct'); sel.classList.remove('incorrect');
-        } else {
-          sel.classList.add('incorrect'); sel.classList.remove('correct');
-        }
-      });
-    } else {
-      document.querySelectorAll('.rfib-drop-zone-custom').forEach(zone => {
-        const zKey = zone.getAttribute('data-zone');
-        const correctVal = q.answers[zKey];
-        if (rfibUserAnswersMap[zKey] === correctVal) {
-          zone.classList.add('correct'); zone.classList.remove('incorrect');
-        } else {
-          zone.classList.add('incorrect'); zone.classList.remove('correct');
-        }
-      });
-    }
-    showToast("✅ پاسخ‌ها بررسی شدند!");
-  }
-
-  function openCourseModal(idx) {
-    const c = coursesData[idx];
-    document.getElementById('modalCourseTitle').innerText = c.title;
-    document.getElementById('modalCourseDesc').innerText = c.desc;
-    document.getElementById('courseModal').classList.add('active');
-  }
-
-  function closeModal(id, e) {
-    if (!e || e.target.id === id || e.target.className === 'close-btn') {
-      document.getElementById(id).classList.remove('active');
+    if (current === 'home') {
+      document.getElementById('viewHome').classList.add('active');
+      title.innerText = "PTE ROOM • پلتفرم جامع";
+      stopWfdTimer();
+    } else if (current === 'placement') {
+      document.getElementById('viewPlacement').classList.add('active');
+      title.innerText = "PTE ROOM • آزمون تعیین سطح";
+      stopWfdTimer();
+    } else if (current === 'materials') {
+      document.getElementById('viewMaterials').classList.add('active');
+      title.innerText = "PTE ROOM • متریال آموزشی";
+      stopWfdTimer();
+    } else if (current === 'schedule') {
+      document.getElementById('viewSchedule').classList.add('active');
+      title.innerText = "PTE ROOM • برنامه تمرینی هفته";
+      stopWfdTimer();
+    } else if (current === 'courses') {
+      document.getElementById('viewCourses').classList.add('active');
+      title.innerText = "PTE ROOM • دوره‌های آموزشی";
+      stopWfdTimer();
+    } else if (current === 'practice_menu') {
+      document.getElementById('viewPracticeMenu').classList.add('active');
+      title.innerText = "PTE ROOM • تمرین روزانه";
+      stopWfdTimer();
+    } else if (current === 'wfd') {
+      document.getElementById('viewWfd').classList.add('active');
+      title.innerText = "PTE ROOM • Write From Dictation";
+      startWfdTimer();
+    } else if (current === 'flash_setup') {
+      document.getElementById('viewFlashSetup').classList.add('active');
+      title.innerText = "PTE ROOM • تنظیمات لایتنر";
+      stopWfdTimer();
+    } else if (current === 'flash') {
+      document.getElementById('viewFlash').classList.add('active');
+      title.innerText = "PTE ROOM • Academic Flashcards";
+      stopWfdTimer();
     }
   }
 
   function openExternalLink(url) {
-    if (tg?.openTelegramLink) tg.openTelegramLink(url);
-    else window.open(url, '_blank');
+    if (tg && typeof tg.openTelegramLink === "function") {
+      tg.openTelegramLink(url);
+    } else {
+      window.open(url, '_blank');
+    }
   }
 
-  function filterWfdCategory(cat) {}
-  function onSelectWfd() {}
-  function nextWfdQuestion() {}
-  function calcWfdWords() {}
-  function evaluateWfdAnswer() {}
-  function handlePlacementSubmit(e) { e.preventDefault(); alert("ثبت شد"); }
+  /* Live Word Count */
+  function updateWritingCount() {
+    const text = document.getElementById('placementWriting').value.trim();
+    const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
+    const counterEl = document.getElementById('writingWordCount');
+    counterEl.innerText = `Word Count: ${count}`;
+    counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
+  }
 
-  window.onload = () => {
-    renderCurrentScreen();
-    initApp();
-  };
+  /* Robust Multi-Message Submission Engine */
+  async function handlePlacementSubmit(e) {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    const contactVal = document.getElementById('userContact').value.trim();
+    if (!contactVal) {
+      alert("⚠️ لطفاً شماره تماس یا آیدی تلگرام خود را وارد کنید تا نتیجه مشاوره ارسال شود.");
+      return;
+    }
+
+    isSubmitting = true;
+    const btn = document.getElementById('submitPlacementBtn');
+    btn.disabled = true;
+    btn.innerText = "⏳ در حال ثبت و ارسال به پشتیبانی...";
+
+    const trackingCode = "PTE-" + Math.floor(10000 + Math.random() * 90000);
+    const formElement = document.getElementById('placementForm');
+    const formData = new FormData(formElement);
+    const writingText = document.getElementById('placementWriting').value.trim();
+    const wordsCount = writingText === "" ? 0 : writingText.split(/\s+/).filter(Boolean).length;
+
+    // کلیدهای آزمون
+    const rwKeys = { rw_a: "studying", rw_b: "everything", rw_c: "actually", rw_d: "parallel", rw_e: "practice", rw_f: "thinking" };
+    const rfibKeys = { A: "dominance", B: "twice", C: "part", D: "rate" };
+    const lfibKeys = { lfib_1: "orchestrated", lfib_2: "biology", lfib_3: "basic", lfib_4: "principle", lfib_5: "quite" };
+
+    let rwScore = 0;
+    let rwDetails = [];
+    for (let k in rwKeys) {
+      const uVal = formData.get(k) || "(خالی)";
+      const isCorrect = uVal === rwKeys[k];
+      if (isCorrect) rwScore++;
+      rwDetails.push(`${isCorrect ? '✅' : '❌'} <b>[${k.replace('rw_', '').toUpperCase()}]:</b> ${uVal} ${!isCorrect ? `<i>[Correct: ${rwKeys[k]}]</i>` : ''}`);
+    }
+
+    let rfibScore = 0;
+    let rfibDetails = [];
+    for (let k in rfibKeys) {
+      const uVal = rfibUserAnswers[k] || "(خالی)";
+      const isCorrect = uVal === rfibKeys[k];
+      if (isCorrect) rfibScore++;
+      rfibDetails.push(`${isCorrect ? '✅' : '❌'} <b>[${k}]:</b> ${uVal} ${!isCorrect ? `<i>[Correct: ${rfibKeys[k]}]</i>` : ''}`);
+    }
+
+    let lfibScore = 0;
+    let lfibDetails = [];
+    for (let k in lfibKeys) {
+      const uVal = (formData.get(k) || "").trim();
+      const isCorrect = uVal.toLowerCase() === lfibKeys[k];
+      if (isCorrect) lfibScore++;
+      lfibDetails.push(`${isCorrect ? '✅' : '❌'} <b>(${k.replace('lfib_', '')}):</b> ${uVal || '(خالی)'} ${!isCorrect ? `<i>[Correct: ${lfibKeys[k]}]</i>` : ''}`);
+    }
+
+    const userSpell = formData.get('spell_q') || "(انتخاب‌نشده)";
+    const spellCorrect = userSpell === "Accommodation";
+    const userVocab = formData.get('vocab_q') || "(انتخاب‌نشده)";
+    const vocabCorrect = userVocab === "curb";
+    
+    let vocabScore = (spellCorrect ? 1 : 0) + (vocabCorrect ? 1 : 0);
+    const totalScore = rwScore + rfibScore + lfibScore + vocabScore;
+
+    const tgUser = tg?.initDataUnsafe?.user;
+    const firstName = tgUser?.first_name || "کاربر";
+    const lastName = tgUser?.last_name || "";
+    const fullName = `${firstName} ${lastName}`.trim();
+    const username = tgUser?.username ? `@${tgUser.username}` : "ندارد";
+    const userId = tgUser?.id || "نامشخص";
+    const target = document.getElementById('userTarget').value;
+
+    const messagePart1 = `
+📋 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
+🔖 <b>کد رهگیری:</b> <code>${trackingCode}</code>
+━━━━━━━━━━━━━━━━━━━━
+👤 <b>مشخصات تلگرام داوطلب:</b>
+• <b>نام کاربری:</b> ${fullName}
+• <b>یوزرنیم:</b> ${username}
+• <b>شناسه عددی (ID):</b> <code>${userId}</code>
+• <b>شماره تماس / آیدی ثبت‌شده:</b> <code>${contactVal}</code>
+• <b>هدف انتخابی:</b> ${target}
+
+━━━━━━━━━━━━━━━━━━━━
+📊 <b>کارنامه و ریزنمرات آزمون تستی:</b>
+• 📖 <b>Reading & Writing FIB:</b> ${rwScore} / 6
+• 📖 <b>Reading FIB:</b> ${rfibScore} / 4
+• 🎧 <b>Listening FIB:</b> ${lfibScore} / 5
+• 🔤 <b>Vocab & Spelling:</b> ${vocabScore} / 2
+🎯 <b>مجموع نمره تستی:</b> <b>${totalScore} / 17</b>
+
+━━━━━━━━━━━━━━━━━━━━
+✍️ <b>پاراگراف رایتینگ داوطلب (${wordsCount} کلمه):</b>
+<i>"${writingText || 'متنی ارسال نشده است.'}"</i>
+    `.trim();
+
+    const messagePart2 = `
+🔍 <b>تحلیل دقیق پاسخ‌ها (کد رهگیری: ${trackingCode}):</b>
+━━━━━━━━━━━━━━━━━━━━
+📖 <b>Reading & Writing FIB:</b>
+${rwDetails.join('\n')}
+
+━━━━━━━━━━━━━━━━━━━━
+📖 <b>Reading FIB:</b>
+${rfibDetails.join('\n')}
+
+━━━━━━━━━━━━━━━━━━━━
+🎧 <b>Listening FIB:</b>
+${lfibDetails.join('\n')}
+
+━━━━━━━━━━━━━━━━━━━━
+🔤 <b>Spelling & Vocab:</b>
+${spellCorrect ? '✅' : '❌'} <b>Spelling:</b> ${userSpell} ${!spellCorrect ? '<i>[Correct: Accommodation]</i>' : ''}
+${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect ? '<i>[Correct: curb]</i>' : ''}
+    `.trim();
+
+    try {
+      const res1 = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: ADMIN_CHAT_ID,
+          text: messagePart1,
+          parse_mode: "HTML"
+        })
+      });
+      const data1 = await res1.json();
+      if (!data1.ok) throw new Error(data1.description || "خطا در ارسال پیام اول");
+
+      await new Promise(r => setTimeout(r, 350));
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: ADMIN_CHAT_ID,
+          text: messagePart2,
+          parse_mode: "HTML"
+        })
+      });
+
+      // ریست فرم و وضعیت پس از ارسال موفق
+      formElement.reset();
+      rfibUserAnswers = { A: null, B: null, C: null, D: null };
+      ['A', 'B', 'C', 'D'].forEach(k => {
+        const z = document.getElementById(`drop${k}`);
+        if (z) { z.innerText = ""; z.classList.remove('filled'); }
+      });
+      document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('used', 'selected'));
+      updateWritingCount();
+
+      const userSuccessNotice = `✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\n\n🔖 کد پیگیری شما: ${trackingCode}\n\nبه زودی نتیجه و تحلیل اختصاصی از طریق پشتیبانان PTE ROOM برای شما ارسال خواهد شد.`;
+
+      if (tg && typeof tg.showAlert === "function") {
+        tg.showAlert(userSuccessNotice, () => {
+          navTo('home');
+          isSubmitting = false;
+          btn.disabled = false;
+          btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
+        });
+      } else {
+        alert(userSuccessNotice);
+        navTo('home');
+        isSubmitting = false;
+        btn.disabled = false;
+        btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
+      }
+    } catch (err) {
+      console.error(err);
+      alert(`⚠️ خطا در ارسال اطلاعات:\n${err.message}`);
+      isSubmitting = false;
+      btn.disabled = false;
+      btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
+    }
+  }
+
+  function openCourseModal(index) {
+    selectedCourseIndex = index;
+    const course = coursesData[index];
+    document.getElementById('modalCourseTitle').innerText = course.title;
+    document.getElementById('modalCourseDesc').innerText = course.desc;
+    openModal('courseModal');
+  }
+
+  function openModal(id) { document.getElementById(id).classList.add('active'); }
+  function closeModal(id, e) {
+    if (!e || e.target.id === id || e.target.className === 'close-btn' || e.target.tagName === 'BUTTON') {
+      document.getElementById(id).classList.remove('active');
+    }
+  }
+
+  function redirectToSupport() {
+    const courseTitle = coursesData[selectedCourseIndex].title;
+    const supportUrl = `https://t.me/pte_room_support?text=${encodeURIComponent('سلام، من برای ثبت‌نام و دریافت مشاوره دوره "' + courseTitle + '" پیام می‌دهم.')}`;
+    if (tg && typeof tg.openTelegramLink === "function") {
+      tg.openTelegramLink(supportUrl);
+    } else {
+      window.open(supportUrl, '_blank');
+    }
+  }
+
+  /* WFD Simulator Functions */
+  function startWfdTimer() {
+    stopWfdTimer();
+    wfdElapsedSeconds = 0;
+    updateTimerDisplay();
+    wfdTimerInterval = setInterval(() => {
+      wfdElapsedSeconds++;
+      updateTimerDisplay();
+    }, 1000);
+  }
+
+  function stopWfdTimer() {
+    if (wfdTimerInterval) {
+      clearInterval(wfdTimerInterval);
+      wfdTimerInterval = null;
+    }
+  }
+
+  function updateTimerDisplay() {
+    const badge = document.getElementById('wfdTimerBadge');
+    const mins = Math.floor(wfdElapsedSeconds / 60);
+    const secs = wfdElapsedSeconds % 60;
+    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    badge.classList.remove('warning', 'danger');
+    if (wfdElapsedSeconds >= 120) badge.classList.add('danger');
+    else if (wfdElapsedSeconds >= 90) badge.classList.add('warning');
+  }
+
+  function filterWfdCategory(cat) {
+    currentWfdCat = cat;
+    document.getElementById('catAll').className = cat === 'all' ? 'cat-btn active' : 'cat-btn';
+    document.getElementById('catPred').className = cat === 'pred' ? 'cat-btn active' : 'cat-btn';
+
+    let list = cat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const select = document.getElementById('wfdSelect');
+    select.innerHTML = "";
+    list.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title || `WFD #${q.id}`;
+      select.appendChild(opt);
+    });
+    onSelectWfd();
+  }
+
+  function onSelectWfd() {
+    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const idx = document.getElementById('wfdSelect').value;
+    const q = list[idx];
+    if (!q) return;
+
+    document.getElementById('wfdResultBox').style.display = 'none';
+    document.getElementById('wfdInput').value = "";
+    calcWfdWords();
+    startWfdTimer();
+
+    const audio = document.getElementById('wfdAudioPlayer');
+    audio.src = "wfd_audios/" + q.audioUrl;
+    audio.load();
+  }
+
+  function nextWfdQuestion() {
+    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const select = document.getElementById('wfdSelect');
+    let nextIdx = parseInt(select.value) + 1;
+    if (nextIdx >= list.length) nextIdx = 0;
+    select.value = nextIdx;
+    onSelectWfd();
+  }
+
+  function calcWfdWords() {
+    const val = document.getElementById('wfdInput').value.trim();
+    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
+    document.getElementById('wfdWordCount').innerText = "Word Count: " + count;
+  }
+
+  function evaluateWfdAnswer() {
+    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    const idx = document.getElementById('wfdSelect').value;
+    const q = list[idx];
+    const userRawText = document.getElementById('wfdInput').value.trim();
+
+    if (!userRawText) {
+      showToast("⚠️ Please type your answer before checking.");
+      return;
+    }
+
+    stopWfdTimer();
+
+    const origTokens = q.text.trim().split(/\s+/);
+    const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
+    const userTokens = userRawText.split(/\s+/).filter(Boolean);
+    const userCleanWords = userTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
+
+    let userPool = [...userCleanWords.map(w => w.toLowerCase())];
+    let score = 0;
+    let markup = "";
+
+    origTokens.forEach((token, i) => {
+      const targetLower = origCleanWords[i].toLowerCase();
+      const matchIdx = userPool.indexOf(targetLower);
+      if (matchIdx !== -1) {
+        score++;
+        userPool.splice(matchIdx, 1);
+        markup += `<span class="wfd-word-correct">${token}</span> `;
+      } else {
+        markup += `<span class="wfd-word-missing">${token}</span> `;
+      }
+    });
+
+    let tips = [];
+    const firstOrigChar = origCleanWords[0].charAt(0);
+    const firstUserChar = userCleanWords[0] ? userCleanWords[0].charAt(0) : "";
+    if (firstOrigChar === firstOrigChar.toUpperCase() && firstUserChar !== firstUserChar.toUpperCase()) {
+      tips.push("⚠️ <b>Capitalization Tip:</b> Remember to capitalize the first letter of the sentence.");
+    }
+    if (!userRawText.endsWith('.')) {
+      tips.push("⚠️ <b>Punctuation Tip:</b> Don't forget to put a full stop (<b>.</b>) at the end of the sentence.");
+    }
+
+    document.getElementById('wfdScoreBadge').innerText = `${score} / ${origTokens.length}`;
+    document.getElementById('wfdSentenceDisplay').innerHTML = markup;
+    
+    const tipsContainer = document.getElementById('wfdTipsContainer');
+    if (tips.length > 0) {
+      tipsContainer.innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
+      tipsContainer.style.display = 'flex';
+    } else {
+      tipsContainer.innerHTML = '';
+      tipsContainer.style.display = 'none';
+    }
+
+    document.getElementById('wfdResultBox').style.display = 'flex';
+  }
+
+  /* Flashcards Logic */
+  function selectQuota(val) {
+    selectedDailyQuota = val;
+    const buttons = document.getElementById('quotaOptions').getElementsByTagName('button');
+    for (let btn of buttons) {
+      btn.classList.remove('selected');
+      if (parseInt(btn.innerText) === val) btn.classList.add('selected');
+    }
+  }
+  
+  (function checkDailyReset() {
+    const today = new Date().toISOString().split('T')[0];
+    if (dailyStats.date !== today) {
+      dailyStats.date = today;
+      dailyStats.newCardsSeen = 0;
+      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
+    }
+  })();
+
+  function startFlashcards() {
+    sessionQueue = [];
+    
+    academicVocab.forEach(card => {
+      if (leitnerData[card.id] && leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
+        sessionQueue.push(card);
+      }
+    });
+    
+    let remainingQuota = selectedDailyQuota - dailyStats.newCardsSeen;
+    let addedNew = 0;
+    if (remainingQuota > 0) {
+      for (let i = 0; i < academicVocab.length; i++) {
+        let card = academicVocab[i];
+        if (leitnerData[card.id] && leitnerData[card.id].box === 1) {
+          sessionQueue.push(card);
+          addedNew++;
+          if (addedNew >= remainingQuota) break;
+        }
+      }
+    }
+    
+    if (sessionQueue.length === 0) {
+      navTo('flash');
+      showDoneMessage();
+    } else {
+      currentCardIndex = 0;
+      navTo('flash');
+      renderFlashcard();
+    }
+  }
+
+  function renderFlashcard() {
+    if (currentCardIndex >= sessionQueue.length) {
+      showDoneMessage();
+      return;
+    }
+    
+    document.getElementById('cardScene').style.display = 'block';
+    document.getElementById('leitnerActions').style.display = 'flex';
+    document.getElementById('doneMessage').style.display = 'none';
+
+    const cardObj = sessionQueue[currentCardIndex];
+    const box = leitnerData[cardObj.id]?.box || 1;
+
+    document.getElementById('activeCard').classList.remove('is-flipped');
+    document.getElementById('quotaDisplay').innerText = `Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
+    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${sessionQueue.length}`;
+    document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
+    
+    document.getElementById('frontWord').innerText = cardObj.word;
+    document.getElementById('backPhonetic').innerText = cardObj.phonetic;
+    document.getElementById('backPos').innerText = cardObj.pos;
+    document.getElementById('backMeaning').innerText = cardObj.meaning;
+    document.getElementById('backCollocations').innerHTML = (cardObj.collocations || []).map(c => `• ${c}`).join('<br>');
+    document.getElementById('backSentence').innerText = cardObj.sentence;
+  }
+
+  function flipCard() {
+    document.getElementById('activeCard').classList.toggle('is-flipped');
+  }
+
+  function answerCard(known) {
+    const cardObj = sessionQueue[currentCardIndex];
+    const currentBox = leitnerData[cardObj.id]?.box || 1;
+    
+    if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
+      dailyStats.newCardsSeen++;
+      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
+    }
+    
+    leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
+    localStorage.setItem('pteroom_leitner_v15', JSON.stringify(leitnerData));
+    
+    currentCardIndex++;
+    renderFlashcard();
+  }
+  
+  function showDoneMessage() {
+    document.getElementById('cardScene').style.display = 'none';
+    document.getElementById('leitnerActions').style.display = 'none';
+    document.getElementById('doneMessage').style.display = 'flex';
+  }
+
+  window.onload = initApp;
 </script>
 
 </body>
