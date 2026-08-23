@@ -1368,10 +1368,18 @@
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
+
+      <div class="hub-card" onclick="navTo('swt')">
+        <div class="hub-icon">📝</div>
+        <div class="hub-text">
+          <h3 style="color:#38bdf8;">Summarize Written Text (SWT)</h3>
+          <p>ارزیابی سخت‌گیرانه تک‌جمله‌ای، بازه کلمات و استراکچر آکادمیک</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- RFIB Practice Screen (Restored Drag & Drop / Click-to-Drop Model) -->
+  <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
       <!-- Grammar Category Selection Bar -->
@@ -1400,6 +1408,41 @@
         <button class="btn-secondary" style="flex: 1;" onclick="prevRfibQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="checkRfibAnswer()">Check Answer 🎯</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ▶️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWT Practice Screen (Fully Integrated with PTE Room Rules & Timer) -->
+  <div class="view-screen" id="viewSwt">
+    <div class="wfd-box">
+      <select id="swtSelect" onchange="onSelectSwt()"></select>
+
+      <div class="wfd-status-bar">
+        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="swtWordCount">Word Count: 0 / 75</span>
+        <span class="wfd-timer-badge" id="swtTimerBadge">⏱ 00:00</span>
+      </div>
+
+      <div class="quiz-card" style="flex:1; overflow-y:auto; margin-top:2px; border:none; background:transparent; padding:0; display: flex; flex-direction: column; gap: 8px;">
+        <div class="passage-box" id="swtPassageBox" style="font-size:13.5px; line-height:2.2; max-height: 140px; overflow-y: auto;">
+          Passage loading...
+        </div>
+
+        <textarea id="swtInput" style="height: 85px; min-height: 85px;" placeholder="Type your single-sentence summary here (The passage discusses...)" oninput="calcSwtWords()"></textarea>
+
+        <div class="wfd-result-card" id="swtResultBox">
+          <div class="wfd-score-header">
+            <span>📊 SWT Strict Analysis (PTE Room):</span>
+            <span id="swtScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">Status</span>
+          </div>
+          <div class="wfd-sentence-display" id="swtFeedbackDisplay" style="font-size: 13px; line-height: 1.6;"></div>
+          <div class="wfd-tips-container" id="swtTipsContainer" style="margin-top: 4px;"></div>
+        </div>
+      </div>
+
+      <div class="wfd-action-buttons" id="swtCheckActionBox" style="margin-top:8px;">
+        <button class="btn-secondary" style="flex: 1;" onclick="prevSwtQuestion()">◀️ Prev</button>
+        <button class="btn-primary" style="flex: 2;" onclick="evaluateSwtAnswer()">Check Answer 🎯</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextSwtQuestion()">Next ▶️</button>
       </div>
     </div>
   </div>
@@ -1539,6 +1582,164 @@
     }
   ];
 
+  /* SWT Data Engine */
+  let swtQuestions = [
+    {
+      id: 1,
+      title: "SWT Sample 1: Modern Technology",
+      passage: "Modern technology has significantly transformed communication channels, enabling instant global connectivity while raising concerns about digital addiction and superficial relationships. Governments and educators are increasingly struggling to balance technological integration with traditional social development among younger generations.",
+      sampleAnswer: "The passage discusses technological advancements, explaining that communication channels have been transformed and raising concerns about digital addiction, while also referring to government policies and addressing social development challenges."
+    }
+  ];
+  let currentSwtIndex = 0;
+  let swtTimerInterval = null;
+  let swtElapsedSeconds = 0;
+
+  function loadSwtList() {
+    const select = document.getElementById('swtSelect');
+    if (!select) return;
+    select.innerHTML = "";
+    swtQuestions.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title;
+      select.appendChild(opt);
+    });
+    currentSwtIndex = 0;
+    loadSwtQuestion(0);
+  }
+
+  function loadSwtQuestion(idx) {
+    currentSwtIndex = idx;
+    const q = swtQuestions[idx];
+    if (!q) return;
+
+    document.getElementById('swtPassageBox').innerText = q.passage;
+    document.getElementById('swtInput').value = "";
+    document.getElementById('swtResultBox').style.display = 'none';
+    calcSwtWords();
+    startSwtTimer();
+  }
+
+  function onSelectSwt() {
+    const idx = document.getElementById('swtSelect').value;
+    loadSwtQuestion(idx);
+  }
+
+  function startSwtTimer() {
+    stopSwtTimer();
+    swtElapsedSeconds = 0;
+    updateSwtTimerDisplay();
+    swtTimerInterval = setInterval(() => {
+      swtElapsedSeconds++;
+      updateSwtTimerDisplay();
+    }, 1000);
+  }
+
+  function stopSwtTimer() {
+    if (swtTimerInterval) {
+      clearInterval(swtTimerInterval);
+      swtTimerInterval = null;
+    }
+  }
+
+  function updateSwtTimerDisplay() {
+    const badge = document.getElementById('swtTimerBadge');
+    if (!badge) return;
+    const mins = Math.floor(swtElapsedSeconds / 60);
+    const secs = swtElapsedSeconds % 60;
+    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    badge.classList.remove('warning', 'danger');
+    if (swtElapsedSeconds >= 600) {
+      badge.classList.add('danger'); // از 10 دقیقه قرمز
+    } else if (swtElapsedSeconds >= 480) {
+      badge.classList.add('warning'); // از 8 دقیقه زرد
+    }
+  }
+
+  function calcSwtWords() {
+    const val = document.getElementById('swtInput').value.trim();
+    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
+    document.getElementById('swtWordCount').innerText = `Word Count: ${count} / 75`;
+  }
+
+  /* Strict PTE Room Structure Evaluation for SWT */
+  function evaluateSwtAnswer() {
+    const userText = document.getElementById('swtInput').value.trim();
+    if (!userText) {
+      showToast("⚠️ لطفاً خلاصه خود را وارد کنید.");
+      return;
+    }
+
+    stopSwtTimer();
+
+    const words = userText.split(/\s+/).filter(Boolean);
+    const wordCount = words.length;
+    let errors = [];
+    let warnings = [];
+
+    // ۱. بررسی فرم (Form): بین ۵ تا ۷۵ کلمه و تک‌جمله‌ای بودن
+    const isWordCountValid = (wordCount >= 5 && wordCount <= 75);
+    if (!isWordCountValid) {
+      errors.push(`❌ خطای فرم (Form): تعداد کلمات شما (${wordCount}) خارج از بازه مجاز ۵ تا ۷۵ کلمه است.`);
+    }
+
+    const internalSentences = userText.slice(0, -1).split(/[.!?]+/).filter(Boolean);
+    const isSingleSentence = (internalSentences.length === 0 && userText.endsWith('.'));
+    if (!isSingleSentence) {
+      errors.push(`❌ خطای ساختار جمله: خلاصه شما باید صرفاً **یک جمله کامل و واحد** باشد و با یک نقطه پایان یابد.`);
+    }
+
+    // ۲. بررسی استراکچر اختصاصی PTE Room
+    const hasTemplateStart = userText.toLowerCase().startsWith("the passage discusses");
+    if (!hasTemplateStart) {
+      warnings.push(`⚠️ استراکچر PTE Room: پیشنهاد می‌شود جمله با الگوی استاندارد آغاز شود: <b>"The passage discusses [NP]..."</b>`);
+    }
+
+    // بررسی استفاده از that قبل از Clause
+    if (userText.toLowerCase().includes("explaining") && !userText.toLowerCase().includes("explaining that") && !userText.toLowerCase().includes("explaining the")) {
+      warnings.push(`⚠️ قانون نگارشی PTE Room: زمانی که از جمله کامل (Clause) بعد از explaining استفاده می‌کنید، حتماً باید قبل از آن کلمه <b>that</b> بیاورید.`);
+    }
+
+    const q = swtQuestions[currentSwtIndex];
+    const resultBox = document.getElementById('swtResultBox');
+    const scoreBadge = document.getElementById('swtScoreBadge');
+    const feedbackEl = document.getElementById('swtFeedbackDisplay');
+    const tipsContainer = document.getElementById('swtTipsContainer');
+
+    if (isWordCountValid && isSingleSentence) {
+      scoreBadge.innerText = "✅ تایید فرم پیرسون";
+      scoreBadge.style.background = "#10b981";
+      feedbackEl.innerHTML = `پاسخ شما یک جمله کامل با ${wordCount} کلمه است.<br><br><b>💡 نمونه پاسخ استاندارد (PTE Room Sample):</b><br><i>${q.sampleAnswer}</i>`;
+    } else {
+      scoreBadge.innerText = "❌ مردود در فرم";
+      scoreBadge.style.background = "#ef4444";
+      feedbackEl.innerHTML = errors.join('<br>') + `<br><br><b>💡 نمونه پاسخ استاندارد (PTE Room Sample):</b><br><i>${q.sampleAnswer}</i>`;
+    }
+
+    if (warnings.length > 0) {
+      tipsContainer.innerHTML = warnings.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
+      tipsContainer.style.display = 'flex';
+    } else {
+      tipsContainer.innerHTML = '';
+      tipsContainer.style.display = 'none';
+    }
+
+    resultBox.style.display = 'flex';
+  }
+
+  function prevSwtQuestion() {
+    let prevIdx = currentSwtIndex - 1;
+    if (prevIdx < 0) prevIdx = swtQuestions.length - 1;
+    loadSwtQuestion(prevIdx);
+  }
+
+  function nextSwtQuestion() {
+    let nextIdx = currentSwtIndex + 1;
+    if (nextIdx >= swtQuestions.length) nextIdx = 0;
+    loadSwtQuestion(nextIdx);
+  }
+
   /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
   let rfibAllQuestions = [];
   let currentRfibList = [];
@@ -1548,15 +1749,15 @@
 
   async function initRfibModule() {
     try {
-      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         rfibAllQuestions = await res.json();
         filterRfibCategory('All');
       } else {
-        console.warn("Could not load rfib_questions.json");
+        console.warn("Could not load rwfib_questions.json");
       }
     } catch (err) {
-      console.error("Error loading RFIB JSON:", err);
+      console.error("Error loading RWFIB JSON:", err);
     }
   }
 
@@ -1853,6 +2054,7 @@
     const ts = Date.now();
     initRfib();
     initRfibModule();
+    loadSwtList();
     checkForceJoinOnStart();
 
     try {
@@ -1924,42 +2126,57 @@
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'placement') {
       document.getElementById('viewPlacement').classList.add('active');
       title.innerText = "PTE ROOM • آزمون تعیین سطح";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'materials') {
       document.getElementById('viewMaterials').classList.add('active');
       title.innerText = "PTE ROOM • متریال آموزشی";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'schedule') {
       document.getElementById('viewSchedule').classList.add('active');
       title.innerText = "PTE ROOM • برنامه تمرینی هفته";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
       title.innerText = "PTE ROOM • دوره‌های آموزشی";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
       title.innerText = "PTE ROOM • PTE PRACTICE";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
       title.innerText = "PTE ROOM • Write From Dictation";
+      stopSwtTimer();
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
       title.innerText = "PTE ROOM • Reading FIB";
       stopWfdTimer();
+      stopSwtTimer();
+    } else if (current === 'swt') {
+      document.getElementById('viewSwt').classList.add('active');
+      title.innerText = "PTE ROOM • Summarize Written Text";
+      stopWfdTimer();
+      loadSwtQuestion(currentSwtIndex);
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
       stopWfdTimer();
+      stopSwtTimer();
     } else if (current === 'flash') {
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • FLASH CARDS";
       stopWfdTimer();
+      stopSwtTimer();
     }
   }
 
