@@ -580,18 +580,19 @@
       gap: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .wfd-category-bar { display: flex; gap: 8px; flex-shrink: 0; }
+    .wfd-category-bar { display: flex; gap: 6px; flex-shrink: 0; }
     .cat-btn {
       flex: 1;
       background: #1e293b;
       border: 1px solid #334155;
       padding: 8px 4px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #94a3b8;
       cursor: pointer;
       transition: all 0.2s;
+      text-align: center;
     }
     .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
@@ -686,6 +687,40 @@
       transition: all 0.2s;
     }
     .btn-secondary:active { background: #334155; }
+
+    /* Difficulty Rating Buttons */
+    .wfd-diff-buttons {
+      display: none;
+      gap: 8px;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    .btn-diff-hard {
+      flex: 1;
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1.5px solid #ef4444;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-diff-hard:active { background: rgba(239, 68, 68, 0.35); }
+    .btn-diff-easy {
+      flex: 1;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1.5px solid #10b981;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-diff-easy:active { background: rgba(16, 185, 129, 0.35); }
 
     /* Flashcard Styles */
     .flashcard-box {
@@ -1252,8 +1287,9 @@
   <div class="view-screen" id="viewWfd">
     <div class="wfd-box">
       <div class="wfd-category-bar">
-        <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All Questions</button>
-        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Monthly Prediction</button>
+        <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All</button>
+        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Pred</button>
+        <button class="cat-btn" id="catReview" onclick="filterWfdCategory('review')">🔖 Review List</button>
       </div>
 
       <select id="wfdSelect" onchange="onSelectWfd()"></select>
@@ -1278,9 +1314,14 @@
         <div class="wfd-tips-container" id="wfdTipsContainer"></div>
       </div>
 
-      <div class="wfd-action-buttons">
+      <div class="wfd-action-buttons" id="wfdCheckActionBox">
         <button class="btn-primary" style="flex: 2;" onclick="evaluateWfdAnswer()">Check Answer</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextWfdQuestion()">Next ⏭</button>
+      </div>
+
+      <div class="wfd-diff-buttons" id="wfdDiffActionBox">
+        <button class="btn-diff-hard" onclick="markWfdDifficulty('hard')">🔴 Hard (Needs Review)</button>
+        <button class="btn-diff-easy" onclick="markWfdDifficulty('easy')">🟢 Easy (Got it)</button>
       </div>
     </div>
   </div>
@@ -1465,6 +1506,7 @@
 
   let leitnerData = JSON.parse(localStorage.getItem('pteroom_leitner_v15')) || {};
   let dailyStats = JSON.parse(localStorage.getItem('pteroom_daily_stats_v15')) || { date: "", newCardsSeen: 0 };
+  let wfdHardList = JSON.parse(localStorage.getItem('pteroom_wfd_hard_list')) || [];
 
   const tg = window.Telegram?.WebApp;
   if (tg) {
@@ -1821,40 +1863,98 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     currentWfdCat = cat;
     document.getElementById('catAll').className = cat === 'all' ? 'cat-btn active' : 'cat-btn';
     document.getElementById('catPred').className = cat === 'pred' ? 'cat-btn active' : 'cat-btn';
+    document.getElementById('catReview').className = cat === 'review' ? 'cat-btn active' : 'cat-btn';
 
-    let list = cat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    let list = [];
+    if (cat === 'pred') {
+      list = wfdQuestions.filter(q => q.isPrediction);
+    } else if (cat === 'review') {
+      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    } else {
+      // مرتب‌سازی هوشمند: سوالات Hard در اولویت بالا قرار می‌گیرند
+      list = [...wfdQuestions].sort((a, b) => {
+        const aHard = wfdHardList.includes(String(a.id));
+        const bHard = wfdHardList.includes(String(b.id));
+        if (aHard && !bHard) return -1;
+        if (!aHard && bHard) return 1;
+        return 0;
+      });
+    }
+
     const select = document.getElementById('wfdSelect');
     select.innerHTML = "";
-    list.forEach((q, idx) => {
+    if (list.length === 0 && cat === 'review') {
       const opt = document.createElement('option');
-      opt.value = idx;
-      opt.innerText = q.title || `WFD #${q.id}`;
+      opt.value = "";
+      opt.innerText = "هیچ سوال سختی در لیست مرور نیست!";
       select.appendChild(opt);
-    });
+    } else {
+      list.forEach((q, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        const isHardMark = wfdHardList.includes(String(q.id)) ? " 🔴 [Hard]" : "";
+        opt.innerText = (q.title || `WFD #${q.id}`) + isHardMark;
+        select.appendChild(opt);
+      });
+    }
     onSelectWfd();
   }
 
   function onSelectWfd() {
-    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    let list = [];
+    if (currentWfdCat === 'pred') {
+      list = wfdQuestions.filter(q => q.isPrediction);
+    } else if (currentWfdCat === 'review') {
+      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    } else {
+      list = [...wfdQuestions].sort((a, b) => {
+        const aHard = wfdHardList.includes(String(a.id));
+        const bHard = wfdHardList.includes(String(b.id));
+        if (aHard && !bHard) return -1;
+        if (!aHard && bHard) return 1;
+        return 0;
+      });
+    }
+
     const idx = document.getElementById('wfdSelect').value;
     const q = list[idx];
-    if (!q) return;
-
+    
     document.getElementById('wfdResultBox').style.display = 'none';
+    document.getElementById('wfdCheckActionBox').style.display = 'flex';
+    document.getElementById('wfdDiffActionBox').style.display = 'none';
     document.getElementById('wfdInput').value = "";
     calcWfdWords();
     startWfdTimer();
 
     const audio = document.getElementById('wfdAudioPlayer');
-    audio.src = "wfd_audios/" + q.audioUrl;
-    audio.load();
+    if (q) {
+      audio.src = "wfd_audios/" + q.audioUrl;
+      audio.load();
+    } else {
+      audio.src = "";
+    }
   }
 
   function nextWfdQuestion() {
-    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    let list = [];
+    if (currentWfdCat === 'pred') {
+      list = wfdQuestions.filter(q => q.isPrediction);
+    } else if (currentWfdCat === 'review') {
+      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    } else {
+      list = [...wfdQuestions].sort((a, b) => {
+        const aHard = wfdHardList.includes(String(a.id));
+        const bHard = wfdHardList.includes(String(b.id));
+        if (aHard && !bHard) return -1;
+        if (!aHard && bHard) return 1;
+        return 0;
+      });
+    }
+
     const select = document.getElementById('wfdSelect');
+    if (list.length === 0) return;
     let nextIdx = parseInt(select.value) + 1;
-    if (nextIdx >= list.length) nextIdx = 0;
+    if (isNaN(nextIdx) || nextIdx >= list.length) nextIdx = 0;
     select.value = nextIdx;
     onSelectWfd();
   }
@@ -1866,10 +1966,29 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
   }
 
   function evaluateWfdAnswer() {
-    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
+    let list = [];
+    if (currentWfdCat === 'pred') {
+      list = wfdQuestions.filter(q => q.isPrediction);
+    } else if (currentWfdCat === 'review') {
+      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    } else {
+      list = [...wfdQuestions].sort((a, b) => {
+        const aHard = wfdHardList.includes(String(a.id));
+        const bHard = wfdHardList.includes(String(b.id));
+        if (aHard && !bHard) return -1;
+        if (!aHard && bHard) return 1;
+        return 0;
+      });
+    }
+
     const idx = document.getElementById('wfdSelect').value;
     const q = list[idx];
     const userRawText = document.getElementById('wfdInput').value.trim();
+
+    if (!q) {
+      showToast("⚠️ فایلی برای ارزیابی انتخاب نشده است.");
+      return;
+    }
 
     if (!userRawText) {
       showToast("⚠️ Please type your answer before checking.");
@@ -1922,6 +2041,45 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     }
 
     document.getElementById('wfdResultBox').style.display = 'flex';
+    // جایگزینی دکمه چک جواب با دکمه‌های Easy / Hard
+    document.getElementById('wfdCheckActionBox').style.display = 'none';
+    document.getElementById('wfdDiffActionBox').style.display = 'flex';
+  }
+
+  function markWfdDifficulty(diff) {
+    let list = [];
+    if (currentWfdCat === 'pred') {
+      list = wfdQuestions.filter(q => q.isPrediction);
+    } else if (currentWfdCat === 'review') {
+      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    } else {
+      list = [...wfdQuestions].sort((a, b) => {
+        const aHard = wfdHardList.includes(String(a.id));
+        const bHard = wfdHardList.includes(String(b.id));
+        if (aHard && !bHard) return -1;
+        if (!aHard && bHard) return 1;
+        return 0;
+      });
+    }
+
+    const idx = document.getElementById('wfdSelect').value;
+    const q = list[idx];
+    if (!q) return;
+
+    const qIdStr = String(q.id);
+
+    if (diff === 'hard') {
+      if (!wfdHardList.includes(qIdStr)) {
+        wfdHardList.push(qIdStr);
+        showToast("🔴 سوال به Review List (سخت‌ها) اضافه شد");
+      }
+    } else if (diff === 'easy') {
+      wfdHardList = wfdHardList.filter(id => id !== qIdStr);
+      showToast("🟢 علامت سختی از روی سوال برداشته شد");
+    }
+
+    localStorage.setItem('pteroom_wfd_hard_list', JSON.stringify(wfdHardList));
+    nextWfdQuestion();
   }
 
   function selectQuota(val) {
