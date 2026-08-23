@@ -1464,16 +1464,6 @@
       <div class="quiz-card" style="flex:1; overflow-y:auto; margin-top:2px; padding:10px; gap:8px;">
         <div class="quiz-title"><span>📖 Reading Passage</span></div>
         <div class="passage-box" id="swtPassageBox" style="font-size:13.5px; line-height:2;"></div>
-
-        <button class="btn-secondary" style="align-self:flex-start; font-size:11px; padding:6px 10px;" onclick="toggleSwtStructure()">🧩 PTE ROOM Structure &amp; Sample Answer</button>
-        <div class="swt-structure-box" id="swtStructureBox">
-          <b>PTE ROOM Structure</b>
-          <div class="swt-structure-tpl">The passage discusses [NP], explaining (that) [CLAUSE or NP] and [CLAUSE or NP], while also mentioning [NP] as well as [NP], presenting [NP], and ending with [NP].</div>
-          <div>Use <i>that</i> before a full clause (subject + verb). Drop <i>that</i> before a noun phrase. What comes before and after "and" must be grammatically parallel.</div>
-          <div style="margin-top:8px;"><b>Sample answer:</b></div>
-          <div id="swtSampleAnswer" style="margin-top:4px;"></div>
-          <div id="swtSampleWc" style="color:#94a3b8; font-size:11px; margin-top:4px;"></div>
-        </div>
       </div>
 
       <div class="wfd-status-bar">
@@ -1491,16 +1481,24 @@
         </div>
         <div class="swt-crit-grid" id="swtCritGrid"></div>
         <div class="wfd-tips-container" id="swtFeedbackContainer"></div>
-        <div style="font-size:10.5px; color:#64748b; margin-top:4px; line-height:1.6;">Automated estimate only — rule-based Content/Grammar/Vocabulary checks cannot fully judge paraphrasing or meaning like a human rater or the real PTE engine.</div>
+
+        <div class="swt-structure-box show" id="swtStructureBox" style="margin-top:6px;">
+          <b>🧩 Sample answer using PTE ROOM structure</b>
+          <div class="swt-structure-tpl">The passage discusses [NP], explaining (that) [CLAUSE or NP] and [CLAUSE or NP], while also mentioning [NP] as well as [NP], presenting [NP], and ending with [NP].</div>
+          <div id="swtSampleAnswer" style="margin-top:4px;"></div>
+          <div id="swtSampleWc" style="color:#94a3b8; font-size:11px; margin-top:4px;"></div>
+        </div>
       </div>
 
       <div class="wfd-action-buttons" id="swtCheckActionBox">
+        <button class="btn-secondary" style="flex: 1;" onclick="prevSwtQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="gradeSwtAnswer()">Submit &amp; Get Score</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextSwtQuestion()">Next ⏭</button>
       </div>
       <div class="wfd-action-buttons" id="swtAfterActionBox" style="display:none;">
+        <button class="btn-secondary" style="flex: 1;" onclick="prevSwtQuestion()">◀️ Prev</button>
         <button class="btn-secondary" style="flex: 1;" onclick="retrySwtQuestion()">🔁 Try Again</button>
-        <button class="btn-primary" style="flex: 2;" onclick="nextSwtQuestion()">Next Question ⏭</button>
+        <button class="btn-primary" style="flex: 1.5;" onclick="nextSwtQuestion()">Next ⏭</button>
       </div>
     </div>
   </div>
@@ -1747,12 +1745,16 @@
     loadSwtQuestion(next);
   }
 
-  function retrySwtQuestion() {
-    loadSwtQuestion(swtActiveIndex);
+  function prevSwtQuestion() {
+    if (swtQuestions.length === 0) return;
+    let prev = swtActiveIndex - 1;
+    if (prev < 0) prev = swtQuestions.length - 1;
+    document.getElementById('swtSelect').value = prev;
+    loadSwtQuestion(prev);
   }
 
-  function toggleSwtStructure() {
-    document.getElementById('swtStructureBox').classList.toggle('show');
+  function retrySwtQuestion() {
+    loadSwtQuestion(swtActiveIndex);
   }
 
   /* ---- word count ---- */
