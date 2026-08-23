@@ -308,10 +308,7 @@
     }
     .inline-input:focus { border-color: #38bdf8 !important; }
 
-    /* RFIB Practice Screen Dropdown Styles */
-    .correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
-    .wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
-
+    /* RFIB Practice Screen Styles */
     .rfib-drop-zone {
       display: inline-flex;
       align-items: center;
@@ -335,6 +332,8 @@
       background: rgba(56, 189, 248, 0.15);
       border-color: #38bdf8;
     }
+    .rfib-drop-zone.correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
+    .rfib-drop-zone.wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
 
     .rfib-word-bank {
       display: flex;
@@ -1353,10 +1352,10 @@
     </div>
   </div>
 
-  <!-- RFIB Practice Screen (Restored original Drag & Drop / Click to Drop layout) -->
+  <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
-      <!-- Grammar Category Selection Bar -->
+      <!-- Grammar Category Selection Bar (10 categories: Inversion & Conditional only in All) -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
         <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
@@ -1530,12 +1529,12 @@
 
   async function initRfibModule() {
     try {
-      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
         rfibAllQuestions = await res.json();
         filterRfibCategory('All');
       } else {
-        console.warn("Could not load rwfib_questions.json");
+        console.warn("Could not load rfib_questions.json");
       }
     } catch (err) {
       console.error("Error loading RFIB JSON:", err);
