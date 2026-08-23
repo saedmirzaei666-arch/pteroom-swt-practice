@@ -510,7 +510,7 @@
     .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
-    /* Modal Styles - Top Down Dropdown */
+    /* Modal Styles */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -1470,8 +1470,12 @@
   if (tg) {
     tg.ready();
     tg.expand();
-    if (tg.requestFullscreen) tg.requestFullscreen();
-    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+    if (typeof tg.requestFullscreen === "function") {
+      try { tg.requestFullscreen(); } catch (err) {}
+    }
+    if (typeof tg.disableVerticalSwipes === "function") {
+      try { tg.disableVerticalSwipes(); } catch (err) {}
+    }
     if (tg.BackButton) {
       tg.BackButton.onClick(() => navBack());
     }
@@ -1583,7 +1587,6 @@
     }
   }
 
-  /* Live Word Count */
   function updateWritingCount() {
     const text = document.getElementById('placementWriting').value.trim();
     const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
@@ -1592,7 +1595,6 @@
     counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
   }
 
-  /* Robust Multi-Message Submission Engine */
   async function handlePlacementSubmit(e) {
     e.preventDefault();
     if (isSubmitting) return;
@@ -1614,7 +1616,6 @@
     const writingText = document.getElementById('placementWriting').value.trim();
     const wordsCount = writingText === "" ? 0 : writingText.split(/\s+/).filter(Boolean).length;
 
-    // کلیدهای آزمون
     const rwKeys = { rw_a: "studying", rw_b: "everything", rw_c: "actually", rw_d: "parallel", rw_e: "practice", rw_f: "thinking" };
     const rfibKeys = { A: "dominance", B: "twice", C: "part", D: "rate" };
     const lfibKeys = { lfib_1: "orchestrated", lfib_2: "biology", lfib_3: "basic", lfib_4: "principle", lfib_5: "quite" };
@@ -1730,7 +1731,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
         })
       });
 
-      // ریست فرم و وضعیت پس از ارسال موفق
       formElement.reset();
       rfibUserAnswers = { A: null, B: null, C: null, D: null };
       ['A', 'B', 'C', 'D'].forEach(k => {
@@ -1790,7 +1790,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     }
   }
 
-  /* WFD Simulator Functions */
   function startWfdTimer() {
     stopWfdTimer();
     wfdElapsedSeconds = 0;
@@ -1925,7 +1924,6 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     document.getElementById('wfdResultBox').style.display = 'flex';
   }
 
-  /* Flashcards Logic */
   function selectQuota(val) {
     selectedDailyQuota = val;
     const buttons = document.getElementById('quotaOptions').getElementsByTagName('button');
