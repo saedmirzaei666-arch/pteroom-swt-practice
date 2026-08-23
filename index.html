@@ -1355,7 +1355,7 @@
   <!-- RFIB Practice Screen -->
   <div class="view-screen" id="viewRfib">
     <div class="wfd-box">
-      <!-- Grammar Category Selection Bar (10 categories, Inversion & Conditional only in All) -->
+      <!-- Grammar Category Selection Bar (10 categories: Inversion & Conditional only in All) -->
       <div class="wfd-category-bar" id="rfibCatBar">
         <button class="cat-btn active" onclick="filterRfibCategory('All')">🌐 All</button>
         <button class="cat-btn" onclick="filterRfibCategory('Verb')">Verb</button>
@@ -1520,105 +1520,25 @@
     }
   ];
 
-  /* RFIB Sample Questions covering all 10 categories + Inversion & Conditional in All */
-  const rfibSampleQuestions = [
-    {
-      id: 753,
-      title: "753. Traffic Jams",
-      grammar: "Verb",
-      text: "For the first time Japanese researchers have [A] a real-life experiment that shows how some traffic jams appear for no apparent reason. They placed 22 vehicles on a single track and asked the drivers to [B] around at a constant speed of 30 kilometers an hour. At first, traffic moved [C] but soon the distance between cars started to vary and vehicles clumped together at one point on the track. But the jams [D] backwards around the track like a shock wave at a rate of about 20 kilometers an hour. Real-life jams move backwards at about the same speed.",
-      options: ["cruise", "smoothly", "sustained", "spread", "abruptly", "dangle", "tramp", "conducted"],
-      answers: { "A": "conducted", "B": "cruise", "C": "abruptly", "D": "spread" }
-    },
-    {
-      id: 752,
-      title: "752. Counseling",
-      grammar: "Parallelism",
-      text: "Counseling is an [A] service that colleges and universities invariably provide. Services can range from life-saving care to [B] with minor concerns. Life [C], such as deaths and divorces in the family, issues with friends, substance abuse, and suicide are just a few of the many issues that college students may experience or [D] others struggling with.",
-      options: ["witness", "economic", "stressors", "essential", "assistance", "influence", "conjunction"],
-      answers: { "A": "essential", "B": "assistance", "C": "stressors", "D": "witness" }
-    },
-    {
-      id: 749,
-      title: "749. Climate Finance",
-      grammar: "Preposition",
-      text: "Financial resources and sound investments are needed to [A] climate change, to both reduce emissions, [B] adaptation to the impacts that are already occurring, and to build resilience. The benefits that flow from these investments, however, dramatically [C] any upfront costs. According to a study, the world will need to make significant investment in infrastructure over the next 15 years, but it can [D] those investments.",
-      options: ["outweigh", "outline", "recoup", "derange", "promote", "recruit", "address"],
-      answers: { "A": "address", "B": "fund", "C": "outweigh", "D": "recoup" }
-    },
-    {
-      id: 739,
-      title: "739. Internet Cafes",
-      grammar: "Connector",
-      text: "Internet cafes are particularly useful for travelers who don't want to [A] laptops along on their trip. In many countries where computers and internet access are not widely available or [B], cybercafes also provide an important service to the local population. Internet cafes usually [C] customers based on the amount of time they use a computer.",
-      options: ["enable", "carry", "affordable", "charge", "equivalent", "purchase"],
-      answers: { "A": "carry", "B": "affordable", "C": "charge" }
-    },
-    {
-      id: 732,
-      title: "732. Plastic",
-      grammar: "Adjective",
-      text: "Plastic has [A] the way we manufacture, package, transport, and use different products [B] from groceries to cosmetics and vaccines. It is a tool and like any tool, it can offer great [C] but it can also pose problems when being used [D].",
-      options: ["conditions", "advantages", "resulting", "transgressed", "transformed", "ranging", "improperly"],
-      answers: { "A": "transformed", "B": "ranging", "C": "advantages", "D": "improperly" }
-    },
-    {
-      id: 731,
-      title: "731. Decision Paralysis",
-      grammar: "Participle",
-      text: "Decision paralysis is a state of over-analyzing a situation or decision up to the point where it actually [A] you from taking a decision, or it influences you significantly. This phenomenon typically [B] through inaction, indecision, and an excessive tendency to [C] the options and consequences you have at hand before making up your mind. This experience can be [D] and dangerous, and it can affect your professional and even personal life.",
-      options: ["weigh", "access", "frustrating", "indoctrinates", "physical", "manifests", "prevents"],
-      answers: { "A": "prevents", "B": "manifests", "C": "weigh", "D": "frustrating" }
-    },
-    {
-      id: 469,
-      title: "469. Nigerian Libraries",
-      grammar: "Quantifiers",
-      text: "Nigerian law libraries, despite the intervention of Council of Legal education, are still not endowed with every resource needed to satisfy information needs of [A] users. This is [B] with the fact that Nigerian universities are still struggling to manage [C] funds normally received from government. Resource sharing is [D] to be a solution.",
-      options: ["diverse", "supposed", "coupled", "scientific", "insufficient", "sponsored", "continued"],
-      answers: { "A": "diverse", "B": "coupled", "C": "insufficient", "D": "supposed" }
-    },
-    {
-      id: 748,
-      title: "748. Mobility Service",
-      grammar: "Reduced",
-      text: "Traditionally, when [A] a trip, travelers would have to use separate companies or services to book individual parts of a journey. This outdated system is considered to be inconvenient and [B] for the consumer. The 'Mobility as a Service' philosophy aims to [C] the entire travel experience by moving away from the focus on companies and approaching travel as more of a service that can [D] to citizens' individual needs.",
-      options: ["planning", "cater", "marching", "frustrating", "streamline", "approve", "design"],
-      answers: { "A": "planning", "B": "frustrating", "C": "streamline", "D": "cater" }
-    },
-    {
-      id: 734,
-      title: "734. Rainbows",
-      grammar: "Adverb",
-      text: "\"Climate change is [A] rainbows [B] now we know that's true,\" says Carlson, the lead author on a paper, which used computer models to [C] future rainbow-ready conditions. As major weather patterns [D] because of climate change, many parts of the world [E] places nearer to the poles, like Alaska or Siberia, will get more rain adding dozens more rainbow-rich days by the end of the century.",
-      options: ["simulate", "affecting", "stocking", "potentially", "significantly", "morph", "preserve"],
-      answers: { "A": "affecting", "B": "significantly", "C": "simulate", "D": "morph", "E": "potentially" }
-    },
-    {
-      id: 239,
-      title: "239. Feature Films",
-      grammar: "Inversion",
-      text: "Feature films in cinema history have always [A] audiences with visual storytelling. Seldom [B] we witness such a profound breakthrough in cinematic technology as we did in the 20th century.",
-      options: ["captivated", "do", "did", "engages"],
-      answers: { "A": "captivated", "B": "did" }
-    },
-    {
-      id: 528,
-      title: "528. Class Levels",
-      grammar: "Conditional",
-      text: "If students [A] diligent throughout the term, they would [B] higher grades in their final examinations. Future research may [C] the findings.",
-      options: ["were", "achieve", "re-explore", "had been"],
-      answers: { "A": "were", "B": "achieve", "C": "re-explore" }
-    }
-  ];
-
-  let currentRfibList = [...rfibSampleQuestions];
+  /* RFIB Dynamic Data Engine loaded via fetch from rfib_questions.json */
+  let rfibAllQuestions = [];
+  let currentRfibList = [];
   let activeRfibIndex = 0;
   let rfibUserPicks = {};
   let rfibActiveWord = null;
 
-  function initRfibModule() {
-    filterRfibCategory('All');
+  async function initRfibModule() {
+    try {
+      const res = await fetch(`data/rfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      if (res.ok) {
+        rfibAllQuestions = await res.json();
+        filterRfibCategory('All');
+      } else {
+        console.warn("Could not load rfib_questions.json");
+      }
+    } catch (err) {
+      console.error("Error loading RFIB JSON:", err);
+    }
   }
 
   function filterRfibCategory(cat) {
@@ -1626,9 +1546,9 @@
     event?.target?.classList.add('active');
 
     if (cat === 'All') {
-      currentRfibList = [...rfibSampleQuestions];
+      currentRfibList = [...rfibAllQuestions];
     } else {
-      currentRfibList = rfibSampleQuestions.filter(q => q.grammar === cat);
+      currentRfibList = rfibAllQuestions.filter(q => q.grammar && q.grammar.toLowerCase().includes(cat.toLowerCase()));
     }
 
     const select = document.getElementById('rfibSelect');
@@ -1645,7 +1565,7 @@
     currentRfibList.forEach((q, idx) => {
       const opt = document.createElement('option');
       opt.value = idx;
-      opt.innerText = q.title + ` [${q.grammar}]`;
+      opt.innerText = q.title + ` [${q.grammar || 'General'}]`;
       select.appendChild(opt);
     });
 
@@ -1662,32 +1582,34 @@
     rfibActiveWord = null;
 
     let passageHTML = q.text;
-    const blanks = ['A', 'B', 'C', 'D', 'E'];
+    const blanks = ['A', 'B', 'C', 'D', 'E', 'F'];
     blanks.forEach(b => {
-      passageHTML = passageHTML.replace(`[${b}]`, `<span class="rfib-drop-zone" id="rfibZone_${b}" onclick="onRfibZoneClick('${b}')"></span>`);
+      passageHTML = passageHTML.replace(new RegExp(`\\[${b}\\]`, 'g'), `<span class="rfib-drop-zone" id="rfibZone_${b}" onclick="onRfibZoneClick('${b}')"></span>`);
     });
 
     document.getElementById('rfibPassageBox').innerHTML = passageHTML;
 
     const bankContainer = document.getElementById('rfibDynamicWordBank');
     bankContainer.innerHTML = "";
-    q.options.forEach(w => {
-      const chip = document.createElement('div');
-      chip.className = 'rfib-chip';
-      chip.innerText = w;
-      chip.id = `rfib_chip_${w}`;
-      chip.onclick = () => {
-        if (chip.classList.contains('used')) return;
-        document.querySelectorAll('#rfibDynamicWordBank .rfib-chip').forEach(c => c.classList.remove('selected'));
-        if (rfibActiveWord === w) {
-          rfibActiveWord = null;
-        } else {
-          rfibActiveWord = w;
-          chip.classList.add('selected');
-        }
-      };
-      bankContainer.appendChild(chip);
-    });
+    if (q.options) {
+      q.options.forEach(w => {
+        const chip = document.createElement('div');
+        chip.className = 'rfib-chip';
+        chip.innerText = w;
+        chip.id = `rfib_chip_${w}`;
+        chip.onclick = () => {
+          if (chip.classList.contains('used')) return;
+          document.querySelectorAll('#rfibDynamicWordBank .rfib-chip').forEach(c => c.classList.remove('selected'));
+          if (rfibActiveWord === w) {
+            rfibActiveWord = null;
+          } else {
+            rfibActiveWord = w;
+            chip.classList.add('selected');
+          }
+        };
+        bankContainer.appendChild(chip);
+      });
+    }
   }
 
   function onSelectRfibQuestion() {
@@ -1776,7 +1698,7 @@
     loadRfibQuestion(nextIdx);
   }
 
-  /* Reading FIB Drag/Drop Engine */
+  /* Reading FIB Drag/Drop Engine for Placement Test */
   const rfibBankWords = ["rate", "part", "dominance", "margin", "twice", "relation", "more", "reign"];
   let rfibUserAnswers = { A: null, B: null, C: null, D: null };
   let activeSelectedWord = null;
