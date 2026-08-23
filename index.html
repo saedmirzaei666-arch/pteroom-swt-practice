@@ -16,6 +16,7 @@
       --text-muted: #94a3b8; 
       --success: #10b981; 
       --danger: #ef4444; 
+      --warning: #f59e0b;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "IRANSans", sans-serif; margin: 0; padding: 0; }
     
@@ -230,6 +231,7 @@
       border-radius: 4px;
     }
     .material-title { font-size: 14.5px; font-weight: 800; color: #f8fafc; }
+    .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
     /* Placement Test Styles */
     .placement-container {
@@ -366,6 +368,15 @@
       pointer-events: none;
       border-style: dashed;
     }
+
+    .audio-wrapper {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      padding: 6px 10px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    audio { width: 100%; height: 32px; outline: none; }
 
     .quiz-options {
       display: grid;
@@ -510,7 +521,7 @@
     .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
     .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
 
-    /* Modal Styles - Top Down Dropdown */
+    /* Modal Styles */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -1211,6 +1222,23 @@
   <!-- Practice Hub Screen -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
+      <!-- بخش جدید ریدینگ که با دقت و بدون کم شدن چیزی اضافه شد -->
+      <div class="hub-card" onclick="openReadingMain('rwfib')">
+        <div class="hub-icon">📖</div>
+        <div class="hub-text">
+          <h3>Dropdown RWFIB</h3>
+          <p>تمرین‌های جای‌خالی ریدینگ و رایتینگ (همه سوالات گرامری و پردیکشن)</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="openReadingMain('rfib')">
+        <div class="hub-icon">🧩</div>
+        <div class="hub-text">
+          <h3>Drag Drop RFIB</h3>
+          <p>تمرین‌های جای‌خالی ریدینگ (دسته‌بندی گرامری و پردیکشن ماهانه)</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('wfd')">
         <div class="hub-icon">✍️</div>
         <div class="hub-text">
@@ -1225,6 +1253,49 @@
           <h3>Academic Flashcards</h3>
           <p>جعبه لایتنر ۸۰۰ واژه آکادمیک (همراه با مرور هوشمند روزانه)</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reading Section Hub (All Questions vs Monthly Prediction) -->
+  <div class="view-screen" id="viewReadingHub">
+    <div class="hub-grid">
+      <div class="hub-card" onclick="openReadingSub('all')">
+        <div class="hub-icon">📂</div>
+        <div class="hub-text">
+          <h3 id="readingHubAllTitle">All Questions (دسته‌بندی گرامری)</h3>
+          <p>تفکیک‌شده بر اساس Prepositions، Adjectives، Verbs و...</p>
+        </div>
+      </div>
+      <div class="hub-card" onclick="openReadingSub('prediction')">
+        <div class="hub-icon">⭐</div>
+        <div class="hub-text">
+          <h3>Monthly Prediction (پردیکشن ماهانه)</h3>
+          <p>مجموعه سوالات گلچین‌شده بدون دسته‌بندی</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grammar Categories List Screen -->
+  <div class="view-screen" id="viewCategoriesList">
+    <div class="list-container-box" id="categoriesContainerBox"></div>
+  </div>
+
+  <!-- Reading Interactive Practice Screen -->
+  <div class="view-screen" id="viewReadingPractice">
+    <div class="reading-practice-container">
+      <div class="practice-header-bar">
+        <span id="readingPracticeTitle">سوال ۱ از ۱</span>
+        <div class="timer-display-box" id="readingTimerDisplay">00:00</div>
+      </div>
+
+      <div class="passage-content-box" id="readingPassageBox"></div>
+
+      <div class="practice-footer-buttons">
+        <button class="btn-nav-action" onclick="changeReadingQuestion(-1)">قبلی ‹</button>
+        <button class="btn-nav-action submit-btn" onclick="submitReadingAnswers()">ثبت و بررسی</button>
+        <button class="btn-nav-action" onclick="changeReadingQuestion(1)">بعدی ›</button>
       </div>
     </div>
   </div>
@@ -1459,6 +1530,18 @@
   let currentCardIndex = 0;
   let selectedDailyQuota = 20;
 
+  // متغیرهای بخش جدید Reading که اضافه شده است
+  let currentReadingType = '';
+  let currentSubMode = '';
+  let activeCategory = '';
+  let readingQuestionsList = [];
+  let currentReadingIndex = 0;
+  let readingTimerInterval = null;
+  let readingSeconds = 0;
+  let rfibActiveSelectedChip = null;
+  let rfibUserAnswersMap = {};
+  let remoteReadingData = null;
+
   let wfdTimerInterval = null;
   let wfdElapsedSeconds = 0;
   let toastTimeout = null;
@@ -1489,6 +1572,14 @@
     const ts = Date.now();
     initRfib();
 
+    // بارگذاری فایل داده‌های ریدینگ از گیت‌هاب
+    try {
+      const resReading = await fetch(`data/reading_data.json?t=${ts}`, { cache: "no-store" });
+      if (resReading.ok) {
+        remoteReadingData = await resReading.json();
+      }
+    } catch (e) { console.warn("Reading data load error:", e); }
+
     try {
       const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
       if (resFlash.ok) {
@@ -1516,6 +1607,7 @@
   function navBack() {
     if (navHistory.length > 1) {
       navHistory.pop();
+      stopReadingTimer();
       renderCurrentScreen();
     }
   }
@@ -1540,6 +1632,7 @@
       document.getElementById('viewHome').classList.add('active');
       title.innerText = "PTE ROOM • پلتفرم جامع";
       stopWfdTimer();
+      stopReadingTimer();
     } else if (current === 'placement') {
       document.getElementById('viewPlacement').classList.add('active');
       title.innerText = "PTE ROOM • آزمون تعیین سطح";
@@ -1572,7 +1665,229 @@
       document.getElementById('viewFlash').classList.add('active');
       title.innerText = "PTE ROOM • Academic Flashcards";
       stopWfdTimer();
+    } else if (current === 'reading_hub') {
+      document.getElementById('viewReadingHub').classList.add('active');
+      title.innerText = currentReadingType === 'rwfib' ? 'Dropdown RWFIB' : 'Drag Drop RFIB';
+      stopReadingTimer();
+    } else if (current === 'categories_list') {
+      document.getElementById('viewCategoriesList').classList.add('active');
+      title.innerText = "دسته‌بندی‌های گرامری ریدینگ";
+      stopReadingTimer();
+    } else if (current === 'reading_practice') {
+      document.getElementById('viewReadingPractice').classList.add('active');
+      title.innerText = "محیط تمرین ریدینگ";
+      startReadingTimer();
     }
+  }
+
+  /* توابع مدیریت بخش Reading */
+  function openReadingMain(type) {
+    currentReadingType = type; // 'rwfib' or 'rfib'
+    document.getElementById('readingHubAllTitle').innerText = type === 'rwfib' ? 'All Questions (RWFIB - گرامری)' : 'All Questions (RFIB - گرامری)';
+    navTo('reading_hub');
+  }
+
+  function openReadingSub(mode) {
+    currentSubMode = mode; // 'all' or 'prediction'
+    if (mode === 'all') {
+      const cats = [
+        { name: "Prepositions", count: 45 },
+        { name: "Adjectives", count: 38 },
+        { name: "Verbs", count: 62 },
+        { name: "Connectors", count: 29 },
+        { name: "Adjective Clauses", count: 24 }
+      ];
+      document.getElementById('categoriesContainerBox').innerHTML = cats.map(c => `
+        <div class="list-row-card" onclick="selectGrammarCategory('${c.name}')">
+          <span>${c.name}</span>
+          <span style="color:var(--text-muted); font-size:12px;">${c.count} سوال ‹</span>
+        </div>
+      `).join('');
+      navTo('categories_list');
+    } else {
+      // Monthly Prediction (فعلاً لیست خالی/آماده)
+      loadPredictionQuestions();
+      currentReadingIndex = 0;
+      navTo('reading_practice');
+      renderReadingQuestion();
+    }
+  }
+
+  function selectGrammarCategory(catName) {
+    activeCategory = catName;
+    loadCategoryQuestions(catName);
+    currentReadingIndex = 0;
+    navTo('reading_practice');
+    renderReadingQuestion();
+  }
+
+  function loadCategoryQuestions(category) {
+    if (remoteReadingData && remoteReadingData[currentReadingType] && remoteReadingData[currentReadingType].all_questions) {
+      const qGroup = remoteReadingData[currentReadingType].all_questions[category];
+      if (qGroup && qGroup.length > 0) {
+        readingQuestionsList = qGroup;
+        return;
+      }
+    }
+    // نمونه پیش‌فرض اگر فایل هنوز لود نشده باشد
+    if (currentReadingType === 'rwfib') {
+      readingQuestionsList = [
+        {
+          title: `RWFIB - ${category} (Sample)`,
+          text: `The International Monetary Fund (IMF) works to foster global growth and economic stability by providing policy advice and <select class='inline-select-custom' data-correct='financing'><option value=''>Select...</option><option value='financing'>financing</option><option value='preventing'>preventing</option></select> to its members.`,
+          type: 'rwfib'
+        }
+      ];
+    } else {
+      readingQuestionsList = [
+        {
+          title: `RFIB - ${category} (Sample)`,
+          text: `With about one and a half billion non-native speakers, English is the world’s language. Such <span class='rfib-drop-zone-custom' data-zone='A'></span> has its downside.`,
+          bank: ["dominance", "twice", "part", "rate"],
+          answers: { "A": "dominance" },
+          type: 'rfib'
+        }
+      ];
+    }
+  }
+
+  function loadPredictionQuestions() {
+    if (remoteReadingData && remoteReadingData[currentReadingType] && remoteReadingData[currentReadingType].prediction) {
+      readingQuestionsList = remoteReadingData[currentReadingType].prediction;
+      if (readingQuestionsList.length > 0) return;
+    }
+    readingQuestionsList = [
+      {
+        title: `${currentReadingType.toUpperCase()} - Monthly Prediction (Empty)`,
+        text: `این بخش پردیکشن ماهانه است و فعلاً خالی می‌باشد. سوالات گلچین‌شده به زودی در این بخش قرار می‌گیرند.`,
+        type: currentReadingType
+      }
+    ];
+  }
+
+  function startReadingTimer() {
+    stopReadingTimer();
+    readingSeconds = 0;
+    updateReadingTimerDisplay();
+    
+    // RWFIB limit: 2:30 (150s), RFIB limit: 2:00 (120s)
+    const limitSec = currentReadingType === 'rwfib' ? 150 : 120;
+
+    readingTimerInterval = setInterval(() => {
+      readingSeconds++;
+      updateReadingTimerDisplay();
+      const tBox = document.getElementById('readingTimerDisplay');
+      if (readingSeconds >= limitSec) {
+        tBox.classList.add('warning');
+      } else {
+        tBox.classList.remove('warning');
+      }
+    }, 1000);
+  }
+
+  function stopReadingTimer() {
+    if (readingTimerInterval) {
+      clearInterval(readingTimerInterval);
+      readingTimerInterval = null;
+    }
+    const tBox = document.getElementById('readingTimerDisplay');
+    if (tBox) tBox.classList.remove('warning');
+  }
+
+  function updateReadingTimerDisplay() {
+    const m = Math.floor(readingSeconds / 60).toString().padStart(2, '0');
+    const s = (readingSeconds % 60).toString().padStart(2, '0');
+    const el = document.getElementById('readingTimerDisplay');
+    if (el) el.innerText = `${m}:${s}`;
+  }
+
+  function renderReadingQuestion() {
+    if (!readingQuestionsList.length) return;
+    const q = readingQuestionsList[currentReadingIndex];
+    document.getElementById('readingPracticeTitle').innerText = `${q.title || 'تمرین'} (${currentReadingIndex + 1}/${readingQuestionsList.length})`;
+    
+    const passageBox = document.getElementById('readingPassageBox');
+    const qType = q.type || currentReadingType;
+    
+    if (qType === 'rwfib' || !q.bank) {
+      passageBox.innerHTML = q.text;
+    } else {
+      rfibUserAnswersMap = {};
+      let html = q.text;
+      html += `<div class="rfib-bank-container">`;
+      (q.bank || []).forEach(w => {
+        html += `<div class="rfib-chip-item" onclick="onReadingChipClick(this, '${w}')">${w}</div>`;
+      });
+      html += `</div>`;
+      passageBox.innerHTML = html;
+
+      document.querySelectorAll('.rfib-drop-zone-custom').forEach(zone => {
+        zone.onclick = () => {
+          const zoneKey = zone.getAttribute('data-zone');
+          if (rfibUserAnswersMap[zoneKey]) {
+            const oldW = rfibUserAnswersMap[zoneKey];
+            rfibUserAnswersMap[zoneKey] = null;
+            zone.innerText = "";
+            zone.classList.remove('filled');
+            document.querySelectorAll('.rfib-chip-item').forEach(c => {
+              if (c.innerText === oldW) c.classList.remove('used');
+            });
+          } else if (rfibActiveSelectedChip) {
+            rfibUserAnswersMap[zoneKey] = rfibActiveSelectedChip.word;
+            zone.innerText = rfibActiveSelectedChip.word;
+            zone.classList.add('filled');
+            rfibActiveSelectedChip.element.classList.add('used');
+            rfibActiveSelectedChip.element.classList.remove('selected');
+            rfibActiveSelectedChip = null;
+          }
+        };
+      });
+    }
+  }
+
+  function onReadingChipClick(chipEl, word) {
+    if (chipEl.classList.contains('used')) return;
+    document.querySelectorAll('.rfib-chip-item').forEach(c => c.classList.remove('selected'));
+    if (rfibActiveSelectedChip && rfibActiveSelectedChip.word === word) {
+      rfibActiveSelectedChip = null;
+    } else {
+      rfibActiveSelectedChip = { element: chipEl, word: word };
+      chipEl.classList.add('selected');
+    }
+  }
+
+  function changeReadingQuestion(dir) {
+    currentReadingIndex += dir;
+    if (currentReadingIndex < 0) currentReadingIndex = 0;
+    if (currentReadingIndex >= readingQuestionsList.length) currentReadingIndex = readingQuestionsList.length - 1;
+    startReadingTimer();
+    renderReadingQuestion();
+  }
+
+  function submitReadingAnswers() {
+    const q = readingQuestionsList[currentReadingIndex];
+    const qType = q.type || currentReadingType;
+    if (qType === 'rwfib' || !q.answers) {
+      document.querySelectorAll('.inline-select-custom').forEach(sel => {
+        const correct = sel.getAttribute('data-correct');
+        if (sel.value === correct) {
+          sel.classList.add('correct'); sel.classList.remove('incorrect');
+        } else {
+          sel.classList.add('incorrect'); sel.classList.remove('correct');
+        }
+      });
+    } else {
+      document.querySelectorAll('.rfib-drop-zone-custom').forEach(zone => {
+        const zKey = zone.getAttribute('data-zone');
+        const correctVal = q.answers[zKey];
+        if (rfibUserAnswersMap[zKey] === correctVal) {
+          zone.classList.add('correct'); zone.classList.remove('incorrect');
+        } else {
+          zone.classList.add('incorrect'); zone.classList.remove('correct');
+        }
+      });
+    }
+    showToast("✅ پاسخ‌ها بررسی شدند!");
   }
 
   function openExternalLink(url) {
@@ -1581,451 +1896,6 @@
     } else {
       window.open(url, '_blank');
     }
-  }
-
-  /* Live Word Count */
-  function updateWritingCount() {
-    const text = document.getElementById('placementWriting').value.trim();
-    const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
-    const counterEl = document.getElementById('writingWordCount');
-    counterEl.innerText = `Word Count: ${count}`;
-    counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
-  }
-
-  /* Robust Multi-Message Submission Engine */
-  async function handlePlacementSubmit(e) {
-    e.preventDefault();
-    if (isSubmitting) return;
-
-    const contactVal = document.getElementById('userContact').value.trim();
-    if (!contactVal) {
-      alert("⚠️ لطفاً شماره تماس یا آیدی تلگرام خود را وارد کنید تا نتیجه مشاوره ارسال شود.");
-      return;
-    }
-
-    isSubmitting = true;
-    const btn = document.getElementById('submitPlacementBtn');
-    btn.disabled = true;
-    btn.innerText = "⏳ در حال ثبت و ارسال به پشتیبانی...";
-
-    const trackingCode = "PTE-" + Math.floor(10000 + Math.random() * 90000);
-    const formElement = document.getElementById('placementForm');
-    const formData = new FormData(formElement);
-    const writingText = document.getElementById('placementWriting').value.trim();
-    const wordsCount = writingText === "" ? 0 : writingText.split(/\s+/).filter(Boolean).length;
-
-    // کلیدهای آزمون
-    const rwKeys = { rw_a: "studying", rw_b: "everything", rw_c: "actually", rw_d: "parallel", rw_e: "practice", rw_f: "thinking" };
-    const rfibKeys = { A: "dominance", B: "twice", C: "part", D: "rate" };
-    const lfibKeys = { lfib_1: "orchestrated", lfib_2: "biology", lfib_3: "basic", lfib_4: "principle", lfib_5: "quite" };
-
-    let rwScore = 0;
-    let rwDetails = [];
-    for (let k in rwKeys) {
-      const uVal = formData.get(k) || "(خالی)";
-      const isCorrect = uVal === rwKeys[k];
-      if (isCorrect) rwScore++;
-      rwDetails.push(`${isCorrect ? '✅' : '❌'} <b>[${k.replace('rw_', '').toUpperCase()}]:</b> ${uVal} ${!isCorrect ? `<i>[Correct: ${rwKeys[k]}]</i>` : ''}`);
-    }
-
-    let rfibScore = 0;
-    let rfibDetails = [];
-    for (let k in rfibKeys) {
-      const uVal = rfibUserAnswers[k] || "(خالی)";
-      const isCorrect = uVal === rfibKeys[k];
-      if (isCorrect) rfibScore++;
-      rfibDetails.push(`${isCorrect ? '✅' : '❌'} <b>[${k}]:</b> ${uVal} ${!isCorrect ? `<i>[Correct: ${rfibKeys[k]}]</i>` : ''}`);
-    }
-
-    let lfibScore = 0;
-    let lfibDetails = [];
-    for (let k in lfibKeys) {
-      const uVal = (formData.get(k) || "").trim();
-      const isCorrect = uVal.toLowerCase() === lfibKeys[k];
-      if (isCorrect) lfibScore++;
-      lfibDetails.push(`${isCorrect ? '✅' : '❌'} <b>(${k.replace('lfib_', '')}):</b> ${uVal || '(خالی)'} ${!isCorrect ? `<i>[Correct: ${lfibKeys[k]}]</i>` : ''}`);
-    }
-
-    const userSpell = formData.get('spell_q') || "(انتخاب‌نشده)";
-    const spellCorrect = userSpell === "Accommodation";
-    const userVocab = formData.get('vocab_q') || "(انتخاب‌نشده)";
-    const vocabCorrect = userVocab === "curb";
-    
-    let vocabScore = (spellCorrect ? 1 : 0) + (vocabCorrect ? 1 : 0);
-    const totalScore = rwScore + rfibScore + lfibScore + vocabScore;
-
-    const tgUser = tg?.initDataUnsafe?.user;
-    const firstName = tgUser?.first_name || "کاربر";
-    const lastName = tgUser?.last_name || "";
-    const fullName = `${firstName} ${lastName}`.trim();
-    const username = tgUser?.username ? `@${tgUser.username}` : "ندارد";
-    const userId = tgUser?.id || "نامشخص";
-    const target = document.getElementById('userTarget').value;
-
-    const messagePart1 = `
-📋 <b>فرم جدید آزمون تعیین سطح PTE ROOM</b>
-🔖 <b>کد رهگیری:</b> <code>${trackingCode}</code>
-━━━━━━━━━━━━━━━━━━━━
-👤 <b>مشخصات تلگرام داوطلب:</b>
-• <b>نام کاربری:</b> ${fullName}
-• <b>یوزرنیم:</b> ${username}
-• <b>شناسه عددی (ID):</b> <code>${userId}</code>
-• <b>شماره تماس / آیدی ثبت‌شده:</b> <code>${contactVal}</code>
-• <b>هدف انتخابی:</b> ${target}
-
-━━━━━━━━━━━━━━━━━━━━
-📊 <b>کارنامه و ریزنمرات آزمون تستی:</b>
-• 📖 <b>Reading & Writing FIB:</b> ${rwScore} / 6
-• 📖 <b>Reading FIB:</b> ${rfibScore} / 4
-• 🎧 <b>Listening FIB:</b> ${lfibScore} / 5
-• 🔤 <b>Vocab & Spelling:</b> ${vocabScore} / 2
-🎯 <b>مجموع نمره تستی:</b> <b>${totalScore} / 17</b>
-
-━━━━━━━━━━━━━━━━━━━━
-✍️ <b>پاراگراف رایتینگ داوطلب (${wordsCount} کلمه):</b>
-<i>"${writingText || 'متنی ارسال نشده است.'}"</i>
-    `.trim();
-
-    const messagePart2 = `
-🔍 <b>تحلیل دقیق پاسخ‌ها (کد رهگیری: ${trackingCode}):</b>
-━━━━━━━━━━━━━━━━━━━━
-📖 <b>Reading & Writing FIB:</b>
-${rwDetails.join('\n')}
-
-━━━━━━━━━━━━━━━━━━━━
-📖 <b>Reading FIB:</b>
-${rfibDetails.join('\n')}
-
-━━━━━━━━━━━━━━━━━━━━
-🎧 <b>Listening FIB:</b>
-${lfibDetails.join('\n')}
-
-━━━━━━━━━━━━━━━━━━━━
-🔤 <b>Spelling & Vocab:</b>
-${spellCorrect ? '✅' : '❌'} <b>Spelling:</b> ${userSpell} ${!spellCorrect ? '<i>[Correct: Accommodation]</i>' : ''}
-${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect ? '<i>[Correct: curb]</i>' : ''}
-    `.trim();
-
-    try {
-      const res1 = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: ADMIN_CHAT_ID,
-          text: messagePart1,
-          parse_mode: "HTML"
-        })
-      });
-      const data1 = await res1.json();
-      if (!data1.ok) throw new Error(data1.description || "خطا در ارسال پیام اول");
-
-      await new Promise(r => setTimeout(r, 350));
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: ADMIN_CHAT_ID,
-          text: messagePart2,
-          parse_mode: "HTML"
-        })
-      });
-
-      // ریست فرم و وضعیت پس از ارسال موفق
-      formElement.reset();
-      rfibUserAnswers = { A: null, B: null, C: null, D: null };
-      ['A', 'B', 'C', 'D'].forEach(k => {
-        const z = document.getElementById(`drop${k}`);
-        if (z) { z.innerText = ""; z.classList.remove('filled'); }
-      });
-      document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('used', 'selected'));
-      updateWritingCount();
-
-      const userSuccessNotice = `✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\n\n🔖 کد پیگیری شما: ${trackingCode}\n\nبه زودی نتیجه و تحلیل اختصاصی از طریق پشتیبانان PTE ROOM برای شما ارسال خواهد شد.`;
-
-      if (tg && typeof tg.showAlert === "function") {
-        tg.showAlert(userSuccessNotice, () => {
-          navTo('home');
-          isSubmitting = false;
-          btn.disabled = false;
-          btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
-        });
-      } else {
-        alert(userSuccessNotice);
-        navTo('home');
-        isSubmitting = false;
-        btn.disabled = false;
-        btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
-      }
-    } catch (err) {
-      console.error(err);
-      alert(`⚠️ خطا در ارسال اطلاعات:\n${err.message}`);
-      isSubmitting = false;
-      btn.disabled = false;
-      btn.innerText = "🚀 ثبت نهایی و ارسال آزمون تعیین سطح";
-    }
-  }
-
-  function openCourseModal(index) {
-    selectedCourseIndex = index;
-    const course = coursesData[index];
-    document.getElementById('modalCourseTitle').innerText = course.title;
-    document.getElementById('modalCourseDesc').innerText = course.desc;
-    openModal('courseModal');
-  }
-
-  function openModal(id) { document.getElementById(id).classList.add('active'); }
-  function closeModal(id, e) {
-    if (!e || e.target.id === id || e.target.className === 'close-btn' || e.target.tagName === 'BUTTON') {
-      document.getElementById(id).classList.remove('active');
-    }
-  }
-
-  function redirectToSupport() {
-    const courseTitle = coursesData[selectedCourseIndex].title;
-    const supportUrl = `https://t.me/pte_room_support?text=${encodeURIComponent('سلام، من برای ثبت‌نام و دریافت مشاوره دوره "' + courseTitle + '" پیام می‌دهم.')}`;
-    if (tg && typeof tg.openTelegramLink === "function") {
-      tg.openTelegramLink(supportUrl);
-    } else {
-      window.open(supportUrl, '_blank');
-    }
-  }
-
-  /* WFD Simulator Functions */
-  function startWfdTimer() {
-    stopWfdTimer();
-    wfdElapsedSeconds = 0;
-    updateTimerDisplay();
-    wfdTimerInterval = setInterval(() => {
-      wfdElapsedSeconds++;
-      updateTimerDisplay();
-    }, 1000);
-  }
-
-  function stopWfdTimer() {
-    if (wfdTimerInterval) {
-      clearInterval(wfdTimerInterval);
-      wfdTimerInterval = null;
-    }
-  }
-
-  function updateTimerDisplay() {
-    const badge = document.getElementById('wfdTimerBadge');
-    const mins = Math.floor(wfdElapsedSeconds / 60);
-    const secs = wfdElapsedSeconds % 60;
-    badge.innerText = `⏱ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    badge.classList.remove('warning', 'danger');
-    if (wfdElapsedSeconds >= 120) badge.classList.add('danger');
-    else if (wfdElapsedSeconds >= 90) badge.classList.add('warning');
-  }
-
-  function filterWfdCategory(cat) {
-    currentWfdCat = cat;
-    document.getElementById('catAll').className = cat === 'all' ? 'cat-btn active' : 'cat-btn';
-    document.getElementById('catPred').className = cat === 'pred' ? 'cat-btn active' : 'cat-btn';
-
-    let list = cat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
-    const select = document.getElementById('wfdSelect');
-    select.innerHTML = "";
-    list.forEach((q, idx) => {
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.innerText = q.title || `WFD #${q.id}`;
-      select.appendChild(opt);
-    });
-    onSelectWfd();
-  }
-
-  function onSelectWfd() {
-    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
-    const idx = document.getElementById('wfdSelect').value;
-    const q = list[idx];
-    if (!q) return;
-
-    document.getElementById('wfdResultBox').style.display = 'none';
-    document.getElementById('wfdInput').value = "";
-    calcWfdWords();
-    startWfdTimer();
-
-    const audio = document.getElementById('wfdAudioPlayer');
-    audio.src = "wfd_audios/" + q.audioUrl;
-    audio.load();
-  }
-
-  function nextWfdQuestion() {
-    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
-    const select = document.getElementById('wfdSelect');
-    let nextIdx = parseInt(select.value) + 1;
-    if (nextIdx >= list.length) nextIdx = 0;
-    select.value = nextIdx;
-    onSelectWfd();
-  }
-
-  function calcWfdWords() {
-    const val = document.getElementById('wfdInput').value.trim();
-    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
-    document.getElementById('wfdWordCount').innerText = "Word Count: " + count;
-  }
-
-  function evaluateWfdAnswer() {
-    let list = currentWfdCat === 'pred' ? wfdQuestions.filter(q => q.isPrediction) : wfdQuestions;
-    const idx = document.getElementById('wfdSelect').value;
-    const q = list[idx];
-    const userRawText = document.getElementById('wfdInput').value.trim();
-
-    if (!userRawText) {
-      showToast("⚠️ Please type your answer before checking.");
-      return;
-    }
-
-    stopWfdTimer();
-
-    const origTokens = q.text.trim().split(/\s+/);
-    const origCleanWords = origTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
-    const userTokens = userRawText.split(/\s+/).filter(Boolean);
-    const userCleanWords = userTokens.map(w => w.replace(/[.,!?;:"]/g, ''));
-
-    let userPool = [...userCleanWords.map(w => w.toLowerCase())];
-    let score = 0;
-    let markup = "";
-
-    origTokens.forEach((token, i) => {
-      const targetLower = origCleanWords[i].toLowerCase();
-      const matchIdx = userPool.indexOf(targetLower);
-      if (matchIdx !== -1) {
-        score++;
-        userPool.splice(matchIdx, 1);
-        markup += `<span class="wfd-word-correct">${token}</span> `;
-      } else {
-        markup += `<span class="wfd-word-missing">${token}</span> `;
-      }
-    });
-
-    let tips = [];
-    const firstOrigChar = origCleanWords[0].charAt(0);
-    const firstUserChar = userCleanWords[0] ? userCleanWords[0].charAt(0) : "";
-    if (firstOrigChar === firstOrigChar.toUpperCase() && firstUserChar !== firstUserChar.toUpperCase()) {
-      tips.push("⚠️ <b>Capitalization Tip:</b> Remember to capitalize the first letter of the sentence.");
-    }
-    if (!userRawText.endsWith('.')) {
-      tips.push("⚠️ <b>Punctuation Tip:</b> Don't forget to put a full stop (<b>.</b>) at the end of the sentence.");
-    }
-
-    document.getElementById('wfdScoreBadge').innerText = `${score} / ${origTokens.length}`;
-    document.getElementById('wfdSentenceDisplay').innerHTML = markup;
-    
-    const tipsContainer = document.getElementById('wfdTipsContainer');
-    if (tips.length > 0) {
-      tipsContainer.innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
-      tipsContainer.style.display = 'flex';
-    } else {
-      tipsContainer.innerHTML = '';
-      tipsContainer.style.display = 'none';
-    }
-
-    document.getElementById('wfdResultBox').style.display = 'flex';
-  }
-
-  /* Flashcards Logic */
-  function selectQuota(val) {
-    selectedDailyQuota = val;
-    const buttons = document.getElementById('quotaOptions').getElementsByTagName('button');
-    for (let btn of buttons) {
-      btn.classList.remove('selected');
-      if (parseInt(btn.innerText) === val) btn.classList.add('selected');
-    }
-  }
-  
-  (function checkDailyReset() {
-    const today = new Date().toISOString().split('T')[0];
-    if (dailyStats.date !== today) {
-      dailyStats.date = today;
-      dailyStats.newCardsSeen = 0;
-      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
-    }
-  })();
-
-  function startFlashcards() {
-    sessionQueue = [];
-    
-    academicVocab.forEach(card => {
-      if (leitnerData[card.id] && leitnerData[card.id].box > 1 && leitnerData[card.id].box < 5) {
-        sessionQueue.push(card);
-      }
-    });
-    
-    let remainingQuota = selectedDailyQuota - dailyStats.newCardsSeen;
-    let addedNew = 0;
-    if (remainingQuota > 0) {
-      for (let i = 0; i < academicVocab.length; i++) {
-        let card = academicVocab[i];
-        if (leitnerData[card.id] && leitnerData[card.id].box === 1) {
-          sessionQueue.push(card);
-          addedNew++;
-          if (addedNew >= remainingQuota) break;
-        }
-      }
-    }
-    
-    if (sessionQueue.length === 0) {
-      navTo('flash');
-      showDoneMessage();
-    } else {
-      currentCardIndex = 0;
-      navTo('flash');
-      renderFlashcard();
-    }
-  }
-
-  function renderFlashcard() {
-    if (currentCardIndex >= sessionQueue.length) {
-      showDoneMessage();
-      return;
-    }
-    
-    document.getElementById('cardScene').style.display = 'block';
-    document.getElementById('leitnerActions').style.display = 'flex';
-    document.getElementById('doneMessage').style.display = 'none';
-
-    const cardObj = sessionQueue[currentCardIndex];
-    const box = leitnerData[cardObj.id]?.box || 1;
-
-    document.getElementById('activeCard').classList.remove('is-flipped');
-    document.getElementById('quotaDisplay').innerText = `Target: ${dailyStats.newCardsSeen}/${selectedDailyQuota}`;
-    document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${sessionQueue.length}`;
-    document.getElementById('boxLevel').innerText = `📦 Box: ${box}/5`;
-    
-    document.getElementById('frontWord').innerText = cardObj.word;
-    document.getElementById('backPhonetic').innerText = cardObj.phonetic;
-    document.getElementById('backPos').innerText = cardObj.pos;
-    document.getElementById('backMeaning').innerText = cardObj.meaning;
-    document.getElementById('backCollocations').innerHTML = (cardObj.collocations || []).map(c => `• ${c}`).join('<br>');
-    document.getElementById('backSentence').innerText = cardObj.sentence;
-  }
-
-  function flipCard() {
-    document.getElementById('activeCard').classList.toggle('is-flipped');
-  }
-
-  function answerCard(known) {
-    const cardObj = sessionQueue[currentCardIndex];
-    const currentBox = leitnerData[cardObj.id]?.box || 1;
-    
-    if (currentBox === 1 && dailyStats.newCardsSeen < selectedDailyQuota) {
-      dailyStats.newCardsSeen++;
-      localStorage.setItem('pteroom_daily_stats_v15', JSON.stringify(dailyStats));
-    }
-    
-    leitnerData[cardObj.id].box = known ? Math.min(5, currentBox + 1) : 1;
-    localStorage.setItem('pteroom_leitner_v15', JSON.stringify(leitnerData));
-    
-    currentCardIndex++;
-    renderFlashcard();
-  }
-  
-  function showDoneMessage() {
-    document.getElementById('cardScene').style.display = 'none';
-    document.getElementById('leitnerActions').style.display = 'none';
-    document.getElementById('doneMessage').style.display = 'flex';
   }
 
   window.onload = initApp;
