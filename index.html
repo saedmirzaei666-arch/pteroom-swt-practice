@@ -148,14 +148,38 @@
     }
     .hub-card:active { transform: scale(0.98); }
 
+    /* Animated Neon Card for Placement Test */
     .hub-card.placement-highlight {
       border-color: #38bdf8;
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
       animation: glowBorder 3s infinite alternate;
     }
     @keyframes glowBorder {
-      0% { box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); }
-      100% { box-shadow: 0 0 24px rgba(56, 189, 248, 0.55); border-color: #38bdf8; }
+      0% {
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        border-color: rgba(56, 189, 248, 0.5);
+      }
+      100% {
+        box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
+        border-color: #38bdf8;
+      }
+    }
+
+    .hub-card.placement-highlight::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+      transform: rotate(30deg);
+      animation: lightSweep 4s infinite linear;
+      pointer-events: none;
+    }
+    @keyframes lightSweep {
+      0% { transform: translate(-100%, -100%) rotate(30deg); }
+      100% { transform: translate(100%, 100%) rotate(30deg); }
     }
 
     .hub-icon {
@@ -501,8 +525,10 @@
     .modal-overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(8px);
       z-index: 1000;
@@ -530,54 +556,143 @@
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
     .modal-body { font-size: 14.5px; line-height: 1.9; color: #e2e8f0; text-align: justify; white-space: pre-line; font-weight: 500; }
     .modal-action-btn {
-      background: #0284c7; color: #ffffff; border: none; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 14.5px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin-top: 6px;
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-top: 6px;
     }
 
     /* WFD Simulator Styles */
     .wfd-box {
-      display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border);
-      padding: 14px; flex: 1; min-height: 0; gap: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .wfd-category-bar { display: flex; gap: 8px; flex-shrink: 0; }
     .cat-btn {
-      flex: 1; background: #1e293b; border: 1px solid #334155; padding: 8px 4px; border-radius: 8px;
-      font-size: 12px; font-weight: 700; color: #94a3b8; cursor: pointer; transition: all 0.2s;
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
     }
     .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1.5px solid #0284c7;
+      font-size: 13px;
+      font-weight: 700;
+      background: #0f172a;
+      color: #38bdf8;
+      outline: none;
+      direction: ltr;
+    }
+
     .wfd-status-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 2px; flex-shrink: 0; }
     .wfd-timer-badge {
-      font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px;
-      background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #0284c7;
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid #0284c7;
     }
     .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
     .wfd-timer-badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
 
     textarea {
-      height: 75px; min-height: 75px; max-height: 85px; width: 100%; padding: 10px 12px; font-size: 14px; line-height: 1.4;
-      background: #0f172a; color: #f8fafc; border: 1.5px solid #334155; border-radius: 10px; resize: none; outline: none; direction: ltr; text-align: left; flex-shrink: 0;
+      height: 75px;
+      min-height: 75px;
+      max-height: 85px;
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      resize: none;
+      outline: none;
+      direction: ltr;
+      text-align: left;
+      flex-shrink: 0;
     }
     textarea:focus { border-color: #38bdf8; }
 
     .wfd-result-card {
-      display: none; flex-direction: column; gap: 6px; background: #0f172a; border: 1.5px solid #334155;
-      padding: 10px 12px; border-radius: 10px; overflow-y: auto; flex: 1; min-height: 0;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      padding: 10px 12px;
+      border-radius: 10px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
     }
     .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
     .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
     .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
+    .wfd-tips-container { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+    .wfd-warning-tip { font-size: 11px; font-weight: 700; color: #facc15; background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); padding: 4px 8px; border-radius: 6px; direction: ltr; text-align: left; }
     .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
     .btn-secondary {
-      background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 10px 14px; border-radius: 10px;
-      cursor: pointer; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 4px;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     /* Flashcard Styles */
     .flashcard-box {
-      display: flex; flex-direction: column; background: var(--card-bg); border-radius: 18px; border: 1.5px solid var(--card-border);
-      padding: 14px; flex: 1; min-height: 0; align-items: center; justify-content: space-between; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
     .stats-info { font-size: 11px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
@@ -604,24 +719,53 @@
     .btn-good { background: #059669; }
 
     .btn-primary {
-      background: #0284c7; color: #fff; border: none; padding: 12px 16px; border-radius: 12px;
-      cursor: pointer; font-weight: 800; font-size: 14px; transition: all 0.2s;
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      transition: all 0.2s;
     }
     .btn-primary:active { transform: scale(0.98); background: #0369a1; }
     
-    .settings-panel { background: #0f172a; border: 1.5px solid var(--card-border); border-radius: 14px; padding: 18px; margin-bottom: 14px; width: 100%; }
+    .settings-panel {
+      background: #0f172a;
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
     .settings-panel label { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: block; margin-bottom: 8px; }
     .quota-info { font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.6; }
     .quota-options { display: flex; gap: 8px; margin-bottom: 4px; }
     .quota-btn {
-      flex: 1; padding: 11px 0; background: #1e293b; border: 1.5px solid #334155; border-radius: 10px;
-      font-weight: 800; font-size: 14px; color: #cbd5e1; cursor: pointer;
+      flex: 1;
+      padding: 11px 0;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #cbd5e1;
+      cursor: pointer;
     }
     .quota-btn.selected { background: #0284c7; color: #fff; border-color: #38bdf8; }
     
     .done-message {
-      display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1;
-      background: rgba(16, 185, 129, 0.1); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1.5px solid rgba(16, 185, 129, 0.3);
+      border-radius: 16px;
+      padding: 24px;
     }
     .done-message h3 { color: #34d399; font-size: 19px; margin-bottom: 10px; }
     .done-message p { color: #cbd5e1; font-size: 13.5px; line-height: 1.7; }
@@ -676,9 +820,23 @@
     .list-row-card:active { background: #1e293b; border-color: #38bdf8; }
 
     .app-toast {
-      position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 23, 42, 0.95);
-      border: 1px solid #38bdf8; color: #f8fafc; padding: 10px 18px; border-radius: 25px; font-size: 12.5px; font-weight: 700;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); opacity: 0; pointer-events: none; transition: all 0.25s ease-out; z-index: 2000; white-space: nowrap;
+      position: absolute;
+      bottom: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38bdf8;
+      color: #f8fafc;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease-out;
+      z-index: 2000;
+      white-space: nowrap;
     }
     .app-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
@@ -696,7 +854,12 @@
     <span class="ticker-tag">🏆 Top Students</span>
     <div class="ticker-content">
       <span class="ticker-text">
-        <span>Saeid: 75% WFD</span> • <span>Majid: 17/20 Vocab</span> • <span>Reza: 90% WFD</span> • <span>Sara: 19/20 Vocab</span>
+        <span>Saeid: 75% WFD</span> • 
+        <span>Majid: 17/20 Vocab</span> • 
+        <span>Reza: 90% WFD</span> • 
+        <span>Sara: 19/20 Vocab</span> • 
+        <span>Ali: 82% WFD</span> • 
+        <span>Armin: 18/20 Vocab</span>
       </span>
     </div>
   </div>
@@ -833,17 +996,57 @@
       <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2809')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RA</div></div><div class="arrow-icon">‹</div></div>
       <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2831')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RS</div></div><div class="arrow-icon">‹</div></div>
       <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2865')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RL</div></div><div class="arrow-icon">‹</div></div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2866')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن RTS</div></div><div class="arrow-icon">‹</div></div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2845')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن DI</div></div><div class="arrow-icon">‹</div></div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2867')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن WE</div></div><div class="arrow-icon">‹</div></div>
+      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2871')"><div class="material-info"><span class="material-badge">PREDICTION</span><div class="material-title">آخرین ورژن سوالات پردیکشن SWT</div></div><div class="arrow-icon">‹</div></div>
     </div>
   </div>
 
   <!-- Schedule Screen -->
   <div class="view-screen" id="viewSchedule">
     <div class="schedule-container">
-      <div class="schedule-banner">📅 برنامه تمرینی هفته – تیم PTE ROOM</div>
+      <div class="schedule-banner">📅 برنامه تمرینی هفته – تیم PTE ROOM<br><span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span></div>
       <div class="schedule-day-card">
         <div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div>
-        <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
       </div>
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 یکشنبه</span><span class="day-date">۱ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">📖 RA – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🎧 DI – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 دوشنبه</span><span class="day-date">۲ شهریور</span></div>
+        <div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div>
+      </div>
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 سه‌شنبه</span><span class="day-date">۳ شهریور</span></div>
+        <div class="day-events">
+          <div class="event-row"><span class="event-info">📖 RA – سعید میرزایی</span><span class="event-time">09:00</span></div>
+          <div class="event-row"><span class="event-info">📖 RTS – بهنام حق گویی</span><span class="event-time">18:00</span></div>
+          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
+        </div>
+      </div>
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 چهارشنبه</span><span class="day-date">۴ شهریور</span></div>
+        <div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div>
+      </div>
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 پنج‌شنبه</span><span class="day-date">۵ شهریور</span></div>
+        <div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div>
+      </div>
+      <div class="schedule-day-card">
+        <div class="day-header"><span class="day-title">📌 جمعه</span><span class="day-date">۶ شهریور</span></div>
+        <div class="day-events"><div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div></div>
+      </div>
+      <div class="schedule-footer-note">⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال انجام خواهد شد.</div>
     </div>
   </div>
 
@@ -852,6 +1055,8 @@
     <div class="courses-list">
       <div class="course-item-card" onclick="openCourseModal(0)"><div class="course-info"><span class="course-badge">VIP MENTORSHIP</span><div class="course-title">1. PTE Personal Mentoring</div></div><div class="arrow-icon">‹</div></div>
       <div class="course-item-card" onclick="openCourseModal(1)"><div class="course-info"><span class="course-badge">SPECIALIZED MASTERCLASS</span><div class="course-title">2. PTE Write Essay Mastery</div></div><div class="arrow-icon">‹</div></div>
+      <div class="course-item-card" onclick="openCourseModal(2)"><div class="course-info"><span class="course-badge">1-ON-1 SESSIONS</span><div class="course-title">3. PTE Private Lessons</div></div><div class="arrow-icon">‹</div></div>
+      <div class="course-item-card" onclick="openCourseModal(3)"><div class="course-info"><span class="course-badge">FOUNDATION & FLUENCY</span><div class="course-title">4. General English</div></div><div class="arrow-icon">‹</div></div>
     </div>
   </div>
 
@@ -866,6 +1071,16 @@
             <option value="">Select...</option>
             <option value="volleying">volleying</option>
             <option value="studying">studying</option>
+            <option value="couriering">couriering</option>
+            <option value="lobbying">lobbying</option>
+          </select>, 
+          and of course talk on our cell phones while doing, well, 
+          <select name="rw_b" class="inline-select" required>
+            <option value="">Select...</option>
+            <option value="antonym">antonym</option>
+            <option value="rpm">rpm</option>
+            <option value="everything">everything</option>
+            <option value="sen">sen</option>
           </select>.
         </div>
       </div>
@@ -939,7 +1154,10 @@
   const ADMIN_CHAT_ID = "600029017";
 
   const coursesData = [
-    { title: "1. PTE Personal Mentoring", desc: "جامع‌ترین مسیر قبولی در آزمون PTE همراه با برنامه‌ریزی و فیدبک اختصاصی." }
+    { title: "1. PTE Personal Mentoring", desc: "🌟 جامع‌ترین و مطمئن‌ترین مسیر قبولی در آزمون PTE همراه با فیدبک روزانه." },
+    { title: "2. PTE Write Essay Mastery", desc: "✍️ مسترکلاس تخصصی تسلط بر بخش Writing و کسب نمره ۹۰." },
+    { title: "3. PTE Private Lessons", desc: "🎯 کلاس‌های خصوصی آنلاین و رفع اشکال فشرده تک‌نفره." },
+    { title: "4. General English", desc: "🚀 تقویت پایه زبان و ارتقای روانی کلام برای آزمون‌های بین‌المللی." }
   ];
 
   let navHistory = ['home'];
@@ -1221,7 +1439,6 @@
     const c = coursesData[idx];
     document.getElementById('modalCourseTitle').innerText = c.title;
     document.getElementById('modalCourseDesc').innerText = c.desc;
-    document.getElementById('modalSupportLink').href = `https://t.me/pte_room_support?text=${encodeURIComponent('مشاوره دوره: ' + c.title)}`;
     document.getElementById('courseModal').classList.add('active');
   }
 
