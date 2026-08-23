@@ -567,6 +567,42 @@
       margin-top: 6px;
     }
 
+    /* Force Join Modal Styles */
+    .force-join-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(8, 12, 20, 0.96);
+      backdrop-filter: blur(14px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .force-join-overlay.active { display: flex; }
+    .force-join-box {
+      background: var(--card-bg);
+      border: 1.5px solid #38bdf8;
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    }
+    .force-join-title { font-size: 17px; font-weight: 900; color: #38bdf8; }
+    .force-join-desc { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; }
+    .force-join-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .btn-channel { background: #0284c7; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; display: block; }
+    .btn-group { background: #059669; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; display: block; }
+    .btn-check-join { background: #1e293b; border: 1.5px solid #38bdf8; color: #38bdf8; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; margin-top: 6px; }
+
     /* WFD Simulator Styles */
     .wfd-box {
       display: flex;
@@ -836,6 +872,21 @@
   </style>
 </head>
 <body>
+
+<!-- Force Join Overlay Modal -->
+<div class="force-join-overlay" id="forceJoinModal">
+  <div class="force-join-box">
+    <div class="force-join-title">📢 عضویت اجباری در PTE ROOM</div>
+    <div class="force-join-desc">
+      برای استفاده از امکانات ربات و دسترسی به پردیکشن‌ها، لطفاً ابتدا در کانال و گروه اصلی ما عضو شوید:
+    </div>
+    <div class="force-join-btns">
+      <a href="https://t.me/pte_room" target="_blank" class="btn-channel" onclick="markJoinAttempt()">📢 عضویت در کانال اصلی (@pte_room)</a>
+      <a href="https://t.me/pte_room_group" target="_blank" class="btn-group" onclick="markJoinAttempt()">👥 عضویت در گروه اصلی (@pte_room_group)</a>
+      <button class="btn-check-join" onclick="checkForceJoin()">✅ بررسی عضویت و ورود</button>
+    </div>
+  </div>
+</div>
 
 <div class="app-wrapper">
   <div class="global-header">
@@ -1560,6 +1611,9 @@
     const ts = Date.now();
     initRfib();
 
+    // بررسی وضعیت عضویت اجباری
+    checkForceJoinOnStart();
+
     try {
       const resFlash = await fetch(`data/flashcards.json?t=${ts}`, { cache: "no-store" });
       if (resFlash.ok) {
@@ -1577,6 +1631,26 @@
         filterWfdCategory('all');
       }
     } catch (e) { console.warn("WFD load error:", e); }
+  }
+
+  /* Force Join Functions */
+  function checkForceJoinOnStart() {
+    const isJoined = localStorage.getItem('pteroom_force_joined');
+    if (!isJoined) {
+      document.getElementById('forceJoinModal').classList.add('active');
+    }
+  }
+
+  function markJoinAttempt() {
+    // وقتی روی دکمه‌های عضویت کلیک می‌کند
+    localStorage.setItem('pteroom_tried_join', 'true');
+  }
+
+  function checkForceJoin() {
+    // تایید نهایی کاربر برای ورود
+    localStorage.setItem('pteroom_force_joined', 'true');
+    document.getElementById('forceJoinModal').classList.remove('active');
+    showToast("🎉 با موفقیت وارد شدید!");
   }
 
   function navTo(screen) {
