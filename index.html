@@ -1708,6 +1708,10 @@
   <!-- Reorder Paragraph Practice Screen -->
   <div class="view-screen" id="viewRo">
     <div class="wfd-box">
+      <div class="wfd-category-bar" id="roCatBar">
+        <button class="cat-btn active" onclick="filterRoCategory('all')">🌐 All</button>
+        <button class="cat-btn" onclick="filterRoCategory('prediction')">⭐ Prediction</button>
+      </div>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
         <select id="roSelect" onchange="loadRoQuestion(+this.value)" style="flex:1; min-width:180px;"></select>
         <button class="btn-secondary" style="padding:8px 12px;" onclick="shuffleRoSource()">🔀 Shuffle</button>
@@ -2655,29 +2659,72 @@
      Drag Source (left) → Target (right). Score = adjacent pairs.
      Data: data/ro_questions.json  (sentences in correct order)
      ============================================================ */
-  let roQuestions = [];
+  let roAllQuestions = [];   // full bank from JSON
+  let roQuestions = [];      // filtered list (All / Prediction)
   let roActiveIndex = 0;
-  let roSourceOrder = [];   // array of sentence indices currently in source
-  let roTargetOrder = [];   // array of sentence indices in target (top→bottom)
+  let roCategory = 'all';
+  let roSourceOrder = [];
+  let roTargetOrder = [];
   let roChecked = false;
-  let roDragPayload = null; // { from: 'source'|'target', index: number }
+  let roDragPayload = null;
 
   async function initRoModule() {
     try {
       const res = await fetch(`data/ro_questions.json?t=${Date.now()}`, { cache: "no-store" });
       if (!res.ok) throw new Error("HTTP " + res.status);
-      roQuestions = await res.json();
-      const sel = document.getElementById('roSelect');
-      if (sel) {
-        sel.innerHTML = roQuestions.map((q, i) =>
-          `<option value="${i}">${q.id}. ${q.title || "Question " + (i + 1)}</option>`
-        ).join("");
-      }
-      if (roQuestions.length) loadRoQuestion(0);
+      roAllQuestions = await res.json();
+      // ensure every item has sets; default to all
+      roAllQuestions.forEach(q => {
+        if (!Array.isArray(q.sets) || !q.sets.length) q.sets = ['all'];
+      });
+      filterRoCategory('all');
     } catch (e) {
       console.warn("RO load error:", e);
       showToast("⚠️ Could not load Reorder Paragraph questions");
     }
+  }
+
+  function filterRoCategory(cat) {
+    roCategory = cat || 'all';
+    document.querySelectorAll('#roCatBar .cat-btn').forEach(btn => {
+      const label = (btn.textContent || '').toLowerCase();
+      btn.classList.toggle('active',
+        (cat === 'all' && label.includes('all')) ||
+        (cat === 'prediction' && label.includes('prediction'))
+      );
+    });
+    if (cat === 'all') {
+      roQuestions = roAllQuestions.slice();
+    } else {
+      // Prediction: questions tagged with "prediction"
+      roQuestions = roAllQuestions.filter(q =>
+        (q.sets || []).map(s => String(s).toLowerCase()).includes('prediction')
+      );
+    }
+    rebuildRoSelect();
+    if (roQuestions.length) {
+      loadRoQuestion(0);
+    } else {
+      roActiveIndex = 0;
+      roSourceOrder = [];
+      roTargetOrder = [];
+      document.getElementById('roSourceList').innerHTML = '';
+      document.getElementById('roTargetList').innerHTML = '';
+      document.getElementById('roScoreBox').style.display = 'none';
+      showToast(cat === 'prediction' ? '⭐ No Prediction questions yet' : '⚠️ No questions');
+    }
+  }
+
+  function rebuildRoSelect() {
+    const sel = document.getElementById('roSelect');
+    if (!sel) return;
+    if (!roQuestions.length) {
+      sel.innerHTML = '<option value="0">— no questions —</option>';
+      return;
+    }
+    sel.innerHTML = roQuestions.map((q, i) =>
+      `<option value="${i}">${q.id}. ${q.title || ("Question " + (i + 1))}</option>`
+    ).join('');
   }
 
   function loadRoQuestion(idx) {
@@ -2685,7 +2732,6 @@
     roActiveIndex = Math.max(0, Math.min(idx, roQuestions.length - 1));
     const q = roQuestions[roActiveIndex];
     const n = (q.sentences || []).length;
-    // correct indices 0..n-1; shuffle for source
     const ids = Array.from({ length: n }, (_, i) => i);
     roSourceOrder = shuffleArray(ids.slice());
     roTargetOrder = [];
