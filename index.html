@@ -1601,6 +1601,7 @@
         </div>
       </div>
       <button class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;" onclick="startPlacementTest()">🚀 متوجه شدم • شروع آزمون</button>
+      <button type="button" class="btn-secondary" style="padding:12px; width:100%; border-radius:12px; font-size:14px; margin-top:8px;" onclick="closeModal('placementIntroModal')">‹ بازگشت</button>
     </div>
   </div>
 
@@ -1873,6 +1874,14 @@
         <div class="quiz-title" style="font-size:14.5px;"><span>⏳ My Duels</span></div>
         <div id="duelMyList" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;">
           <div class="duel-empty">No duels yet.</div>
+        </div>
+      </div>
+
+      <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px; border:1.5px solid rgba(250,204,21,0.35); background:linear-gradient(145deg,rgba(250,204,21,0.08),rgba(15,23,42,0.9));">
+        <div class="quiz-title" style="font-size:14.5px;"><span>👑 Leaderboard</span></div>
+        <div style="font-size:11.5px; color:#94a3b8; direction:ltr; margin-bottom:4px;">Ranked by win rate · min 1 finished duel</div>
+        <div id="duelLeaderboard" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch;">
+          <div class="duel-empty">Play duels to appear on the board.</div>
         </div>
       </div>
 
@@ -3410,15 +3419,86 @@
   function renderDuelResultsList(items) {
     const el = document.getElementById('duelResultsList');
     if (!el) return;
-    if (items.length === 0) { el.innerHTML = '<div class="duel-empty">No results yet.</div>'; return; }
-    const sorted = [...items].sort((a, b) => b.startTime - a.startTime).slice(0, 40);
-    el.innerHTML = sorted.map(d => {
-      const tie = !d.winnerName;
-      const qCount = d.questionCount || 1;
+    if (items.length === 0) { el.innerHTML = '<div class="duel-empty">No results yet.</div>'; }
+    else {
+      const sorted = [...items].sort((a, b) => b.startTime - a.startTime).slice(0, 40);
+      el.innerHTML = sorted.map(d => {
+        const tie = !d.winnerName;
+        const qCount = d.questionCount || 1;
+        return `
+          <div class="duel-row" style="align-items:flex-start; flex-direction:column;">
+            <div class="duel-meta"><b>${escapeHtml(d.creatorName)}</b> ${d.creatorScore} — ${d.opponentScore} <b>${escapeHtml(d.opponentName || '')}</b> <span style="color:#94a3b8;">(${qCount}Q)</span></div>
+            <div class="duel-sub" style="color:#facc15;">${tie ? '🤝 Draw' : '🏆 ' + escapeHtml(d.winnerName) + ' wins'}</div>
+          </div>
+        `;
+      }).join('');
+    }
+    renderDuelLeaderboard(items);
+  }
+
+  function renderDuelLeaderboard(finishedItems) {
+    const el = document.getElementById('duelLeaderboard');
+    if (!el) return;
+    const stats = {}; // key: userId or name
+
+    function bump(id, name, field) {
+      if (!id && !name) return;
+      const key = id || ('name:' + name);
+      if (!stats[key]) stats[key] = { id: id || '', name: name || 'Player', wins: 0, losses: 0, draws: 0, played: 0 };
+      if (name) stats[key].name = name;
+      stats[key][field]++;
+      stats[key].played++;
+    }
+
+    (finishedItems || []).forEach(d => {
+      const cId = d.creatorId, cName = d.creatorName;
+      const oId = d.opponentId, oName = d.opponentName;
+      if (!d.winnerName) {
+        bump(cId, cName, 'draws');
+        bump(oId, oName, 'draws');
+      } else if (d.winnerName === cName || d.winnerId === cId) {
+        bump(cId, cName, 'wins');
+        bump(oId, oName, 'losses');
+      } else {
+        bump(oId, oName, 'wins');
+        bump(cId, cName, 'losses');
+      }
+    });
+
+    const rows = Object.values(stats)
+      .filter(s => s.played >= 1)
+      .map(s => {
+        const decided = s.wins + s.losses;
+        const winRate = decided > 0 ? (s.wins / decided) : (s.wins / s.played);
+        return { ...s, winRate, decided };
+      })
+      // sort: win rate desc, then wins desc, then played desc
+      .sort((a, b) => b.winRate - a.winRate || b.wins - a.wins || b.played - a.played)
+      .slice(0, 15);
+
+    if (rows.length === 0) {
+      el.innerHTML = '<div class="duel-empty">Play duels to appear on the board.</div>';
+      return;
+    }
+
+    const medals = ['🥇', '🥈', '🥉'];
+    el.innerHTML = rows.map((s, i) => {
+      const pct = Math.round(s.winRate * 100);
+      const medal = medals[i] || `<span style="color:#94a3b8;font-weight:800;width:24px;display:inline-block;">#${i + 1}</span>`;
+      const barColor = pct >= 70 ? '#10b981' : pct >= 40 ? '#fbbf24' : '#94a3b8';
       return `
-        <div class="duel-row" style="align-items:flex-start; flex-direction:column;">
-          <div class="duel-meta"><b>${escapeHtml(d.creatorName)}</b> ${d.creatorScore} — ${d.opponentScore} <b>${escapeHtml(d.opponentName || '')}</b> <span style="color:#94a3b8;">(${qCount}Q)</span></div>
-          <div class="duel-sub" style="color:#facc15;">${tie ? '🤝 Draw' : '🏆 ' + escapeHtml(d.winnerName) + ' wins'}</div>
+        <div class="duel-row" style="flex-direction:column; align-items:stretch; gap:6px; direction:ltr;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+              <span style="font-size:16px;">${medal}</span>
+              <span class="duel-name" style="overflow:hidden;text-overflow:ellipsis;">${escapeHtml(s.name)}</span>
+            </div>
+            <span style="font-weight:900; color:${barColor}; white-space:nowrap;">${pct}%</span>
+          </div>
+          <div style="height:6px; background:rgba(148,163,184,0.15); border-radius:4px; overflow:hidden;">
+            <div style="height:100%; width:${pct}%; background:${barColor}; border-radius:4px;"></div>
+          </div>
+          <div class="duel-sub" style="font-size:11px;">W ${s.wins} · L ${s.losses} · D ${s.draws} · ${s.played} played</div>
         </div>
       `;
     }).join('');
