@@ -1505,7 +1505,7 @@
       <div class="hub-card" onclick="navTo('rfib')">
         <div class="hub-icon">📖</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">Reading: Fill in the Blanks</h3>
+          <h3 style="color:#38bdf8;">Reading: FIB (Drag &amp; Drop)</h3>
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
@@ -1513,7 +1513,7 @@
       <div class="hub-card" onclick="navTo('rwfib')">
         <div class="hub-icon">📝</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">Reading &amp; Writing: FIB</h3>
+          <h3 style="color:#38bdf8;">Reading &amp; Writing: FIB (DropDown)</h3>
           <p>785 dropdown questions • Verb / Connector / Adj Clause / Preposition</p>
         </div>
       </div>
@@ -1622,9 +1622,12 @@
 
         <div class="swt-structure-box show" id="swtStructureBox" style="margin-top:6px;">
           <b>🧩 Sample answer using PTE ROOM structure</b>
-          <div class="swt-structure-tpl">The passage discusses [NP], explaining (that) [CLAUSE or NP] and [CLAUSE or NP], while also mentioning [NP] as well as [NP], presenting [NP], and ending with [NP].</div>
-          <div id="swtSampleAnswer" style="margin-top:4px;"></div>
-          <div id="swtSampleWc" style="color:#94a3b8; font-size:11px; margin-top:4px;"></div>
+          <div class="swt-structure-tpl">The passage discusses [NP], explaining (that) [CLAUSE or NP] and [CLAUSE or NP], mentioning [NP] as well as [NP], presenting [NP], and ending with [NP].</div>
+          <div style="font-size:11px; color:#94a3b8; margin:4px 0 6px; line-height:1.5;">
+            📌 Use <b>that</b> before a full clause · omit <b>that</b> before a noun phrase · keep items around <b>and</b> parallel · aim for <b>60–68 words</b>
+          </div>
+          <div id="swtSampleAnswer" style="margin-top:4px; color:#e2e8f0; line-height:1.7;"></div>
+          <div id="swtSampleWc" style="color:#facc15; font-size:11.5px; font-weight:700; margin-top:6px;"></div>
         </div>
       </div>
 
@@ -1978,25 +1981,40 @@
     let total = 0;
     const answers = q.answers || {};
 
+    // remove previous feedback badges
+    document.querySelectorAll('.rwfib-feedback').forEach(el => el.remove());
+
     Object.keys(q.options || {}).forEach(letter => {
       total++;
       const sel = document.getElementById(`rwfibSel_${letter}`);
       if (!sel) return;
       const userVal = (sel.value || "").trim();
       const right = (answers[letter] || "").trim();
+      sel.disabled = true;
       sel.style.borderColor = "";
       sel.style.background = "";
-      if (right && userVal.toLowerCase() === right.toLowerCase()) {
+      sel.style.color = "";
+
+      const isCorrect = right && userVal && userVal.toLowerCase() === right.toLowerCase();
+      if (isCorrect) {
         correct++;
         sel.style.borderColor = "#10b981";
-        sel.style.background = "rgba(16,185,129,0.2)";
+        sel.style.background = "rgba(16,185,129,0.25)";
         sel.style.color = "#34d399";
+        sel.style.fontWeight = "800";
       } else {
         sel.style.borderColor = "#ef4444";
         sel.style.background = "rgba(239,68,68,0.2)";
         sel.style.color = "#f87171";
-        // show correct in title
-        sel.title = right ? `Correct: ${right}` : "";
+        sel.style.fontWeight = "800";
+        // show correct answer in green next to the select
+        if (right) {
+          const badge = document.createElement('span');
+          badge.className = 'rwfib-feedback';
+          badge.style.cssText = 'display:inline-block;margin:0 4px;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:800;background:rgba(16,185,129,0.2);color:#34d399;border:1px solid #10b981;vertical-align:middle;';
+          badge.innerText = '✓ ' + right;
+          sel.parentNode.insertBefore(badge, sel.nextSibling);
+        }
       }
     });
 
@@ -2213,11 +2231,11 @@
     if (wordCount > 0 && wordCount < 15 && score > 2) score = 2;
 
     const notes = {
-      4: `Strong coverage of the passage's main ideas (${hits}/${total} key concepts detected).`,
-      3: `Good coverage (${hits}/${total}) with minor gaps — connect ideas more tightly rather than listing them.`,
-      2: `Partial coverage (${hits}/${total}) — avoid copying phrases straight from the passage; separate main points from detail.`,
-      1: `Limited coverage (${hits}/${total}) — relevant but doesn't meaningfully summarize the main ideas.`,
-      0: `Very little overlap with the passage's key content (${hits}/${total}).`
+      4: `Comprehensive summary (${hits}/${total} key ideas) — full comprehension, effective paraphrasing, main ideas synthesized clearly.`,
+      3: `Adequate summary (${hits}/${total}) — good comprehension; tighten paraphrasing and synthesize ideas more efficiently.`,
+      2: `Partial summary (${hits}/${total}) — basic comprehension; avoid copying long excerpts; separate main points from detail.`,
+      1: `Limited summary (${hits}/${total}) — relevant but not meaningfully summarized; main ideas weak or incomplete.`,
+      0: `No meaningful summary (${hits}/${total}) — disconnected ideas or excerpts without synthesis.`
     };
     return { score, note: notes[score] };
   }
@@ -2244,13 +2262,14 @@
     return { score: 1, note: "Written as one complete sentence within the 5–75 word range." };
   }
 
-  /* ---- scoring: Grammar (0-2) — strict, rule-based ---- */
+  /* ---- scoring: Grammar (0-2) — strict, aligned with Pearson guide ---- */
   const SWT_SUBJECT_VERB_PAIRS = [
     ["discuss","discusses"], ["explain","explains"], ["mention","mentions"],
     ["present","presents"], ["highlight","highlights"], ["describe","describes"],
     ["argue","argues"], ["state","states"], ["show","shows"],
     ["conclude","concludes"], ["end","ends"], ["suggest","suggests"],
-    ["claim","claims"], ["note","notes"], ["indicate","indicates"]
+    ["claim","claims"], ["note","notes"], ["indicate","indicates"],
+    ["cover","covers"], ["address","addresses"], ["examine","examines"]
   ];
 
   function scoreSwtGrammar(text) {
@@ -2258,20 +2277,37 @@
     if (!trimmed) return { score: 0, issues: ["No text to check."] };
 
     const issues = [];
-    if (!/^[A-Z]/.test(trimmed)) issues.push("Sentence should start with a capital letter.");
-    if (!/[.!?]$/.test(trimmed)) issues.push("Sentence should end with a full stop or other end punctuation.");
+    if (!/^[A-Z]/.test(trimmed)) issues.push("Sentence must start with a capital letter.");
+    if (!/[.!?]$/.test(trimmed)) issues.push("Sentence must end with a full stop (or ? / !).");
     if (/\s{2,}/.test(trimmed)) issues.push("Extra spaces between words.");
-    if (/\b(\w+)\s+\1\b/i.test(trimmed)) issues.push("A word appears to be repeated twice in a row.");
+    if (/\b(\w+)\s+\1\b/i.test(trimmed)) issues.push("A word is repeated twice in a row.");
     if (/\b(don't|doesn't|didn't|can't|won't|isn't|wasn't|never)\b.*\b(no|nothing|nobody|none|nowhere)\b/i.test(trimmed)) {
       issues.push("Possible double negative.");
+    }
+    // fragment / missing finite verb near start of structure
+    if (/^The passage discusses\b/i.test(trimmed) === false && /^[a-z]/.test(trimmed)) {
+      issues.push("Sentence does not look like a complete independent clause.");
+    }
+    // comma splice heuristic: two clauses joined only by comma without and/but/which
+    if ((trimmed.match(/,/g) || []).length >= 3 && !/\b(and|but|which|while|whereas)\b/i.test(trimmed)) {
+      issues.push("Possible run-on or poorly connected clauses — use clear connectors.");
     }
     SWT_SUBJECT_VERB_PAIRS.forEach(([base, sform]) => {
       const directRe = new RegExp("\\b(the passage|the article|the text|the author|the writer|it)\\s+(?:\\w+\\s+){0,3}" + base + "\\b", "i");
       if (directRe.test(trimmed) && !new RegExp("\\b" + sform + "\\b", "i").test(trimmed)) {
-        issues.push(`Possible subject–verb agreement error: use "${sform}" instead of "${base}" with a singular subject.`);
+        issues.push(`Subject–verb agreement: use "${sform}" (not "${base}") with a singular subject.`);
       }
     });
+    // that + NP misuse heuristic is soft; parallel structure tip when "and" appears
+    if (/\band\b/i.test(trimmed) && /\bthat\b/i.test(trimmed)) {
+      // check rough imbalance: that ... and [no that / no verb]
+      const afterAnd = trimmed.split(/\band\b/i).slice(1).join(" and ");
+      if (afterAnd && !/\b(that|which|who)\b/i.test(afterAnd) && /\bthat\b/i.test(trimmed.split(/\band\b/i)[0] || "")) {
+        // not necessarily wrong (NP after and is fine) — only tip, not hard error
+      }
+    }
 
+    // Strict: any issue that could hinder communication → 0; one minor → 1; clean → 2
     let score;
     if (issues.length === 0) score = 2;
     else if (issues.length === 1) score = 1;
@@ -2279,7 +2315,7 @@
     return { score, issues };
   }
 
-  /* ---- scoring: Vocabulary (0-2) — strict spelling + word form ---- */
+  /* ---- scoring: Vocabulary (0-2) — strict spelling + word form (Pearson: errors that hinder = 0) ---- */
   function scoreSwtVocab(text, wordCount) {
     if (wordCount === 0) return { score: 0, issues: ["No text to check."] };
 
@@ -2291,22 +2327,24 @@
       if (clean.length < 2) return;
       if (!isSwtKnownWord(clean)) misspelled.push(w);
     });
-    if (misspelled.length === 1) issues.push(`Possible spelling error: "${misspelled[0]}".`);
-    if (misspelled.length > 1) issues.push(`Possible spelling errors: ${misspelled.slice(0, 5).map(w => '"' + w + '"').join(", ")}${misspelled.length > 5 ? ", …" : ""}.`);
+    if (misspelled.length === 1) issues.push(`Spelling error: "${misspelled[0]}".`);
+    if (misspelled.length > 1) issues.push(`Spelling errors: ${misspelled.slice(0, 6).map(w => '"' + w + '"').join(", ")}${misspelled.length > 6 ? ", …" : ""}.`);
 
     const lower = text.toLowerCase();
     const badForms = SWT_UNCOUNTABLE_MISUSE.filter(w => new RegExp("\\b" + w + "\\b", "i").test(lower));
-    if (badForms.length) issues.push(`Uncountable noun used incorrectly in plural form: ${badForms.join(", ")}.`);
+    if (badForms.length) issues.push(`Incorrect plural of uncountable noun: ${badForms.join(", ")}.`);
 
     const words = lower.match(/[a-z']+/g) || [];
     const unique = new Set(words);
     const diversity = words.length ? unique.size / words.length : 0;
-    if (words.length >= 10 && diversity < 0.6) issues.push("Noticeable word repetition — try varying vocabulary.");
+    if (words.length >= 12 && diversity < 0.55) issues.push("Heavy word repetition — vary vocabulary / paraphrase more.");
 
+    // Very strict: 0 spelling errors required for full 2; 1 error → 1; 2+ → 0
     const hardErrorCount = misspelled.length + badForms.length;
     let score;
-    if (hardErrorCount === 0 && diversity >= 0.6) score = 2;
-    else if (hardErrorCount <= 1) score = 1;
+    if (hardErrorCount === 0 && diversity >= 0.55) score = 2;
+    else if (hardErrorCount === 0) score = 1; // clean spelling but weak variety
+    else if (hardErrorCount === 1) score = 1;
     else score = 0;
 
     return { score, issues };
@@ -2347,15 +2385,29 @@
     addSwtFeedback(fb, "Content — " + content.note, content.score >= 3 ? "pos" : content.score >= 1 ? "tip" : "neg");
     addSwtFeedback(fb, "Form — " + form.note, form.score === 1 ? "pos" : "neg");
     if (grammar.issues.length === 0) {
-      addSwtFeedback(fb, "Grammar — No structural issues detected.", "pos");
+      addSwtFeedback(fb, "Grammar — Correct grammatical structure (Pearson: no hindrance to communication).", "pos");
     } else {
       grammar.issues.forEach(msg => addSwtFeedback(fb, "Grammar — " + msg, "neg"));
     }
     if (vocab.issues.length === 0) {
-      addSwtFeedback(fb, "Vocabulary — No spelling or word-form issues detected; good lexical variety.", "pos");
+      addSwtFeedback(fb, "Vocabulary — Appropriate word choice; no spelling errors detected.", "pos");
     } else {
       vocab.issues.forEach(msg => addSwtFeedback(fb, "Vocabulary — " + msg, vocab.score === 0 ? "neg" : "tip"));
     }
+
+    // Always show PTE ROOM structure + sample answer after submit
+    const sample = (q.sampleAnswer || "").trim();
+    const sampleEl = document.getElementById('swtSampleAnswer');
+    const sampleWcEl = document.getElementById('swtSampleWc');
+    if (sample) {
+      sampleEl.innerText = sample;
+      const swc = countSwtWords(sample);
+      sampleWcEl.innerText = swc + " words" + (swc >= 60 && swc <= 68 ? " ✓ (ideal 60–68 range)" : " · target 60–68 words for PTE ROOM model");
+    } else {
+      sampleEl.innerText = "Build your answer with the template above: discuss → explaining (that) … and … → mentioning … as well as … → presenting … → ending with …";
+      sampleWcEl.innerText = "No sample stored for this question — use the structure (aim 60–68 words).";
+    }
+    document.getElementById('swtStructureBox').classList.add('show');
 
     document.getElementById('swtResultBox').style.display = 'flex';
     document.getElementById('swtCheckActionBox').style.display = 'none';
@@ -3446,11 +3498,11 @@
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
-      title.innerText = "PTE ROOM • Reading FIB";
+      title.innerText = "PTE ROOM • Reading FIB (Drag & Drop)";
       stopWfdTimer();
     } else if (current === 'rwfib') {
       document.getElementById('viewRwfib').classList.add('active');
-      title.innerText = "PTE ROOM • Reading & Writing FIB";
+      title.innerText = "PTE ROOM • RWFIB (DropDown)";
       stopWfdTimer();
     } else if (current === 'swt') {
       document.getElementById('viewSwt').classList.add('active');
