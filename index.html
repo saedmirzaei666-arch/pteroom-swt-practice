@@ -1151,7 +1151,8 @@
   <div class="force-join-box">
     <div class="force-join-title">📢 عضویت اجباری در PTE ROOM</div>
     <div class="force-join-desc">
-      برای استفاده از امکانات ربات و دسترسی به پردیکشن‌ها، لطفاً ابتدا در کانال و گروه اصلی ما عضو شوید:
+      برای استفاده از ربات باید در <b>هر دو</b> کانال و گروه عضو باشید.
+      بعد از عضویت روی «بررسی عضویت» بزنید — سیستم به‌صورت واقعی عضویت را چک می‌کند.
     </div>
     <div class="force-join-btns">
       <a href="https://t.me/pte_room" target="_blank" class="btn-channel" onclick="markJoinAttempt()">📢 عضویت در کانال اصلی (@pte_room)</a>
@@ -1861,6 +1862,7 @@
           <button class="cat-btn" onclick="setDuelQuickTime(60)">+1 hour</button>
         </div>
         <button class="btn-primary" style="padding:14px; font-size:15px; background:linear-gradient(135deg,#f59e0b,#d97706); border:none;" onclick="createDuel()">⚔️ Create Duel Challenge</button>
+        <div id="duelShareBox" style="display:none; margin-top:10px; padding:12px; border-radius:10px; border:1.5px solid rgba(245,158,11,0.4); background:rgba(245,158,11,0.08);"></div>
       </div>
 
       <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
@@ -2044,6 +2046,13 @@
 <script>
   const BOT_TOKEN = "8953110530:AAEAsaVEEsId6NE_CXAIWleIRqY0_6kt5us";
   const ADMIN_CHAT_ID = "600029017";
+  const BOT_USERNAME = "WRITING_PTE_ROOM_BOT";
+  // Bot must be admin in both chats for membership check to work
+  const FORCE_JOIN_CHATS = [
+    { id: "@pte_room", label: "کانال @pte_room" },
+    { id: "@pte_room_group", label: "گروه @pte_room_group" }
+  ];
+  const JOIN_CACHE_MS = 30 * 60 * 1000; // re-check every 30 min
 
   let isSubmitting = false;
 
@@ -3182,7 +3191,7 @@
     const questionIndices = picked.map(q => wfdQuestions.indexOf(q));
 
     try {
-      await db.collection('duels').add({
+      const docRef = await db.collection('duels').add({
         taskType: 'wfd',
         creatorId: duelUser.id,
         creatorName: duelUser.name,
@@ -3200,8 +3209,25 @@
         winnerName: null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-      showToast(`✅ Duel created with ${selectedDuelQCount} questions! Waiting for opponent.`);
       document.getElementById('duelTimeInput').value = "";
+      const timeStr = formatDuelClock(startMs);
+      const link = buildDuelShareLink(docRef.id);
+      showToast(`✅ Duel created (${selectedDuelQCount}Q)! Share the link to find an opponent.`);
+      // Share panel
+      const shareBox = document.getElementById('duelShareBox');
+      if (shareBox) {
+        shareBox.style.display = 'block';
+        shareBox.innerHTML = `
+          <div style="font-weight:800; color:#fbbf24; margin-bottom:6px; direction:ltr;">🔗 Share this duel</div>
+          <div style="font-size:12px; color:#94a3b8; direction:ltr; word-break:break-all; margin-bottom:8px;">${escapeHtml(link)}</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-primary" style="flex:1; padding:10px; background:linear-gradient(135deg,#f59e0b,#d97706);" onclick="shareDuelLink('${docRef.id}', ${selectedDuelQCount}, '${timeStr.replace(/'/g, "\\'")}')">📤 Share</button>
+            <button class="btn-secondary" style="flex:1; padding:10px;" onclick="copyDuelLink('${link.replace(/'/g, "\\'")}')">📋 Copy link</button>
+          </div>
+        `;
+      } else {
+        shareDuelLink(docRef.id, selectedDuelQCount, timeStr);
+      }
     } catch (err) {
       console.error(err);
       showToast("⚠️ Could not create duel: " + (err.message || err.code || "unknown error"));
@@ -3379,13 +3405,16 @@
     items.sort((a, b) => a.startTime - b.startTime);
     el.innerHTML = items.map(d => {
       const qCount = d.questionCount || 1;
+      const timeStr = formatDuelClock(d.startTime);
       return `
       <div class="duel-row">
         <div>
           <div class="duel-name">${escapeHtml(d.creatorName)}</div>
-          <div class="duel-sub">⚔️ ${qCount}Q WFD · ${formatDuelClock(d.startTime)}</div>
+          <div class="duel-sub">⚔️ ${qCount}Q WFD · ${timeStr}</div>
         </div>
-        <button class="duel-btn-mini duel-btn-accept" onclick="acceptDuel('${d.id}')">Accept</button>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="duel-btn-mini duel-btn-accept" onclick="acceptDuel('${d.id}')">Accept</button>
+        </div>
       </div>
     `;
     }).join('');
@@ -3405,7 +3434,11 @@
       let meta, action = '';
       if (d.status === 'open') {
         meta = `Waiting · ${qCount}Q · starts ${formatDuelClock(d.startTime)}`;
-        if (isCreator) action = `<button class="duel-btn-mini duel-btn-cancel" onclick="cancelDuel('${d.id}')">Cancel</button>`;
+        if (isCreator) {
+          const tStr = formatDuelClock(d.startTime).replace(/'/g, "\\'");
+          action = `<button class="duel-btn-mini duel-btn-enter" onclick="shareDuelLink('${d.id}', ${qCount}, '${tStr}')">🔗 Share</button>
+                    <button class="duel-btn-mini duel-btn-cancel" onclick="cancelDuel('${d.id}')">Cancel</button>`;
+        }
       } else if (remaining > 0) {
         meta = `vs ${escapeHtml(oppName)} · ${qCount}Q · starts in ${formatCountdown(remaining)}`;
       } else {
@@ -4081,22 +4114,141 @@
     initDuelModule();
   }
 
-  /* Force Join Functions */
+  /* Force Join — real Telegram membership check (bot must be admin) */
   function checkForceJoinOnStart() {
-    const isJoined = localStorage.getItem('pteroom_force_joined');
-    if (!isJoined) {
-      document.getElementById('forceJoinModal').classList.add('active');
+    const cached = localStorage.getItem('pteroom_force_joined_at');
+    if (cached && (Date.now() - Number(cached)) < JOIN_CACHE_MS) {
+      handleDuelDeepLink();
+      return;
     }
+    document.getElementById('forceJoinModal').classList.add('active');
+    // Auto-verify if user already a member
+    verifyForceJoin(true);
   }
 
   function markJoinAttempt() {
     localStorage.setItem('pteroom_tried_join', 'true');
   }
 
+  async function getChatMemberStatus(chatId, userId) {
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent(chatId)}&user_id=${userId}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.ok) {
+      console.warn('getChatMember fail', chatId, data);
+      return { ok: false, status: null, description: data.description || 'error' };
+    }
+    return { ok: true, status: data.result.status };
+  }
+
+  function isMemberStatus(status) {
+    return status === 'member' || status === 'administrator' || status === 'creator' || status === 'restricted';
+  }
+
+  async function verifyForceJoin(silent) {
+    const userId = tg?.initDataUnsafe?.user?.id;
+    if (!userId) {
+      // Outside Telegram (browser test) — skip gate
+      if (!silent) showToast("⚠️ لطفاً از داخل تلگرام باز کنید.");
+      if (!tg) {
+        localStorage.setItem('pteroom_force_joined_at', String(Date.now()));
+        document.getElementById('forceJoinModal').classList.remove('active');
+        handleDuelDeepLink();
+      }
+      return;
+    }
+
+    const btn = document.querySelector('.btn-check-join');
+    if (btn && !silent) {
+      btn.disabled = true;
+      btn.textContent = '⏳ در حال بررسی عضویت...';
+    }
+
+    const missing = [];
+    try {
+      for (const chat of FORCE_JOIN_CHATS) {
+        const r = await getChatMemberStatus(chat.id, userId);
+        if (!r.ok || !isMemberStatus(r.status)) {
+          missing.push(chat.label);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      if (!silent) showToast("⚠️ خطا در بررسی. دوباره تلاش کنید.");
+      if (btn) { btn.disabled = false; btn.textContent = '✅ بررسی عضویت و ورود'; }
+      return;
+    }
+
+    if (btn) { btn.disabled = false; btn.textContent = '✅ بررسی عضویت و ورود'; }
+
+    if (missing.length === 0) {
+      localStorage.setItem('pteroom_force_joined_at', String(Date.now()));
+      document.getElementById('forceJoinModal').classList.remove('active');
+      if (!silent) showToast("🎉 عضویت تأیید شد — خوش آمدید!");
+      handleDuelDeepLink();
+    } else {
+      localStorage.removeItem('pteroom_force_joined_at');
+      document.getElementById('forceJoinModal').classList.add('active');
+      if (!silent) {
+        showToast("❌ هنوز عضو نیستید: " + missing.join(' و '));
+      }
+    }
+  }
+
   function checkForceJoin() {
-    localStorage.setItem('pteroom_force_joined', 'true');
-    document.getElementById('forceJoinModal').classList.remove('active');
-    showToast("🎉 با موفقیت وارد شدید!");
+    verifyForceJoin(false);
+  }
+
+  /** Deep link: t.me/BOT?start=duel_DUELID */
+  function handleDuelDeepLink() {
+    const param = tg?.initDataUnsafe?.start_param || '';
+    if (!param.startsWith('duel_')) return;
+    const duelId = param.slice(5);
+    if (!duelId) return;
+    // Open duels screen and try to accept
+    setTimeout(async () => {
+      navTo('duels');
+      showToast("⚔️ Opening shared duel…");
+      try {
+        await acceptDuel(duelId);
+      } catch (e) {
+        console.warn(e);
+      }
+    }, 400);
+  }
+
+  function buildDuelShareLink(duelId) {
+    return `https://t.me/${BOT_USERNAME}?start=duel_${duelId}`;
+  }
+
+  function shareDuelLink(duelId, qCount, timeStr) {
+    const link = buildDuelShareLink(duelId);
+    const text = `⚔️ WFD Duel Challenge!\n${qCount} questions · starts ${timeStr}\nAccept here:\n${link}`;
+    // Prefer Telegram native share
+    if (tg && typeof tg.openTelegramLink === 'function') {
+      try {
+        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(`⚔️ WFD Duel · ${qCount}Q · ${timeStr}`)}`;
+        tg.openTelegramLink(shareUrl);
+        return;
+      } catch (e) {}
+    }
+    if (navigator.share) {
+      navigator.share({ title: 'WFD Duel', text, url: link }).catch(() => copyDuelLink(link));
+    } else {
+      copyDuelLink(link);
+    }
+  }
+
+  function copyDuelLink(link) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(() => showToast("📋 Link copied — share it anywhere!")).catch(() => promptCopy(link));
+    } else {
+      promptCopy(link);
+    }
+  }
+  function promptCopy(link) {
+    try { prompt('Copy this duel link:', link); } catch (e) {}
+    showToast("📋 Link ready to share");
   }
 
   function navTo(screen) {
