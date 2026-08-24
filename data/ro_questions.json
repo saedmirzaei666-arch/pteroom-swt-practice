@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "title": "Multimedia Streaming",
+    "sentences": [
+      "The evolution of computer storage has dramatically changed how we use and think about data.",
+      "Early computers relied on punch cards and magnetic tape for storage, which were limited in capacity and speed.",
+      "The introduction of hard disk drives and later solid-state drives offered much larger storage capacities and faster access to data.",
+      "As a result, these advancements have enabled the vast array of applications and services we use today, from cloud computing to multimedia streaming."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Cup's Handle",
+    "sentences": [
+      "The design of a cup's handle is crucial for comfort and functionality.",
+      "A well-designed handle provides enough space for fingers and insulates them from the heat of the beverage.",
+      "On the contrary, poorly designed handles can lead to discomfort or burns, especially with hot drinks.",
+      "Therefore, handle design is a key aspect of cup ergonomics."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Glass cups",
+    "sentences": [
+      "Glass cups offer a different appeal, primarily through their transparency.",
+      "They allow the drinker to see the beverage, making them popular for serving layered or colorful drinks.",
+      "However, glass is a poor insulator compared to ceramic, causing the contents to lose heat faster.",
+      "Thus, glass cups are more suitable for cold beverages or those intended to be consumed quickly."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Cylindrical Vessel",
+    "sentences": [
+      "A cup is a small, typically cylindrical vessel used for drinking liquids such as water, tea, or coffee.",
+      "Its design includes a handle on one side to hold it comfortably.",
+      "The material of a cup can vary from ceramic, glass, plastic, to metal, each affecting the taste and temperature retention of the drink.",
+      "Therefore, the choice of cup material is often determined by the beverage it's intended for."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Airline Travel",
+    "sentences": [
+      "Airline travel is a crucial aspect of the tourism industry, connecting destinations across the globe.",
+      "This is achieved because of the evolution of commercial aviation, which has made long- distance travel more accessible.",
+      "However, the environmental impact of air travel has become a growing concern.",
+      "Consequently, there is increasing pressure on the airline industry to adopt more sustainable practices."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Travel Agencies",
+    "sentences": [
+      "Travel agencies and tour operators are integral components of the tourism sector.",
+      "They provide planning and booking services, simplifying the travel process for tourists.",
+      "Initially, these services were primarily offline, but the rise of the internet has shifted much of this activity online.",
+      "As a result, the way tourists plan and book their trips has evolved significantly."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Literary Criticism",
+    "sentences": [
+      "The role of book reviews and literary criticism is significant in the literary world.",
+      "On the one hand, reviews in newspapers, magazines, and online platforms guide readers' choices and can influence a book's popularity.",
+      "On the other hand, literary criticism offers deeper analysis and contextual understanding of texts.",
+      "Thus, both reviews and criticism play vital roles in the dialogue surrounding books and literature."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Tourism Industry",
+    "sentences": [
+      "The tourism industry is a major contributor to the global economy, generating revenue, jobs, and cultural exchange opportunities.",
+      "It encompasses various sectors, including hospitality, transportation, and entertainment.",
+      "Besides, its growth has been driven by increased accessibility and affordability of travel.",
+      "Therefore, tourism plays a significant role in both developed and developing countries."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Pest and Disease Control",
+    "sentences": [
+      "Pest and disease control is an ongoing challenge in fruit orchards.",
+      "This is because pests and diseases can significantly reduce yield and fruit quality.",
+      "Integrated pest management strategies, including biological control and minimal pesticide use, are often employed.",
+      "As a result, these strategies help in maintaining a healthy orchard and ensuring high- quality fruit production."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Books",
+    "sentences": [
+      "Books have been a fundamental part of human culture for centuries, serving as repositories of knowledge, stories, and history.",
+      "Initially, they were handwritten and available only to a select few.",
+      "The invention of the printing press in the 15th century made books more accessible, leading to widespread literacy and the spread of ideas.",
+      "As a result, books have played a crucial role in shaping societies and intellectual progress."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Future of Books",
+    "sentences": [
+      "The future of books seems to be a blend of traditional and digital formats.",
+      "To be more specific, while e-books and audiobooks offer convenience, many readers still cherish the tactile experience of a physical book.",
+      "So, publishers are increasingly focusing on the quality and aesthetic appeal of print books to complement digital offerings.",
+      "As a result, despite technological advances, the enduring appeal of the traditional book format continues to hold a significant place in the literary world."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Chinese Culture",
+    "sentences": [
+      "In Chinese culture, calligraphy is considered one of the highest forms of art.",
+      "It traditionally uses a brush and ink on paper or silk.",
+      "The style and stroke of each character carry significant meaning and convey the calligrapher's emotions and artistic skill.",
+      "Therefore, Chinese calligraphy is not just about writing but also about conveying deeper artistic and philosophical ideas."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Calligraphy",
+    "sentences": [
+      "Calligraphy, the art of beautiful handwriting, has been practiced for centuries in various cultures.",
+      "It began as a means of communication before the invention of the printing press.",
+      "Over time, calligraphy evolved into an art form, with artists focusing on the aesthetic presentation of letters and words.",
+      "Consequently, it has become a respected and intricate form of artistic expression, admired for both its beauty and historical significance."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Fruit orchards",
+    "sentences": [
+      "Fruit orchards are specialized plantations dedicated to the cultivation of fruit trees.",
+      "They are meticulously organized for efficient growth and harvesting.",
+      "The selection of fruit varieties is crucial, considering factors like climate, soil type, and market demand.",
+      "As a result, an orchard's productivity and profitability largely depend on these initial choices."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Cartography",
+    "sentences": [
+      "Cartography, the art and science of map-making, has a rich historical background.",
+      "Early maps were mostly symbolic, focusing on representing ideas rather than accurate geography.",
+      "With the Age of Discovery, cartographers began incorporating precise measurements.",
+      "Therefore, modern maps are a blend of art, science, and technology, reflecting both physical and political landscapes."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 16,
+    "title": "World maps",
+    "sentences": [
+      "World maps provide a global perspective, offering an overview of the Earth's geography.",
+      "They come in various types, each serving different purposes, like physical, political, or thematic maps.",
+      "However, representing a round Earth on a flat surface always involves some degree of distortion.",
+      "This limitation of world maps underscores the complexity of accurately depicting our planet's geography."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Mercator Projection",
+    "sentences": [
+      "The Mercator projection, created in 1569, revolutionized mapmaking.",
+      "It presented a new way of depicting the spherical Earth on a flat surface.",
+      "However, while useful for navigation, this projection distorts size, making regions near the poles appear larger.",
+      "Thus, it has sparked debates over its use in representing global geography accurately."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Pencil",
+    "sentences": [
+      "The pencil, a common tool in education and art, has a rich history.",
+      "Its origins date back to the 16th century when graphite was first discovered in England.",
+      "Initially, graphite sticks were wrapped in string or sheepskin for stability.",
+      "As the tool evolved, wood casings were introduced, leading to the modern pencil design we recognize today."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Aviation Industry",
+    "sentences": [
+      "The aviation industry is a significant contributor to the global economy.",
+      "It not only facilitates international trade and tourism but also creates millions of jobs worldwide.",
+      "However, this industry is also vulnerable to economic fluctuations, as seen during the COVID-19 pandemic.",
+      "The pandemic's impact underscored the need for the industry to adapt and diversify to mitigate future risks."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Translation",
+    "sentences": [
+      "Advances in translation technology have largely bridged communication gaps between different languages.",
+      "Machine translation tools are continually improving, making cross-lingual interactions more feasible.",
+      "However, these tools often struggle with capturing cultural nuances and the idiomatic expressions.",
+      "As a result, human translators remain vital for accurate and culturally sensitive translations."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Airplane",
+    "sentences": [
+      "The invention of the airplane revolutionized long-distance travel.",
+      "Initially, these aircraft were basic and could only carry a few passengers.",
+      "Over time, advancements in technology and engineering allowed for larger and more efficient designs.",
+      "Consequently, today's airplanes can travel farther and faster, making global travel more accessible than ever before."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Noise",
+    "sentences": [
+      "Excessive noise disrupts ecosystems, particularly affecting wildlife that relies on sound for communication and survival.",
+      "Birds, for instance, can struggle with mating calls and territory establishment in noisy environments.",
+      "This disruption can lead to decreased biodiversity of birds.",
+      "Thus, environmental noise management, such as creating quieter zones near natural habitats and regulating noise levels, becomes crucial for conservation efforts."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 23,
+    "title": "Linguistics and Psychology",
+    "sentences": [
+      "The relationship between language and thought is a topic of considerable debate in linguistics and psychology.",
+      "Some argue that language shapes thought, influencing how we perceive and interact with the world.",
+      "Others contend that our thoughts are independent of language, with language merely expressing pre-existing ideas.",
+      "This debate highlights the complex interplay between language, cognition, and culture."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 24,
+    "title": "High Noise",
+    "sentences": [
+      "High noise levels in the workplace, particularly in industrial settings, can impair communication and concentration.",
+      "This often leads to reduced productivity and an increased risk of accidents.",
+      "Besides long-term exposure can cause permanent hearing loss and psychological stress.",
+      "Therefore, implementing noise control measures, such as soundproofing and providing personal protective equipment like earplugs, is essential for worker safety and well-being."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Air Travel",
+    "sentences": [
+      "Air travel has changed significantly over the years.",
+      "Initially considered a luxury, it is now a common mode of transportation for many people.",
+      "This change has been driven by the reduction in airfare costs and the expansion of airline networks.",
+      "However, this democratization of air travel has also led to concerns about overcrowding and decreased comfort on flights."
+    ],
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  }
+]
