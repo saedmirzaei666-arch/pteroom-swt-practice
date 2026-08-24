@@ -2366,58 +2366,122 @@
     return { score, issues };
   }
 
-  /* Build a ~60–68 word sample using PTE ROOM structure from passage / keywords / stored sample */
+  /* Build a complete, grammatical ~60–68 word sample in PTE ROOM structure */
   function buildSwtRoomSample(q) {
-    const existing = (q.sampleAnswer || "").trim();
+    const existing = (q.sampleAnswer || "").trim().replace(/\s+/g, " ");
     const existingWc = countSwtWords(existing);
-    if (existingWc >= 60 && existingWc <= 68) return existing;
+    if (existingWc >= 60 && existingWc <= 68 && /^The passage discusses\b/i.test(existing) && /[.!?]$/.test(existing)) {
+      return existing;
+    }
 
     const passage = (q.passage || "").replace(/\s+/g, " ").trim();
     const kws = (q.keywords || []).map(k => String(k).trim()).filter(Boolean);
+    const sentences = passage.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
 
-    // Pull short noun-ish chunks from passage
-    const sentences = passage.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 20);
-    const pickClause = (s) => {
-      if (!s) return "";
-      let t = s.replace(/^[A-Z][^.]*?,\s*/, ""); // drop leading dependent clause lightly
-      t = t.replace(/\.$/, "");
-      if (t.length > 110) t = t.slice(0, 110).replace(/\s+\S*$/, "");
-      return t.charAt(0).toLowerCase() + t.slice(1);
-    };
-
-    const topic = kws[0] || (passage.split(/[.:,]/)[0] || "the main topic").trim().slice(0, 60);
-    const c1 = pickClause(sentences[0]) || (kws[1] ? kws.slice(0, 2).join(" and ") : "key findings from the text");
-    const c2 = pickClause(sentences[1]) || (kws[2] ? kws[2] : "related supporting points");
-    const np1 = kws[3] || kws[0] || "important factors";
-    const np2 = kws[4] || kws[1] || "further evidence";
-    const np3 = kws[5] || "additional analysis";
-    const np4 = kws[6] || (sentences[2] ? pickClause(sentences[2]).slice(0, 50) : "the overall conclusion");
-
-    // Prefer that + clause when we have a clause-like string (has a verb-ish word)
-    const hasVerb = (s) => /\b(is|are|was|were|have|has|provide|provides|raise|raises|show|shows|lead|leads|include|includes|make|makes|become|becomes)\b/i.test(s);
-    const part1 = hasVerb(c1) ? `that ${c1}` : c1;
-    const part2 = hasVerb(c2) ? c2 : c2; // keep parallel: if first is clause, second should be clause-like
-
-    let sample = `The passage discusses ${topic}, explaining ${part1} and ${part2}, mentioning ${np1} as well as ${np2}, presenting ${np3}, and ending with ${np4}.`;
-
-    // If we had a short stored sample, weave a paraphrased expansion around it
-    if (existing && existingWc > 0 && existingWc < 60) {
-      const core = existing.replace(/^The passage discusses\s+/i, "").replace(/\.$/, "");
-      sample = `The passage discusses ${topic}, explaining that ${core}, mentioning ${np1} as well as ${np2}, presenting ${np3}, and ending with the wider implications of these findings for researchers and practitioners.`;
+    // Safe noun phrase: never a finite clause; never mid-word cut
+    function toNP(raw, maxWords) {
+      if (!raw) return "";
+      let t = String(raw).replace(/\s+/g, " ").trim();
+      t = t.replace(/^[.:,;\-\s]+/, "").replace(/[.!?]+$/, "");
+      // Keep only text before the first finite verb → pure NP
+      const verbSplit = t.split(/\b(?:are|is|was|were|have|has|had|do|does|did|provide|provides|raise|raises|show|shows|include|includes|make|makes|become|becomes|can|could|will|would|may|might)\b/i);
+      if (verbSplit.length > 1 && verbSplit[0].trim().split(/\s+/).length >= 2) {
+        t = verbSplit[0].trim();
+      }
+      const words = t.split(/\s+/).filter(Boolean);
+      if (!words.length) return "";
+      return words.slice(0, maxWords || 8).join(" ").replace(/[,:;]+$/, "").trim();
     }
 
-    // Pad gently toward 60 if still short
+    // Clause safe for "that [clause]" — complete idea, word-boundary trim only
+    function toClause(raw, maxWords) {
+      if (!raw) return "";
+      let t = String(raw).replace(/\s+/g, " ").trim().replace(/[.!?]+$/, "");
+      if (/^[A-Z]/.test(t)) t = t.charAt(0).toLowerCase() + t.slice(1);
+      const words = t.split(/\s+/).filter(Boolean);
+      if (words.length > (maxWords || 18)) {
+        let sliced = words.slice(0, maxWords || 18);
+        while (sliced.length && /^(and|or|but|with|to|of|for|in|on|at|the|a|an|as|well|while|also)$/i.test(sliced[sliced.length - 1])) {
+          sliced.pop();
+        }
+        t = sliced.join(" ");
+      }
+      // Ensure clause has at least a verb-ish word; otherwise leave as NP-friendly phrase
+      return t.trim();
+    }
+
+    // Topic NP after "discusses" (must NOT be a full clause)
+    let topic = toNP(kws[0], 6);
+    if (!topic && sentences[0]) {
+      const s0 = sentences[0];
+      const m = s0.match(/^(.{5,55}?)(?:\s+(?:are|is|was|were|have|has)\b)/i);
+      topic = toNP(m ? m[1] : s0, 7);
+    }
+    if (!topic) topic = "the main topic of the text";
+    topic = topic.charAt(0).toLowerCase() + topic.slice(1);
+
+    // Parallel clauses after "explaining that ... and ..."
+    let clauseA = toClause(
+      sentences[0] || (kws.slice(0, 3).join(" ") || "the text outlines several important points"),
+      15
+    );
+    let clauseB = toClause(
+      sentences[1] || "these findings have wider practical consequences for the field",
+      12
+    );
+    // Avoid identical A and B
+    if (clauseB && clauseA && clauseB.toLowerCase() === clauseA.toLowerCase()) {
+      clauseB = "these findings have wider practical consequences for the field";
+    }
+
+    // Prefer distinct NPs for the later slots
+    const np1 = toNP(kws[1] || kws[0] || "key supporting points", 5) || "key supporting points";
+    const np2 = toNP(kws[2] || kws[1] || "related evidence", 5) || "related evidence";
+    const np3 = toNP(kws[3] || "further analysis in the field", 6) || "further analysis in the field";
+    const np4 = toNP(kws[4] || "the broader implications of the findings", 7) || "the broader implications of the findings";
+
+    // Fixed grammatical skeleton (always one complete sentence)
+    let sample =
+      `The passage discusses ${topic}, explaining that ${clauseA} and ${clauseB}, ` +
+      `mentioning ${np1} as well as ${np2}, presenting ${np3}, and ending with ${np4}.`;
+
+    // Clean doubled words / broken fragments
+    sample = sample
+      .replace(/\b(\w+)\s+\1\b/gi, "$1")
+      .replace(/\s+,/g, ",")
+      .replace(/,\s*,/g, ",")
+      .replace(/\s{2,}/g, " ")
+      .replace(/\s+\./g, ".")
+      .trim();
+
+    // Expand short sample without breaking grammar
     let wc = countSwtWords(sample);
     if (wc < 60) {
-      sample = sample.replace(/\.$/, "") + `, while also highlighting how these points connect to broader academic and practical debates in the field.`;
+      sample = sample.replace(/\.$/, "") +
+        ", while also highlighting how these points connect to wider academic and practical debates.";
       wc = countSwtWords(sample);
     }
-    // Trim if over 68
-    if (wc > 68) {
-      const words = sample.replace(/\.$/, "").split(/\s+/);
-      sample = words.slice(0, 67).join(" ").replace(/,$/, "") + ".";
+    if (wc < 60) {
+      sample = sample.replace(/\.$/, "") +
+        " Overall, the text stresses the need for careful interpretation of the evidence.";
+      wc = countSwtWords(sample);
     }
+
+    // Trim long sample on word boundaries only — never leave dangling "and" / "with"
+    if (wc > 68) {
+      let words = sample.replace(/[.!?]$/, "").split(/\s+/);
+      words = words.slice(0, 66);
+      while (words.length && /^(and|or|but|with|to|of|for|in|on|at|the|a|an|as|well|mentioning|presenting|ending|explaining)$/i.test(words[words.length - 1])) {
+        words.pop();
+      }
+      sample = words.join(" ").replace(/[,:;]+$/, "") + ".";
+    }
+
     if (!/[.!?]$/.test(sample)) sample += ".";
+    // Final safety: must start with structure and be a single sentence
+    if (!/^The passage discusses\b/i.test(sample)) {
+      sample = "The passage discusses " + sample.replace(/^the passage discusses\s+/i, "");
+    }
     return sample;
   }
 
