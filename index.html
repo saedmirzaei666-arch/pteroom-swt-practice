@@ -1542,7 +1542,7 @@
           <span style="font-size:12px; color:#94a3b8;">Start time (today):</span>
           <input type="time" id="duelTimeInput" style="background:#0f172a; color:#fff; border:1px solid #1e293b; border-radius:8px; padding:6px 8px; font-family:inherit;">
         </div>
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <div style="display:flex; gap:6px; flex-wrap:wrap; direction:ltr;">
           <button class="cat-btn" onclick="setDuelQuickTime(5)">+5 min</button>
           <button class="cat-btn" onclick="setDuelQuickTime(15)">+15 min</button>
           <button class="cat-btn" onclick="setDuelQuickTime(60)">+1 hour</button>
@@ -2164,9 +2164,31 @@
     return div.innerHTML;
   }
 
+  /* Iran permanently uses IRST (UTC+3:30) year-round since Sep 2022 — no DST. */
+  const TEHRAN_OFFSET_MIN = 210;
+
+  function getTehranNowParts() {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Tehran',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    });
+    const parts = {};
+    fmt.formatToParts(new Date()).forEach(p => { if (p.type !== 'literal') parts[p.type] = p.value; });
+    return parts;
+  }
+
+  /* Converts an HH:mm wall-clock time "for today in Tehran" into an absolute UTC ms timestamp. */
+  function tehranTodayTimeToUtcMs(hh, mm) {
+    const p = getTehranNowParts();
+    const y = parseInt(p.year, 10), mo = parseInt(p.month, 10) - 1, d = parseInt(p.day, 10);
+    return Date.UTC(y, mo, d, hh, mm, 0) - TEHRAN_OFFSET_MIN * 60000;
+  }
+
   function formatDuelClock(ts) {
-    const d = new Date(ts);
-    return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit'
+    }).format(new Date(ts)) + " (Tehran)";
   }
 
   function formatCountdown(ms) {
@@ -2177,10 +2199,11 @@
   }
 
   function setDuelQuickTime(minsFromNow) {
-    const d = new Date(Date.now() + minsFromNow * 60000);
-    const hh = String(d.getHours()).padStart(2, '0');
-    const mm = String(d.getMinutes()).padStart(2, '0');
-    document.getElementById('duelTimeInput').value = `${hh}:${mm}`;
+    const targetUtcMs = Date.now() + minsFromNow * 60000;
+    const tehranStr = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit', hour12: false
+    }).format(new Date(targetUtcMs));
+    document.getElementById('duelTimeInput').value = tehranStr;
   }
 
   async function createDuel() {
@@ -2189,10 +2212,9 @@
     if (!timeVal) { showToast("⚠️ Pick a start time first."); return; }
 
     const [hh, mm] = timeVal.split(':').map(Number);
-    const start = new Date();
-    start.setHours(hh, mm, 0, 0);
-    if (start.getTime() < Date.now() + 60000) {
-      showToast("⚠️ Pick a time at least 1 minute from now.");
+    const startMs = tehranTodayTimeToUtcMs(hh, mm);
+    if (startMs < Date.now() + 60000) {
+      showToast("⚠️ Pick a Tehran time at least 1 minute from now.");
       return;
     }
 
@@ -2208,7 +2230,7 @@
         creatorName: duelUser.name,
         opponentId: null,
         opponentName: null,
-        startTime: start.getTime(),
+        startTime: startMs,
         status: 'open',
         questionIndex: questionIndex,
         creatorScore: null,
@@ -2222,7 +2244,7 @@
       document.getElementById('duelTimeInput').value = "";
     } catch (err) {
       console.error(err);
-      showToast("⚠️ Could not create duel.");
+      showToast("⚠️ Could not create duel: " + (err.message || err.code || "unknown error"));
     }
   }
 
@@ -2244,8 +2266,10 @@
       });
       showToast("🤝 Duel accepted! Check 'My Duels'.");
     } catch (err) {
+      console.error(err);
       if (err.message === "own") showToast("⚠️ You can't accept your own duel.");
-      else showToast("⚠️ This duel was already taken.");
+      else if (err.message === "taken" || err.message === "missing") showToast("⚠️ This duel was already taken.");
+      else showToast("⚠️ Could not accept duel: " + (err.message || err.code || "unknown error"));
     }
   }
 
