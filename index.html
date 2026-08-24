@@ -2056,8 +2056,9 @@
     { id: "@pte_room_group", label: "گروه @pte_room_group" }
   ];
   // Short debounce only (avoid spamming Telegram API on rapid taps)
-  const JOIN_RECHECK_MIN_MS = 15 * 1000;
-  const JOIN_PERIODIC_MS = 45 * 1000; // always re-check while app is open
+  const JOIN_RECHECK_MIN_MS = 60 * 1000; // min gap between silent API checks
+  const JOIN_PERIODIC_MS = 60 * 1000; // membership re-check every 60s
+  const FIRESTORE_POLL_MS = 40 * 1000; // duel lists/ticker poll interval (not realtime)
   let membershipOk = false;
   let membershipChecking = false;
   let lastMembershipCheckAt = 0;
@@ -3057,45 +3058,51 @@
     }
   }
 
-  function startHomeArenaFeed() {
-    if (!db || duelUnsubHomeFeed) return;
-    // Combined listener for home ticker (open + matched + recent finished)
-    duelUnsubHomeFeed = db.collection('duels')
-      .orderBy('createdAt', 'desc')
-      .limit(30)
-      .onSnapshot(snap => {
-        const now = Date.now();
-        const open = [], matched = [], results = [];
-        snap.forEach(doc => {
-          const d = { id: doc.id, ...doc.data() };
-          if (d.status === 'open' && d.startTime > now) open.push(d);
-          else if (d.status === 'matched') matched.push(d);
-          else if (d.status === 'finished') results.push(d);
-        });
-        homeTickerCache.open = open;
-        homeTickerCache.matched = matched;
-        homeTickerCache.results = results;
-        updateHomeArenaTicker();
-      }, err => {
-        console.warn("Home arena feed:", err);
-        // fallback without orderBy if index missing
-        if (err.code === 'failed-precondition') {
-          db.collection('duels').limit(30).onSnapshot(snap2 => {
-            const now = Date.now();
-            const open = [], matched = [], results = [];
-            snap2.forEach(doc => {
-              const d = { id: doc.id, ...doc.data() };
-              if (d.status === 'open' && d.startTime > now) open.push(d);
-              else if (d.status === 'matched') matched.push(d);
-              else if (d.status === 'finished') results.push(d);
-            });
-            homeTickerCache.open = open;
-            homeTickerCache.matched = matched;
-            homeTickerCache.results = results;
-            updateHomeArenaTicker();
-          });
-        }
+  let homeArenaPollTimer = null;
+  let duelListsPollTimer = null;
+
+  /** One-shot fetch for home ticker — polling, not realtime (saves reads) */
+  async function fetchHomeArenaOnce() {
+    if (!db) return;
+    try {
+      let snap;
+      try {
+        snap = await db.collection('duels').orderBy('createdAt', 'desc').limit(20).get();
+      } catch (e) {
+        snap = await db.collection('duels').limit(20).get();
+      }
+      const now = Date.now();
+      const open = [], matched = [], results = [];
+      snap.forEach(doc => {
+        const d = { id: doc.id, ...doc.data() };
+        if (d.status === 'open' && d.startTime > now) open.push(d);
+        else if (d.status === 'matched') matched.push(d);
+        else if (d.status === 'finished') results.push(d);
       });
+      homeTickerCache.open = open.slice(0, 10);
+      homeTickerCache.matched = matched.slice(0, 10);
+      homeTickerCache.results = results.slice(0, 10);
+      updateHomeArenaTicker();
+    } catch (err) {
+      console.warn("Home arena poll:", err);
+    }
+  }
+
+  function startHomeArenaFeed() {
+    if (!db || homeArenaPollTimer) return;
+    fetchHomeArenaOnce();
+    homeArenaPollTimer = setInterval(fetchHomeArenaOnce, FIRESTORE_POLL_MS);
+  }
+
+  function stopHomeArenaFeed() {
+    if (homeArenaPollTimer) {
+      clearInterval(homeArenaPollTimer);
+      homeArenaPollTimer = null;
+    }
+    if (duelUnsubHomeFeed) {
+      try { duelUnsubHomeFeed(); } catch (e) {}
+      duelUnsubHomeFeed = null;
+    }
   }
 
   function getDuelUser() {
@@ -3176,7 +3183,12 @@
   }
 
   async function createDuel() {
-    if (!(await ensureMembership())) return;
+    // Soft gate: only block if already known left; don't wait on API every time
+    if (tg?.initDataUnsafe?.user?.id && !membershipOk) {
+      document.getElementById('forceJoinModal')?.classList.add('active');
+      verifyForceJoin(true);
+      return;
+    }
     if (!db) { showToast("⚠️ Duel service unavailable."); return; }
     const timeVal = document.getElementById('duelTimeInput').value;
     if (!timeVal) { showToast("⚠️ Pick a start time first."); return; }
@@ -3223,6 +3235,7 @@
       const timeStr = formatDuelClock(startMs);
       const link = buildDuelShareLink(docRef.id);
       showToast(`✅ Duel created (${selectedDuelQCount}Q)! Share the link to find an opponent.`);
+      fetchDuelListsOnce(); fetchHomeArenaOnce();
       // Share panel
       const shareBox = document.getElementById('duelShareBox');
       if (shareBox) {
@@ -3245,7 +3258,11 @@
   }
 
   async function acceptDuel(duelId) {
-    if (!(await ensureMembership())) return;
+    if (tg?.initDataUnsafe?.user?.id && !membershipOk) {
+      document.getElementById('forceJoinModal')?.classList.add('active');
+      verifyForceJoin(true);
+      return;
+    }
     if (!db) return;
     const ref = db.collection('duels').doc(duelId);
     try {
@@ -3275,8 +3292,8 @@
       } else if (tg && typeof tg.showAlert === 'function') {
         try { tg.showAlert(msg); } catch (e) {}
       }
-      // Force ticker refresh so everyone sees the new match at the top
-      updateHomeArenaTicker();
+      fetchDuelListsOnce();
+      fetchHomeArenaOnce();
     } catch (err) {
       console.error(err);
       if (err.message === "own") showToast("⚠️ You can't accept your own duel.");
@@ -3290,51 +3307,73 @@
     try {
       await db.collection('duels').doc(duelId).update({ status: 'cancelled' });
       showToast("🗑️ Duel cancelled.");
+      fetchDuelListsOnce(); fetchHomeArenaOnce();
     } catch (err) { console.error(err); }
+  }
+
+  /** Polling instead of 3× onSnapshot — huge read savings on busy days */
+  async function fetchDuelListsOnce() {
+    if (!db || !duelUser) return;
+    const now = Date.now();
+    try {
+      // Open challenges (limit 10)
+      const openSnap = await db.collection('duels')
+        .where('status', '==', 'open')
+        .limit(10)
+        .get();
+      const openItems = [];
+      openSnap.forEach(doc => {
+        const d = doc.data();
+        if (d.startTime > now) openItems.push({ id: doc.id, ...d });
+      });
+      openItems.sort((a, b) => a.startTime - b.startTime);
+      renderDuelOpenList(openItems.filter(d => d.creatorId !== duelUser.id));
+      homeTickerCache.open = openItems;
+
+      // My open + matched (limit 10)
+      const mySnap = await db.collection('duels')
+        .where('status', 'in', ['open', 'matched'])
+        .limit(10)
+        .get();
+      const myItems = [];
+      mySnap.forEach(doc => {
+        const d = doc.data();
+        if (d.creatorId === duelUser.id || d.opponentId === duelUser.id) {
+          myItems.push({ id: doc.id, ...d });
+        }
+      });
+      duelMyItemsCache = myItems;
+      renderDuelMyList(myItems);
+      homeTickerCache.matched = myItems.filter(d => d.status === 'matched');
+
+      // Recent finished (limit 10) — also drives leaderboard
+      const finSnap = await db.collection('duels')
+        .where('status', '==', 'finished')
+        .limit(10)
+        .get();
+      const finItems = [];
+      finSnap.forEach(doc => finItems.push({ id: doc.id, ...doc.data() }));
+      renderDuelResultsList(finItems);
+      homeTickerCache.results = finItems;
+
+      updateHomeArenaTicker();
+    } catch (err) {
+      console.error("duel lists poll:", err);
+    }
   }
 
   function subscribeDuelLists() {
     if (!db) return;
     unsubscribeDuelLists();
-
-    duelUnsubOpen = db.collection('duels').where('status', '==', 'open')
-      .onSnapshot(snap => {
-        const now = Date.now();
-        const items = [];
-        snap.forEach(doc => {
-          const d = doc.data();
-          if (d.startTime > now) items.push({ id: doc.id, ...d }); // show all open for home ticker
-        });
-        const openForList = items.filter(d => d.creatorId !== duelUser.id);
-        renderDuelOpenList(openForList);
-        homeTickerCache.open = items;
-        updateHomeArenaTicker();
-      }, err => console.error("duel open listener:", err));
-
-    duelUnsubMy = db.collection('duels').where('status', 'in', ['open', 'matched'])
-      .onSnapshot(snap => {
-        const items = [];
-        snap.forEach(doc => {
-          const d = doc.data();
-          if (d.creatorId === duelUser.id || d.opponentId === duelUser.id) items.push({ id: doc.id, ...d });
-        });
-        duelMyItemsCache = items;
-        renderDuelMyList(items);
-        homeTickerCache.matched = items.filter(d => d.status === 'matched');
-        // also collect all matched for ticker (wider query would be better but keep simple)
-        updateHomeArenaTicker();
-      }, err => console.error("duel my listener:", err));
-
-    duelUnsubResults = db.collection('duels').where('status', '==', 'finished')
-      .onSnapshot(snap => {
-        const items = [];
-        snap.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
-        renderDuelResultsList(items);
-        updateHomeArenaTicker(items);
-      }, err => console.error("duel results listener:", err));
+    fetchDuelListsOnce();
+    duelListsPollTimer = setInterval(fetchDuelListsOnce, FIRESTORE_POLL_MS);
   }
 
   function unsubscribeDuelLists() {
+    if (duelListsPollTimer) {
+      clearInterval(duelListsPollTimer);
+      duelListsPollTimer = null;
+    }
     if (duelUnsubOpen) { duelUnsubOpen(); duelUnsubOpen = null; }
     if (duelUnsubMy) { duelUnsubMy(); duelUnsubMy = null; }
     if (duelUnsubResults) { duelUnsubResults(); duelUnsubResults = null; }
@@ -4336,14 +4375,12 @@
     showToast("📋 Link ready to share");
   }
 
-  async function navTo(screen) {
-    // Re-check membership on every navigation (if user left group, lock app)
-    if (screen !== 'home') {
-      const ok = await ensureMembership();
-      if (!ok) return;
-    } else {
-      // still soft-check in background
+  function navTo(screen) {
+    // Fast navigation — no await on Telegram API (that caused lag)
+    if (!membershipOk && tg?.initDataUnsafe?.user?.id) {
+      document.getElementById('forceJoinModal')?.classList.add('active');
       verifyForceJoin(true);
+      return;
     }
     navHistory.push(screen);
     renderCurrentScreen();
