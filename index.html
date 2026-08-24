@@ -68,27 +68,31 @@
     }
     .back-home-btn:hover { background: #334155; color: #fff; }
 
-    /* Top Performers Ticker Bar */
+    /* Live Arena Feed Bar (replaces old static ticker) */
     .news-ticker-bar {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      border-radius: 10px;
-      padding: 7px 12px;
+      background: linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(2, 132, 199, 0.15), rgba(15, 23, 42, 0.95));
+      border: 1.5px solid rgba(56, 189, 248, 0.45);
+      border-radius: 12px;
+      padding: 8px 12px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
       overflow: hidden;
       flex-shrink: 0;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+      position: relative;
     }
     .ticker-tag {
-      background: #059669;
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
       color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 6px;
       white-space: nowrap;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
     }
     .ticker-content {
       flex: 1;
@@ -98,22 +102,80 @@
     }
     .ticker-text {
       display: inline-block;
-      font-size: 12px;
+      font-size: 13px;
       color: #e2e8f0;
       direction: ltr;
       text-align: left;
-      font-weight: 600;
-      animation: tickerSlide 22s linear infinite;
+      font-weight: 700;
+      animation: tickerSlide 28s linear infinite;
     }
     .ticker-text span {
       color: #38bdf8;
-      font-weight: 800;
-      margin-left: 15px;
-      margin-right: 15px;
+      font-weight: 900;
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+    .ticker-text .duel-live {
+      color: #f472b6;
+      font-weight: 900;
+    }
+    .ticker-text .duel-result {
+      color: #34d399;
+      font-weight: 900;
+    }
+    .ticker-text .duel-upcoming {
+      color: #facc15;
+      font-weight: 900;
     }
     @keyframes tickerSlide {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
+    }
+
+    /* Super shiny Duel Arena card on home */
+    .hub-card.duel-highlight {
+      border-color: #f59e0b;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(15, 23, 42, 0.95) 55%, rgba(2, 132, 199, 0.2) 100%);
+      animation: glowDuel 2.2s infinite alternate;
+      position: relative;
+      overflow: hidden;
+    }
+    @keyframes glowDuel {
+      0% {
+        box-shadow: 0 0 18px rgba(245, 158, 11, 0.35), 0 0 8px rgba(56, 189, 248, 0.2);
+        border-color: rgba(245, 158, 11, 0.7);
+      }
+      100% {
+        box-shadow: 0 0 36px rgba(245, 158, 11, 0.75), 0 0 20px rgba(56, 189, 248, 0.45), inset 0 0 20px rgba(245, 158, 11, 0.12);
+        border-color: #fbbf24;
+      }
+    }
+    .hub-card.duel-highlight::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
+      transform: rotate(30deg);
+      animation: lightSweep 3.5s infinite linear;
+      pointer-events: none;
+    }
+    .hub-card.duel-highlight .hub-icon {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: rgba(245, 158, 11, 0.5);
+      font-size: 30px;
+      width: 56px;
+      height: 56px;
+    }
+    .hub-card.duel-highlight .hub-text h3 {
+      font-size: 17px !important;
+      letter-spacing: 0.6px;
+    }
+    .hub-card.duel-highlight .hub-text p {
+      font-size: 13px;
+      color: #fde68a;
     }
 
     .view-screen {
@@ -981,17 +1043,12 @@
     <button class="back-home-btn" id="backHomeBtn" onclick="navBack()">بازگشت ‹</button>
   </div>
 
-  <!-- Top Performers Ticker Bar -->
+  <!-- Live Arena Feed Bar -->
   <div class="news-ticker-bar" id="newsTickerBar">
-    <span class="ticker-tag">🏆 Top Students</span>
+    <span class="ticker-tag">⚔️ LIVE ARENA</span>
     <div class="ticker-content">
-      <span class="ticker-text">
-        <span>Saeid: 75% WFD</span> • 
-        <span>Majid: 17/20 Vocab</span> • 
-        <span>Reza: 90% WFD</span> • 
-        <span>Sara: 19/20 Vocab</span> • 
-        <span>Ali: 82% WFD</span> • 
-        <span>Armin: 18/20 Vocab</span>
+      <span class="ticker-text" id="liveArenaTicker">
+        <span class="duel-live">در حال بارگذاری چالش‌های زنده…</span>
       </span>
     </div>
   </div>
@@ -999,6 +1056,16 @@
   <!-- Home Hub -->
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
+
+      <!-- DUEL ARENA - Super highlighted on first page -->
+      <div class="hub-card duel-highlight" onclick="navTo('duels')">
+        <div class="hub-icon">⚔️</div>
+        <div class="hub-text">
+          <h3 style="color:#fbbf24;">DUEL ARENA • چالش زنده</h3>
+          <p>رقابت ۱v۱ بنویس از دیکته • تعداد سوال انتخابی • رتبه و جایزه</p>
+        </div>
+      </div>
+
       <div class="hub-card placement-highlight" onclick="openPlacementIntro()">
         <div class="hub-icon">📋</div>
         <div class="hub-text">
@@ -1044,7 +1111,7 @@
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
           <h3>PTE PRACTICE</h3>
-          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB</p>
+          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB • SWT</p>
         </div>
       </div>
     </div>
@@ -1442,11 +1509,11 @@
         </div>
       </div>
 
-      <div class="hub-card" onclick="navTo('duels')">
+      <div class="hub-card duel-highlight" onclick="navTo('duels')">
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">Duel Arena</h3>
-          <p>یه چالش WFD بذار، رقیب پیدا کن، همزمان مسابقه بده و ببین کی می‌بره!</p>
+          <h3 style="color:#fbbf24; font-size:16px;">DUEL ARENA</h3>
+          <p style="color:#fde68a;">چالش ۱v۱ WFD • انتخاب ۳ یا ۵ سوال • رقابت زنده و رتبه</p>
         </div>
       </div>
     </div>
@@ -1536,36 +1603,45 @@
   <div class="view-screen" id="viewDuels">
     <div class="wfd-box">
 
-      <div class="quiz-card" style="padding:12px; gap:10px;">
-        <div class="quiz-title"><span>🔥 Create a WFD Duel</span></div>
+      <div class="quiz-card" style="padding:14px; gap:12px; border:1.5px solid rgba(245,158,11,0.4); background:linear-gradient(145deg,rgba(245,158,11,0.12),rgba(15,23,42,0.9));">
+        <div class="quiz-title" style="font-size:15px;"><span>🔥 Create a WFD Duel</span></div>
+        
+        <div style="display:flex; gap:8px; align-items:center; direction:ltr; flex-wrap:wrap;">
+          <span style="font-size:13px; color:#fbbf24; font-weight:800;">Questions:</span>
+          <div class="quota-options" id="duelQCountOptions" style="margin:0; gap:6px;">
+            <button type="button" class="quota-btn selected" style="padding:8px 16px; font-size:14px;" onclick="selectDuelQCount(3)">3</button>
+            <button type="button" class="quota-btn" style="padding:8px 16px; font-size:14px;" onclick="selectDuelQCount(5)">5</button>
+          </div>
+        </div>
+
         <div style="display:flex; gap:8px; align-items:center; direction:ltr;">
-          <span style="font-size:12px; color:#94a3b8;">Start time (today):</span>
-          <input type="time" id="duelTimeInput" style="background:#0f172a; color:#fff; border:1px solid #1e293b; border-radius:8px; padding:6px 8px; font-family:inherit;">
+          <span style="font-size:13px; color:#94a3b8; font-weight:700;">Start time (Tehran):</span>
+          <input type="time" id="duelTimeInput" style="background:#0f172a; color:#fff; border:1.5px solid #0284c7; border-radius:8px; padding:8px 10px; font-family:inherit; font-size:14px; font-weight:700;">
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap; direction:ltr;">
           <button class="cat-btn" onclick="setDuelQuickTime(5)">+5 min</button>
           <button class="cat-btn" onclick="setDuelQuickTime(15)">+15 min</button>
           <button class="cat-btn" onclick="setDuelQuickTime(60)">+1 hour</button>
         </div>
-        <button class="btn-primary" onclick="createDuel()">⚔️ Create Duel</button>
+        <button class="btn-primary" style="padding:14px; font-size:15px; background:linear-gradient(135deg,#f59e0b,#d97706); border:none;" onclick="createDuel()">⚔️ Create Duel Challenge</button>
       </div>
 
-      <div class="quiz-card" style="padding:12px; gap:8px; margin-top:10px;">
-        <div class="quiz-title"><span>📋 Open Challenges</span></div>
+      <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
+        <div class="quiz-title" style="font-size:14.5px;"><span>📋 Open Challenges</span></div>
         <div id="duelOpenList" style="display:flex; flex-direction:column; gap:8px;">
           <div class="duel-empty">Loading…</div>
         </div>
       </div>
 
-      <div class="quiz-card" style="padding:12px; gap:8px; margin-top:10px;">
-        <div class="quiz-title"><span>⏳ My Duels</span></div>
+      <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
+        <div class="quiz-title" style="font-size:14.5px;"><span>⏳ My Duels</span></div>
         <div id="duelMyList" style="display:flex; flex-direction:column; gap:8px;">
           <div class="duel-empty">No duels yet.</div>
         </div>
       </div>
 
-      <div class="quiz-card" style="padding:12px; gap:8px; margin-top:10px;">
-        <div class="quiz-title"><span>🏆 Recent Results</span></div>
+      <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
+        <div class="quiz-title" style="font-size:14.5px;"><span>🏆 Recent Results</span></div>
         <div id="duelResultsList" style="display:flex; flex-direction:column; gap:8px;">
           <div class="duel-empty">No results yet.</div>
         </div>
@@ -2133,9 +2209,52 @@
     try {
       db = firebase.firestore();
       duelUser = getDuelUser();
+      // Always keep a lightweight home ticker live
+      startHomeArenaFeed();
     } catch (err) {
       console.error("Firebase init error:", err);
     }
+  }
+
+  function startHomeArenaFeed() {
+    if (!db || duelUnsubHomeFeed) return;
+    // Combined listener for home ticker (open + matched + recent finished)
+    duelUnsubHomeFeed = db.collection('duels')
+      .orderBy('createdAt', 'desc')
+      .limit(30)
+      .onSnapshot(snap => {
+        const now = Date.now();
+        const open = [], matched = [], results = [];
+        snap.forEach(doc => {
+          const d = { id: doc.id, ...doc.data() };
+          if (d.status === 'open' && d.startTime > now) open.push(d);
+          else if (d.status === 'matched') matched.push(d);
+          else if (d.status === 'finished') results.push(d);
+        });
+        homeTickerCache.open = open;
+        homeTickerCache.matched = matched;
+        homeTickerCache.results = results;
+        updateHomeArenaTicker();
+      }, err => {
+        console.warn("Home arena feed:", err);
+        // fallback without orderBy if index missing
+        if (err.code === 'failed-precondition') {
+          db.collection('duels').limit(30).onSnapshot(snap2 => {
+            const now = Date.now();
+            const open = [], matched = [], results = [];
+            snap2.forEach(doc => {
+              const d = { id: doc.id, ...doc.data() };
+              if (d.status === 'open' && d.startTime > now) open.push(d);
+              else if (d.status === 'matched') matched.push(d);
+              else if (d.status === 'finished') results.push(d);
+            });
+            homeTickerCache.open = open;
+            homeTickerCache.matched = matched;
+            homeTickerCache.results = results;
+            updateHomeArenaTicker();
+          });
+        }
+      });
   }
 
   function getDuelUser() {
@@ -2206,6 +2325,15 @@
     document.getElementById('duelTimeInput').value = tehranStr;
   }
 
+  function selectDuelQCount(n) {
+    selectedDuelQCount = n;
+    const btns = document.querySelectorAll('#duelQCountOptions .quota-btn');
+    btns.forEach(b => {
+      b.classList.remove('selected');
+      if (parseInt(b.innerText, 10) === n) b.classList.add('selected');
+    });
+  }
+
   async function createDuel() {
     if (!db) { showToast("⚠️ Duel service unavailable."); return; }
     const timeVal = document.getElementById('duelTimeInput').value;
@@ -2220,8 +2348,15 @@
 
     const pool = wfdQuestions.filter(q => !q.isPrediction);
     if (pool.length === 0) { showToast("⚠️ No WFD questions available yet."); return; }
-    const randomQ = pool[Math.floor(Math.random() * pool.length)];
-    const questionIndex = wfdQuestions.indexOf(randomQ);
+    if (pool.length < selectedDuelQCount) {
+      showToast("⚠️ Not enough questions for this count. Try 3.");
+      return;
+    }
+
+    // Shuffle and pick N unique questions
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    const picked = shuffled.slice(0, selectedDuelQCount);
+    const questionIndices = picked.map(q => wfdQuestions.indexOf(q));
 
     try {
       await db.collection('duels').add({
@@ -2232,7 +2367,9 @@
         opponentName: null,
         startTime: startMs,
         status: 'open',
-        questionIndex: questionIndex,
+        questionCount: selectedDuelQCount,
+        questionIndices: questionIndices,
+        questionIndex: questionIndices[0], // backward compat
         creatorScore: null,
         opponentScore: null,
         creatorSubmittedAt: null,
@@ -2240,7 +2377,7 @@
         winnerName: null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-      showToast("✅ Duel created! Waiting for an opponent.");
+      showToast(`✅ Duel created with ${selectedDuelQCount} questions! Waiting for opponent.`);
       document.getElementById('duelTimeInput').value = "";
     } catch (err) {
       console.error(err);
@@ -2291,9 +2428,12 @@
         const items = [];
         snap.forEach(doc => {
           const d = doc.data();
-          if (d.startTime > now && d.creatorId !== duelUser.id) items.push({ id: doc.id, ...d });
+          if (d.startTime > now) items.push({ id: doc.id, ...d }); // show all open for home ticker
         });
-        renderDuelOpenList(items);
+        const openForList = items.filter(d => d.creatorId !== duelUser.id);
+        renderDuelOpenList(openForList);
+        homeTickerCache.open = items;
+        updateHomeArenaTicker();
       }, err => console.error("duel open listener:", err));
 
     duelUnsubMy = db.collection('duels').where('status', 'in', ['open', 'matched'])
@@ -2305,6 +2445,9 @@
         });
         duelMyItemsCache = items;
         renderDuelMyList(items);
+        homeTickerCache.matched = items.filter(d => d.status === 'matched');
+        // also collect all matched for ticker (wider query would be better but keep simple)
+        updateHomeArenaTicker();
       }, err => console.error("duel my listener:", err));
 
     duelUnsubResults = db.collection('duels').where('status', '==', 'finished')
@@ -2312,6 +2455,7 @@
         const items = [];
         snap.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
         renderDuelResultsList(items);
+        updateHomeArenaTicker(items);
       }, err => console.error("duel results listener:", err));
   }
 
@@ -2319,6 +2463,63 @@
     if (duelUnsubOpen) { duelUnsubOpen(); duelUnsubOpen = null; }
     if (duelUnsubMy) { duelUnsubMy(); duelUnsubMy = null; }
     if (duelUnsubResults) { duelUnsubResults(); duelUnsubResults = null; }
+  }
+
+  /* Home page LIVE ARENA ticker – shows open challenges, upcoming matches, recent results & top users */
+  let homeTickerCache = { open: [], matched: [], results: [] };
+
+  function updateHomeArenaTicker(resultsOverride) {
+    const tickerEl = document.getElementById('liveArenaTicker');
+    if (!tickerEl) return;
+
+    if (resultsOverride) homeTickerCache.results = resultsOverride;
+
+    // We also need open + matched; pull from current listeners if available
+    // For simplicity rebuild from last known via a lightweight query-less cache
+    const parts = [];
+
+    // Upcoming matched duels (most exciting)
+    const now = Date.now();
+    (homeTickerCache.matched || []).forEach(d => {
+      if (d.status === 'matched' && d.startTime > now - 60000) {
+        const qCount = d.questionCount || 1;
+        parts.push(`<span class="duel-upcoming">🔥 ${escapeHtml(d.creatorName)} vs ${escapeHtml(d.opponentName || '?')} · ${qCount}Q · ${formatDuelClock(d.startTime)}</span>`);
+      }
+    });
+
+    // Open challenges
+    (homeTickerCache.open || []).slice(0, 4).forEach(d => {
+      const qCount = d.questionCount || 1;
+      parts.push(`<span class="duel-live">⚔️ Open: ${escapeHtml(d.creatorName)} · ${qCount}Q · ${formatDuelClock(d.startTime)}</span>`);
+    });
+
+    // Recent results
+    const recent = (homeTickerCache.results || []).sort((a,b) => b.startTime - a.startTime).slice(0, 5);
+    recent.forEach(d => {
+      const tie = !d.winnerName;
+      const qCount = d.questionCount || 1;
+      if (tie) {
+        parts.push(`<span class="duel-result">🤝 ${escapeHtml(d.creatorName)} ${d.creatorScore}–${d.opponentScore} ${escapeHtml(d.opponentName || '')} (${qCount}Q)</span>`);
+      } else {
+        parts.push(`<span class="duel-result">🏆 ${escapeHtml(d.winnerName)} beats ${escapeHtml(d.winnerName === d.creatorName ? d.opponentName : d.creatorName)} (${d.creatorScore}–${d.opponentScore} · ${qCount}Q)</span>`);
+      }
+    });
+
+    // Fallback top users style promo if empty
+    if (parts.length === 0) {
+      parts.push(`<span class="duel-live">⚔️ اولین چالش رو بساز و رقیب پیدا کن!</span>`);
+      parts.push(`<span class="duel-upcoming">🔥 DUEL ARENA • رقابت زنده ۱v۱ WFD</span>`);
+      parts.push(`<span class="duel-result">🏆 برترین‌ها اینجا نمایش داده می‌شوند</span>`);
+    }
+
+    tickerEl.innerHTML = parts.join(' • ');
+  }
+
+  // Keep cache updated from the main listeners
+  function patchHomeCacheFromOpen(items) { homeTickerCache.open = items; updateHomeArenaTicker(); }
+  function patchHomeCacheFromMy(items) {
+    homeTickerCache.matched = items.filter(d => d.status === 'matched');
+    updateHomeArenaTicker();
   }
 
   function startDuelListTick() {
@@ -2334,15 +2535,18 @@
     if (!el) return;
     if (items.length === 0) { el.innerHTML = '<div class="duel-empty">No open challenges right now. Create one!</div>'; return; }
     items.sort((a, b) => a.startTime - b.startTime);
-    el.innerHTML = items.map(d => `
+    el.innerHTML = items.map(d => {
+      const qCount = d.questionCount || 1;
+      return `
       <div class="duel-row">
         <div>
           <div class="duel-name">${escapeHtml(d.creatorName)}</div>
-          <div class="duel-sub">WFD Duel · ${formatDuelClock(d.startTime)}</div>
+          <div class="duel-sub">⚔️ ${qCount}Q WFD · ${formatDuelClock(d.startTime)}</div>
         </div>
         <button class="duel-btn-mini duel-btn-accept" onclick="acceptDuel('${d.id}')">Accept</button>
       </div>
-    `).join('');
+    `;
+    }).join('');
   }
 
   function renderDuelMyList(items) {
@@ -2355,14 +2559,15 @@
       const isCreator = d.creatorId === duelUser.id;
       const oppName = isCreator ? (d.opponentName || 'Waiting for opponent…') : d.creatorName;
       const remaining = d.startTime - now;
+      const qCount = d.questionCount || 1;
       let meta, action = '';
       if (d.status === 'open') {
-        meta = `Waiting for opponent · starts ${formatDuelClock(d.startTime)}`;
+        meta = `Waiting · ${qCount}Q · starts ${formatDuelClock(d.startTime)}`;
         if (isCreator) action = `<button class="duel-btn-mini duel-btn-cancel" onclick="cancelDuel('${d.id}')">Cancel</button>`;
       } else if (remaining > 0) {
-        meta = `vs ${escapeHtml(oppName)} · starts in ${formatCountdown(remaining)}`;
+        meta = `vs ${escapeHtml(oppName)} · ${qCount}Q · starts in ${formatCountdown(remaining)}`;
       } else {
-        meta = `vs ${escapeHtml(oppName)} · ready!`;
+        meta = `vs ${escapeHtml(oppName)} · ${qCount}Q · ready!`;
         action = `<button class="duel-btn-mini duel-btn-enter" onclick="enterDuel('${d.id}')">Enter ▶️</button>`;
       }
       return `<div class="duel-row"><div class="duel-meta">${meta}</div>${action}</div>`;
@@ -2376,9 +2581,10 @@
     const sorted = [...items].sort((a, b) => b.startTime - a.startTime).slice(0, 10);
     el.innerHTML = sorted.map(d => {
       const tie = !d.winnerName;
+      const qCount = d.questionCount || 1;
       return `
         <div class="duel-row" style="align-items:flex-start; flex-direction:column;">
-          <div class="duel-meta"><b>${escapeHtml(d.creatorName)}</b> ${d.creatorScore} — ${d.opponentScore} <b>${escapeHtml(d.opponentName || '')}</b></div>
+          <div class="duel-meta"><b>${escapeHtml(d.creatorName)}</b> ${d.creatorScore} — ${d.opponentScore} <b>${escapeHtml(d.opponentName || '')}</b> <span style="color:#94a3b8;">(${qCount}Q)</span></div>
           <div class="duel-sub" style="color:#facc15;">${tie ? '🤝 Draw' : '🏆 ' + escapeHtml(d.winnerName) + ' wins'}</div>
         </div>
       `;
@@ -2396,6 +2602,9 @@
     document.getElementById('duelPlaySubmitted').style.display = 'none';
     document.getElementById('duelPlayResult').style.display = 'none';
     duelSubmitted = false;
+    duelPlayQIndex = 0;
+    duelPlayScores = [];
+    duelCurrentQuestionIndices = [];
     stopDuelTimer();
 
     if (duelUnsubActive) { duelUnsubActive(); duelUnsubActive = null; }
@@ -2407,6 +2616,15 @@
 
   function renderDuelPlayState(d) {
     const isCreator = d.creatorId === duelUser.id;
+
+    // Initialize question list once
+    if (duelCurrentQuestionIndices.length === 0) {
+      if (Array.isArray(d.questionIndices) && d.questionIndices.length > 0) {
+        duelCurrentQuestionIndices = d.questionIndices;
+      } else if (d.questionIndex !== undefined && d.questionIndex !== null) {
+        duelCurrentQuestionIndices = [d.questionIndex];
+      }
+    }
 
     if (d.status === 'finished') {
       showDuelResult(d, isCreator);
@@ -2436,10 +2654,12 @@
     document.getElementById('duelPlaySubmitted').style.display = 'none';
     document.getElementById('duelPlayActive').style.display = 'block';
 
-    const q = wfdQuestions[d.questionIndex];
+    const totalQ = duelCurrentQuestionIndices.length || 1;
+    const qIdx = duelCurrentQuestionIndices[duelPlayQIndex] ?? d.questionIndex;
+    const q = wfdQuestions[qIdx];
     if (!q) return;
     const oppName = isCreator ? (d.opponentName || 'Opponent') : d.creatorName;
-    document.getElementById('duelPlayVs').innerText = `⚔️ You vs ${oppName}`;
+    document.getElementById('duelPlayVs').innerText = `⚔️ You vs ${oppName}  ·  Q ${duelPlayQIndex + 1}/${totalQ}`;
 
     const audioEl = document.getElementById('duelAudioPlayer');
     const wantedSrc = "wfd_audios/" + q.audioUrl;
@@ -2500,13 +2720,34 @@
     if (!d) return;
 
     const isCreator = d.creatorId === duelUser.id;
-    const q = wfdQuestions[d.questionIndex];
+    const totalQ = duelCurrentQuestionIndices.length || 1;
+    const qIdx = duelCurrentQuestionIndices[duelPlayQIndex] ?? d.questionIndex;
+    const q = wfdQuestions[qIdx];
+    if (!q) return;
+
     const userRawText = document.getElementById('duelInput').value.trim();
     if (!userRawText) { showToast("⚠️ Type your answer first."); return; }
 
     const score = computeWfdMatchScore(q.text, userRawText);
-    duelSubmitted = true;
+    duelPlayScores.push(score);
     stopDuelTimer();
+
+    // More questions remaining → advance locally
+    if (duelPlayQIndex + 1 < totalQ) {
+      duelPlayQIndex++;
+      showToast(`✅ Q${duelPlayQIndex}/${totalQ} done · Score so far: ${duelPlayScores.reduce((a,b)=>a+b,0)}`);
+      document.getElementById('duelInput').value = '';
+      calcDuelWords();
+      // force reload next audio
+      const audioEl = document.getElementById('duelAudioPlayer');
+      audioEl.removeAttribute('data-loaded');
+      renderDuelPlayState(d);
+      return;
+    }
+
+    // Final question → push total score to Firestore
+    const totalScore = duelPlayScores.reduce((a, b) => a + b, 0);
+    duelSubmitted = true;
 
     try {
       await db.runTransaction(async (tx) => {
@@ -2515,13 +2756,13 @@
         const scoreField = isCreator ? 'creatorScore' : 'opponentScore';
         const subField = isCreator ? 'creatorSubmittedAt' : 'opponentSubmittedAt';
         const update = {
-          [scoreField]: score,
+          [scoreField]: totalScore,
           [subField]: firebase.firestore.FieldValue.serverTimestamp()
         };
         const otherScore = isCreator ? data.opponentScore : data.creatorScore;
         if (otherScore !== null && otherScore !== undefined) {
-          const cScore = isCreator ? score : data.creatorScore;
-          const oScore = isCreator ? data.opponentScore : score;
+          const cScore = isCreator ? totalScore : data.creatorScore;
+          const oScore = isCreator ? data.opponentScore : totalScore;
           let winnerName = null;
           if (cScore > oScore) winnerName = data.creatorName;
           else if (oScore > cScore) winnerName = data.opponentName;
@@ -2554,13 +2795,13 @@
     const oppName = isCreator ? d.opponentName : d.creatorName;
     const isDraw = !d.winnerName;
     const iWon = !isDraw && d.winnerName === (isCreator ? d.creatorName : d.opponentName);
+    const qCount = d.questionCount || (Array.isArray(d.questionIndices) ? d.questionIndices.length : 1);
 
     document.getElementById('duelResultTitle').innerText = isDraw ? "🤝 It's a Draw!" : (iWon ? "🏆 You Won!" : "😢 You Lost");
-    const q = wfdQuestions[d.questionIndex];
-    const total = q ? q.text.trim().split(/\s+/).length : '?';
     document.getElementById('duelResultBody').innerHTML = `
-      <div>You: <b>${myScore}</b> / ${total}</div>
-      <div>${escapeHtml(oppName)}: <b>${oppScore}</b> / ${total}</div>
+      <div style="font-size:14px; margin-bottom:6px;">${qCount} Question Duel</div>
+      <div>You: <b style="color:#38bdf8; font-size:18px;">${myScore}</b></div>
+      <div>${escapeHtml(oppName)}: <b style="font-size:18px;">${oppScore}</b></div>
     `;
   }
 
@@ -2846,11 +3087,16 @@
   let duelUnsubMy = null;
   let duelUnsubResults = null;
   let duelUnsubActive = null;
+  let duelUnsubHomeFeed = null;
   let duelListTickInterval = null;
   let duelMyItemsCache = [];
   let duelTimerInterval = null;
   let duelElapsedSeconds = 0;
   let duelSubmitted = false;
+  let selectedDuelQCount = 3;
+  let duelPlayQIndex = 0;          // current question index inside multi-question duel
+  let duelPlayScores = [];         // partial scores for each question
+  let duelCurrentQuestionIndices = []; // the list for the active duel
 
   /* Firebase init (Duel Arena backend) */
   const firebaseConfig = {
