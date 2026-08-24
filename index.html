@@ -2047,12 +2047,21 @@
   const BOT_TOKEN = "8953110530:AAEAsaVEEsId6NE_CXAIWleIRqY0_6kt5us";
   const ADMIN_CHAT_ID = "600029017";
   const BOT_USERNAME = "WRITING_PTE_ROOM_BOT";
+  // Empty = main Menu Button mini app → t.me/BOT?startapp=duel_ID
+  // Or set e.g. "app" after creating named mini app with /newapp
+  const MINI_APP_SHORT_NAME = "";
   // Bot must be admin in both chats for membership check to work
   const FORCE_JOIN_CHATS = [
     { id: "@pte_room", label: "کانال @pte_room" },
     { id: "@pte_room_group", label: "گروه @pte_room_group" }
   ];
-  const JOIN_CACHE_MS = 30 * 60 * 1000; // re-check every 30 min
+  // Short debounce only (avoid spamming Telegram API on rapid taps)
+  const JOIN_RECHECK_MIN_MS = 15 * 1000;
+  const JOIN_PERIODIC_MS = 45 * 1000; // always re-check while app is open
+  let membershipOk = false;
+  let membershipChecking = false;
+  let lastMembershipCheckAt = 0;
+  let membershipWatchTimer = null;
 
   let isSubmitting = false;
 
@@ -3167,6 +3176,7 @@
   }
 
   async function createDuel() {
+    if (!(await ensureMembership())) return;
     if (!db) { showToast("⚠️ Duel service unavailable."); return; }
     const timeVal = document.getElementById('duelTimeInput').value;
     if (!timeVal) { showToast("⚠️ Pick a start time first."); return; }
@@ -3235,6 +3245,7 @@
   }
 
   async function acceptDuel(duelId) {
+    if (!(await ensureMembership())) return;
     if (!db) return;
     const ref = db.collection('duels').doc(duelId);
     try {
@@ -4114,20 +4125,32 @@
     initDuelModule();
   }
 
-  /* Force Join — real Telegram membership check (bot must be admin) */
+  /* Force Join — continuous real membership check (bot must be admin) */
   function checkForceJoinOnStart() {
-    const cached = localStorage.getItem('pteroom_force_joined_at');
-    if (cached && (Date.now() - Number(cached)) < JOIN_CACHE_MS) {
-      handleDuelDeepLink();
-      return;
-    }
+    // Never trust old localStorage alone — always verify with Telegram
+    localStorage.removeItem('pteroom_force_joined');
     document.getElementById('forceJoinModal').classList.add('active');
-    // Auto-verify if user already a member
-    verifyForceJoin(true);
+    verifyForceJoin(true).then(() => {
+      startMembershipWatch();
+      if (membershipOk) handleDuelDeepLink();
+    });
   }
 
   function markJoinAttempt() {
     localStorage.setItem('pteroom_tried_join', 'true');
+  }
+
+  function startMembershipWatch() {
+    stopMembershipWatch();
+    membershipWatchTimer = setInterval(() => {
+      verifyForceJoin(true);
+    }, JOIN_PERIODIC_MS);
+  }
+  function stopMembershipWatch() {
+    if (membershipWatchTimer) {
+      clearInterval(membershipWatchTimer);
+      membershipWatchTimer = null;
+    }
   }
 
   async function getChatMemberStatus(chatId, userId) {
@@ -4142,20 +4165,49 @@
   }
 
   function isMemberStatus(status) {
+    // left / kicked / banned → not allowed
     return status === 'member' || status === 'administrator' || status === 'creator' || status === 'restricted';
   }
 
+  function lockAppForMembership(missingLabels) {
+    membershipOk = false;
+    localStorage.removeItem('pteroom_force_joined_at');
+    const modal = document.getElementById('forceJoinModal');
+    if (modal) modal.classList.add('active');
+    const msg = missingLabels && missingLabels.length
+      ? '❌ عضویت لازم است: ' + missingLabels.join(' و ')
+      : '❌ برای استفاده باید در کانال و گروه عضو بمانید.';
+    showToast(msg);
+  }
+
+  function unlockAppMembership() {
+    membershipOk = true;
+    lastMembershipCheckAt = Date.now();
+    localStorage.setItem('pteroom_force_joined_at', String(Date.now()));
+    const modal = document.getElementById('forceJoinModal');
+    if (modal) modal.classList.remove('active');
+  }
+
   async function verifyForceJoin(silent) {
+    if (membershipChecking) return membershipOk;
+    // Debounce rapid checks
+    if (silent && membershipOk && (Date.now() - lastMembershipCheckAt) < JOIN_RECHECK_MIN_MS) {
+      return true;
+    }
+    membershipChecking = true;
+
     const userId = tg?.initDataUnsafe?.user?.id;
     if (!userId) {
-      // Outside Telegram (browser test) — skip gate
-      if (!silent) showToast("⚠️ لطفاً از داخل تلگرام باز کنید.");
+      // Outside Telegram (browser test only)
       if (!tg) {
-        localStorage.setItem('pteroom_force_joined_at', String(Date.now()));
-        document.getElementById('forceJoinModal').classList.remove('active');
-        handleDuelDeepLink();
+        unlockAppMembership();
+        membershipChecking = false;
+        return true;
       }
-      return;
+      if (!silent) showToast("⚠️ لطفاً از داخل تلگرام باز کنید.");
+      lockAppForMembership([]);
+      membershipChecking = false;
+      return false;
     }
 
     const btn = document.querySelector('.btn-check-join');
@@ -4168,6 +4220,7 @@
     try {
       for (const chat of FORCE_JOIN_CHATS) {
         const r = await getChatMemberStatus(chat.id, userId);
+        // API error OR not a member → block
         if (!r.ok || !isMemberStatus(r.status)) {
           missing.push(chat.label);
         }
@@ -4176,36 +4229,61 @@
       console.error(e);
       if (!silent) showToast("⚠️ خطا در بررسی. دوباره تلاش کنید.");
       if (btn) { btn.disabled = false; btn.textContent = '✅ بررسی عضویت و ورود'; }
-      return;
+      membershipChecking = false;
+      return false;
     }
 
     if (btn) { btn.disabled = false; btn.textContent = '✅ بررسی عضویت و ورود'; }
 
     if (missing.length === 0) {
-      localStorage.setItem('pteroom_force_joined_at', String(Date.now()));
-      document.getElementById('forceJoinModal').classList.remove('active');
+      const wasLocked = !membershipOk;
+      unlockAppMembership();
       if (!silent) showToast("🎉 عضویت تأیید شد — خوش آمدید!");
-      handleDuelDeepLink();
-    } else {
-      localStorage.removeItem('pteroom_force_joined_at');
-      document.getElementById('forceJoinModal').classList.add('active');
-      if (!silent) {
-        showToast("❌ هنوز عضو نیستید: " + missing.join(' و '));
-      }
+      if (wasLocked) handleDuelDeepLink();
+      membershipChecking = false;
+      return true;
     }
+
+    lockAppForMembership(missing);
+    membershipChecking = false;
+    return false;
   }
 
   function checkForceJoin() {
     verifyForceJoin(false);
   }
 
-  /** Deep link: t.me/BOT?start=duel_DUELID */
+  /** Call before important actions — returns false if user left channel/group */
+  async function ensureMembership() {
+    const ok = await verifyForceJoin(true);
+    if (!ok) {
+      lockAppForMembership([]);
+    }
+    return ok;
+  }
+
+  /**
+   * Deep link must open the Mini App (startapp), NOT just the bot chat (start).
+   * start_param is only available when opened via:
+   *   https://t.me/BOT/SHORTNAME?startapp=duel_ID
+   */
+  function getStartParam() {
+    // Official Mini App payload
+    let p = tg?.initDataUnsafe?.start_param || '';
+    if (p) return p;
+    // Fallback: some clients put it in the URL
+    try {
+      const u = new URL(window.location.href);
+      p = u.searchParams.get('tgWebAppStartParam') || u.searchParams.get('startapp') || '';
+    } catch (e) {}
+    return p || '';
+  }
+
   function handleDuelDeepLink() {
-    const param = tg?.initDataUnsafe?.start_param || '';
-    if (!param.startsWith('duel_')) return;
-    const duelId = param.slice(5);
+    const param = getStartParam();
+    if (!param || !param.startsWith('duel_')) return;
+    const duelId = param.replace(/^duel_/, '');
     if (!duelId) return;
-    // Open duels screen and try to accept
     setTimeout(async () => {
       navTo('duels');
       showToast("⚔️ Opening shared duel…");
@@ -4213,18 +4291,25 @@
         await acceptDuel(duelId);
       } catch (e) {
         console.warn(e);
+        showToast("⚠️ Could not join this duel (maybe taken or expired).");
       }
-    }, 400);
+    }, 500);
   }
 
   function buildDuelShareLink(duelId) {
-    return `https://t.me/${BOT_USERNAME}?start=duel_${duelId}`;
+    // Main Mini App (Menu Button URL must be set in BotFather):
+    //   https://t.me/BOT?startapp=duel_ID
+    // Named Mini App (after /newapp):
+    //   https://t.me/BOT/shortname?startapp=duel_ID
+    if (MINI_APP_SHORT_NAME) {
+      return `https://t.me/${BOT_USERNAME}/${MINI_APP_SHORT_NAME}?startapp=duel_${duelId}`;
+    }
+    return `https://t.me/${BOT_USERNAME}?startapp=duel_${duelId}`;
   }
 
   function shareDuelLink(duelId, qCount, timeStr) {
     const link = buildDuelShareLink(duelId);
-    const text = `⚔️ WFD Duel Challenge!\n${qCount} questions · starts ${timeStr}\nAccept here:\n${link}`;
-    // Prefer Telegram native share
+    const text = `⚔️ WFD Duel Challenge!\n${qCount} questions · starts ${timeStr}\nTap to accept:\n${link}`;
     if (tg && typeof tg.openTelegramLink === 'function') {
       try {
         const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(`⚔️ WFD Duel · ${qCount}Q · ${timeStr}`)}`;
@@ -4251,7 +4336,15 @@
     showToast("📋 Link ready to share");
   }
 
-  function navTo(screen) {
+  async function navTo(screen) {
+    // Re-check membership on every navigation (if user left group, lock app)
+    if (screen !== 'home') {
+      const ok = await ensureMembership();
+      if (!ok) return;
+    } else {
+      // still soft-check in background
+      verifyForceJoin(true);
+    }
     navHistory.push(screen);
     renderCurrentScreen();
   }
