@@ -1510,6 +1510,14 @@
         </div>
       </div>
 
+      <div class="hub-card" onclick="navTo('rwfib')">
+        <div class="hub-icon">📝</div>
+        <div class="hub-text">
+          <h3 style="color:#38bdf8;">Reading &amp; Writing: FIB</h3>
+          <p>785 dropdown questions • Verb / Connector / Adj Clause / Preposition</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('swt')">
         <div class="hub-icon">📝</div>
         <div class="hub-text">
@@ -1557,6 +1565,31 @@
         <button class="btn-secondary" style="flex: 1;" onclick="prevRfibQuestion()">◀️ Prev</button>
         <button class="btn-primary" style="flex: 2;" onclick="checkRfibAnswer()">Check Answer 🎯</button>
         <button class="btn-secondary" style="flex: 1;" onclick="nextRfibQuestion()">Next ▶️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RWFIB (Reading & Writing FIB - Dropdown) Practice Screen -->
+  <div class="view-screen" id="viewRwfib">
+    <div class="wfd-box">
+      <div class="wfd-category-bar" id="rwfibCatBar">
+        <button class="cat-btn active" onclick="filterRwfibCategory('All')">🌐 All</button>
+        <button class="cat-btn" onclick="filterRwfibCategory('Verb')">Verb</button>
+        <button class="cat-btn" onclick="filterRwfibCategory('Connector')">Connector</button>
+        <button class="cat-btn" onclick="filterRwfibCategory('Adjective clause')">Adj Clause</button>
+        <button class="cat-btn" onclick="filterRwfibCategory('Preposition')">Preposition</button>
+      </div>
+
+      <select id="rwfibSelect" onchange="onSelectRwfibQuestion()"></select>
+
+      <div class="quiz-card" style="flex:1; overflow-y:auto; margin-top:4px; border:none; background:transparent; padding:0;">
+        <div class="passage-box" id="rwfibPassageBox" style="font-size:14px; line-height:2.4;"></div>
+      </div>
+
+      <div class="wfd-action-buttons" style="margin-top:10px;">
+        <button class="btn-secondary" style="flex: 1;" onclick="prevRwfibQuestion()">◀️ Prev</button>
+        <button class="btn-primary" style="flex: 2;" onclick="checkRwfibAnswer()">Check Answer 🎯</button>
+        <button class="btn-secondary" style="flex: 1;" onclick="nextRwfibQuestion()">Next ▶️</button>
       </div>
     </div>
   </div>
@@ -1849,6 +1882,141 @@
     } catch (err) {
       console.error("Error loading RFIB JSON:", err);
     }
+  }
+
+  /* ============================================================
+     RWFIB (Reading & Writing FIB - Dropdown) MODULE
+     data/rwfib_questions.json shape:
+       { id, title, text (with [A][B]...), options: {A:[..],B:[..]}, answers: {A:word}, grammar }
+     ============================================================ */
+  let rwfibAllQuestions = [];
+  let currentRwfibList = [];
+  let activeRwfibIndex = 0;
+
+  async function initRwfibModule() {
+    try {
+      const res = await fetch(`data/rwfib_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      if (res.ok) {
+        rwfibAllQuestions = await res.json();
+        filterRwfibCategory('All');
+      } else {
+        console.warn("Could not load rwfib_questions.json");
+      }
+    } catch (err) {
+      console.error("Error loading RWFIB JSON:", err);
+    }
+  }
+
+  function filterRwfibCategory(cat) {
+    document.querySelectorAll('#rwfibCatBar .cat-btn').forEach(btn => btn.classList.remove('active'));
+    if (typeof event !== 'undefined' && event?.target) event.target.classList.add('active');
+    else {
+      document.querySelectorAll('#rwfibCatBar .cat-btn').forEach(btn => {
+        if (btn.textContent.includes(cat === 'All' ? 'All' : cat.split(' ')[0])) btn.classList.add('active');
+      });
+    }
+
+    if (cat === 'All') {
+      currentRwfibList = [...rwfibAllQuestions];
+    } else {
+      currentRwfibList = rwfibAllQuestions.filter(q => (q.grammar || '') === cat);
+    }
+
+    const select = document.getElementById('rwfibSelect');
+    select.innerHTML = "";
+    if (currentRwfibList.length === 0) {
+      const opt = document.createElement('option');
+      opt.innerText = "No questions in this category";
+      select.appendChild(opt);
+      document.getElementById('rwfibPassageBox').innerHTML = "Please choose another category.";
+      return;
+    }
+
+    currentRwfibList.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title + (q.grammar && q.grammar !== 'General' ? ` [${q.grammar}]` : '');
+      select.appendChild(opt);
+    });
+
+    activeRwfibIndex = 0;
+    loadRwfibQuestion(0);
+  }
+
+  function loadRwfibQuestion(idx) {
+    activeRwfibIndex = idx;
+    const q = currentRwfibList[idx];
+    if (!q) return;
+
+    // Build passage with <select> for each blank [A], [B], ...
+    let html = q.text || "";
+    const letters = Object.keys(q.options || {}).sort();
+    letters.forEach(letter => {
+      const opts = q.options[letter] || [];
+      let selectHtml = `<select class="inline-select rwfib-select" data-blank="${letter}" id="rwfibSel_${letter}">`;
+      selectHtml += `<option value="">Select...</option>`;
+      opts.forEach(w => {
+        selectHtml += `<option value="${w.replace(/"/g, '&quot;')}">${w}</option>`;
+      });
+      selectHtml += `</select>`;
+      html = html.replace(new RegExp(`\\[${letter}\\]`, 'g'), selectHtml);
+    });
+
+    document.getElementById('rwfibPassageBox').innerHTML = html;
+  }
+
+  function onSelectRwfibQuestion() {
+    const idx = parseInt(document.getElementById('rwfibSelect').value, 10);
+    loadRwfibQuestion(idx);
+  }
+
+  function checkRwfibAnswer() {
+    const q = currentRwfibList[activeRwfibIndex];
+    if (!q) return;
+
+    let correct = 0;
+    let total = 0;
+    const answers = q.answers || {};
+
+    Object.keys(q.options || {}).forEach(letter => {
+      total++;
+      const sel = document.getElementById(`rwfibSel_${letter}`);
+      if (!sel) return;
+      const userVal = (sel.value || "").trim();
+      const right = (answers[letter] || "").trim();
+      sel.style.borderColor = "";
+      sel.style.background = "";
+      if (right && userVal.toLowerCase() === right.toLowerCase()) {
+        correct++;
+        sel.style.borderColor = "#10b981";
+        sel.style.background = "rgba(16,185,129,0.2)";
+        sel.style.color = "#34d399";
+      } else {
+        sel.style.borderColor = "#ef4444";
+        sel.style.background = "rgba(239,68,68,0.2)";
+        sel.style.color = "#f87171";
+        // show correct in title
+        sel.title = right ? `Correct: ${right}` : "";
+      }
+    });
+
+    showToast(`🎯 Score: ${correct} / ${total}`);
+  }
+
+  function prevRwfibQuestion() {
+    if (currentRwfibList.length === 0) return;
+    let prev = activeRwfibIndex - 1;
+    if (prev < 0) prev = currentRwfibList.length - 1;
+    document.getElementById('rwfibSelect').value = prev;
+    loadRwfibQuestion(prev);
+  }
+
+  function nextRwfibQuestion() {
+    if (currentRwfibList.length === 0) return;
+    let next = activeRwfibIndex + 1;
+    if (next >= currentRwfibList.length) next = 0;
+    document.getElementById('rwfibSelect').value = next;
+    loadRwfibQuestion(next);
   }
 
   /* ============================================================
@@ -3169,6 +3337,7 @@
     const ts = Date.now();
     initRfib();
     initRfibModule();
+    initRwfibModule();
     checkForceJoinOnStart();
 
     try {
@@ -3278,6 +3447,10 @@
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
       title.innerText = "PTE ROOM • Reading FIB";
+      stopWfdTimer();
+    } else if (current === 'rwfib') {
+      document.getElementById('viewRwfib').classList.add('active');
+      title.innerText = "PTE ROOM • Reading & Writing FIB";
       stopWfdTimer();
     } else if (current === 'swt') {
       document.getElementById('viewSwt').classList.add('active');
