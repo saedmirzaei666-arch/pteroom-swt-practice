@@ -928,6 +928,98 @@
       text-align: left;
     }
     .swt-structure-box.show { display: block; }
+
+    /* ---- Reorder Paragraph ---- */
+    .ro-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    @media (max-width: 640px) {
+      .ro-board { grid-template-columns: 1fr; }
+    }
+    .ro-panel {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ro-panel-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 2px;
+      text-align: center;
+    }
+    .ro-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 200px;
+    }
+    .ro-slot {
+      min-height: 52px;
+      border: 1.5px dashed rgba(148, 163, 184, 0.35);
+      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.5);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .ro-slot.drag-over {
+      border-color: #a78bfa;
+      background: rgba(167, 139, 250, 0.12);
+    }
+    .ro-slot.correct-pair {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.12) !important;
+    }
+    .ro-slot.wrong-pair {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.1) !important;
+    }
+    .ro-card {
+      background: #1e293b;
+      border: 1.5px solid #475569;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e2e8f0;
+      cursor: grab;
+      user-select: none;
+      direction: ltr;
+      text-align: left;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .ro-card:active { cursor: grabbing; }
+    .ro-card.dragging { opacity: 0.45; }
+    .ro-card.in-target {
+      border-color: #7c3aed;
+      background: #1e1b4b;
+    }
+    .ro-hint {
+      font-size: 11.5px;
+      color: #94a3b8;
+      text-align: center;
+      margin: 4px 0 8px;
+      direction: ltr;
+    }
+    .ro-score-box {
+      display: none;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(167, 139, 250, 0.35);
+      direction: ltr;
+    }
     .swt-structure-tpl {
       font-family: monospace;
       color: #facc15;
@@ -1536,6 +1628,14 @@
         </div>
       </div>
 
+      <div class="hub-card" onclick="navTo('ro')">
+        <div class="hub-icon">🔀</div>
+        <div class="hub-text">
+          <h3 style="color:#a78bfa;">Reorder Paragraph (Drag &amp; Drop)</h3>
+          <p>25 sets • Source → Target • 1 point per correct adjacent pair</p>
+        </div>
+      </div>
+
       <div class="hub-card duel-highlight" onclick="navTo('duels')">
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
@@ -1655,6 +1755,47 @@
   </div>
 
   <!-- Duel Arena Lobby Screen -->
+  <!-- Reorder Paragraph Practice Screen -->
+  <div class="view-screen" id="viewRo">
+    <div class="wfd-box">
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <select id="roSelect" onchange="loadRoQuestion(+this.value)" style="flex:1; min-width:180px;"></select>
+        <button class="btn-secondary" style="padding:8px 12px;" onclick="shuffleRoSource()">🔀 Shuffle</button>
+      </div>
+      <div class="ro-hint">Drag sentences from <b>Source</b> (left) into <b>Target</b> (right). Correct order is top → bottom. Score = 1 point per correct adjacent pair.</div>
+
+      <div class="ro-board">
+        <div class="ro-panel">
+          <div class="ro-panel-title">Source</div>
+          <div class="ro-list" id="roSourceList"></div>
+        </div>
+        <div class="ro-panel">
+          <div class="ro-panel-title">Target (top → bottom)</div>
+          <div class="ro-list" id="roTargetList"></div>
+        </div>
+      </div>
+
+      <div class="ro-score-box" id="roScoreBox">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <b style="color:#c4b5fd;">📊 Pair Score (Pearson)</b>
+          <span id="roScoreBadge" style="background:#7c3aed;color:#fff;padding:2px 10px;border-radius:8px;font-weight:800;">0 / 3</span>
+        </div>
+        <div id="roFeedback" style="font-size:12.5px; color:#cbd5e1; line-height:1.55;"></div>
+      </div>
+
+      <div class="wfd-action-buttons" id="roCheckActionBox">
+        <button class="btn-secondary" style="flex:1;" onclick="prevRoQuestion()">◀️ Prev</button>
+        <button class="btn-primary" style="flex:2;" onclick="checkRoAnswer()">Check Answer 🎯</button>
+        <button class="btn-secondary" style="flex:1;" onclick="nextRoQuestion()">Next ⏭</button>
+      </div>
+      <div class="wfd-action-buttons" id="roAfterActionBox" style="display:none;">
+        <button class="btn-secondary" style="flex:1;" onclick="prevRoQuestion()">◀️ Prev</button>
+        <button class="btn-secondary" style="flex:1;" onclick="retryRoQuestion()">🔁 Try Again</button>
+        <button class="btn-primary" style="flex:1.5;" onclick="nextRoQuestion()">Next ⏭</button>
+      </div>
+    </div>
+  </div>
+
   <div class="view-screen" id="viewDuels">
     <div class="wfd-box">
 
@@ -2557,6 +2698,238 @@
     div.className = 'swt-feedback-item ' + type;
     div.innerText = text;
     container.appendChild(div);
+  }
+
+  /* ============================================================
+     REORDER PARAGRAPH MODULE
+     Drag Source (left) → Target (right). Score = adjacent pairs.
+     Data: data/ro_questions.json  (sentences in correct order)
+     ============================================================ */
+  let roQuestions = [];
+  let roActiveIndex = 0;
+  let roSourceOrder = [];   // array of sentence indices currently in source
+  let roTargetOrder = [];   // array of sentence indices in target (top→bottom)
+  let roChecked = false;
+  let roDragPayload = null; // { from: 'source'|'target', index: number }
+
+  async function initRoModule() {
+    try {
+      const res = await fetch(`data/ro_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      roQuestions = await res.json();
+      const sel = document.getElementById('roSelect');
+      if (sel) {
+        sel.innerHTML = roQuestions.map((q, i) =>
+          `<option value="${i}">${q.id}. ${q.title || "Question " + (i + 1)}</option>`
+        ).join("");
+      }
+      if (roQuestions.length) loadRoQuestion(0);
+    } catch (e) {
+      console.warn("RO load error:", e);
+      showToast("⚠️ Could not load Reorder Paragraph questions");
+    }
+  }
+
+  function loadRoQuestion(idx) {
+    if (!roQuestions.length) return;
+    roActiveIndex = Math.max(0, Math.min(idx, roQuestions.length - 1));
+    const q = roQuestions[roActiveIndex];
+    const n = (q.sentences || []).length;
+    // correct indices 0..n-1; shuffle for source
+    const ids = Array.from({ length: n }, (_, i) => i);
+    roSourceOrder = shuffleArray(ids.slice());
+    roTargetOrder = [];
+    roChecked = false;
+    const sel = document.getElementById('roSelect');
+    if (sel) sel.value = String(roActiveIndex);
+    document.getElementById('roScoreBox').style.display = 'none';
+    document.getElementById('roCheckActionBox').style.display = 'flex';
+    document.getElementById('roAfterActionBox').style.display = 'none';
+    renderRoBoard();
+  }
+
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function shuffleRoSource() {
+    if (roChecked) return;
+    // move any target cards back, then reshuffle all
+    const all = roSourceOrder.concat(roTargetOrder);
+    roSourceOrder = shuffleArray(all);
+    roTargetOrder = [];
+    renderRoBoard();
+  }
+
+  function renderRoBoard() {
+    const q = roQuestions[roActiveIndex];
+    if (!q) return;
+    const sents = q.sentences || [];
+
+    const sourceEl = document.getElementById('roSourceList');
+    const targetEl = document.getElementById('roTargetList');
+    sourceEl.innerHTML = "";
+    targetEl.innerHTML = "";
+
+    // Source cards
+    roSourceOrder.forEach((sentIdx, pos) => {
+      sourceEl.appendChild(makeRoCard(sentIdx, sents[sentIdx], 'source', pos));
+    });
+    // empty drop zone at end of source
+    sourceEl.appendChild(makeRoDropZone('source', roSourceOrder.length));
+
+    // Target slots: one filled per placed sentence + empty zone at end
+    roTargetOrder.forEach((sentIdx, pos) => {
+      const slot = makeRoDropZone('target', pos);
+      slot.appendChild(makeRoCard(sentIdx, sents[sentIdx], 'target', pos));
+      if (roChecked) {
+        // mark pair correctness relative to previous
+        // visual on the card itself after check
+      }
+      targetEl.appendChild(slot);
+    });
+    targetEl.appendChild(makeRoDropZone('target', roTargetOrder.length));
+
+    if (roChecked) applyRoPairHighlights();
+  }
+
+  function makeRoCard(sentIdx, text, from, pos) {
+    const card = document.createElement('div');
+    card.className = 'ro-card' + (from === 'target' ? ' in-target' : '');
+    card.draggable = !roChecked;
+    card.dataset.sentIdx = sentIdx;
+    card.dataset.from = from;
+    card.dataset.pos = pos;
+    card.innerText = text;
+    card.ondragstart = (e) => {
+      if (roChecked) { e.preventDefault(); return; }
+      roDragPayload = { from, pos: +pos, sentIdx };
+      card.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', String(sentIdx));
+      e.dataTransfer.effectAllowed = 'move';
+    };
+    card.ondragend = () => card.classList.remove('dragging');
+    // click-to-move fallback: source → append target; target → back to source
+    card.onclick = () => {
+      if (roChecked) return;
+      if (from === 'source') {
+        roMoveItem('source', +pos, 'target', roTargetOrder.length);
+      } else {
+        roMoveItem('target', +pos, 'source', roSourceOrder.length);
+      }
+    };
+    return card;
+  }
+
+  function makeRoDropZone(side, insertAt) {
+    const zone = document.createElement('div');
+    zone.className = 'ro-slot';
+    zone.dataset.side = side;
+    zone.dataset.insertAt = insertAt;
+    zone.ondragover = (e) => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    };
+    zone.ondragleave = () => zone.classList.remove('drag-over');
+    zone.ondrop = (e) => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (roChecked || !roDragPayload) return;
+      roMoveItem(roDragPayload.from, roDragPayload.pos, side, +insertAt);
+      roDragPayload = null;
+    };
+    return zone;
+  }
+
+  function roMoveItem(fromSide, fromPos, toSide, toPos) {
+    let item;
+    if (fromSide === 'source') {
+      if (fromPos < 0 || fromPos >= roSourceOrder.length) return;
+      item = roSourceOrder.splice(fromPos, 1)[0];
+    } else {
+      if (fromPos < 0 || fromPos >= roTargetOrder.length) return;
+      item = roTargetOrder.splice(fromPos, 1)[0];
+    }
+    // adjust toPos if removing from same list before insert point
+    if (fromSide === toSide && fromPos < toPos) toPos -= 1;
+    if (toSide === 'source') {
+      toPos = Math.max(0, Math.min(toPos, roSourceOrder.length));
+      roSourceOrder.splice(toPos, 0, item);
+    } else {
+      toPos = Math.max(0, Math.min(toPos, roTargetOrder.length));
+      roTargetOrder.splice(toPos, 0, item);
+    }
+    renderRoBoard();
+  }
+
+  function checkRoAnswer() {
+    const q = roQuestions[roActiveIndex];
+    if (!q) return;
+    const n = (q.sentences || []).length;
+    if (roTargetOrder.length !== n) {
+      showToast("⚠️ Place all sentences into Target first");
+      return;
+    }
+    roChecked = true;
+
+    // Pearson: 1 point per correct adjacent pair
+    let pairs = 0;
+    const maxPairs = Math.max(0, n - 1);
+    for (let i = 0; i < n - 1; i++) {
+      if (roTargetOrder[i] + 1 === roTargetOrder[i + 1]) pairs++;
+    }
+
+    document.getElementById('roScoreBadge').innerText = `${pairs} / ${maxPairs}`;
+    const fb = document.getElementById('roFeedback');
+    const correctOrder = (q.sentences || []).map((s, i) => `${i + 1}. ${s}`).join("\n");
+    if (pairs === maxPairs) {
+      fb.innerHTML = `<span style="color:#34d399;">✓ Perfect — all adjacent pairs correct.</span>`;
+    } else {
+      fb.innerHTML =
+        `<div style="margin-bottom:6px;color:#fbbf24;">${pairs} of ${maxPairs} adjacent pairs correct.</div>` +
+        `<div style="color:#94a3b8; font-size:11.5px; margin-bottom:4px;">Correct order (top → bottom):</div>` +
+        `<div style="white-space:pre-wrap; color:#e2e8f0; font-size:12px;">${correctOrder}</div>`;
+    }
+    document.getElementById('roScoreBox').style.display = 'block';
+    document.getElementById('roCheckActionBox').style.display = 'none';
+    document.getElementById('roAfterActionBox').style.display = 'flex';
+    renderRoBoard();
+    showToast(`🎯 Score: ${pairs} / ${maxPairs}`);
+  }
+
+  function applyRoPairHighlights() {
+    const targetEl = document.getElementById('roTargetList');
+    const slots = [...targetEl.querySelectorAll('.ro-slot')].filter(s => s.querySelector('.ro-card'));
+    slots.forEach((slot, i) => {
+      slot.classList.remove('correct-pair', 'wrong-pair');
+      if (i < slots.length - 1) {
+        const a = +slots[i].querySelector('.ro-card').dataset.sentIdx;
+        const b = +slots[i + 1].querySelector('.ro-card').dataset.sentIdx;
+        if (a + 1 === b) {
+          slots[i].classList.add('correct-pair');
+          slots[i + 1].classList.add('correct-pair');
+        } else {
+          slots[i].classList.add('wrong-pair');
+          slots[i + 1].classList.add('wrong-pair');
+        }
+      }
+    });
+  }
+
+  function retryRoQuestion() {
+    loadRoQuestion(roActiveIndex);
+  }
+  function nextRoQuestion() {
+    if (!roQuestions.length) return;
+    loadRoQuestion((roActiveIndex + 1) % roQuestions.length);
+  }
+  function prevRoQuestion() {
+    if (!roQuestions.length) return;
+    loadRoQuestion((roActiveIndex - 1 + roQuestions.length) % roQuestions.length);
   }
 
   /* ============================================================
@@ -3520,6 +3893,7 @@
     initRfib();
     initRfibModule();
     initRwfibModule();
+    initRoModule();
     checkForceJoinOnStart();
 
     try {
@@ -3639,6 +4013,10 @@
       title.innerText = "PTE ROOM • Summarize Written Text";
       stopWfdTimer();
       if (swtQuestions.length > 0) startSwtTimer();
+    } else if (current === 'ro') {
+      document.getElementById('viewRo').classList.add('active');
+      title.innerText = "PTE ROOM • Reorder Paragraph";
+      stopWfdTimer();
     } else if (current === 'duels') {
       document.getElementById('viewDuels').classList.add('active');
       title.innerText = "PTE ROOM • Duel Arena";
