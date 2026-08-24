@@ -667,6 +667,23 @@
     #viewDuels .quiz-card {
       flex-shrink: 0;
     }
+    /* Reorder Paragraph: full page scroll on mobile */
+    #viewRo .wfd-box {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 28px;
+    }
+    #viewRo .ro-board {
+      flex-shrink: 0;
+    }
+    #viewRo .wfd-action-buttons {
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+      background: linear-gradient(180deg, transparent, var(--surface) 30%);
+      padding-top: 8px;
+      z-index: 2;
+    }
     .wfd-category-bar { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
     .cat-btn {
       background: var(--surface-2);
@@ -884,16 +901,27 @@
       gap: 12px;
       margin-top: 8px;
       direction: ltr; /* keep Source left, Target right in RTL app */
+      flex: 1;
+      min-height: 0;
     }
     @media (max-width: 640px) {
-      .ro-board { grid-template-columns: 1fr; }
+      .ro-board {
+        grid-template-columns: 1fr;
+        flex: none;
+      }
+      .ro-panel {
+        min-height: 0 !important;
+      }
+      .ro-list {
+        min-height: 0 !important;
+      }
     }
     .ro-panel {
       background: rgba(15, 23, 42, 0.85);
       border: 1.5px solid rgba(148, 163, 184, 0.25);
       border-radius: 12px;
       padding: 10px;
-      min-height: 280px;
+      min-height: 200px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -1389,6 +1417,9 @@
 
       <button type="submit" id="submitPlacementBtn" class="btn-primary" style="padding:14px; width:100%; border-radius:12px; font-size:14.5px;">
         🚀 ثبت نهایی و ارسال آزمون تعیین سطح
+      </button>
+      <button type="button" class="btn-secondary" style="padding:12px; width:100%; border-radius:12px; font-size:14px; margin-top:4px;" onclick="navBack()">
+        ‹ بازگشت
       </button>
     </form>
   </div>
