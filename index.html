@@ -702,6 +702,15 @@
       gap: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
+    /* Duel lobby must scroll so Recent Results is fully visible */
+    #viewDuels .wfd-box {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 24px;
+    }
+    #viewDuels .quiz-card {
+      flex-shrink: 0;
+    }
     .wfd-category-bar { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
     .cat-btn {
       background: #1e293b;
@@ -1048,7 +1057,7 @@
     <span class="ticker-tag">⚔️ LIVE ARENA</span>
     <div class="ticker-content">
       <span class="ticker-text" id="liveArenaTicker">
-        <span class="duel-live">در حال بارگذاری چالش‌های زنده…</span>
+        <span class="duel-live">Loading live challenges…</span>
       </span>
     </div>
   </div>
@@ -1061,8 +1070,8 @@
       <div class="hub-card duel-highlight" onclick="navTo('duels')">
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
-          <h3 style="color:#fbbf24;">DUEL ARENA • چالش زنده</h3>
-          <p>رقابت ۱v۱ بنویس از دیکته • تعداد سوال انتخابی • رتبه و جایزه</p>
+          <h3 style="color:#fbbf24;">WFD DUEL • LIVE CHALLENGE</h3>
+          <p>1v1 Write From Dictation • Pick 3 or 5 questions • Rank &amp; win</p>
         </div>
       </div>
 
@@ -1512,8 +1521,8 @@
       <div class="hub-card duel-highlight" onclick="navTo('duels')">
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
-          <h3 style="color:#fbbf24; font-size:16px;">DUEL ARENA</h3>
-          <p style="color:#fde68a;">چالش ۱v۱ WFD • انتخاب ۳ یا ۵ سوال • رقابت زنده و رتبه</p>
+          <h3 style="color:#fbbf24; font-size:16px;">WFD DUEL • LIVE</h3>
+          <p style="color:#fde68a;">1v1 challenge • Choose 3 or 5 questions • Live ranking</p>
         </div>
       </div>
     </div>
@@ -1628,21 +1637,21 @@
 
       <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
         <div class="quiz-title" style="font-size:14.5px;"><span>📋 Open Challenges</span></div>
-        <div id="duelOpenList" style="display:flex; flex-direction:column; gap:8px;">
-          <div class="duel-empty">Loading…</div>
+        <div id="duelOpenList" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;">
+          <div class="duel-empty">No open challenges right now. Create one!</div>
         </div>
       </div>
 
       <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
         <div class="quiz-title" style="font-size:14.5px;"><span>⏳ My Duels</span></div>
-        <div id="duelMyList" style="display:flex; flex-direction:column; gap:8px;">
+        <div id="duelMyList" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;">
           <div class="duel-empty">No duels yet.</div>
         </div>
       </div>
 
-      <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px;">
+      <div class="quiz-card" style="padding:14px; gap:10px; margin-top:12px; margin-bottom:8px;">
         <div class="quiz-title" style="font-size:14.5px;"><span>🏆 Recent Results</span></div>
-        <div id="duelResultsList" style="display:flex; flex-direction:column; gap:8px;">
+        <div id="duelResultsList" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; -webkit-overflow-scrolling:touch;">
           <div class="duel-empty">No results yet.</div>
         </div>
       </div>
@@ -2389,6 +2398,7 @@
     if (!db) return;
     const ref = db.collection('duels').doc(duelId);
     try {
+      let matchedData = null;
       await db.runTransaction(async (tx) => {
         const doc = await tx.get(ref);
         if (!doc.exists) throw new Error("missing");
@@ -2400,8 +2410,22 @@
           opponentName: duelUser.name,
           status: 'matched'
         });
+        matchedData = data;
       });
-      showToast("🤝 Duel accepted! Check 'My Duels'.");
+      const timeStr = matchedData ? formatDuelClock(matchedData.startTime) : '';
+      const creator = matchedData ? matchedData.creatorName : 'opponent';
+      const qCount = matchedData ? (matchedData.questionCount || 1) : 1;
+      const msg = `🤝 MATCHED! You vs ${creator} · ${qCount}Q · ${timeStr}`;
+      showToast(msg);
+      if (tg && typeof tg.showPopup === 'function') {
+        try {
+          tg.showPopup({ title: '⚔️ Duel Matched!', message: `You will face ${creator}\n${qCount} questions · ${timeStr}`, buttons: [{ type: 'ok' }] });
+        } catch (e) {}
+      } else if (tg && typeof tg.showAlert === 'function') {
+        try { tg.showAlert(msg); } catch (e) {}
+      }
+      // Force ticker refresh so everyone sees the new match at the top
+      updateHomeArenaTicker();
     } catch (err) {
       console.error(err);
       if (err.message === "own") showToast("⚠️ You can't accept your own duel.");
@@ -2474,42 +2498,46 @@
 
     if (resultsOverride) homeTickerCache.results = resultsOverride;
 
-    // We also need open + matched; pull from current listeners if available
-    // For simplicity rebuild from last known via a lightweight query-less cache
     const parts = [];
-
-    // Upcoming matched duels (most exciting)
     const now = Date.now();
+
+    // 1) Matched duels (2 players locked in) — highest priority, clear announcement
     (homeTickerCache.matched || []).forEach(d => {
-      if (d.status === 'matched' && d.startTime > now - 60000) {
+      if (d.status === 'matched' && d.opponentName) {
         const qCount = d.questionCount || 1;
-        parts.push(`<span class="duel-upcoming">🔥 ${escapeHtml(d.creatorName)} vs ${escapeHtml(d.opponentName || '?')} · ${qCount}Q · ${formatDuelClock(d.startTime)}</span>`);
+        const timeStr = formatDuelClock(d.startTime);
+        if (d.startTime > now) {
+          parts.push(`<span class="duel-upcoming">🔥 LIVE MATCH: ${escapeHtml(d.creatorName)} vs ${escapeHtml(d.opponentName)} · ${qCount}Q · starts ${timeStr}</span>`);
+        } else {
+          parts.push(`<span class="duel-upcoming">⚡ NOW PLAYING: ${escapeHtml(d.creatorName)} vs ${escapeHtml(d.opponentName)} · ${qCount}Q</span>`);
+        }
       }
     });
 
-    // Open challenges
-    (homeTickerCache.open || []).slice(0, 4).forEach(d => {
+    // 2) Open challenges waiting for opponent
+    (homeTickerCache.open || []).slice(0, 5).forEach(d => {
       const qCount = d.questionCount || 1;
-      parts.push(`<span class="duel-live">⚔️ Open: ${escapeHtml(d.creatorName)} · ${qCount}Q · ${formatDuelClock(d.startTime)}</span>`);
+      parts.push(`<span class="duel-live">⚔️ OPEN CHALLENGE: ${escapeHtml(d.creatorName)} · ${qCount}Q · ${formatDuelClock(d.startTime)}</span>`);
     });
 
-    // Recent results
-    const recent = (homeTickerCache.results || []).sort((a,b) => b.startTime - a.startTime).slice(0, 5);
+    // 3) Recent results
+    const recent = (homeTickerCache.results || []).sort((a, b) => b.startTime - a.startTime).slice(0, 8);
     recent.forEach(d => {
       const tie = !d.winnerName;
       const qCount = d.questionCount || 1;
       if (tie) {
-        parts.push(`<span class="duel-result">🤝 ${escapeHtml(d.creatorName)} ${d.creatorScore}–${d.opponentScore} ${escapeHtml(d.opponentName || '')} (${qCount}Q)</span>`);
+        parts.push(`<span class="duel-result">🤝 DRAW: ${escapeHtml(d.creatorName)} ${d.creatorScore}–${d.opponentScore} ${escapeHtml(d.opponentName || '')} (${qCount}Q)</span>`);
       } else {
-        parts.push(`<span class="duel-result">🏆 ${escapeHtml(d.winnerName)} beats ${escapeHtml(d.winnerName === d.creatorName ? d.opponentName : d.creatorName)} (${d.creatorScore}–${d.opponentScore} · ${qCount}Q)</span>`);
+        const loser = d.winnerName === d.creatorName ? d.opponentName : d.creatorName;
+        parts.push(`<span class="duel-result">🏆 ${escapeHtml(d.winnerName)} wins vs ${escapeHtml(loser || '')} (${d.creatorScore}–${d.opponentScore} · ${qCount}Q)</span>`);
       }
     });
 
-    // Fallback top users style promo if empty
+    // Fallback promo when empty
     if (parts.length === 0) {
-      parts.push(`<span class="duel-live">⚔️ اولین چالش رو بساز و رقیب پیدا کن!</span>`);
-      parts.push(`<span class="duel-upcoming">🔥 DUEL ARENA • رقابت زنده ۱v۱ WFD</span>`);
-      parts.push(`<span class="duel-result">🏆 برترین‌ها اینجا نمایش داده می‌شوند</span>`);
+      parts.push(`<span class="duel-live">⚔️ Create the first WFD Duel challenge!</span>`);
+      parts.push(`<span class="duel-upcoming">🔥 WFD DUEL • LIVE 1v1 CHALLENGE</span>`);
+      parts.push(`<span class="duel-result">🏆 Recent results & top players appear here</span>`);
     }
 
     tickerEl.innerHTML = parts.join(' • ');
@@ -2578,7 +2606,7 @@
     const el = document.getElementById('duelResultsList');
     if (!el) return;
     if (items.length === 0) { el.innerHTML = '<div class="duel-empty">No results yet.</div>'; return; }
-    const sorted = [...items].sort((a, b) => b.startTime - a.startTime).slice(0, 10);
+    const sorted = [...items].sort((a, b) => b.startTime - a.startTime).slice(0, 40);
     el.innerHTML = sorted.map(d => {
       const tie = !d.winnerName;
       const qCount = d.questionCount || 1;
