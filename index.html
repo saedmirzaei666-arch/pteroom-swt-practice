@@ -8,21 +8,35 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <style>
-    :root { 
-      --primary: #38bdf8; 
-      --primary-dark: #0284c7; 
-      --bg: #0b0f19; 
-      --card-bg: rgba(17, 24, 39, 0.85); 
-      --card-border: #1e293b;
-      --text: #f8fafc; 
-      --text-muted: #94a3b8; 
-      --success: #10b981; 
-      --danger: #ef4444; 
+    :root {
+      /* Deep Academic Dark — professional, calm */
+      --bg: #0B1220;
+      --bg-mid: #0F172A;
+      --surface: #131C2E;
+      --surface-2: #1A2438;
+      --card-bg: rgba(19, 28, 46, 0.92);
+      --card-border: rgba(148, 163, 184, 0.18);
+      --primary: #3B82F6;
+      --primary-dark: #2563EB;
+      --primary-soft: #60A5FA;
+      --accent: #8B5CF6;
+      --accent-soft: rgba(139, 92, 246, 0.18);
+      --success: #10B981;
+      --success-soft: rgba(16, 185, 129, 0.18);
+      --danger: #EF4444;
+      --danger-soft: rgba(239, 68, 68, 0.18);
+      --warning: #F59E0B;
+      --warning-soft: rgba(245, 158, 11, 0.18);
+      --text: #E2E8F0;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      --radius: 12px;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "IRANSans", sans-serif; margin: 0; padding: 0; }
     
     html, body {
-      background: radial-gradient(circle at top, #131d31 0%, #080c14 100%);
+      background: radial-gradient(ellipse at top, #131C2E 0%, #0B1220 55%, #080D18 100%);
       color: var(--text);
       width: 100vw;
       height: 100vh;
@@ -48,31 +62,31 @@
       border: 1px solid var(--card-border);
       backdrop-filter: blur(12px);
       padding: 10px 14px;
-      border-radius: 12px;
+      border-radius: var(--radius);
       margin-bottom: 8px;
       flex-shrink: 0;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--shadow);
     }
-    .brand-title { font-weight: 900; color: #38bdf8; font-size: 14px; letter-spacing: 0.5px; }
+    .brand-title { font-weight: 800; color: var(--primary-soft); font-size: 14px; letter-spacing: 0.4px; }
     .back-home-btn {
-      background: #1e293b;
-      color: #94a3b8;
-      border: 1px solid #334155;
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
       padding: 5px 12px;
       border-radius: 8px;
       font-size: 11.5px;
-      font-weight: 800;
+      font-weight: 700;
       cursor: pointer;
       display: none;
       transition: all 0.2s;
     }
-    .back-home-btn:hover { background: #334155; color: #fff; }
+    .back-home-btn:hover { background: var(--surface); color: var(--text); }
 
-    /* Live Arena Feed Bar (replaces old static ticker) */
+    /* Live Arena Feed Bar */
     .news-ticker-bar {
-      background: linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(2, 132, 199, 0.15), rgba(15, 23, 42, 0.95));
-      border: 1.5px solid rgba(56, 189, 248, 0.45);
-      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(19, 28, 46, 0.95), rgba(59, 130, 246, 0.12), rgba(19, 28, 46, 0.95));
+      border: 1px solid rgba(59, 130, 246, 0.28);
+      border-radius: var(--radius);
       padding: 8px 12px;
       margin-bottom: 10px;
       display: flex;
@@ -80,19 +94,19 @@
       gap: 8px;
       overflow: hidden;
       flex-shrink: 0;
-      box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+      box-shadow: var(--shadow);
       position: relative;
     }
     .ticker-tag {
-      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
       color: #fff;
       font-size: 11px;
-      font-weight: 900;
+      font-weight: 800;
       padding: 4px 10px;
       border-radius: 6px;
       white-space: nowrap;
       letter-spacing: 0.3px;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
     }
     .ticker-content {
       flex: 1;
@@ -110,72 +124,45 @@
       animation: tickerSlide 28s linear infinite;
     }
     .ticker-text span {
-      color: #38bdf8;
-      font-weight: 900;
+      color: var(--primary-soft);
+      font-weight: 800;
       margin-left: 18px;
       margin-right: 18px;
     }
     .ticker-text .duel-live {
-      color: #f472b6;
-      font-weight: 900;
+      color: var(--warning);
+      font-weight: 800;
     }
     .ticker-text .duel-result {
-      color: #34d399;
-      font-weight: 900;
+      color: var(--success);
+      font-weight: 800;
     }
     .ticker-text .duel-upcoming {
-      color: #facc15;
-      font-weight: 900;
+      color: var(--primary-soft);
+      font-weight: 800;
     }
     @keyframes tickerSlide {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
 
-    /* Super shiny Duel Arena card on home */
+    /* Duel card — warm accent, restrained */
     .hub-card.duel-highlight {
-      border-color: #f59e0b;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(15, 23, 42, 0.95) 55%, rgba(2, 132, 199, 0.2) 100%);
-      animation: glowDuel 2.2s infinite alternate;
+      border-color: rgba(245, 158, 11, 0.45);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, var(--surface) 60%);
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.12);
       position: relative;
       overflow: hidden;
     }
-    @keyframes glowDuel {
-      0% {
-        box-shadow: 0 0 18px rgba(245, 158, 11, 0.35), 0 0 8px rgba(56, 189, 248, 0.2);
-        border-color: rgba(245, 158, 11, 0.7);
-      }
-      100% {
-        box-shadow: 0 0 36px rgba(245, 158, 11, 0.75), 0 0 20px rgba(56, 189, 248, 0.45), inset 0 0 20px rgba(245, 158, 11, 0.12);
-        border-color: #fbbf24;
-      }
-    }
-    .hub-card.duel-highlight::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
-      transform: rotate(30deg);
-      animation: lightSweep 3.5s infinite linear;
-      pointer-events: none;
-    }
     .hub-card.duel-highlight .hub-icon {
-      background: rgba(245, 158, 11, 0.2);
-      border-color: rgba(245, 158, 11, 0.5);
-      font-size: 30px;
-      width: 56px;
-      height: 56px;
+      background: var(--warning-soft);
+      border-color: rgba(245, 158, 11, 0.4);
     }
     .hub-card.duel-highlight .hub-text h3 {
-      font-size: 17px !important;
-      letter-spacing: 0.6px;
+      color: #FBBF24 !important;
     }
     .hub-card.duel-highlight .hub-text p {
-      font-size: 13px;
-      color: #fde68a;
+      color: #FDE68A;
     }
 
     .view-screen {
@@ -196,89 +183,48 @@
     }
     .hub-card {
       background: var(--card-bg);
-      border: 1.5px solid var(--card-border);
+      border: 1px solid var(--card-border);
       backdrop-filter: blur(14px);
-      border-radius: 16px;
+      border-radius: var(--radius);
       padding: 16px;
       display: flex;
       align-items: center;
       gap: 14px;
       cursor: pointer;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
-      transition: all 0.25s ease;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s ease, transform 0.15s ease, background 0.2s ease;
       position: relative;
       overflow: hidden;
     }
+    .hub-card:hover { border-color: rgba(59, 130, 246, 0.35); }
     .hub-card:active { transform: scale(0.98); }
 
-    /* Animated Neon Card for Placement Test */
     .hub-card.placement-highlight {
-      border-color: #38bdf8;
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%);
-      animation: glowBorder 3s infinite alternate;
+      border-color: rgba(59, 130, 246, 0.4);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, var(--surface) 100%);
     }
 
-    /* Vibrant Glowing Card for Flashcards on Main Menu */
     .hub-card.flashcard-highlight {
-      border-color: #ec4899;
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
-      animation: glowFlashCard 2.5s infinite alternate;
-    }
-    @keyframes glowFlashCard {
-      0% {
-        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
-        border-color: rgba(236, 72, 153, 0.6);
-      }
-      100% {
-        box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), inset 0 0 15px rgba(236, 72, 153, 0.2);
-        border-color: #f472b6;
-      }
-    }
-
-    @keyframes glowBorder {
-      0% {
-        box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
-        border-color: rgba(56, 189, 248, 0.5);
-      }
-      100% {
-        box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
-        border-color: #38bdf8;
-      }
-    }
-
-    .hub-card.placement-highlight::after, .hub-card.flashcard-highlight::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
-      transform: rotate(30deg);
-      animation: lightSweep 4s infinite linear;
-      pointer-events: none;
-    }
-    @keyframes lightSweep {
-      0% { transform: translate(-100%, -100%) rotate(30deg); }
-      100% { transform: translate(100%, 100%) rotate(30deg); }
+      border-color: rgba(139, 92, 246, 0.4);
+      background: linear-gradient(135deg, var(--accent-soft) 0%, var(--surface) 100%);
     }
 
     .hub-icon {
-      font-size: 26px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      width: 50px;
-      height: 50px;
+      font-size: 24px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.22);
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
+      border-radius: 10px;
       flex-shrink: 0;
-      transition: transform 0.3s ease;
+      transition: transform 0.2s ease;
     }
-    .hub-card:hover .hub-icon { transform: scale(1.08) rotate(3deg); }
-    .hub-text h3 { font-size: 15px; color: #f1f5f9; margin-bottom: 4px; font-weight: 800; }
-    .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .hub-card:hover .hub-icon { transform: scale(1.05); }
+    .hub-text h3 { font-size: 15px; color: var(--text); margin-bottom: 4px; font-weight: 700; }
+    .hub-text p { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
 
     /* Materials View Styles */
     .materials-container {
@@ -300,12 +246,12 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .material-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .material-item-card:active { transform: scale(0.98); border-color: var(--primary); background: var(--surface-2); }
     .material-info { display: flex; flex-direction: column; gap: 4px; }
     .material-badge {
       align-self: flex-start;
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary);
       font-size: 10px;
       font-weight: 800;
       padding: 2px 8px;
@@ -334,7 +280,7 @@
     .quiz-title {
       font-size: 13.5px;
       font-weight: 800;
-      color: #38bdf8;
+      color: var(--primary);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -345,7 +291,7 @@
       color: #f8fafc;
       direction: ltr;
       text-align: left;
-      background: #0f172a;
+      background: var(--bg-mid);
       padding: 14px;
       border-radius: 10px;
       border: 1px solid #1e293b;
@@ -359,9 +305,9 @@
       max-width: 140px !important;
       padding: 3px 6px !important;
       margin: 0 4px !important;
-      background: #1e293b !important;
-      color: #38bdf8 !important;
-      border: 1.5px solid #0284c7 !important;
+      background: var(--surface-2) !important;
+      color: var(--primary-soft) !important;
+      border: 1.5px solid rgba(59, 130, 246, 0.4) !important;
       border-radius: 6px !important;
       font-size: 13.5px !important;
       font-weight: 700 !important;
@@ -387,9 +333,9 @@
       height: 30px !important;
       padding: 2px 6px !important;
       margin: 0 4px !important;
-      background: #1e293b !important;
-      color: #38bdf8 !important;
-      border: 1.5px solid #0284c7 !important;
+      background: var(--surface-2) !important;
+      color: var(--primary) !important;
+      border: 1.5px solid var(--primary-dark) !important;
       border-radius: 6px !important;
       font-size: 13.5px !important;
       font-weight: 700 !important;
@@ -398,7 +344,7 @@
       text-align: center !important;
       vertical-align: middle !important;
     }
-    .inline-input:focus { border-color: #38bdf8 !important; }
+    .inline-input:focus { border-color: var(--primary) !important; }
 
     /* RFIB Practice Screen Styles */
     .rfib-drop-zone {
@@ -409,11 +355,11 @@
       height: 32px;
       padding: 2px 8px;
       margin: 0 4px;
-      background: #1e293b;
-      border: 1.5px dashed #0284c7;
+      background: var(--surface-2);
+      border: 1.5px dashed var(--primary-dark);
       border-radius: 6px;
       font-weight: 700;
-      color: #38bdf8;
+      color: var(--primary);
       vertical-align: middle;
       cursor: pointer;
       font-size: 13.5px;
@@ -421,8 +367,8 @@
     }
     .rfib-drop-zone.filled {
       border-style: solid;
-      background: rgba(56, 189, 248, 0.15);
-      border-color: #38bdf8;
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--primary);
     }
     .rfib-drop-zone.correct-zone { border-color: #10b981 !important; background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; }
     .rfib-drop-zone.wrong-zone { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; }
@@ -440,7 +386,7 @@
       margin-top: 10px;
     }
     .rfib-chip {
-      background: #1e293b;
+      background: var(--surface-2);
       border: 1.5px solid #334155;
       color: #f1f5f9;
       padding: 6px 12px;
@@ -452,8 +398,8 @@
       transition: all 0.15s;
     }
     .rfib-chip.selected {
-      background: #0284c7;
-      border-color: #38bdf8;
+      background: var(--primary-dark);
+      border-color: var(--primary);
       color: #fff;
       transform: scale(0.96);
     }
@@ -472,7 +418,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1px solid #334155;
       padding: 9px 12px;
       border-radius: 8px;
@@ -482,14 +428,14 @@
       color: #cbd5e1;
     }
     .opt-label:has(input:checked) {
-      border-color: #38bdf8;
-      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.15);
       color: #fff;
     }
-    .opt-label input { accent-color: #38bdf8; }
+    .opt-label input { accent-color: var(--primary); }
 
     .user-info-field {
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1.5px solid #334155;
       padding: 10px 14px;
       border-radius: 10px;
@@ -498,7 +444,7 @@
       outline: none;
       width: 100%;
     }
-    .user-info-field:focus { border-color: #38bdf8; }
+    .user-info-field:focus { border-color: var(--primary); }
 
     /* Schedule View Styles */
     .schedule-container {
@@ -510,14 +456,14 @@
       padding-bottom: 8px;
     }
     .schedule-banner {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
       padding: 10px 14px;
       border-radius: 12px;
       text-align: center;
       font-size: 13px;
       font-weight: 800;
-      color: #38bdf8;
+      color: var(--primary);
       flex-shrink: 0;
     }
     .schedule-day-card {
@@ -543,7 +489,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1px solid #1e293b;
       padding: 8px 10px;
       border-radius: 8px;
@@ -552,10 +498,10 @@
     .event-info { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #e2e8f0; }
     .event-time {
       font-weight: 800;
-      color: #38bdf8;
+      color: var(--primary);
       direction: ltr;
       font-size: 12.5px;
-      background: rgba(56, 189, 248, 0.1);
+      background: rgba(59, 130, 246, 0.1);
       padding: 2px 6px;
       border-radius: 6px;
     }
@@ -591,12 +537,12 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .course-item-card:active { transform: scale(0.98); border-color: #38bdf8; background: #1e293b; }
+    .course-item-card:active { transform: scale(0.98); border-color: var(--primary); background: var(--surface-2); }
     .course-info { display: flex; flex-direction: column; gap: 6px; }
     .course-badge {
       align-self: flex-start;
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary);
       font-size: 10px;
       font-weight: 800;
       padding: 2px 8px;
@@ -604,7 +550,7 @@
       letter-spacing: 0.5px;
     }
     .course-title { font-size: 15px; font-weight: 800; color: #f8fafc; }
-    .arrow-icon { font-size: 20px; color: #38bdf8; font-weight: bold; }
+    .arrow-icon { font-size: 20px; color: var(--primary); font-weight: bold; }
 
     /* Modal Styles */
     .modal-overlay {
@@ -623,7 +569,7 @@
     .modal-overlay.active { display: flex; }
     .modal-content {
       background: #111827;
-      border-bottom: 2px solid #0284c7;
+      border-bottom: 2px solid var(--primary-dark);
       border-left: 1px solid #1e293b;
       border-right: 1px solid #1e293b;
       width: 100%;
@@ -642,12 +588,12 @@
       to { transform: translateY(0); opacity: 1; }
     }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #1f2937; padding-bottom: 12px; }
-    .modal-title { font-size: 16.5px; font-weight: 800; color: #38bdf8; }
+    .modal-title { font-size: 16.5px; font-weight: 800; color: var(--primary); }
     .close-btn { background: #1f2937; border: none; font-size: 16px; font-weight: 800; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; color: #94a3b8; }
     .modal-body { font-size: 14.5px; line-height: 1.9; color: #e2e8f0; text-align: justify; white-space: pre-line; font-weight: 500; }
 
     .modal-action-btn {
-      background: #0284c7;
+      background: var(--primary-dark);
       color: #ffffff;
       border: none;
       padding: 14px;
@@ -681,7 +627,7 @@
     .force-join-overlay.active { display: flex; }
     .force-join-box {
       background: var(--card-bg);
-      border: 1.5px solid #38bdf8;
+      border: 1.5px solid var(--primary);
       border-radius: 20px;
       padding: 24px;
       width: 100%;
@@ -692,25 +638,25 @@
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.8);
     }
-    .force-join-title { font-size: 17px; font-weight: 900; color: #38bdf8; }
+    .force-join-title { font-size: 17px; font-weight: 900; color: var(--primary); }
     .force-join-desc { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; }
     .force-join-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
-    .btn-channel { background: #0284c7; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; display: block; }
+    .btn-channel { background: var(--primary-dark); color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; display: block; }
     .btn-group { background: #059669; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; display: block; }
-    .btn-check-join { background: #1e293b; border: 1.5px solid #38bdf8; color: #38bdf8; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; margin-top: 6px; }
+    .btn-check-join { background: var(--surface-2); border: 1.5px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; margin-top: 6px; }
 
     /* WFD Simulator Styles */
     .wfd-box {
       display: flex;
       flex-direction: column;
       background: var(--card-bg);
-      border-radius: 18px;
-      border: 1.5px solid var(--card-border);
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
       padding: 14px;
       flex: 1;
       min-height: 0;
       gap: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--shadow);
     }
     /* Duel lobby must scroll so Recent Results is fully visible */
     #viewDuels .wfd-box {
@@ -723,34 +669,35 @@
     }
     .wfd-category-bar { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
     .cat-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
+      background: var(--surface-2);
+      border: 1px solid var(--card-border);
       padding: 6px 8px;
       border-radius: 6px;
       font-size: 10.5px;
       font-weight: 700;
-      color: #94a3b8;
+      color: var(--text-muted);
       cursor: pointer;
       transition: all 0.2s;
       text-align: center;
       flex-grow: 1;
     }
-    .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    .cat-btn.active { background: var(--primary-dark); color: #fff; border-color: var(--primary); }
     
     select {
       width: 100%;
       padding: 8px 10px;
       border-radius: 8px;
-      border: 1.5px solid #0284c7;
+      border: 1px solid rgba(59, 130, 246, 0.35);
       font-size: 13px;
-      font-weight: 700;
-      background: #0f172a;
-      color: #38bdf8;
+      font-weight: 600;
+      background: var(--bg-mid);
+      color: var(--primary-soft);
       outline: none;
       direction: ltr;
     }
+    select:focus { border-color: var(--primary); }
     .audio-wrapper {
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1px solid var(--card-border);
       padding: 6px 10px;
       border-radius: 8px;
@@ -764,9 +711,9 @@
       font-weight: 800;
       padding: 2px 8px;
       border-radius: 6px;
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid #0284c7;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary);
+      border: 1px solid var(--primary-dark);
       transition: all 0.3s;
     }
     .wfd-timer-badge.warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border-color: #eab308; }
@@ -781,7 +728,7 @@
       padding: 10px 12px;
       font-size: 14px;
       line-height: 1.4;
-      background: #0f172a;
+      background: var(--bg-mid);
       color: #f8fafc;
       border: 1.5px solid #334155;
       border-radius: 10px;
@@ -791,13 +738,13 @@
       text-align: left;
       flex-shrink: 0;
     }
-    textarea:focus { border-color: #38bdf8; }
+    textarea:focus { border-color: var(--primary); }
 
     .wfd-result-card {
       display: none;
       flex-direction: column;
       gap: 6px;
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1.5px solid #334155;
       padding: 10px 12px;
       border-radius: 10px;
@@ -805,7 +752,7 @@
       flex: 1;
       min-height: 0;
     }
-    .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+    .wfd-score-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; color: var(--primary); border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
     .wfd-sentence-display { font-size: 13.5px; line-height: 1.6; font-weight: 600; direction: ltr; text-align: left; }
     .wfd-word-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 5px; border-radius: 4px; border: 1px solid #10b981; }
     .wfd-word-missing { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 5px; border-radius: 4px; border: 1px solid #ef4444; text-decoration: line-through; }
@@ -813,13 +760,13 @@
     .wfd-warning-tip { font-size: 11px; font-weight: 700; color: #facc15; background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); padding: 4px 8px; border-radius: 6px; direction: ltr; text-align: left; }
     .wfd-action-buttons { display: flex; gap: 8px; margin-top: auto; flex-shrink: 0; }
     .btn-secondary {
-      background: #1e293b;
-      color: #38bdf8;
-      border: 1px solid #334155;
+      background: var(--surface-2);
+      color: var(--primary-soft);
+      border: 1px solid var(--card-border);
       padding: 10px 14px;
       border-radius: 10px;
       cursor: pointer;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 13px;
       display: flex;
       align-items: center;
@@ -827,7 +774,7 @@
       gap: 4px;
       transition: all 0.2s;
     }
-    .btn-secondary:active { background: #334155; }
+    .btn-secondary:active { background: var(--surface); }
 
     /* Difficulty Rating Buttons */
     .wfd-diff-buttons {
@@ -877,24 +824,24 @@
       justify-content: space-between;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
-    .stats-info { font-size: 11px; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
-    .action-top-btn { background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .leitner-progress { width: 100%; display: flex; justify-content: space-between; align-items: center; background: var(--bg-mid); border: 1px solid #1e293b; padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; flex-shrink: 0; }
+    .stats-info { font-size: 11px; color: var(--primary); background: rgba(59, 130, 246, 0.12); padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
+    .action-top-btn { background: var(--surface-2); border: 1px solid #334155; color: var(--primary); padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
     .card-scene { width: 100%; flex: 1; perspective: 1000px; cursor: pointer; }
     .card { width: 100%; height: 100%; position: relative; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; border-radius: 16px; }
     .card.is-flipped { transform: rotateY(180deg); }
     .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1.5px solid var(--card-border); overflow-y: auto; }
-    .card-front { background: linear-gradient(145deg, #0284c7, #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
+    .card-front { background: linear-gradient(145deg, var(--primary-dark), #0f172a); color: #fff; justify-content: center; align-items: center; text-align: center; direction: ltr; }
     .card-front .word-title { font-size: 34px; font-weight: 900; margin-bottom: 12px; letter-spacing: 0.5px; color: #f8fafc; }
     .card-front .tap-hint { font-size: 12px; color: #cbd5e1; background: rgba(0,0,0,0.35); padding: 6px 16px; border-radius: 20px; }
-    .card-back { background: #0f172a; transform: rotateY(180deg); justify-content: center; gap: 8px; direction: ltr; text-align: left; }
+    .card-back { background: var(--bg-mid); transform: rotateY(180deg); justify-content: center; gap: 8px; direction: ltr; text-align: left; }
     .card-back .meta-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #1e293b; padding-bottom: 6px; }
     .card-back .pronunciation { font-style: italic; color: #94a3b8; font-size: 14.5px; font-weight: 600; }
-    .card-back .pos { background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-    .card-back .persian-meaning { font-size: 17px; font-weight: 800; color: #38bdf8; direction: rtl; text-align: right; margin: 4px 0; }
+    .card-back .pos { background: rgba(59, 130, 246, 0.15); color: var(--primary); padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .card-back .persian-meaning { font-size: 17px; font-weight: 800; color: var(--primary); direction: rtl; text-align: right; margin: 4px 0; }
     .card-back .section-title { font-size: 12px; font-weight: 800; color: #94a3b8; }
     .card-back .collocations { font-size: 13px; font-weight: 600; color: #e2e8f0; }
-    .card-back .example-sentence { font-size: 12.5px; line-height: 1.5; color: #f1f5f9; background: #1e293b; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #38bdf8; }
+    .card-back .example-sentence { font-size: 12.5px; line-height: 1.5; color: #f1f5f9; background: var(--surface-2); padding: 8px 10px; border-radius: 8px; border-left: 3px solid var(--primary); }
 
     .leitner-actions { display: flex; width: 100%; gap: 10px; margin-top: 10px; flex-shrink: 0; }
     .leitner-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13.5px; border: none; cursor: pointer; color: #fff; }
@@ -902,22 +849,23 @@
     .btn-good { background: #059669; }
 
     .btn-primary {
-      background: #0284c7;
+      background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #fff;
       border: none;
       padding: 12px 16px;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 14px;
       transition: all 0.2s;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
     }
-    .btn-primary:active { transform: scale(0.98); background: #0369a1; }
+    .btn-primary:active { transform: scale(0.98); filter: brightness(0.92); }
 
     /* SWT (Summarize Written Text) Module */
     .swt-structure-box {
       display: none;
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1px solid #1e293b;
       border-radius: 10px;
       padding: 10px 12px;
@@ -987,7 +935,7 @@
       background: rgba(239, 68, 68, 0.1) !important;
     }
     .ro-card {
-      background: #1e293b;
+      background: var(--surface-2);
       border: 1.5px solid #475569;
       border-radius: 8px;
       padding: 10px 12px;
@@ -1054,7 +1002,7 @@
 
     /* Duel Arena Module */
     .duel-row {
-      background: #0f172a; border: 1px solid #1e293b; border-radius: 10px;
+      background: var(--bg-mid); border: 1px solid #1e293b; border-radius: 10px;
       padding: 10px 12px; display: flex; justify-content: space-between;
       align-items: center; gap: 8px; direction: ltr; text-align: left;
     }
@@ -1069,23 +1017,23 @@
     }
     .duel-btn-accept { background: #0ea5a0; color: #06201d; }
     .duel-btn-cancel { background: transparent; color: #94a3b8; border: 1px solid #1e293b; }
-    .duel-btn-enter { background: #0284c7; color: #fff; }
+    .duel-btn-enter { background: var(--primary-dark); color: #fff; }
     
     .settings-panel {
-      background: #0f172a;
+      background: var(--bg-mid);
       border: 1.5px solid var(--card-border);
       border-radius: 14px;
       padding: 18px;
       margin-bottom: 14px;
       width: 100%;
     }
-    .settings-panel label { font-size: 13.5px; font-weight: 800; color: #38bdf8; display: block; margin-bottom: 8px; }
+    .settings-panel label { font-size: 13.5px; font-weight: 800; color: var(--primary); display: block; margin-bottom: 8px; }
     .quota-info { font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.6; }
     .quota-options { display: flex; gap: 8px; margin-bottom: 4px; }
     .quota-btn {
       flex: 1;
       padding: 11px 0;
-      background: #1e293b;
+      background: var(--surface-2);
       border: 1.5px solid #334155;
       border-radius: 10px;
       font-weight: 800;
@@ -1094,7 +1042,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .quota-btn.selected { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    .quota-btn.selected { background: var(--primary-dark); color: #fff; border-color: var(--primary); }
     
     .done-message {
       display: none;
@@ -1117,7 +1065,7 @@
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: rgba(15, 23, 42, 0.95);
-      border: 1px solid #38bdf8;
+      border: 1px solid var(--primary);
       color: #f8fafc;
       padding: 10px 18px;
       border-radius: 25px;
@@ -1182,7 +1130,7 @@
       <div class="hub-card placement-highlight" onclick="openPlacementIntro()">
         <div class="hub-icon">📋</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">آزمون تعیین سطح تخصصی</h3>
+          <h3 style="color:var(--primary);">آزمون تعیین سطح تخصصی</h3>
           <p>شبیه‌ساز استاندارد ریدینگ، لیسنینگ و نگارش تحلیلی</p>
         </div>
       </div>
@@ -1199,7 +1147,7 @@
       <div class="hub-card" onclick="navTo('materials')">
         <div class="hub-icon">📁</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">متریال PTE ROOM</h3>
+          <h3 style="color:var(--primary);">متریال PTE ROOM</h3>
           <p>آخرین ورژن فایل‌ها و پردیکشن‌های رسمی آزمون اصلی</p>
         </div>
       </div>
@@ -1416,7 +1364,7 @@
       <div class="quiz-card">
         <div class="quiz-title">
           <span>✍️ Short Writing Task</span>
-          <span id="writingWordCount" style="font-size:11.5px; color:#38bdf8; font-weight:800; direction:ltr;">Word Count: 0</span>
+          <span id="writingWordCount" style="font-size:11.5px; color:var(--primary); font-weight:800; direction:ltr;">Word Count: 0</span>
         </div>
         <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1; direction:ltr; text-align:left;">
           <b>Topic:</b> Some people believe that artificial intelligence (AI) will completely replace human teachers in the future, while others think traditional classrooms are irreplaceable. Write a short paragraph (50–100 words) giving your opinion.
@@ -1556,8 +1504,8 @@
         <div style="font-size:13.5px; line-height:1.8; color:#cbd5e1; margin-bottom:10px;">
           به بخش ارزیابی استاندارد و دقیق مهارت‌های زبانی خوش آمدید! این آزمون کمک می‌کند تا سطح واقعی خود را برای آزمون بین‌المللی PTE بسنجید.
         </div>
-        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
-          <div style="font-weight:800; color:#38bdf8; font-size:13.5px; margin-bottom:6px;">📌 نکات کلیدی پیش از شروع:</div>
+        <div style="background: var(--surface-2); border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:var(--primary); font-size:13.5px; margin-bottom:6px;">📌 نکات کلیدی پیش از شروع:</div>
           <div style="font-size:13px; line-height:1.8; color:#cbd5e1;">
             • 🎯 <b>هدف آزمون:</b> ارزیابی مهارت‌های کلیدی (Reading، Listening، Spelling و Writing) جهت تعیین دقیق پلن مطالعاتی.<br>
             • ⏱ <b>زمان تقریبی:</b> حدود ۵ الی ۷ دقیقه تمرکز کامل.<br>
@@ -1578,12 +1526,12 @@
         <button class="close-btn" onclick="closeModal('flashGuideModal')">✕</button>
       </div>
       <div class="modal-body">
-        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
-          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
+        <div style="background: var(--surface-2); border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:var(--primary); font-size:14px; margin-bottom:6px;">🧠 جعبه لایتنر هوشمند چیست؟</div>
           <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">سیستم لایتنر روشی اثبات‌شده بر پایه تکرار با فواصل منظم است که لغات را وارد حافظه دائمی می‌کند.</div>
         </div>
-        <div style="background:#1e293b; border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
-          <div style="font-weight:800; color:#38bdf8; font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
+        <div style="background: var(--surface-2); border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
+          <div style="font-weight:800; color:var(--primary); font-size:14px; margin-bottom:6px;">📦 نحوه پیشرفت در ۵ جعبه:</div>
           <div style="font-size:13.5px; line-height:1.7; color:#cbd5e1;">
             • تمام لغات جدید در ابتدا در <b>سطح ۱ (Box 1)</b> قرار دارند.<br><br>
             • 🟢 <b>دکمه Mastered:</b> در صورت یادگیری، لغت ۱ سطح ارتقا می‌یابد (Box 1 ➔ Box 5).<br><br>
@@ -1609,7 +1557,7 @@
       <div class="hub-card" onclick="navTo('rfib')">
         <div class="hub-icon">📖</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">Reading: FIB (Drag &amp; Drop)</h3>
+          <h3 style="color:var(--primary);">Reading: FIB (Drag &amp; Drop)</h3>
           <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
         </div>
       </div>
@@ -1617,7 +1565,7 @@
       <div class="hub-card" onclick="navTo('rwfib')">
         <div class="hub-icon">📝</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">Reading &amp; Writing: FIB (DropDown)</h3>
+          <h3 style="color:var(--primary);">Reading &amp; Writing: FIB (DropDown)</h3>
           <p>785 dropdown questions • Verb / Connector / Adj Clause / Preposition</p>
         </div>
       </div>
@@ -1625,7 +1573,7 @@
       <div class="hub-card" onclick="navTo('swt')">
         <div class="hub-icon">📝</div>
         <div class="hub-text">
-          <h3 style="color:#38bdf8;">Summarize Written Text</h3>
+          <h3 style="color:var(--primary);">Summarize Written Text</h3>
           <p>تایمر، شمارنده کلمات و نمره‌دهی خودکار بر اساس اسکورگاید رسمی PTE</p>
         </div>
       </div>
@@ -1727,7 +1675,7 @@
       <div class="wfd-result-card" id="swtResultBox">
         <div class="wfd-score-header">
           <span>📊 Automated Score (Pearson score guide)</span>
-          <span id="swtScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 9</span>
+          <span id="swtScoreBadge" style="background:var(--primary-dark); color:#fff; padding:2px 8px; border-radius:8px;">0 / 9</span>
         </div>
         <div class="swt-crit-grid" id="swtCritGrid"></div>
         <div class="wfd-tips-container" id="swtFeedbackContainer"></div>
@@ -1814,7 +1762,7 @@
 
         <div style="display:flex; gap:8px; align-items:center; direction:ltr;">
           <span style="font-size:13px; color:#94a3b8; font-weight:700;">Start time (Tehran):</span>
-          <input type="time" id="duelTimeInput" style="background:#0f172a; color:#fff; border:1.5px solid #0284c7; border-radius:8px; padding:8px 10px; font-family:inherit; font-size:14px; font-weight:700;">
+          <input type="time" id="duelTimeInput" style="background: var(--bg-mid); color:#fff; border:1.5px solid var(--primary-dark); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:14px; font-weight:700;">
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap; direction:ltr;">
           <button class="cat-btn" onclick="setDuelQuickTime(5)">+5 min</button>
@@ -1887,7 +1835,7 @@
   <!-- Flashcards Quota Setup Screen -->
   <div class="view-screen" id="viewFlashSetup">
     <div class="flashcard-box" style="justify-content: flex-start;">
-      <h3 style="color: #38bdf8; margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
+      <h3 style="color: var(--primary); margin-bottom: 14px; font-weight: 800;">⚙️ تنظیمات تمرین امروز</h3>
       <div class="settings-panel">
         <label>تعداد کلمات جدید (جعبه ۱) در روز:</label>
         <div class="quota-info">💡 برای بازدهی مطلوب، بین <b>۱۵ تا ۲۵ کلمه جدید</b> در روز مناسب است.</div>
@@ -1928,7 +1876,7 @@
       <div class="wfd-result-card" id="wfdResultBox">
         <div class="wfd-score-header">
           <span>📊 Score Analysis:</span>
-          <span id="wfdScoreBadge" style="background:#0284c7; color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
+          <span id="wfdScoreBadge" style="background:var(--primary-dark); color:#fff; padding:2px 8px; border-radius:8px;">0 / 0</span>
         </div>
         <div class="wfd-sentence-display" id="wfdSentenceDisplay"></div>
         <div class="wfd-tips-container" id="wfdTipsContainer"></div>
@@ -3553,7 +3501,7 @@
     document.getElementById('duelResultTitle').innerText = isDraw ? "🤝 It's a Draw!" : (iWon ? "🏆 You Won!" : "😢 You Lost");
     document.getElementById('duelResultBody').innerHTML = `
       <div style="font-size:14px; margin-bottom:6px;">${qCount} Question Duel</div>
-      <div>You: <b style="color:#38bdf8; font-size:18px;">${myScore}</b></div>
+      <div>You: <b style="color:var(--primary); font-size:18px;">${myScore}</b></div>
       <div>${escapeHtml(oppName)}: <b style="font-size:18px;">${oppScore}</b></div>
     `;
   }
@@ -4063,7 +4011,7 @@
     const count = text === "" ? 0 : text.split(/\s+/).filter(Boolean).length;
     const counterEl = document.getElementById('writingWordCount');
     counterEl.innerText = `Word Count: ${count}`;
-    counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "#38bdf8");
+    counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "var(--primary)");
   }
 
   async function handlePlacementSubmit(e) {
