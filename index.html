@@ -2004,6 +2004,7 @@
             • Pick <b>one</b> Start line, <b>one or more</b> Body lines, and <b>one</b> End line.<br>
             • Replace every <b>N</b> with a clear noun phrase from the lecture (not full copied sentences).<br>
             • Keep the whole summary between <b>50–70 words</b> (Form score).<br>
+            • <b style="color:#fbbf24;">Capital letter:</b> the first word of every sentence must start with a capital letter.<br>
             • Rotate combinations so your writing stays natural and less repetitive.<br>
             • Strong listening + fast conversion of content into noun phrases still matters most for Content.
           </div>
@@ -3422,6 +3423,8 @@
       return;
     }
     if (!db) { showToast("⚠️ Duel service unavailable."); return; }
+    if (!duelUser) duelUser = getDuelUser();
+    if (!duelUser?.id) { showToast("⚠️ Could not identify user. Re-open the bot and try again."); return; }
     const timeVal = document.getElementById('duelTimeInput').value;
     if (!timeVal) { showToast("⚠️ Pick a start time first."); return; }
 
@@ -3548,45 +3551,82 @@
     if (!db || !duelUser) return;
     const now = Date.now();
     try {
-      // Open challenges (limit 10)
-      const openSnap = await db.collection('duels')
-        .where('status', '==', 'open')
-        .limit(10)
-        .get();
-      const openItems = [];
-      openSnap.forEach(doc => {
-        const d = doc.data();
-        if (d.startTime > now) openItems.push({ id: doc.id, ...d });
-      });
-      openItems.sort((a, b) => a.startTime - b.startTime);
-      renderDuelOpenList(openItems.filter(d => d.creatorId !== duelUser.id));
-      homeTickerCache.open = openItems;
+      // Open challenges — order by startTime so future duels are not buried under expired ones
+      let openItems = [];
+      try {
+        const openSnap = await db.collection('duels')
+          .where('status', '==', 'open')
+          .orderBy('startTime', 'asc')
+          .limit(25)
+          .get();
+        openSnap.forEach(doc => {
+          const d = doc.data();
+          if (d.startTime > now) openItems.push({ id: doc.id, ...d });
+        });
+      } catch (e) {
+        // Index may be missing — fallback without orderBy, fetch more and filter client-side
+        const openSnap = await db.collection('duels')
+          .where('status', '==', 'open')
+          .limit(40)
+          .get();
+        openSnap.forEach(doc => {
+          const d = doc.data();
+          if (d.startTime > now) openItems.push({ id: doc.id, ...d });
+        });
+        openItems.sort((a, b) => a.startTime - b.startTime);
+      }
+      renderDuelOpenList(openItems.filter(d => d.creatorId !== duelUser.id).slice(0, 15));
+      homeTickerCache.open = openItems.slice(0, 15);
 
-      // My open + matched (limit 10)
-      const mySnap = await db.collection('duels')
-        .where('status', 'in', ['open', 'matched'])
-        .limit(10)
-        .get();
-      const myItems = [];
-      mySnap.forEach(doc => {
-        const d = doc.data();
-        if (d.creatorId === duelUser.id || d.opponentId === duelUser.id) {
-          myItems.push({ id: doc.id, ...d });
-        }
-      });
+      // My duels — query BY USER so each person's creates always appear (old global limit(10) hid most users)
+      const myMap = new Map();
+      const mergeMy = (snap) => {
+        snap.forEach(doc => {
+          const d = doc.data();
+          if (d.status === 'open' || d.status === 'matched') {
+            myMap.set(doc.id, { id: doc.id, ...d });
+          }
+        });
+      };
+      try {
+        const createdSnap = await db.collection('duels')
+          .where('creatorId', '==', duelUser.id)
+          .limit(20)
+          .get();
+        mergeMy(createdSnap);
+      } catch (e) { console.warn("my created duels:", e); }
+      try {
+        const joinedSnap = await db.collection('duels')
+          .where('opponentId', '==', duelUser.id)
+          .limit(20)
+          .get();
+        mergeMy(joinedSnap);
+      } catch (e) { console.warn("my joined duels:", e); }
+
+      const myItems = Array.from(myMap.values());
+      myItems.sort((a, b) => (b.startTime || 0) - (a.startTime || 0));
       duelMyItemsCache = myItems;
       renderDuelMyList(myItems);
       homeTickerCache.matched = myItems.filter(d => d.status === 'matched');
 
-      // Recent finished (limit 10) — also drives leaderboard
-      const finSnap = await db.collection('duels')
-        .where('status', '==', 'finished')
-        .limit(10)
-        .get();
-      const finItems = [];
-      finSnap.forEach(doc => finItems.push({ id: doc.id, ...doc.data() }));
-      renderDuelResultsList(finItems);
-      homeTickerCache.results = finItems;
+      // Recent finished
+      let finItems = [];
+      try {
+        const finSnap = await db.collection('duels')
+          .where('status', '==', 'finished')
+          .orderBy('createdAt', 'desc')
+          .limit(12)
+          .get();
+        finSnap.forEach(doc => finItems.push({ id: doc.id, ...doc.data() }));
+      } catch (e) {
+        const finSnap = await db.collection('duels')
+          .where('status', '==', 'finished')
+          .limit(20)
+          .get();
+        finSnap.forEach(doc => finItems.push({ id: doc.id, ...doc.data() }));
+      }
+      renderDuelResultsList(finItems.slice(0, 12));
+      homeTickerCache.results = finItems.slice(0, 12);
 
       updateHomeArenaTicker();
     } catch (err) {
@@ -4727,6 +4767,12 @@
       tips.push(`📌 <b>Content:</b> Good coverage (${contentResult.covered}/${contentResult.total} idea groups). Add one more key point + stronger paraphrase for 4/4.`);
     }
     if (grammar < 2) tips.push("⚠️ <b>Grammar:</b> Use complete sentences with clear punctuation.");
+    // Capital letter at the start of each sentence
+    const sentStarts = userText.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
+    const badCaps = sentStarts.filter(s => /^[a-z]/.test(s));
+    if (badCaps.length > 0) {
+      tips.push("⚠️ <b>Capital letter:</b> The first word of every sentence must start with a capital letter.");
+    }
     if (spelling < 2) tips.push("⚠️ <b>Spelling:</b> Check word spelling carefully.");
     if (sstElapsedSeconds >= 600) tips.push("⏱ You went over 10 minutes — in the real test, manage time carefully.");
     else if (sstElapsedSeconds >= 480) tips.push("⏱ You were in the 8–10 minute yellow zone.");
