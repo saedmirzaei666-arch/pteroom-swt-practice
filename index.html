@@ -4552,47 +4552,81 @@
   }
 
   function buildSstSample(q) {
+    // Applies to ALL SST questions that have a transcript in sst_questions.json
+    const transcript = (q.transcript || "").replace(/\s+/g, " ").trim();
+    if (!transcript) {
+      return "The lecture introduces the main topic and explains several related points, noting causes and effects before concluding with the overall significance of these ideas for listeners.";
+    }
+
+    const STOP = new Set("a an the and or but if so as at by for in is it of on to up with was were be been being this that these those there their they them then than from have has had do does did will would can could should may might must not no into onto over under about after before during while when where which who whom how why what also just only very more most much many some any each every both few other such same own across between among against without within well okay now actually basically really quite rather people someone something".split(" "));
+
+    // Extract meaningful 2–3 word content phrases from THIS lecture (all questions)
+    function contentPhrases(text, max) {
+      const toks = text.toLowerCase().replace(/[^a-z0-9\s'-]/g, " ").split(/\s+/).filter(Boolean);
+      const out = [];
+      const seen = new Set();
+      for (let i = 0; i < toks.length - 1 && out.length < max; i++) {
+        if (STOP.has(toks[i]) || toks[i].length < 4) continue;
+        if (!STOP.has(toks[i + 1]) && toks[i + 1].length > 2) {
+          const bi = toks[i] + " " + toks[i + 1];
+          if (!seen.has(bi)) { seen.add(bi); out.push(bi); }
+        }
+        if (out.length < max && i + 2 < toks.length && !STOP.has(toks[i + 1]) && toks[i + 2].length > 2) {
+          const tri = toks[i] + " " + toks[i + 1] + " " + toks[i + 2];
+          if (!seen.has(tri) && tri.length < 42) { seen.add(tri); out.push(tri); }
+        }
+      }
+      if (out.length < 3) {
+        toks.filter(t => t.length > 5 && !STOP.has(t)).forEach(t => {
+          if (!seen.has(t) && out.length < max) { seen.add(t); out.push(t); }
+        });
+      }
+      return out;
+    }
+
+    const phrases = contentPhrases(transcript, 6);
+    const A = phrases[0] || "the main topic";
+    const B = phrases[1] || phrases[0] || "related issues";
+    const C = phrases[2] || phrases[1] || "key factors";
+    const D = phrases[3] || phrases[0] || "important outcomes";
+
+    // PTE ROOM shells + lecture-specific phrases = paraphrase (not full sentence copy)
     const starts = [
-      "The discussion introduces {N} and highlights connections with other aspects of {N2}.",
-      "The lecture explores several important aspects of {N} from different perspectives.",
-      "In this talk, the speaker examines {N} and discusses broader effects related to {N2}.",
-      "The speaker begins by focusing on {N} and highlights the importance of {N} in shaping related fields."
+      `The lecture explores ${A} and highlights connections with ${B}.`,
+      `In this talk, the speaker examines ${A} and discusses broader effects related to ${B}.`,
+      `The discussion introduces ${A}, explaining key ideas linked to ${B}.`
     ];
     const bodies = [
-      "One key point involves {N}, playing a vital role in affecting the progress of {N2}.",
-      "Another focus is on {N}, especially related issues, influencing outcomes associated with {N2}.",
-      "The lecture also covers {N}, noting impacts on development in this area.",
-      "The speaker explains interactions between {N} and {N2}, creating benefits and challenges.",
-      "Attention is given to {N}, which directly shapes the outcomes associated with {N2}.",
-      "Then, it delves into the challenges and opportunities associated with {N}."
+      `One key point involves ${A}, which plays a vital role in shaping ${B}.`,
+      `The speaker also focuses on ${C}, noting how it influences ${D}.`,
+      `Another element is ${B}, especially in relation to ${C}, affecting practical outcomes.`,
+      `Attention is given to ${C}, which directly shapes decisions and results around ${D}.`
     ];
     const ends = [
-      "Overall, the talk stresses the crucial role of {N} in shaping {N2}.",
-      "The presentation ends by underlining the ongoing impact of {N} on related fields.",
-      "Finally, the lecturer emphasized many aspects of {N}.",
-      "The lecture closes by highlighting the importance of {N} in determining future developments."
+      `Overall, the talk stresses the crucial role of ${A} in understanding ${B}.`,
+      `Finally, the speaker underlines the ongoing importance of ${A} for related fields.`,
+      `The lecture closes by emphasizing why ${A} and ${B} matter in practice.`
     ];
-    const nps = extractNounPhrases(q.transcript || "");
-    const N = nps[0] || "the topic";
-    const N2 = nps[1] || nps[0] || "related issues";
-    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-    const fill = (s) => s.replace(/\{N2\}/g, N2).replace(/\{N\}/g, N);
 
-    let text = fill(pick(starts)) + " " + fill(pick(bodies)) + " " + fill(pick(bodies)) + " " + fill(pick(ends));
-    // Adjust toward 60–68 words
-    let words = text.split(/\s+/);
-    while (words.length < 60) {
-      text += " " + fill(pick(bodies));
-      words = text.split(/\s+/);
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    let body1 = pick(bodies);
+    let body2 = pick(bodies.filter(b => b !== body1));
+    if (!body2) body2 = bodies[(bodies.indexOf(body1) + 1) % bodies.length];
+
+    let text = [pick(starts), body1, body2, pick(ends)].join(" ").replace(/\s+/g, " ").trim();
+    let words = text.split(/\s+/).filter(Boolean);
+    if (words.length < 60) {
+      text += ` The speaker also notes further details about ${C} to support these points.`;
+      text = text.replace(/\s+/g, " ").trim();
+      words = text.split(/\s+/).filter(Boolean);
     }
     if (words.length > 68) {
       words = words.slice(0, 68);
-      // end with period
-      let joined = words.join(" ");
-      if (!/[.!?]$/.test(joined)) joined += ".";
-      text = joined;
+      text = words.join(" ");
+      if (!/[.!?]$/.test(text)) text += ".";
     }
-    return text.replace(/\s+/g, " ").trim();
+    if (!/[.!?]$/.test(text)) text += ".";
+    return text;
   }
 
   function gradeSstAnswer() {
