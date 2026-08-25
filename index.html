@@ -190,6 +190,64 @@
       color: #FDE68A;
     }
 
+    /* WFD Practice — bright cyan glow on home */
+    .hub-card.wfd-highlight {
+      border-color: rgba(6, 182, 212, 0.55);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.18) 0%, rgba(37, 99, 235, 0.12) 40%, var(--surface) 100%);
+      box-shadow: 0 4px 24px rgba(6, 182, 212, 0.22), inset 0 0 0 1px rgba(56, 189, 248, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-card.wfd-highlight::before {
+      content: "";
+      position: absolute;
+      top: -40%;
+      left: -30%;
+      width: 55%;
+      height: 180%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: wfdShine 3.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes wfdShine {
+      0% { transform: translateX(-20%) rotate(12deg); opacity: 0; }
+      35% { opacity: 1; }
+      100% { transform: translateX(280%) rotate(12deg); opacity: 0; }
+    }
+    .hub-card.wfd-highlight .hub-icon {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: rgba(6, 182, 212, 0.5);
+      font-size: 26px;
+    }
+    .hub-card.wfd-highlight .hub-text h3 {
+      color: #67E8F9 !important;
+      font-size: 16px !important;
+      letter-spacing: 0.4px;
+    }
+    .hub-card.wfd-highlight .hub-text p { color: #A5F3FC; }
+    .wfd-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, #06B6D4, #2563EB);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      box-shadow: 0 2px 8px rgba(6, 182, 212, 0.35);
+    }
+    .app-version {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-dim);
+      opacity: 0.7;
+      letter-spacing: 0.6px;
+      padding: 4px 0 2px;
+      flex-shrink: 0;
+    }
+
     .view-screen {
       display: none;
       flex-direction: column;
@@ -1202,7 +1260,17 @@
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
 
-      <!-- DUEL ARENA - Super highlighted on first page -->
+      <!-- WFD PRACTICE — top of home, glowing -->
+      <div class="hub-card wfd-highlight" onclick="navTo('wfd')">
+        <span class="wfd-badge">HOT</span>
+        <div class="hub-icon">🎧</div>
+        <div class="hub-text">
+          <h3>WRITE FROM DICTATION</h3>
+          <p>Practice WFD • Check score instantly • Prediction &amp; Review list</p>
+        </div>
+      </div>
+
+      <!-- DUEL ARENA -->
       <div class="hub-card duel-highlight" onclick="navTo('duels')">
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
@@ -2041,6 +2109,7 @@
   </div>
 
   <div class="app-toast" id="appToast">Please type your answer first!</div>
+  <div class="app-version">Version 1.1</div>
 </div>
 
 <script>
