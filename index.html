@@ -1702,35 +1702,40 @@
   <!-- Practice Hub Screen (PTE Practice) -->
   <div class="view-screen" id="viewPracticeMenu">
     <div class="hub-grid">
+      <div class="hub-card" onclick="navTo('listening_menu')" style="border-color:rgba(103,232,249,0.35);">
+        <div class="hub-icon">🎧</div>
+        <div class="hub-text">
+          <h3 style="color:#67e8f9;">Listening</h3>
+          <p>WFD · SST · WFD Duel</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('reading_menu')" style="border-color:rgba(96,165,250,0.35);">
+        <div class="hub-icon">📖</div>
+        <div class="hub-text">
+          <h3 style="color:#60a5fa;">Reading</h3>
+          <p>RFIB · RWFIB · Reorder Paragraph</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('writing_menu')" style="border-color:rgba(167,139,250,0.35);">
+        <div class="hub-icon">✍️</div>
+        <div class="hub-text">
+          <h3 style="color:#a78bfa;">Writing</h3>
+          <p>Summarize Written Text (SWT)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listening Practice Submenu -->
+  <div class="view-screen" id="viewListeningMenu">
+    <div class="hub-grid">
       <div class="hub-card" onclick="navTo('wfd')">
         <div class="hub-icon">✍️</div>
         <div class="hub-text">
           <h3>Write From Dictation</h3>
-          <p>شبیه‌ساز رسمی پخش صوت، نگارش و تصحیح هوشمند تطبیق کلمات</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="navTo('rfib')">
-        <div class="hub-icon">📖</div>
-        <div class="hub-text">
-          <h3 style="color:var(--primary);">Reading: FIB (Drag &amp; Drop)</h3>
-          <p>بانک سوالات RFIB با قابلیت انتخاب گرامر، Drag & Drop و بررسی پاسخ</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="navTo('rwfib')">
-        <div class="hub-icon">📝</div>
-        <div class="hub-text">
-          <h3 style="color:var(--primary);">Reading &amp; Writing: FIB (DropDown)</h3>
-          <p>785 dropdown questions • Verb / Connector / Adj Clause / Preposition</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="navTo('swt')">
-        <div class="hub-icon">📝</div>
-        <div class="hub-text">
-          <h3 style="color:var(--primary);">Summarize Written Text</h3>
-          <p>تایمر، شمارنده کلمات و نمره‌دهی خودکار بر اساس اسکورگاید رسمی PTE</p>
+          <p>Audio · write · smart word match scoring</p>
         </div>
       </div>
 
@@ -1738,15 +1743,7 @@
         <div class="hub-icon">🎧</div>
         <div class="hub-text">
           <h3 style="color:#67e8f9;">Summarize Spoken Text</h3>
-          <p>100 lectures • Timer 10 min • Strict Form 50–70 • PTE ROOM sample</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="navTo('ro')">
-        <div class="hub-icon">🔀</div>
-        <div class="hub-text">
-          <h3 style="color:#a78bfa;">Reorder Paragraph (Drag &amp; Drop)</h3>
-          <p>25 sets • Source → Target • 1 point per correct adjacent pair</p>
+          <p>100 lectures · Timer · Form 50–70 · Pearson scoring guide</p>
         </div>
       </div>
 
@@ -1754,7 +1751,49 @@
         <div class="hub-icon">⚔️</div>
         <div class="hub-text">
           <h3 style="color:#fbbf24; font-size:16px;">WFD DUEL • LIVE</h3>
-          <p style="color:#fde68a;">1v1 challenge • Choose 3 or 5 questions • Live ranking</p>
+          <p style="color:#fde68a;">1v1 challenge · 3 or 5 questions · Live ranking</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reading Practice Submenu -->
+  <div class="view-screen" id="viewReadingMenu">
+    <div class="hub-grid">
+      <div class="hub-card" onclick="navTo('rfib')">
+        <div class="hub-icon">📖</div>
+        <div class="hub-text">
+          <h3 style="color:var(--primary);">Reading: FIB (Drag &amp; Drop)</h3>
+          <p>Grammar categories · Drag &amp; Drop · Check answers</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('rwfib')">
+        <div class="hub-icon">📝</div>
+        <div class="hub-text">
+          <h3 style="color:var(--primary);">Reading &amp; Writing: FIB (DropDown)</h3>
+          <p>785 questions · Verb / Connector / Adj Clause / Preposition</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('ro')">
+        <div class="hub-icon">🔀</div>
+        <div class="hub-text">
+          <h3 style="color:#a78bfa;">Reorder Paragraph (Drag &amp; Drop)</h3>
+          <p>Source → Target · 1 point per correct adjacent pair</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Writing Practice Submenu -->
+  <div class="view-screen" id="viewWritingMenu">
+    <div class="hub-grid">
+      <div class="hub-card" onclick="navTo('swt')">
+        <div class="hub-icon">📝</div>
+        <div class="hub-text">
+          <h3 style="color:#a78bfa;">Summarize Written Text</h3>
+          <p>Timer · word count · Pearson score guide · PTE ROOM structure</p>
         </div>
       </div>
     </div>
@@ -5060,6 +5099,18 @@
     } else if (current === 'practice_menu') {
       document.getElementById('viewPracticeMenu').classList.add('active');
       title.innerText = "PTE ROOM • PTE PRACTICE";
+      stopWfdTimer();
+    } else if (current === 'listening_menu') {
+      document.getElementById('viewListeningMenu').classList.add('active');
+      title.innerText = "PTE ROOM • Listening";
+      stopWfdTimer();
+    } else if (current === 'reading_menu') {
+      document.getElementById('viewReadingMenu').classList.add('active');
+      title.innerText = "PTE ROOM • Reading";
+      stopWfdTimer();
+    } else if (current === 'writing_menu') {
+      document.getElementById('viewWritingMenu').classList.add('active');
+      title.innerText = "PTE ROOM • Writing";
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
