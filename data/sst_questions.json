@@ -1,14 +1,709 @@
-[
-  {
-    "id": "#136",
-    "title": "#136 Recycling Water",
-    "audioUrl": "sst1.mp3",
-    "text": "Why do we need to recycle water? Because we don’t generate much new water. Chemically the process of generating water is not a process that happens a lot anymore."
-  },
-  {
-    "id": "#240",
-    "title": "#240 Stock Market and Business",
-    "audioUrl": "sst2.mp3",
-    "text": "The stock market is where investors connect to buy and sell investments, most commonly stocks, which are shares of ownership in a public company."
-  }
-]
+{
+  "version": "1.0",
+  "task": "Summarize Spoken Text",
+  "folder": "sst_audios",
+  "count": 100,
+  "questions": [
+    {
+      "id": 1,
+      "title": "SST-1",
+      "audioUrl": "SST-1.mp3",
+      "durationSec": 90.11,
+      "transcript": "People these days increasingly complain of suffering from allergies, to pollen, to cats, to dust, to certain foods like peanuts or shellfish, for example. But what exactly are allergies and why do we develop them? Well, an allergy is the body reacting to something that is trying to harm it. Sometimes the reaction is mild, sneezing or a rash perhaps, but in extreme cases, it can be life-threatening. In an allergic reaction, the body is stimulated to produce histamines, which help to get rid of what is harmful. So your eyes and nose may stream as a way of losing irritating particles, or your skin may itch in order to make you scratch it and so remove any harmful parasites. In some societies these days, allergic reactions occur without the person being in a harmful situation. However, in situations where, say, hygiene is less developed, then the body's immune system spends its early years fighting off genuine problems, and so doesn't tend to overreact to harmless irritants at a later stage. So, how to deal with an allergy? The first step has to be to ascertain what triggers the allergic reaction, and then to avoid contact with that allergen as far as is possible. If avoidance is impossible, antihistamines can be prescribed to minimize the symptoms experienced by the sufferer."
+    },
+    {
+      "id": 2,
+      "title": "SST-2",
+      "audioUrl": "SST-2.mp3",
+      "durationSec": 85.79,
+      "transcript": "Well, nowadays there's an increasing trend toward ecotourism holidays. So what is ecotourism? Well, it's a form of tourism which should not only protect, but also actively improve our environment and its cultures. However, many forms of tourism which are presented as sustainable, nature-based, and environmentally friendly are often not what they seem, and this is rapidly becoming a somewhat thorny issue. Governments, as well as the tourism industry, promote ecotourism, but there are very well founded concerns that in many instances, it not only lacks adequate scientific foundations, but is also not viable as a solution to the world's social and environmental problems, which of course is what ecotourism is supposed to be about. Many ecotourism holidays are really nothing more than a marketing ploy, and indeed in the worst cases, can be said to even threaten local cultures, economies, and natural resource bases. The issue is further confused by the multitude of terms to describe types of travel which supposedly protect the environment. Other than ecotourism, we have adventure travel, sustainable tourism, responsible tourism, nature-based travel, green travel, and cultural tourism, to name just a few. So the problem we have here is whether a potential traveler who wants a legitimately environmentally friendly travel experience can make the right choice when confronted with this type of marketing."
+    },
+    {
+      "id": 3,
+      "title": "SST-3",
+      "audioUrl": "SST-3.mp3",
+      "durationSec": 105.34,
+      "transcript": "Some economists argue that financial aid to developing countries is, in the long run, inefficient and even counterproductive. However, there are two main types of aid that we will deal with here. First, there is long term aid to countries such as Ethiopia and Somalia, where there are recurrent problems such as drought and poor agricultural production, and where there is little or no industry to speak of, problems that won't go away with an injection of money. Then there is emergency aid, which also appeals for contributions from the public when a disaster of one kind or another strikes. Recent examples would be the earthquake in Haiti and the tsunami in Japan. In the case of emergency aid, it arrives in the first instance as food, clothing, shelter, and medical aid, all of which are of immediate practical use and great benefit. With countries that have long-term developmental problems, just pumping in money isn't enough, and, sad to say, a lot of the money doesn't go where it should. What is more important is providing know-how, teaching the skills and expertise needed to help develop the economy and social services, such as health, sanitation, and so on. It is also necessary to help build the institutions, a bureaucracy if you like, that can organize and run these services."
+    },
+    {
+      "id": 4,
+      "title": "SST-4",
+      "audioUrl": "SST-4.mp3",
+      "durationSec": 68.15,
+      "transcript": "In criminal trials, memories are basic, a critical feature of proceedings. Both sides of the legal team, prosecution and defense, are likely to rely to some extent on witnesses and on what they can recall of events that led up to, or indeed formed part of, the criminal act. Now, it's been well established in various circles that memory can be unreliable, particularly if new information is introduced in cross-examination that hasn't been presented up until that point, new facts that witnesses were unaware of. A lot of research has been done to test the effects of this, and it can be very problematic. For example, if you show a group of subjects a video of a crime, then you get someone else to read them an account of the same crime, but adding in information, be it ideas or objects that weren't present on the video. What researchers have found is that when the subjects are asked to retell what they saw in the video, they too include a number of things that weren't there. In other words, the introduction of new information in a court of law is very likely to skew or distort a witness's memory of the event."
+    },
+    {
+      "id": 5,
+      "title": "SST-5",
+      "audioUrl": "SST-5.mp3",
+      "durationSec": 91.4,
+      "transcript": "Well, our research team spent a year looking at the way local government is functioning, talking to the stakeholders, surveying the community, and basically we identified three main issues. Three main areas of concern when it comes to government at the local level of the town or city. One of them, and perhaps this is the most important one, is that we need to enable citizens, ordinary people, to take more responsibility as co-authors of their civic lives. They need to be able to determine what kinds of services and facilities they need, and also think about how they can contribute in those areas, how they can become involved. A second area we looked at was how to create a public service and public servants who are able to actually support citizens in what they want and need. Now, this should perhaps happen in a more down-to-earth and less bureaucratic way than we've seen in the past. I'm talking about moving towards a more customer-directed approach across the board. Finally, we need to look at the relationships between national government, local government, and citizens, because that hasn't been functioning as it should. We've had overdirective centralism, and a kind of mistrust has emerged between national and local bodies, and it's the citizens who bear the brunt of this."
+    },
+    {
+      "id": 6,
+      "title": "SST-6",
+      "audioUrl": "SST-6.mp3",
+      "durationSec": 89.86,
+      "transcript": "I understand that one major concern of yours in running a successful company, especially in the current economic climate, is the question of worker loyalty. Are you saying that such a thing no longer exists? And if so, what are some of the reasons for this? And how important is loyalty to the smooth and successful running of a company such as yours? Well, I do think it's important, but I also realize that we can't go back to the old-fashioned sense of loyalty where an employee would spend his whole working life with one company or business. Our grandparents, even our parents' generation, expected long-term employment, and their loyalty was rewarded with health care and a pension. This is no longer the case. Many companies aren't willing, or perhaps even able, to provide such a financial package. Besides, to a younger generation, sticking at the same job all your life isn't a very exciting or inspiring prospect. Some reasons for this might be the shortening of contracts, outsourcing, automation, and people holding down more than one job. In other words, we've all had to adapt to the realities of a rapidly changing, fast-paced economy. However, all this isn't to say that loyalty is dead, rather it has changed emphasis. Today, it is more about trust in that an employee will promise to bring his skills and engage fully in his work for as long as she or he is there. People change jobs a lot more these days, but I still believe that a company is better off with at least a core of people who stay for the long term."
+    },
+    {
+      "id": 7,
+      "title": "SST-7",
+      "audioUrl": "SST-7.mp3",
+      "durationSec": 81.83,
+      "transcript": "Technological nature, you may have heard this term. It's a term used to describe a picture of a natural scene that's been produced using computer graphics, so that basically it isn't a real view, say, of a garden or field, it's a virtual one. It's a picture that looks like a real scene. Now, looking at scenes of nature is known to have an effect on people's health and wellbeing. So for someone who's ill, for a patient in a hospital, does a virtual view of a garden have the same impact as a real one? Does it have the same beneficial effects when you look at it? Because that would be good. Well, if you test this out, if you put a group of people in a room with a real view and another group of people in a room with a virtual view, an unreal view, you can see what happens when they get stressed. If you give both groups a task that is slightly stressful and increases their heart rate, what you'll find is that the people who have the real garden scene outside their window to look at, their heart rate goes back to normal more quickly than those of the people in the other group who only have a virtual view to look at. So, yes, there is a difference. People's recovery from stress is faster in the room with the real view."
+    },
+    {
+      "id": 8,
+      "title": "SST-8",
+      "audioUrl": "SST-8.mp3",
+      "durationSec": 81.54,
+      "transcript": "The autumn term is in full swing now, and deadlines are fast approaching. So, to help you with the final touches on your assignments, I wanted to say a few words about proofreading. Most people find it easy to spot problems with grammar or punctuation when reading someone else's writing, but it's always much harder to see these things when looking at your own. Since you won't always have the luxury of having someone else proofread for you, let's look at a few ways to effectively do it yourself. When proofreading your own work, it's important that you know what kind of errors you're looking for. Think about the kinds of things you've had trouble with in the past and try to eliminate them for a start. Now, most people know to look for things like grammar, spelling, and punctuation, but don't forget that the big picture is just as important. Make sure your work is organized in a logical way and that each paragraph represents a clear, distinct idea. You might take yourself to a quiet spot and try reading your work aloud. As you do, make sure it flows. Don't forget to check your referencing and citations. If possible, try to give yourself at least a day or two to complete the proofreading process. It's easier to spot mistakes if you've had a bit of a break from looking at the paper."
+    },
+    {
+      "id": 9,
+      "title": "SST-9",
+      "audioUrl": "SST-9.mp3",
+      "durationSec": 83.09,
+      "transcript": "Now, Professor, recently you wrote a letter to a leading national newspaper complaining about falling standards in both written and spoken language among students, even graduates, and saying that you deplore the way English is being debased by change and dumbing down. Yes, I said that standards are falling and that very few graduates these days can write a comprehensible essay. Their grammar and syntax is all over the place. And I have certain regrets over the way some words have now become unusable in their full meaning because they've been sloppily misused by those who should know better, such as journalists. So because they use, say, enormity to mean something very big instead of something very wicked, I can no longer use the word in its correct sense without being misunderstood. And there are hundreds of other cases like this. But of course, language changes and meanings shift and change emphasis, and it's as useless to complain about that as it is to moan about the weather. The point I was making was that at the earliest possible level, children should be made familiar with the basics of grammar and syntax, how to put sentences together, and so on. But I'm not suggesting going back to the days when, as I did, you had to analyze sentences in minute detail as if you were doing Latin. Though of course, there is something to be said for having that kind of detailed understanding of the language."
+    },
+    {
+      "id": 10,
+      "title": "SST-10",
+      "audioUrl": "SST-10.mp3",
+      "durationSec": 81.36,
+      "transcript": "Well, what I want to focus on now is climate change, more specifically on the fact that climate change is a result of human activities. Now, there has been some disagreement regarding the extent to which human activity can be blamed for climate change, but I want to argue that there is evidence which clearly demonstrates that our own actions really are causing a genuine threat. The available evidence seems to indicate fairly conclusively that land and sea temperatures started to increase around two hundred years ago. So, what's the significance of this? Well, two hundred years ago roughly coincides with the beginning of the Industrial Revolution in the Northern Hemisphere. In other words, this was when our production of harmful gases really got going as a result of increased industrialization. Since that time, our production of gases has accelerated due to the fact that not only has industry grown in size, but it has also now spread to the southern hemisphere, indeed, most parts of the world. So in the last two hundred years, as industry has grown, we can see a gradual rise in the temperatures, which to my mind is sufficient proof of the damaging effect of our actions, and needless to say, it's an issue which we need to address."
+    },
+    {
+      "id": 11,
+      "title": "SST-11",
+      "audioUrl": "SST-11.mp3",
+      "durationSec": 89.64,
+      "transcript": "Professor, could you say a bit more about this psychogeography you mentioned earlier? Well, I could give you a short history of the subject, though it's not a subject in the academic sense, as far as I'm aware, or at least not at the college where I teach. But what is it exactly? It sounds rather complicated. A mixture of what? Psychology and geography? No, not at all. Well, the first theorist of it was a Frenchman, Guy Debord. And basically, in his words, it's the study of the effects of the geographical environment on the emotions and behavior of people. Put like that, of course, it doesn't sound like anything new. People have always been aware at some level of the effect of their surroundings on their emotions and way of life, and this includes not just buildings, but the landscape as a whole, the climate, and so on. But it is mainly an urban thing, and these days people who call themselves psychogeographers tend to be harsh critics of the way modern city planners develop urban space. Really, I suppose, it asks people to pay more attention to their environment, be critical of it, and to note not just the aspects we've already mentioned, but the atmosphere created by them as well. I could go on and tell you how to go about it, but all you have to do is go online and you'll find a site for almost any city you care to name. It's worth looking into."
+    },
+    {
+      "id": 12,
+      "title": "SST-12",
+      "audioUrl": "SST-12.mp3",
+      "durationSec": 90.22,
+      "transcript": "I'd now like to turn to the Roman, Latin writers of the period. Their achievements in the other arts, architecture, painting, and sculpture, were rather second rate and mostly in imitation of the Greeks. And it's true that Latin writers also wanted to emulate the Greeks and used their writers as models, but somehow the language wouldn't allow it. What I mean to say is, the particular qualities of the Latin tongue made for the excellence of their writings, especially the poetry. For one thing, Latin is capable of great compression; that is to say, it can convey in five or six words what we would need twice the number to say. What also helped Latin writing flourish was the nature of Roman education. Whatever its faults, as they would appear to us, its linguistic and literary emphasis seemed designed to produce orators and writers. A drawback of the system was that education was only available to the richer classes of society. And so Roman literature is mainly a product of those classes. This in turn meant that the subject matter was fairly limited and narrow in its social reach, though there were exceptions."
+    },
+    {
+      "id": 13,
+      "title": "SST-13",
+      "audioUrl": "SST-13.mp3",
+      "durationSec": 89.89,
+      "transcript": "It was the philosopher Thomas Nagel, I think, who came up with the thought experiment of trying to imagine what it's like to be a bat, though I suppose any animal would do. The point is, of course, that you can't, just as you can't know what it's really like to be another person. I mean, know rather than imagine. How much can we know of what goes on in another person's mind? We observe people, watch what they do, listen to what they say and other sounds they may make, see how they respond to their environment, their likes and dislikes, what they eat, and so on, and from this, we have learned to make fairly accurate predictions about how they'll behave in certain situations, yet we still can't be sure what thoughts have passed through their minds, and certainly not what it feels like to them. We can guess based on personal experience in similar situations, so we must assume that humans are alike enough for us to be reasonably certain that, for example, we experience the color red in roughly the same way, or in the same ways. But again, to you, red might bring to mind thoughts of blood and death, whereas to someone else, warmth or excitement. And the differences can't just be cultural."
+    },
+    {
+      "id": 14,
+      "title": "SST-14",
+      "audioUrl": "SST-14.mp3",
+      "durationSec": 90.61,
+      "transcript": "As you have probably noticed, fashions and tastes change quite noticeably over the years, most obviously perhaps in clothes, hairstyles, and popular music. The reputations of writers and artists are no different, though the alternating periods of being in and then out of fashion are longer. A poet may no longer appeal to a large reading public for a number of reasons, though we must keep in mind that poetry is a minority taste and its readership is relatively small in the first place. So, I want to look at the reputation of Alexander Pope. In his own lifetime, he was praised and idolized by both his friends and the literary world in general, though he did have some rather vicious enemies. Yet both friends and enemies seemed more concerned with either praising or attacking his character and morals than with properly assessing the poems themselves. The Romantics, of course, had little time for him. Indeed, the Romantic movement, in poetry at least, was an attempt to make a complete break with the strict formality and rationality of the Augustan poets, of whom Pope was the most notable example. They didn't regard him as a real poet and complained of his ignorance of nature in the sense of mountains, trees, and flowers. The Victorians were even less responsive to Pope, and this was probably the period when his reputation was at its lowest. In fact it wasn't until the 1920s that Pope and the Augustan poets were reevaluated and given the attention and respect they deserved."
+    },
+    {
+      "id": 15,
+      "title": "SST-15",
+      "audioUrl": "SST-15.mp3",
+      "durationSec": 80.5,
+      "transcript": "Traveling in the mind's eye, through reading and more recently through electronic media, is a European habit of long standing. Ever since the Age of Discoveries in the Renaissance, Europeans have been interested in reports of life in faraway places. Of all the places in which Europeans were interested, America has received more attention than others, for a variety of reasons, the most important of which is that many Europeans themselves emigrated there. The report about America from the person who has been there is a literary genre that Europeans have devoured. As Europeans watched the United States grow from a British colony to one of the dominant nations of the world, a pattern of conversation developed among them about the meaning of this emerging colossus of the New World. There emerged a question aptly stated by Richard Rose: Is America inevitable or inimitable? The question is easier to ask than to answer, and both sides of the question are amply represented in American and European writing about America. The one stresses the uniqueness of America, that no nation or people can be compared with the experience of Americans. The other stresses that America is the forerunner of what European, even world society will be tomorrow."
+    },
+    {
+      "id": 16,
+      "title": "SST-16",
+      "audioUrl": "SST-16.mp3",
+      "durationSec": 90.68,
+      "transcript": "I became interested in, what would you call it, the behavior, the psychology perhaps, of crowds after getting caught up, quite by accident, in a demonstration that turned into a bit of a riot. You may have seen it on the news not long ago. What interested me was first, my own reactions to the way the whole mood changed from peaceful demonstration to violence. Secondly, I wondered if everyone else was feeling the same as I was, and what that said about us and how we behave in crowds. Why is it that perfectly ordinary, respectable members of the public can start behaving in ways they wouldn't dream of doing when at home or among friends? A crowd, it seems to me, has a collective mind. Each person there adds his or her mind to the collective mind and willingly gives up all sense of judgment and responsibility. It gives you, I suppose, a feeling of freedom, of not having to be in control. It allows you the freedom, or you allow yourself the freedom, to behave in ways that, if asked, you would say were against your principles or made you feel guilty in some way, even criminal."
+    },
+    {
+      "id": 17,
+      "title": "SST-17",
+      "audioUrl": "SST-17.mp3",
+      "durationSec": 79.38,
+      "transcript": "Perhaps the first example of what could be called a newspaper was the Acta Diurna, roughly Daily News, that Julius Caesar introduced in 59 BC. This was a handwritten news sheet posted daily in the forum at Rome and in other common meeting places around the city. Of course, a lot of the news would be out of date in the sense that, for example, it took a long time for reports of a victory in a distant country to get back to Rome. Nonetheless, a lot of the items included are similar to those found in more modern newspapers. News of battles, as already mentioned, as well as political and military appointments, political events, and even a social diary recording marriages, births, and deaths. One mustn't forget sport, if that is what you call it. Just like modern fans of football, sports-minded Romans could keep up with the latest results of the gladiator contests. People who lived in the provinces and wanted to be kept up to date would send scribes to Rome to copy the news and have them send it back by letter. Many of these scribes could make extra money by providing the news to more than one client. Quite a few of them were slaves and would go on to use the extra money earned to buy their freedom."
+    },
+    {
+      "id": 18,
+      "title": "SST-18",
+      "audioUrl": "SST-18.mp3",
+      "durationSec": 67.42,
+      "transcript": "Most people think of astronomers as people who spend their time in cold observatories peering through telescopes every night. In fact, a typical astronomer spends most of his or her time analyzing data and may only be at the telescope a few weeks of the year. Some astronomers work on purely theoretical problems and never use a telescope at all. You might not know how rarely images are viewed directly through telescopes. The most common way to observe the skies is to photograph them. The process is very simple. First, a photographic plate is coated with a light-sensitive material. The plate is positioned so that the image received by the telescope is recorded on it. Then, the image can be developed, enlarged, and published so that many people can study it. Because most astronomical objects are very remote, the light we receive from them is rather feeble, but by using a telescope as a camera, long time exposures can be made. In this way, objects can be photographed that are a hundred times too faint to be seen by just looking through a telescope."
+    },
+    {
+      "id": 19,
+      "title": "SST-19",
+      "audioUrl": "SST-19.mp3",
+      "durationSec": 73.51,
+      "transcript": "Is it true you once said that English as a subject at university, literature, I mean, was a soft option? That it was just doing what you enjoy doing anyway, that is, reading books? No, I didn't. In fact, I was arguing, and on occasion still have to argue, the opposite. This goes back to the very beginning of English as an academic subject. There was a demand for it, but the universities themselves didn't take it seriously as an academic discipline. So to cut a long story short, they would only accept its place in the curriculum if it was made more difficult. What I said was that too many people do think of it as a soft option. If you want to find out just how rigorous a course it can be, ask any of my students. If you were to try to read the books on the list for one semester as a leisure activity, you wouldn't get through them, let alone reading them with the proper attention and then having to come up with a suitable and well-thought-out critical response. And it's not just about the set books. There's the whole cultural context to take into account."
+    },
+    {
+      "id": 20,
+      "title": "SST-20",
+      "audioUrl": "SST-20.mp3",
+      "durationSec": 78.6,
+      "transcript": "Thank you all for coming out this evening to meet sociologist Ellen Lambert. Ms. Lambert specializes in research on the workplace and recently has been writing about the future of work. This topic should be of special interest since I know many of you are already at the forefront of workplace technology. For example, let's have a show of hands to see how many people here telecommute at least part of the time. I see eight hands raised. Well, you eight folks who work at home and communicate with your office via computer represent one of the trends Ms. Lambert has described, that people are becoming less tied to the workplace. One of the important tools for telecommuting is electronic mail or email. Email lets you send and receive messages almost immediately on your computer, but you control when you read them and when you respond to them. This technology allows people to have more control over time than when relying solely on the telephone. Our guest tonight will discuss how these important changes will alter the way we work. But before turning the floor over to Ms. Lambert, I would just like to remind you that she'll be available to answer any individual questions at the reception immediately following this talk."
+    },
+    {
+      "id": 21,
+      "title": "SST-21",
+      "audioUrl": "SST-21.mp3",
+      "durationSec": 78.76,
+      "transcript": "I want to welcome each and every balloon enthusiast to Philadelphia. Thank you for coming here this morning to commemorate the first balloon voyage in the United States. On January 9th, 1793, at ten o'clock in the morning, a silk balloon lifted into the skies above this city, which was at the time the capital of the country. According to the original records of the flight, the voyage lasted forty six minutes, from its departure in Philadelphia to its landing across the Delaware River in New Jersey. Though our pilots today will try to approximate the original landing site, they're at the mercy of the winds, so who knows where they'll drift off to? Even the balloonist in seventeen ninety-three experienced some uncertain weather that day. There were clouds, fog, and mist in various directions. Our reenactment promises to be nothing less than spectacular. The yellow balloon directly behind me is five stories high. It's inflated with helium, unlike the original which was filled with hydrogen and, unbeknownst to the pilot, potentially explosive. Gas-filled models are pretty uncommon now because of the extremely high cost, so the eighty other balloons in today's launch are hot air, heated by propane burners. These balloons are from all over the country."
+    },
+    {
+      "id": 22,
+      "title": "SST-22",
+      "audioUrl": "SST-22.mp3",
+      "durationSec": 93.07,
+      "transcript": "You might think that most of the patients at sleep clinics are being treated for sleeplessness, commonly referred to as insomnia, but that isn't the case. The majority of sleep clinic patients suffer from disorders of excessive sleep or hypersomnia, while most insomniacs somehow manage to drag themselves through the day and function at acceptable, although not optimal, levels. This isn't so for people who suffer from hypersomnia. They are incapacitated by irresistible urges to sleep during the day, often in inappropriate situations, at business meetings, in supermarkets, or at parties. Even more dangerous is their failure to remain awake when driving or operating machinery. Falling asleep in such situations could obviously be life-threatening. Many hypersomniacs suffer from narcolepsy, for which the primary symptom is excessive daytime sleepiness. Though not apparent in childhood, this symptom most often appears for the first time during the teen years and continues throughout a person's life. The sleep attacks may occur as many as fifteen to twenty times during the course of the day and last for periods from fifteen minutes up to two hours. What can be done to help those suffering from narcolepsy? There are certain drugs that can help, and specialists suggest voluntary napping to decrease the frequency of such sleep attacks."
+    },
+    {
+      "id": 23,
+      "title": "SST-23",
+      "audioUrl": "SST-23.mp3",
+      "durationSec": 110.74,
+      "transcript": "It is almost impossible to talk about the history of the novel without starting with a definition of it, which is by no means easy to do. We all know what we ourselves mean by a novel and have our favorite novelists, whether they are from the heyday of Victorian fiction, Dickens or George Eliot, or someone more modern or postmodern, for example, B. S. Johnson, who is famed for writing a novel that was bought in a box with loose pages that you could read in any order. Again, you might be a fan of crime or detective fiction, which brings the added complication of genre. That is, does the fact that a work of fiction is comedy, tragedy, satire, ghost story, and so on affect our definition? Anyway, as far as the history of the English novel is concerned, we're on fairly solid ground when we date the first novels to the late 17th and early 18th centuries. The first that is still read as a novel in the way we read novels now is Bunyan's Pilgrim's Progress, which did have an enormous effect on English prose writing. But for me, it would be Defoe's Robinson Crusoe. Now, people have tried to locate the beginnings even earlier than this, to Elizabethan prose writing, and even further back. But I think this is to lose sight of what a novel is and does, and confuses any kind of fiction with the true novel."
+    },
+    {
+      "id": 24,
+      "title": "SST-24",
+      "audioUrl": "SST-24.mp3",
+      "durationSec": 77.15,
+      "transcript": "John Milton is best known for his poetry, especially Paradise Lost, but also for the more accessible and shorter Lycidas and L'Allegro and Il Penseroso, plus one or two sonnets you'll find in most anthologies. But an easier way into what he thought and believed in social and political terms is through his prose writings. These were mostly pamphlets and tracts written in reaction to some political event or situation, but also included pamphlets on a wide variety of subjects, including at least four on divorce, which for him was tied up with personal freedom. However, the text which has probably had the most relevance down the years and which can still be read with profit is the Areopagitica, which is a defense of freedom of expression and publication and against censorship. It was written as a reaction to an attack on himself, in particular, a pamphlet on divorce he had written, and which some condemned as a wicked book."
+    },
+    {
+      "id": 25,
+      "title": "SST-25",
+      "audioUrl": "SST-25.mp3",
+      "durationSec": 91.06,
+      "transcript": "Today we're going to continue our discussion of modern art and talk about Charles Csuri. Charles Csuri has been a part of many modern art movements. He's worked in pop art, cubism, and conceptual art, but he made his mark as a pioneer in computer art. Even long before computers became popular, he was punching cards and feeding them into the big mainframe computer at Ohio State University. In the beginning, he had to work without a monitor, so he was virtually creating art in the dark. He even learned computer programming so he could experiment with this new tool. Through the computer, Csuri has been able to explore a new world of possibilities. For example, the computer enables him to sculpt in three dimensions. Also, he can look at a sculpture from any angle and move it around, change the location of the light source, or he can copy it in different colors. Over the years, Csuri received numerous grants for various projects. This money allowed him to train students in computer graphics and animation techniques, and to advance the computer as a medium for artists. Even though he uses modern technology, Csuri still insists he is creating art. He's always told his students to keep the issues of art in focus and not get so caught up in the technology that you forget about the image."
+    },
+    {
+      "id": 26,
+      "title": "SST-26",
+      "audioUrl": "SST-26.mp3",
+      "durationSec": 93.57,
+      "transcript": "To us, the environment in which fish dwell often seems cold, dark, and mysterious, but there are advantages to living in water, and they've played an important role in making fish what they are. One is that water isn't subject to sudden temperature changes, therefore it makes an excellent habitat for a cold-blooded animal. Another advantage is the water's ability to easily support body weight. Protoplasm has approximately the same density as water, so a fish in water is almost weightless. This weightlessness in turn means two things: one, a fish can get along with a light weight and simple bone structure, and two, limitations to a fish's size are practically removed. Yet there is one basic difficulty to living in water, the fact that it's incompressible. For a fish to move through water, it must actually shove it aside. Most can do this by wiggling back and forth in snake-like motion. The fish pushes water aside by the forward motion of its head and with the curve of its body and its flexible tail. Next, the water flows back along the fish's narrowing sides, closing in at the tail and helping the fish propel itself forward. The fact that water is incompressible has literally shaped the development of fish. A flat and angular shape can be moved through water only with difficulty, and for this reason, fish have a basic shape that is beautifully adapted to deal with this peculiarity."
+    },
+    {
+      "id": 27,
+      "title": "SST-27",
+      "audioUrl": "SST-27.mp3",
+      "durationSec": 106.11,
+      "transcript": "Hi everyone. My name is Chee. I teach in the division of eco science at Ewha Women's University. Far too many people often say things like: Animals do this, but we don't. Or this animal does this and that animal does this, but the humans don't do things like that. Those statements have some hidden assumption that we're not animals. When we say animals do this, animals do that, we often assume that we're not animals. If we're not animals, what are we? Are we plants or trees or flowers? No, we're not. Then, okay, we're not plants. Then are we microorganisms, really tiny microscopic things? No, we're not. Then the natural conclusion must be we're not living things. That's not true. Yes, we are animals, and I see animals in us, and I see humans in animals. So I'm going to talk about animal behavior and human nature in order to understand human nature. We can look into animals' eyes and animal behavior and find something about what made us who we are."
+    },
+    {
+      "id": 28,
+      "title": "SST-28",
+      "audioUrl": "SST-28.mp3",
+      "durationSec": 89.31,
+      "transcript": "I'm sure almost every one of you looked at your watch or at a clock before you came to class today. Watches and clocks seem as much a part of our life as breathing or eating. And yet, did you know that watches and clocks were scarce in the United States until the 1850s? In the late 1700s, people didn't know the exact time unless they were near a clock. Those delightful clocks in the squares of European towns were built for the public. After all, most citizens simply couldn't afford a personal timepiece. Well into the eighteen hundreds in Europe and the United States, the main purpose of a watch, which by the way was often on a gold chain, was to show others how wealthy you were. The word wristwatch didn't even enter the English language until nearly nineteen hundred. By then, the rapid pace of industrialization in the United States meant that measuring time had become essential. How could the factory worker get to work on time unless he or she knew exactly what time it was? Since efficiency was now measured by how fast a job was done, everyone was interested in time, and since industrialization made possible the manufacture of large quantities of goods, watches became fairly inexpensive. Furthermore, electric lights kept factories going around the clock. Being on time had entered the language and life of every citizen."
+    },
+    {
+      "id": 29,
+      "title": "SST-29",
+      "audioUrl": "SST-29.mp3",
+      "durationSec": 92.16,
+      "transcript": "This is a 40-watt light bulb. If you leave it on all the time, it uses 1 kilowatt-hour every day, and it's possible to express all forms of power consumption using this unit of the light bulb. I started measuring everything around my house, around my office, and I found some surprising things. First, I plugged in a phone charger, and it didn't even register on this power meter. It uses one hundredth of a light bulb of power. So I don't think the phone charger's going to be our number one form of energy consumption. Just taking one hot bath every day uses the same energy, same power as five light bulbs on all the time, nonstop. And I found I've been steadily using 40 light bulbs worth of gas for heating, making hot air and hot water, and that surprised me. Transport is one of the biggest forms of energy consumption. It uses about a third of our energy. If you drive an average car fifty kilometers a day, that corresponds to having forty light bulbs on all the time. Today, the average British person is using a hundred and twenty-five light bulbs of power. That's 125 light bulbs on all the time, nonstop. That's huge!"
+    },
+    {
+      "id": 30,
+      "title": "SST-30",
+      "audioUrl": "SST-30.mp3",
+      "durationSec": 75.39,
+      "transcript": "Today's lecture will center on prehistoric people of the Nevada desert. Now, most of these prehistoric desert people moved across the countryside throughout the year. You might think that they were wandering aimlessly; well, far from it. They actually followed a series of carefully planned moves. Where they moved depended on where food was available, places where plants were ripening or fish were spawning. Now, often when these people moved, they carried all their possessions on their backs, but if the journey was long, extra food and tools were sometimes stored in caves or beneath rocks. One of these caves is now an exciting archaeological site. Beyond its small opening is a huge underground grotto. Even though the cave's very large, it was certainly too dark and dusty for the travelers to live in, but it was a great place to hide things, and tremendous amounts of food supplies and artifacts have been found there. The food includes dried fish, seeds, and nuts. The artifacts include stone spear points and knives. The spear points are actually rather small. Here's a picture of some that were found. You can see their size in relation to the hands holding them."
+    },
+    {
+      "id": 31,
+      "title": "SST-31",
+      "audioUrl": "SST-31.mp3",
+      "durationSec": 90.98,
+      "transcript": "I had been writing nonfiction for years, actually, and but secretly wanting to be a novelist. When I first started writing at the age of thirty, it was with the intention of writing fiction. But I took a little detour for ten or twelve years and wrote nonfiction, which I have absolutely no regret about at all. I think it was exactly the right thing for me to do. But there was that dream tucked away inside of me to do this, and I remember reading something that Eudora Welty wrote, who is, you know, the great novelist from Mississippi who had a big influence on me actually. She said: No art ever came out of not risking your neck. And I think she's absolutely right about that. It felt that way to me at the time, and actually it feels that way to me every time I sit down to write something. Finally, in the early nineties, I took my deep breath and started writing fiction. It felt risky to me at the time to do that. And one of the very first things that I wrote was what I thought was going to be the first chapter of a novel called The Secret Life of Bees. I wrote it in 1992, and it is actually essentially the first chapter of the novel."
+    },
+    {
+      "id": 32,
+      "title": "SST-32",
+      "audioUrl": "SST-32.mp3",
+      "durationSec": 84.87,
+      "transcript": "Today, I'd like to turn our attention to an area of management often overlooked in traditional management courses: small business management. Small businesses have gone from being traditional small town stores selling food or clothing to sophisticated high tech enterprises. And in addition to the important products they produce, they create jobs for lots of people because there are so many of them. It's important for management to keep in mind which of the customers' needs the business serves, because it can't serve all their needs. Writing a business plan that everyone in the organization understands and follows will help to provide the necessary focus and direction. It's important to state clearly what the purpose of the business is. Additionally, each person within the organization must know what tasks to perform in order to fulfill that purpose. Now, if for some reason a business plan doesn't work, try hard to discover why not, rewrite it, and immediately focus on the new plan. A word of caution, however: never give up a bad plan without replacing it. A business has to have a plan because it can't afford to waste its limited resources, and as you know, waste leads to unnecessarily high production costs. Production costs are at the heart of the company's ability to make a high quality product and sell it at an affordable price."
+    },
+    {
+      "id": 33,
+      "title": "SST-33",
+      "audioUrl": "SST-33.mp3",
+      "durationSec": 102.74,
+      "transcript": "Mary Mallon, better known as Typhoid Mary, was the first person in the United States identified as an asymptomatic carrier of the pathogen associated with typhoid fever. She was presumed to have infected 51 people, three of whom died, over the course of her career as a cook. She was twice forcibly isolated by public health authorities and died after a total of nearly three decades in isolation. From 1900 to 1907, Mallon worked as a cook in the New York City area for seven families. In 1900, she worked in Mamaroneck, New York, where, within two weeks of her employment, residents developed typhoid fever. In 1901, she moved to Manhattan, where members of the family for whom she worked developed fevers and diarrhea, and the laundress died. Mallon then went to work for a lawyer; she left after seven of the eight people in that household became ill. In 1906, she took a position in Oyster Bay, Long Island, and within two weeks, ten of the eleven family members were hospitalized with typhoid. She changed jobs again, and similar occurrences happened in three more households. She worked as a cook for the family of a wealthy New York banker, Charles Henry Warren, when the Warrens rented a house in Oyster Bay for the summer of 1906; Mallon went along too. From August 27 to September 3, six of the eleven people in the family came down with typhoid fever. The disease at the time was unusual in Oyster Bay, according to three medical doctors who practiced there."
+    },
+    {
+      "id": 34,
+      "title": "SST-34",
+      "audioUrl": "SST-34.mp3",
+      "durationSec": 80.88,
+      "transcript": "Sea creatures are inspiring the latest devices that harness wave power. This one called the Oyster sits on the ocean floor and opens and closes as waves pass over it. Cables attach it to generators on the shore. Since November 2009, it's been powering 9,000 homes in the Orkney Islands. Another device looks like a snake. The Anaconda is made from a rubber tube filled with water that floats just below the surface. When a swell hits the front of it, the tube is squeezed. A bulge ripples down its length and powers a turbine in its tail. Prototypes are currently being tested, but the full scale version will be two hundred meters long. This system also looks like a snake, but this one is made of steel. It floats near the surface, where waves make its joints move. This drives hydraulic systems that power electrical generators. Like the Anaconda, it's still being tested. Results will prove if these devices are up to the job of supplying viable sources of green energy."
+    },
+    {
+      "id": 35,
+      "title": "SST-35",
+      "audioUrl": "SST-35.mp3",
+      "durationSec": 92.42,
+      "transcript": "The amount of money drug companies spend on TV ads has doubled in recent years, and it's no wonder. Studies show the commercials work. Consumers go to their doctors with a suggestion for a prescription drug they saw advertised on TV. Now, a study in the Annals of Family Medicine raises questions about the message these ads promote. You're most likely to see drug ads during primetime, especially around the news. Researchers analyzed 38 ads aimed at people with conditions like hypertension, herpes, high cholesterol, depression, arthritis, and allergies. The drug industry says these ads arm consumers with information, but researchers found that though the information was technically accurate, the tone was misleading. What we would see in these ads is that before taking the prescription drug, the character's life was out of control, and the loss of control really extended beyond just the impact of the health condition. For example, herpes patients were portrayed as being incapacitated for days, insomniacs utterly out of sync on the job, and depressed patients friendless and boring at parties. When the character has been shown taking the drug, he then magically regains complete control of his life. None of the ads, of course, mentioned lifestyle changes that could also help treat the condition; after all, it's mass marketing, but in this case prescription medications aren't like soap."
+    },
+    {
+      "id": 36,
+      "title": "SST-36",
+      "audioUrl": "SST-36.mp3",
+      "durationSec": 70.97,
+      "transcript": "50% of the world's population is vitamin D deficient, and we believe that it has serious health consequences for both children and adults alike. Major cause is lack of sun exposure. Humans have always depended on the sun for their vitamin D requirement, and it's over the past 40 years that it's been suggested that you shouldn't ever be exposed to direct sunlight. That is one of the major causes of the vitamin D deficiency pandemic. Again, everybody thinks about vitamin D preventing rickets in children. We don't see rickets any longer, so people aren't thinking about vitamin D. It's incomprehensible to physicians as to how vitamin D can reduce risk of heart attack by fifty percent, reduce risk of common cancers like colon, prostate, breast by as much as fifty percent, reduce risk of infectious diseases, including influenza, by as much as ninety percent, reducing risk of type one diabetes 78% if a child is getting adequate vitamin D during the first year of life, reduces risk of type two diabetes."
+    },
+    {
+      "id": 37,
+      "title": "SST-37",
+      "audioUrl": "SST-37.mp3",
+      "durationSec": 64.55,
+      "transcript": "Today I want to talk about water and the law that surrounds drinking water, to talk about its quality, talk about what your rights are to clean water, to also give you a sense of what key threats are to drinking water, what your exposure might be and what we might do about it, both legally but also personally. Water is a critical component of our environment and our bodies. Your body is close to seventy percent water. You can go for several weeks, two to three on average, without food. You can only go for about four minutes without air, and you can go for maybe four or five days without water before you die. So water is absolutely critical, and one of the key arguments I want to make today is that it's a largely neglected area of environmental law, given the rapid increase in our knowledge about chemical threats to water quality and where those threats come from."
+    },
+    {
+      "id": 38,
+      "title": "SST-38",
+      "audioUrl": "SST-38.mp3",
+      "durationSec": 84.11,
+      "transcript": "Not long ago, some of you may have read about a team of mountain climbing scientists who helped to recalculate the elevation of the highest mountain in the world, Mount Everest. Of course, the elevation of Mount Everest was determined many years ago using traditional surveying methods, but these scientists wanted to make a more precise measurement using a new method that takes advantage of recent advances in technology. It's called the Global Positioning System. The Global Positioning System uses twenty-four satellites that circle the Earth. Each of these satellites is constantly sending out signals, and each signal contains important information that can be used to determine the longitude, latitude, and elevation of any point on the Earth's surface. Well, in order to use this system to calculate Mount Everest's elevation, scientists needed to put a special receiver on its summit to receive signals from the satellites. The problem with this was that in the past, the receivers were much too heavy for climbers to carry, but now these receivers have been reduced to about the size and weight of a handheld telephone, so climbers were able to take a receiver to the top of Everest, and from there, to access the satellite system signals that would allow them to determine the precise elevation. And it turns out that the famous peak is actually a few feet higher than was previously thought."
+    },
+    {
+      "id": 39,
+      "title": "SST-39",
+      "audioUrl": "SST-39.mp3",
+      "durationSec": 88.61,
+      "transcript": "During the time of the Aztecs, cacao was mainly used as a beverage. Wines and drinks were made from the white pulp around the seeds of the cacao pod. The beans themselves were used to make hot or cold chocolate drinks. Both the Maya and Aztec secular drinks used roasted cacao beans, a foaming agent, sugar, toasted corn, and water. Vanilla and/or chili were also used as ingredients in the drinks. Cacao beans were also used as a currency and as a tribute tax from peoples ruled by Aztecs. The oily layer floating in the chocolate drink, cacao butter, was used to protect the skin against the sun. For the Aztecs, cacao had a religious significance. Cacao was believed to be of divine origin. The cacao tree was a bridge between earth and heaven. Human sacrifices were first sanctified by giving them chocolate. Cacao beans were given to priests as assistance at children's coming-of-age ceremonies. During marriage ceremonies, the couple drank a symbolic cup of chocolate and exchanged cacao beans. Aztecs believed that drinking chocolate gave mortals some of Quetzalcoatl's wisdom, god of learning and of the wind."
+    },
+    {
+      "id": 40,
+      "title": "SST-40",
+      "audioUrl": "SST-40.mp3",
+      "durationSec": 91.22,
+      "transcript": "If you liked the colorful animals we just saw, you're going to love these next animals: frogs. You might not normally think of frogs as being colorful, but these frogs definitely are! They are the dart poison frogs of Central and South America. Look at their striking colors, often yellow with black stripes or deep blue with black spots. Beyond being nice to look at, these markings have a purpose. They warn predators that these frogs are poisonous. When threatened, these frogs secrete a substance through their skin that would easily kill whatever animal might try to eat them. Their bright colors communicate this, and so most animals tend not to hunt them. Now speaking of hunting, for centuries these frogs were sought after by hunters. As you might think, the hunters didn't want to eat the frogs, but rather they captured them for their poison. They would add the poison to the tips of their hunting arrows. Of course, nowadays most hunters use guns. These days, dart poison frogs are of less interest to hunters than to medical researchers. Researchers believe that they can make new heart medicine from the poison, because it acts as a stimulant on the body's nervous system. Researchers think they could use it to stimulate a weak heart. There is, however, a problem with doing research on these frogs. Those that are caught in the wild will produce their poison until they die. However, those that are born in captivity, like the ones you see here, will not produce any poison at all."
+    },
+    {
+      "id": 41,
+      "title": "SST-41",
+      "audioUrl": "SST-41.mp3",
+      "durationSec": 55.9,
+      "transcript": "Under appropriate conditions, mind you. Sound receptors. You've got sound receptors in your ear, and they're beautiful. We're not going to talk about them in any length, but there's these little flappy, these little spiky things going along in your ear, and they can translate vibrational energy coming from your ear, hitting your eardrum, being translated into a vibration in the fluid in your ear, into a physical motion of these little receptors there, into an electrical signal that goes into your ear. So all of that — that's pretty impressive stuff. We're not going to talk about the details of it, but I invite some of you who want to learn more about this, particularly MIT students, I think, find receptors to be really quite remarkable kinds of devices."
+    },
+    {
+      "id": 42,
+      "title": "SST-42",
+      "audioUrl": "SST-42.mp3",
+      "durationSec": 73.43,
+      "transcript": "We are going to start chapter three today. The chapter is on cave paintings. Who can tell us about cave paintings? The drawings are mostly of animals. Correct. The animals are mostly bison, horses, and deer. The most common themes in cave paintings are large wild animals such as bison, horses, aurochs, and deer. Anthropologist Abbé Breuil interpreted the paintings as being hunting magic. That is to say, they were meant to increase the number of animals. Drawings of humans are rare and are usually schematic rather than the more naturalistic animal subjects. Who can guess when cave painting started? Prehistoric times? Yes, the paintings were made during the Upper Paleolithic, about forty thousand years ago. Let me ask you another question: who drew the paintings? Artists? Good answer, but who were the artists? What were their positions? Tribal leaders. Close, but incorrect. The artists were believed to be respected elders or shamans. The main colors of the paintings were limited to yellow, brown, charcoal, red, hematite, and manganese oxide."
+    },
+    {
+      "id": 43,
+      "title": "SST-43",
+      "audioUrl": "SST-43.mp3",
+      "durationSec": 120.61,
+      "transcript": "Today we're going to practice evaluating the main tool used when addressing groups: the voice. There are three main elements that combine to create either a positive or negative experience for listeners. They can result in a voice that is pleasing to listen to and can be used effectively, or they can create a voice that doesn't hold attention, or even worse, causes an adverse reaction. The three elements are volume, pitch, and pace. When evaluating volume, keep in mind that a good speaker will adjust to the size of both the room and the audience. Of course, with an amplifying device like a microphone, the speaker can use a natural tone, but speakers shouldn't be dependent on microphones. A good speaker can speak loudly without shouting. The second element, pitch, is related to the highness or lowness of the sounds. High pitches are for most people more difficult to listen to, so in general, speakers should use the lower registers of their voice. During a presentation, it's important to vary pitch to some extent in order to maintain interest. The third element, pace, that is how fast or slow words and sounds are articulated, should also be varied. A slower pace can be used to emphasize important points. Note that the time spent not speaking can be meaningful too. Pauses ought to be used to signal transitions or create anticipation. Because a pause gives the listener time to think about what was just said, or even to predict what might come next, it can be very effective when moving from one topic to another. What I'd like you to do now is watch and listen to a videotape and use the forms I gave you to rate the speaking voices you hear. Then tonight, I want you to go home and read a passage into a tape recorder and evaluate your own voice."
+    },
+    {
+      "id": 44,
+      "title": "SST-44",
+      "audioUrl": "SST-44.mp3",
+      "durationSec": 79.15,
+      "transcript": "The Civil War occurred from 1861 to 1865 and was fought between the Union and the Confederacy. Although many people think that the Civil War's main objective was to free the slaves, the war began to preserve the authority and unity of the Union. The Civil War also marked the beginning of a whole new generation of modern wars. The Civil War introduced brand new war plans, weapons, communications, and transportation. I once heard that the war brought changes to the public as well. That's correct. The war advanced hygiene, medicine, social services, and such. The war was modern not only because it involved a wide variety of resources, but the public as well. The people behind the war front received much more detailed information and learned about the horrors of the war. Why was that? Photography had been recently invented. Therefore, for the first time in history, many aspects of the war, such as dead bodies and tensions, were witnessed by the general public. As the war came close to an end, the Confederacy suffered a great deal of economic difficulties, and its stand on racism, poverty, and dishonesty also suffered. How was the Union's condition? The Union lost many of their people, but since they won the war, their ego and pride were sometimes viewed as conceited."
+    },
+    {
+      "id": 45,
+      "title": "SST-45",
+      "audioUrl": "SST-45.mp3",
+      "durationSec": 79.52,
+      "transcript": "Class, we are going to distinguish the difference between fiction and non-fiction. Basically, fiction is the storytelling of imagined events, and non-fiction is a fact or reality. Specifically, fiction is imagined stories such as novels, fables, fairy tales, cartoons, and comics. These can contain some factual events that are revised with imaginary contents. What about movies? Excellent question; what do you think? Fiction. Very good. Movies and video games, the ones you guys always play after school, are fiction. Most of them are made up stories. Some are based on true stories, but they have added imaginary stories to grab people's attention. Fiction has the ability to stir people's emotions. It can give us hope and make us laugh or cry. I'm sure you have cried, laughed hard, or felt so sorry for the characters in the fiction you have read or seen. Finally, contrasted with fiction, nonfiction deals with facts. However, the facts could contain false information. How? Well, the author believes that what he or she has written is true at that time, but the facts that he or she wrote could be proven false afterwards. Common examples of nonfiction works are essays, journals, documentaries, photographs, and biographies."
+    },
+    {
+      "id": 46,
+      "title": "SST-46",
+      "audioUrl": "SST-46.mp3",
+      "durationSec": 80.95,
+      "transcript": "You'll recall that in last week's class, I talked about how the sounds made by most animals, though sometimes complex, aren't different from human language. Only in humans do these sounds represent objects and events. Keep in mind that most animals can only repeat their limited utterances over and over again, while humans can say things that have never been said before. Today, I want to focus on human language and how it developed. I doubt you'll be surprised when I say that the evolution of language was slow and laborious. There's some reliable evidence that language began with early humans a million and a half years ago. Through the study of the size and shape of brain fossils, scientists have determined that early human brains, like modern brains, have a left hemisphere slightly larger than the right hemisphere. We know that in modern humans, the left hemisphere is the seat of language. We also know that early human brains had a well-developed frontal section, known as Broca's area, which coordinates the muscles of the mouth and throat. It's clear then that early humans had a speech apparatus. They could produce any sound that we can. What we don't know is whether early humans used what they had. Since scholars know virtually nothing about prehistoric speech patterns, all they can do is speculate about how language actually originated. Let me give you a brief summary of some of these theories."
+    },
+    {
+      "id": 47,
+      "title": "SST-47",
+      "audioUrl": "SST-47.mp3",
+      "durationSec": 73.93,
+      "transcript": "We will start on a new piece by Mozart today. Let's turn to page 6 for Sonata number 11. This piece has 3 movements: Andante grazioso, Menuetto, and Rondo alla Turca. Is the third movement from the famous Turkish Rondo? Yes, it is, very good. Do you know why it is called Turkish Rondo? It's supposed to imitate the sound of Turkish bands. That's correct. The bands are called Janissary bands, and they were very popular. I didn't know that the Turkish music was that popular back then. Things are sure different from now. Yes, time changes. Now, going back to the piece, the Andante grazioso is composed of a theme with six variations. Menuetto has a minuet entry, and Rondo alla Turca is Allegretto. And the grazioso is known for its main melody. Menuetto should be played delicately. The Rondo alla Turca should be played with fluctuating intensity, but with accuracy; since it is fast-paced, you have to be careful to play every note precisely. Also, try not to get faster as you play; you need to keep a consistent pace."
+    },
+    {
+      "id": 48,
+      "title": "SST-48",
+      "audioUrl": "SST-48.mp3",
+      "durationSec": 65.52,
+      "transcript": "We will start on opera today. The first opera we will study is La Traviata. The opera was written by Verdi and was based on a novel by Dumas called La Dame aux Camélias. Alfredo, the main character, fell in love with a famous Paris courtesan named Violetta. Their whirlwind romance was not welcomed by Alfredo's father. The romance ended and Violetta became terribly ill, which led to the tragic death of Violetta. Both Verdi and Dumas lived in the same era, and they shared similar backgrounds. Dumas wrote the novel based on his own affair with a notorious courtesan. Verdi lived with an opera singer who had a history like Violetta. Both Verdi and Dumas had relationships with women who lived fast and died young. Although the story doesn't seem scandalous in our times, it was a socially controversial and daring topic back then. These men experienced the dark, troublesome side of their era and expressed it in art."
+    },
+    {
+      "id": 49,
+      "title": "SST-49",
+      "audioUrl": "SST-49.mp3",
+      "durationSec": 84.79,
+      "transcript": "Okay, in the last class we talked about the classification of trees, and we ended up with a basic description of angiosperms. You remember that those are plants with true flowers and seeds that develop inside fruits. The common broadleaf trees we have on campus fall into this category, but our pines don't. Now, I hope you all followed my advice and wore comfortable shoes, because as I said, today we're going to do a little field study. To get started, let me describe a couple of the broadleaf trees we have in front of us. I'm sure you've all noticed this big tree next to Brandt Hall. It's a black walnut that must be eighty feet tall. As a matter of fact, there's a plaque identifying it as the tallest black walnut in the state. And from here, we can see the beautiful archway of trees at the commons. They're American elms. The ones along the commons were planted when the college was founded a hundred and twenty years ago. They have the distinctive dark green leaves that look lopsided because the two sides of the leaf are unequal. I want you to notice the elm right outside Jackson Hall. Some of its leaves have withered and turned yellow, maybe due to Dutch elm disease. Only a few branches seem affected so far, but if this tree is sick, it'll have to be cut down. Well, let's move on, and I'll describe what we see as we go."
+    },
+    {
+      "id": 50,
+      "title": "SST-50",
+      "audioUrl": "SST-50.mp3",
+      "durationSec": 91.04,
+      "transcript": "So, yesterday, we started talking about how geological formations take a long time to be created. One of these formations is called the glacier. Does anyone know what a glacier is? It's a lot of ice. Well, kind of. It's certainly a lot of ice, but it's a little more than just that. A glacier is like a river of ice that moves slowly. The way a glacier moves depends on the slope of the land. A glacier will move with gravity. Okay? So we have to talk about how these glaciers are formed. See, what happens is snowfall covers mountainous regions and the snow never completely melts, but it might thaw a little and then refreeze a little bit. So you have this thawing and refreezing which changes the snow to granules, then more snow accumulates. Can anyone guess what happens to the snow that's at the bottom of this pile? Wouldn't it get really firm from all the pressure? Exactly. So then, over thousands of years, from lots and lots of pressure, these huge sheets of slow-moving ice form. That's how a glacier's made. The cool thing about these glaciers is that they leave imprints in the ground, kind of like fossils, so we can tell what the world was like when it was covered by glaciers back during the Ice Age."
+    },
+    {
+      "id": 51,
+      "title": "SST-51",
+      "audioUrl": "SST-51.mp3",
+      "durationSec": 74.45,
+      "transcript": "We're going to spend the rest of the month writing different kinds of essays. First, though, we need to talk about what makes an essay good. There are certain things that every essay, despite what you'll be writing about, needs to have. Okay, so who can tell me one thing that an essay must have? Doesn't every essay need an introduction? Of course, every essay must have an introduction. In the intro, you'll talk about the focus of your essay. You might also talk about some of your arguments or subtopics, but if you do, you have to make sure that you're very brief about them. Your introduction shouldn't be more than a paragraph. So what else does an essay need to have? A conclusion? Absolutely. If you're introducing your topic at the beginning, you must conclude your argument at the end. The conclusion talks about similar things as the introduction, but it's not exactly the same. Here, you have to wrap up your topic. You have to make sure that the reader is convinced that your point of view is right. Yes, do you have a question? So what happens in the middle? The middle's the most important part. That's where you tell your reader all the reasons that he or she should agree with you. That's where you really get to show off what you know."
+    },
+    {
+      "id": 52,
+      "title": "SST-52",
+      "audioUrl": "SST-52.mp3",
+      "durationSec": 85.37,
+      "transcript": "One of the social issues faced by the state of Alaska is the lack of mental and emotional well-being of the native Alaskans. It is very unfortunate that many of the Native Americans are living under poor conditions throughout the country. In the cases of native Alaskans, even virtually entire villages are suffering from a lack of mental and emotional wellbeing, which includes continuing poor physical and mental health. Alcohol abuse, domestic violence, homicides, and suicides are frequent among them, which of course lead to families falling apart. It is tragic to see that many children are abused and not educated properly. As a matter of fact, the children themselves are abusing alcohol and other chemicals, and the rate is increasing over the time. Since parents are suffering from mental illnesses and alcohol abuse, they can't take care of their children. So many children are being taken care of by others or simply neglected. Therefore, we can conclude that Alaskan natives are losing hold of their communities, cultural identities, and most importantly, their childhoods. So you can see how serious the issue is. Plus, rather than making a living for themselves, they are depending on public services and subsidies. They have lost control of and responsibility for their economy and governing institutions."
+    },
+    {
+      "id": 53,
+      "title": "SST-53",
+      "audioUrl": "SST-53.mp3",
+      "durationSec": 71.94,
+      "transcript": "Hi, Dr. Adams. You wanted to see me? Hi, Sarah. Yes, I just wanted to talk to you about your zoology report. I'm making appointments with everyone to talk about their papers. Oh, okay. So what are you writing your report on now? I'm looking at bird migrations. Oh, great. That's such a great topic. Are you focusing on anything specific? I think I've narrowed it down to birds that do short distance migrations. You know, geese and those birds? Was there a reason you chose that? Actually, a big part of the decision just came from the fact that I found the most information on short distance migration. Oh, and I found a lot of information on geese. Okay, well that's a pretty good reason to go with that. So what direction are you taking this report in? Well, I thought I'd talk about goose migration in general. I found out that all geese have the same general migration pattern, so I'm going to discuss that first. Then I'm going to talk about the patterns of specific geese, like I thought I'd compare a few different species, like the Canadian goose versus the Hawaiian goose. That sounds good. I'm looking forward to reading your paper."
+    },
+    {
+      "id": 54,
+      "title": "SST-54",
+      "audioUrl": "SST-54.mp3",
+      "durationSec": 23.21,
+      "transcript": "How people can recognize human faces? This is a hard but brilliant question. People should appreciate something. People can get visual information from faces and put a name on it. We can tell one's identity, age, work, health condition, politics, and friends. Recognizing faces is amazing, difficult, and a clever thing. In conclusion, people can get a lot out of faces."
+    },
+    {
+      "id": 55,
+      "title": "SST-55",
+      "audioUrl": "SST-55.mp3",
+      "durationSec": 67.16,
+      "transcript": "There has been an amazing animal friendship story in recent years. You all remember the tsunami disaster in Indonesia, right? Well, the same tsunami stranded a group of hippos near Kenya. Unfortunately, only a baby hippo survived, and people rescued the hippo. What happened to the hippo after it was rescued? It was brought to an animal park. They named him Owen for the person who rescued him. How did Owen handle his new home? Well, he was really scared, obviously. But when he saw a giant tortoise named Mzee, Owen ran behind him and hid there. Mzee was really surprised, but he accepted the situation and became friends with Owen. Their friendship has grown ever since. And now they eat, sleep, and play together all the time. Mzee, the tortoise, is about 130 years old, and he was larger than Owen in the beginning. This is such a remarkable story of friendship."
+    },
+    {
+      "id": 56,
+      "title": "SST-56",
+      "audioUrl": "SST-56.mp3",
+      "durationSec": 50.34,
+      "transcript": "Laughter is one of the greatest therapies in combating adversity, and whole communities and nations have frequently relied on humor to get them through their bleakest times. On August 13, 1961, the barbed wire was rolled out of Berlin to create the Berlin Wall. For nearly thirty years, until it was dismantled, wall jokes proliferated, especially among those living in the East. Laughing was all that was left. Jokes about those who rule you, and sometimes those who tyrannize you, are a form of folklore that has existed in societies as seemingly different as communist Eastern Europe, Tsarist Russia, modern Egypt, twelfth century Persia and modern day Iran. Humor also can be wonderfully subversive; it can protect self respect and identity."
+    },
+    {
+      "id": 57,
+      "title": "SST-57",
+      "audioUrl": "SST-57.mp3",
+      "durationSec": 93.52,
+      "transcript": "Alright class, yesterday I told you that we were going to start looking at a field of psychology called developmental psychology. This branch of psychology looks at the many ways people's minds and bodies develop from before they're even born until they die. So we should just start at the beginning, I think. Let's start with infants. So, when a baby is born up until he or she starts talking, the baby is referred to as an infant. Infants can't do a lot of things that older children can do. Let's look at the physical side of things. Babies are born with really poor vision. Actually, they're legally blind when born. Infants can mostly make out large shapes and stuff, but they can't tell detail. Also, their sense of color isn't very good. For a long time, psychologists thought infants were colorblind right after birth. As it turns out, research has shown that most babies can, in fact, make out bright colors. For example, an infant can tell the difference between a bright red ball and a bright blue ball. But it would be much harder for an infant to tell the difference between a light blue ball and a dark blue ball. Anyway, as infants get older, their sense of sight improves. Some psychologists think that by the age of six months, an infant's vision will be almost the same as an adult's."
+    },
+    {
+      "id": 58,
+      "title": "SST-58",
+      "audioUrl": "SST-58.mp3",
+      "durationSec": 139.15,
+      "transcript": "The war for talent refers to an increasingly competitive landscape for recruiting and retaining talented employees. In the book, Michaels and colleagues describe not a set of superior human resources processes, but a mindset that emphasizes the importance of talent to the success of organizations. The war for talent is intensified by demographic shifts, primarily in the United States and Europe. This is characterized by increasing demand along with decreasing supply demographically. There are simply fewer post baby boomer workers to replace the baby boomer retirement in the US and Europe, though this isn't the case in most of East Asia, Southeast Asia, Central Asia, Central America, South America, or the Middle East. Eastern Europe also tends to have similar demographics, namely an aging or shrinking labor force. While talent is vague or ill defined, the underlying assumption is that for knowledge intensive industries, the knowledge worker, a term coined by Peter Drucker, is the key competitive resource. Knowledge based theories of organizations consistently place knowledge workers as a primary competitive resource. Talent is never explicitly defined in the book, though the preface notes that a certain part of talent eludes description: you simply know it when you see it. The authors offer that managerial talent is the combination of a sharp strategic mind, leadership skills, and a certain degree of self-confidence, leadership ability, emotional maturity, communication skills, the ability to attract and inspire other talented people, entrepreneurial instincts, functional skills, and the ability to deliver results. Companies don't even know how to define talent, let alone how to manage it. The war for talent is seen by various sources as becoming irrelevant during economic downturns. However, there has been highly visible talent poaching by solvent firms of others who have economic hardship."
+    },
+    {
+      "id": 59,
+      "title": "SST-59",
+      "audioUrl": "SST-59.mp3",
+      "durationSec": 80.06,
+      "transcript": "Alright class, so we've been talking about famous inventors this week. One of the most famous inventors of the Renaissance was Leonardo da Vinci. Who knows what else da Vinci was famous for? Paintings! He did the Mona Lisa! That's absolutely right. Da Vinci was the artist who painted the famous Mona Lisa. He also painted The Last Supper and was famous for architecture and sculptures, and so many different art forms. In addition to all this, he was also a famous inventor. He drew sketches of airplanes four hundred years before the first plane took flight. The thing was though, that most of these inventions were all way before his time, so they didn't help people much during his time. What do you mean by way before his time? Well, he thought these things up, but the technology back then wasn't good enough actually to create any of these inventions. Anyway, some of his inventions were created. For example, Da Vinci created the anemoscope. An anemoscope is a device that tells you which direction the wind is blowing. It also is supposed to tell you what direction the wind is going to change before it even does. So does the anemoscope still exist? No one really uses it anymore, but they did a long time ago."
+    },
+    {
+      "id": 60,
+      "title": "SST-60",
+      "audioUrl": "SST-60.mp3",
+      "durationSec": 83.62,
+      "transcript": "Now, the study of biology is responsible for some of the most profound insights that humans have about the world around them. So, take a look at these four panoramas. In the upper left, you see some bacteria; this happens to be E. coli. You obviously see a butterfly, a flower, a dolphin. If you see that, the outer space just looks like these different forms and structures. You have no idea that they are all related to one another. So one of the most profound things that biology told us is that all life on Earth is exceptionally related, similar to one another. So for example, all of these life forms rely on DNA and RNA for storing and transmitting and using their genetic and inherited information. They are all based on cells. Cell is the fundamental building block of all life. All of these organisms consist of cells, and the cells essentially have the same chemicals inside of them: carbon, hydrogen, oxygen, nitrogen, a whole bunch of other stuff in much smaller amount. All of these organisms conducted metabolism; in other words, chemical reactions convert energy from one form to another, and the basic chemistry is very similar to one another. The type of molecule that is used is very similar to one another."
+    },
+    {
+      "id": 61,
+      "title": "SST-61",
+      "audioUrl": "SST-61.mp3",
+      "durationSec": 116.61,
+      "transcript": "I'm 43 years old and I owe tens of thousands of dollars in student loans. Oh, sure, I knew the loans were piling up as I went through school. But with one loan coming from here, another from there, I had no idea of the rockslide that was building. Fifteen years later, I still experience moments of sheer horror regarding my family's financial situation. My monthly student loan payment is more than triple my car payment. Okay, so without my college degree, I wouldn't have been able to get my current job. For that, I'm grateful, but at what cost? My loans have been accruing at a rate of ten percent, and now they have burgeoned. Well, I'm an English major; you do the math. I don't think they'll ever get paid off. We're in debt way past our eyeballs, and there's no hope in sight. I'm being kept in a financial class of graduates whose only hope for attending college meant borrowing money from the government. Because of our mounting credit card debt and monthly payments that far exceed our family's income, my kids will also join the class of citizens who can't rely on their parents for college support. Do I wish I'd chosen another educational route? You bet. Perhaps trade school. I thought that being a plumber might not be such a bad gig. But if your job aspirations require a four-year degree, take my advice and choose a college you can afford both during and after graduation. Take a realistic look at your anticipated income and factor in priorities that don't carry a price, like the spouse and children you might want to have someday. I was overconfident that my student loan debt would pale in comparison to the lucrative writing career I'd enjoy after graduation. Now I'm paying for that decision in more ways than I'd ever imagined."
+    },
+    {
+      "id": 62,
+      "title": "SST-62",
+      "audioUrl": "SST-62.mp3",
+      "durationSec": 98.35,
+      "transcript": "Both music and language have a lot of similarities. They involve complex sequences that unfold in time. They are both forms of communication. This has interested all the world's best philosophers, even going back to Plato, 2,000 years ago. Scientists like Darwin wrote about possible evolutionary links between music and language in his book, The Descent of Man, and so did artists like Leonard Bernstein, who gave a series of lectures at Harvard in the 70s. He spoke about the grammar of language and the grammar of music from Noam Chomsky's theories. So it's a persistent question. It keeps drawing interest from scientists today, but there are some basic, obvious similarities. For example, both music and language have rhythmic, systematic patterns of timing, accent, and grouping. Both language and music have melody: structured patterns of pitch over time. Both have syntax: discrete elements like words or notes, and principles for combining those elements into sequences. Sentences are not just random sequences of words. Both convey affect, which means emotion using sound. You can make out a lot of emotion from a person's voice, and music has the characteristic of providing emotions like happiness or sadness."
+    },
+    {
+      "id": 63,
+      "title": "SST-63",
+      "audioUrl": "SST-63.mp3",
+      "durationSec": 51.38,
+      "transcript": "Amory Lovins is an American consultant experimental physicist and he has been active at the nexus of energy, resources, economy, environment, development and security in more than 50 countries for over 40 years. He pays attention on energy saving and how to use energy in a more efficient and sustainable way. He built a house with plenty of energy saving concepts. He's an unusual character with a wide range of knowledge and a genius, but he is not only a scientist; he has a consulting company and lives in a house that is built on a mountain. For thirty years, he used a lot of ways to save energy and solved problems with technologies that already existed and demonstrated them. Some people think he is so crazy. A female writer wrote a book about him, which is called Mr. Green."
+    },
+    {
+      "id": 64,
+      "title": "SST-64",
+      "audioUrl": "SST-64.mp3",
+      "durationSec": 50.09,
+      "transcript": "Talent is premium and there is a war for talents in the nineteen nineties because of the talent shortage. Companies and countries are recruiting young talented people from different countries and sending young people to universities. Some young people immigrated after they graduated from the university. They compete with the local students. Countries and organizations should put talents at the primary positions. The collapse of loyalty makes employees happy to change their workplace because of the higher income. There are three reasons: First, the change of nature of economy leads to increase in the talents demand and need skills. Second, the shrinking labor force after the baby boom causes less supply of skilled workers, and the retirement of baby boomers will cause a shortage of experienced workers. Third, there is also a mismatch between what schools are producing and what companies need."
+    },
+    {
+      "id": 65,
+      "title": "SST-65",
+      "audioUrl": "SST-65.mp3",
+      "durationSec": 104.23,
+      "transcript": "What is globalization? Globalization can usually be conceived as a process or set of processes which embodies a transformation in the spatial organization of social relations and transactions, generating transcontinental or interregional flows and networks of activity, interaction and power. It is characterized by four types of change. First, it involves the stretching of social, political and economic activities across political frontiers, regions and continents. Second, it suggests the intensification or the growing magnitude of interconnectedness and flows of trade, investment, finance, migration, culture, etcetera. Third, the growing extensity and intensity of global interconnectedness can be linked to a speeding up of global interactions and processes, as the evolution of worldwide systems of transport and communication increases the velocity of the diffusion of ideas, goods, information, capital, and people. Fourth, the growing extensity, intensity, and velocity of global interactions can be associated with their deepening impact, such that the effects of distant events can be highly significant elsewhere, and even the most local developments may come to have enormous global consequences. In this sense, the boundaries between domestic matters and global affairs can become increasingly blurred. Globalization has three definitions. There are more trade transactions, communications, services, and multinational companies across the border. There are more travels and cooperation between different countries. A global and integrated economic system has been formed in the world. One country doesn't depend on itself only, but countries interact more with each other in terms of production and consumption."
+    },
+    {
+      "id": 66,
+      "title": "SST-66",
+      "audioUrl": "SST-66.mp3",
+      "durationSec": 93.67,
+      "transcript": "Today, 150,000 farmers in India have committed suicide in areas where seed has been destroyed, where they have to buy the seed from Monsanto and buy it every year at very, very high cost, and that high cost seed is getting them into debt, and that debt is pushing them to suicide. What we've done is create community seed banks, places where we collect and save seeds, rescue them from disappearance, multiply them, and then distribute them according to farmers' needs. And about forty community seed banks have been created across the length and breadth of India. Places where these have been created, farmers aren't in distress because the biggest cost today is seeds and chemicals. These seed banks have now been a new place where we can respond to the new crisis of globalization on the one hand and climate change on the other. Globalization has led to farmer suicides. We are able to take seeds to these suicide zones and distribute the seed so that farmers can break out of that dependency, grow food crops, get out of debt. We've been able to create community seed banks to deal with climate change with the new extreme flooding, the new droughts, the cyclones, the hurricanes that lead to salinization, and today for us, the work on seed has become the place from where we are responding to the worst tragedies and the worst crises of our times."
+    },
+    {
+      "id": 67,
+      "title": "SST-67",
+      "audioUrl": "SST-67.mp3",
+      "durationSec": 89.57,
+      "transcript": "Citizenship education is an important subject in schools as compared to the past; however only one fifth of schools have such courses that provide student right skills and attitudes. In the past, people were reluctant to teach. It is important for students in this changing world. There are still problems in teaching this subject due to lack of commitment and lack of teachers to teach. Criticism about the theory of citizenship education is that it is ineffective unless schools themselves reflected democratic practices by giving children the opportunity to have a say over decision making. It suggests that schools are fundamentally undemocratic institutions, and that such a setting cannot instill in children the commitment and belief in democratic values that is necessary for citizenship education to have a proper impact. Citizenship education is one critical element, and students will acquire knowledge of civics, including the principles of democracy and associated local, state and Australian government structure and processes. In addition, students will also learn to participate responsibly and cooperatively in community. Citizenship curriculum is very important for students, but it is neglected by many schools. There are only one fifth of schools that introduced this class to campus and allocated less time than other subjects. Moreover, the professor pointed out if given enough time in citizenship curriculum, it will be beneficial to improve students' skills and instill positive attitude towards the changing world and tackle the issues such as lack of leadership."
+    },
+    {
+      "id": 68,
+      "title": "SST-68",
+      "audioUrl": "SST-68.mp3",
+      "durationSec": 73.17,
+      "transcript": "Last month I published alongside my annual report a subject report on the development of citizenship in schools. The report celebrates the success of some schools in implementing the citizenship curriculum. It praises those schools where there have been substantial developments in the subject and which now go a long way towards fulfilling national curriculum requirements. In the report, we are critical of schools which have not taken citizenship seriously, either through reluctance or lack of capacity to make appropriate provisions in the curriculum. Citizenship is marginalized in the curriculum in one fifth of schools. It is less well established in the curriculum than other subjects and less well taught, and some critics have seized on this as a reason for wanting to step back from supporting it. Yet, the progress made to date by the more committed schools suggests that the reasons for introducing citizenship are both worthwhile and can be fulfilled given the time and resources. Indeed, those reasons are given added weight by national and global events of the past few months. While not claiming too much, citizenship can address core skills, attitudes, and values that young people need to consider as they come to terms with a changing world."
+    },
+    {
+      "id": 69,
+      "title": "SST-69",
+      "audioUrl": "SST-69.mp3",
+      "durationSec": 43.94,
+      "transcript": "VR is a computer technology that uses virtual reality headsets or multi-projected environments, sometimes in combination with physical environments or props, to generate realistic images, sounds, and other sensations that simulate a user's physical presence in a virtual or imaginary environment. All modern VR displays are based on technology developed for smartphones including gyroscopes and motion sensors for tracking head, hand, and body positions, small HD screens for stereoscopic displays, and small, lightweight, and fast processors. These components led to relative affordability for independent VR developers and led to the 2012 Oculus Rift Kickstarter offering the first independently developed VR headset."
+    },
+    {
+      "id": 70,
+      "title": "SST-70",
+      "audioUrl": "SST-70.mp3",
+      "durationSec": 95.56,
+      "transcript": "Globalization, what is globalization? I think that it takes on a few different definitions in one sense of the word. Globalization means proliferation of transactions across country. So, one way of thinking about globalization is a way to describe increased international communications, more trade happening between countries, and countries being less self-sufficient in providing goods and services to their people, and more companies that have offices in multiple countries, which we call multinationals. So the source of growth in travel and communication in corporate trade across borders. And this way of thinking about globalization is the continuation of thinking that has been around for a long time, such as when the Europeans went to the Orient to find spices, which was also an example of global trade and communication. Another way to think of globalization though, is in an economic system. It is a system in which countries become integrated in a way that never had been before. In this system, we see a global split in the process between consuming and producing goods. Some countries produce goods, some countries consume goods, and then these countries in different areas of the globe depend on each other in a kind of organic solidarity rather than having an economic system being just inside your country. The system is the way the economy in your country functions depends on the economy of another country, and in fact this way of thinking about globalization represents a new area of economic progress. The past industrialist economy has been a global issue."
+    },
+    {
+      "id": 71,
+      "title": "SST-71",
+      "audioUrl": "SST-71.mp3",
+      "durationSec": 68.05,
+      "transcript": "Language death isn't mainstream theater. It isn't mainstream anything. Can you imagine Hollywood taking it on? It's so far outside the mindsets of most people that they have a difficulty appreciating what the crisis is all about, because they're not used to thinking about language as an issue in itself. Somehow, we need to change these mindsets. We need to get people thinking more about language, more explicitly, more intimately, more enthusiastically. Interest in language is certainly there in the general population. Most people are fascinated by such topics as where words come from or what the origin of their town's name is or whether their baby's name means anything, and they're certainly prepared to play Scrabble and a host of other language games ad infinitum. And you get language games on radio and television too, but a willingness to focus that interest on general issues, a preparedness to take on board the emotion and drama inherent in the situation of language endangerment isn't something that happens much."
+    },
+    {
+      "id": 72,
+      "title": "SST-72",
+      "audioUrl": "SST-72.mp3",
+      "durationSec": 30.98,
+      "transcript": "We all know that there are some factors for species and animals to survive and reproduce including environmental conditions, temperature, tolerance range, body size, weight, diets, seasonal and daily activities, behavior, and the altitude they live. Animals migrate to find a new habitat because of the change of environment and only species that have the tolerance for the new environment could survive and reproduce. Human beings are the only organism that makes extensive use of technology to extend the limits of its natural tolerance range."
+    },
+    {
+      "id": 73,
+      "title": "SST-73",
+      "audioUrl": "SST-73.mp3",
+      "durationSec": 79.18,
+      "transcript": "Before we consider international environmental law and climate change we need to consider domestic legislation as it is within the sovereign states that international law is put into practice. This reflects the environmentalist maxim: think globally, act locally. United Kingdom legislative control over the impacts of man's activity on the environment isn't new. As long ago as the reign of Charles II, the main concern was the production of smoke from the burning of sea coal. Almost all areas of trade and industry were subject to very detailed legislative controls at that time, although some were governed by self-regulation in the form of guilds, who regulated both supply and methods of production. However, the measures implemented were mostly ineffective because then, as now, the specifying of legal duties and standards without providing any appropriate enforcement merely indicated good intentions but were of little practical effect. The next stage was prompted by the Industrial Revolution, with the urbanization of society and its profound effects on the environment. Local industrialists used the Adam Smith model to maximize their economic benefit, but this was to the detriment of the local environment with the operation of Gresham's Law, that is, the bad drives out the good. Those industrialists who are concerned for either the health of their employees or the local environment will face higher costs than their competitors."
+    },
+    {
+      "id": 74,
+      "title": "SST-74",
+      "audioUrl": "SST-74.mp3",
+      "durationSec": 64.03,
+      "transcript": "Normally, however, spectacles are part of an assemblage of items, giving us an overall look. And in fashion terms, they're classed as accessories, along with shoes, jewelry, handbags, or watches, but in healthcare terms, they are of course a medical device. And in many languages other than English, they're often described as a prosthesis, an artificial part of the body, part of you, making you who you are. And choosing your spectacles is therefore a major decision. Increasingly, people own two or more pairs for different occasions or times of the day, and there is a phrase for this in the industry. It's called lifestyle dispensing, and it dates back to the 1950s. The idea is that you wear one type of spectacles in the workplace and quite another at leisure or on the beach."
+    },
+    {
+      "id": 75,
+      "title": "SST-75",
+      "audioUrl": "SST-75.mp3",
+      "durationSec": 73.04,
+      "transcript": "Within most developed countries, notions of pragmatism, notions of the fact that we have democracies, have succeeded in tempering the market economy. In the 19th century, 18th century, industrial revolution had some very negative effects on people, particularly working classes all over the world. We see data where life expectancy was reduced, heights were reduced. We can look at medical records and see that actually living standards in much of, of, among large fractions of the population actually went down. But eventually, we passed legislation about working conditions, and eventually, we circumscribed some of the worst kinds of behavior. We eventually, in the twentieth century, put regulations that re-imposed better environmental conditions, and so some of the damage was reversed, and that we have made the market economy work in ways that the benefits of it are at least far more widely shared than they were a hundred years ago."
+    },
+    {
+      "id": 76,
+      "title": "SST-76",
+      "audioUrl": "SST-76.mp3",
+      "durationSec": 95.22,
+      "transcript": "And I'm the Professor of Children's Literature at Newcastle University, and I wanted to write a very short introduction to children's literature, because although here in Britain we have one of the longest and most distinguished traditions of creating books for children, perhaps the longest and most distinguished in the world, we often take them for granted, and we don't pay enough attention to what a remarkable cultural resource they are for adults and the economy, what kind of cultural work they do for children and the way that they've served writers and illustrators as a cultural space for creativity, subversion, and opportunities to experiment with new ideas. So what kind of cultural work do children's books do? Well, at the level of an individual child, this is one of the places where children learn the vocabularies, get the vicarious experiences, and see the images of the world that help them think about how the world works and where they fit into it. Because children's books are one of the first places that children encounter these things, they're often very direct as a source of information about what a particular period thinks, including what it thinks a child is, what a child needs to know, what childhood looks like. Sometimes when we're looking at children's books from the past, it's very important to notice the kinds of children who aren't there, for instance. So that's one of the things that we have in children's books."
+    },
+    {
+      "id": 77,
+      "title": "SST-77",
+      "audioUrl": "SST-77.mp3",
+      "durationSec": 116.43,
+      "transcript": "So we were founded just over ten years ago when I was in the Royal Academy, a museum in the center of London, with my three children at the Aztec exhibition. I don't know if any of you saw it. I had an older child and two younger children, twins strapped in a pushchair, and one of my children, three years old, shouted — I've never denied he shouted — he shouted 'monster, monster' at the statue which looked just like a monster, had spikes for eyes, a big beak for a nose, and I thought, this is fantastic, I've got a three-year-old that's appreciating art, how good can it get? So I bent down and I said, yes, it looks just like a monster. And at that moment, a room warden came over, a gallery assistant came over, and said we were being too noisy and threw us out. I was at that time a journalist with the Guardian newspaper, and two days later wrote a big piece in the Guardian about being thrown out of the Royal Academy. What was really interesting was, by the end of that day, we had had at the paper over five hundred emails from other families saying, museums aren't working for us. Let's try and make it work. So that's what we did. In The Guardian, we set up a campaign. We called it the Kids in Museums campaign, but it didn't really exist. It was just a few pages. We ran loads of stories on it. I began touring the country talking about how to make your museum family friendly. I was a journalist. I was called in to see the then director of the National Gallery in London, and I'll never forget this moment when he called me in and said, we really like this kids in museums campaign, and we've been talking on our board about it, and we have some ideas on how we might work together, and I'd like you to take them back to your team."
+    },
+    {
+      "id": 78,
+      "title": "SST-78",
+      "audioUrl": "SST-78.mp3",
+      "durationSec": 36.52,
+      "transcript": "The comics I show you with lots of people chatting around in a room is a form of description. We use different kinds of methods to describe a situation. Sometimes we have to use visual description particularly when we don't witness the scenario. I was born during the Second World War, and my hometown is an example. When I asked my mother about the war, I always ask her, you have mentioned this or that when you talked to me, when you asked her about the shelter. I asked her what the shelter looks like, and when did you go to the shelter. From her response, I could get more visual evidence as I can write my book."
+    },
+    {
+      "id": 79,
+      "title": "SST-79",
+      "audioUrl": "SST-79.mp3",
+      "durationSec": 30.07,
+      "transcript": "People forget to take their cards after taking the money from the ATM occasionally. This is the common reason because they get the money and walk away. In the UK it becomes less common because people take their credit cards before getting the money. In the past, people made error by forgetting to get their card after they got their money. UK has restructured the new ATM; you have to get your card before you get your cash. Although you would forget to get your money, it is more catastrophic to lose your card because it can access your bank account."
+    },
+    {
+      "id": 80,
+      "title": "SST-80",
+      "audioUrl": "SST-80.mp3",
+      "durationSec": 82.05,
+      "transcript": "Hello, it's Megan. This week I'm going to talk about the difference between translators and interpreters. It's a common misconception that translators and interpreters do the same thing, so I'd just like to highlight a few similarities and differences between the two. Firstly, translation refers to written communication, whereas interpreting refers to verbal communication. So, for example, a translator won't attend a court hearing to verbally translate between the parties involved, but would maybe translate the written evidence used in the case. Secondly, both jobs require different skills. A translator requires the ability to write well and comprehensively into a target language. This means that they need to have an excellent command of their native language. For example, although I can speak French to a good standard, I can't translate from English to French, although I could translate from French into English, which means I'm only halfway there to being an international translator. An interpreter needs to be able to speak both languages proficiently. Thirdly, the qualifications and experience required to become either a professional translator or interpreter do differ. Both roles require years of training with a resulting qualification, but what they can learn on the training will be completely different. So just to be clear, translators will translate written text and interpreters will translate verbal communication."
+    },
+    {
+      "id": 81,
+      "title": "SST-81",
+      "audioUrl": "SST-81.mp3",
+      "durationSec": 107.21,
+      "transcript": "There can now be no reasonable science-based doubt about the reality of global climate change effects brought on by the cumulative and rapidly growing emission of so-called greenhouse gases, primarily carbon dioxide, into the atmosphere. As these effects become increasingly more obvious worldwide, so commercial interests, groups of concerned individuals, and national governments have been gripped by amounts of mass panic and what to do about it. To many, Paul Ehrlich's Malthusian population bomb of 1968 appears about to explode in the world's face in an indirect version of his millenarian vision of population growth which outpaces agricultural production capacity, with predictably catastrophic results for humanity, and his three part crisis scenario does indeed seem now to be present: a rapid rate of change, a limit of some sort, and delays in perceiving that limit. Ehrlich's work was roundly criticized at the time and later from many quarters, and much of what he predicted didn't come about. Nevertheless, can the world afford to take the risk that the climate scientists have got it wrong? Is it not in everyone's interest to apply the precautionary principle in attempting to avoid the worst of their predictions, now rather than at some future time? As the chairman of the Intergovernmental Panel on Climate Change has recently pointed out, eleven of the warmest years since instrumental records began have occurred in the past twelve years, while major precipitation changes are taking place on a global scale."
+    },
+    {
+      "id": 82,
+      "title": "SST-82",
+      "audioUrl": "SST-82.mp3",
+      "durationSec": 67.03,
+      "transcript": "Well, the Voynich manuscript has had many different theories proposed for it. Some people think that it's a complete hoax. It's now been carbon dated from the 15th century, so it's most likely if it is a hoax, to have been a 15th century hoax, which I personally don't believe. But some people think it's just gobbledygook, it's just an invention to make money; somebody made it to fool people and make money. Other people think it's probably a code; in other words, someone encoded lots of secrets in it, hoping that no one would find out, and if so, that's been very successful because no one's cracked it so far. But in my opinion, it is actually a genuine script, obviously a human devised script, but masking behind it a genuine human language, in a language which seems to me to have more, if you like, Near Eastern, maybe Caucasian, Asian aspects to it rather than European, because of some of the words that I've decoded. So I would imagine that once we've actually managed to decode the script, we'll find that the language underneath is a natural human language probably from that part of the world."
+    },
+    {
+      "id": 83,
+      "title": "SST-83",
+      "audioUrl": "SST-83.mp3",
+      "durationSec": 39.37,
+      "transcript": "When this dog approaches some food, another dog's playful snarls are played back; the dog seems curious but the sound doesn't stop it from taking the bone. Here a dog hears the growls of a dog being approached by a stranger but these don't deter it from grabbing the bone either. In another scenario the sound of a dog protecting its food is played back. This time the dog backs off. These experiments suggest that dogs can distinguish between different types of growls."
+    },
+    {
+      "id": 84,
+      "title": "SST-84",
+      "audioUrl": "SST-84.mp3",
+      "durationSec": 56.59,
+      "transcript": "",
+      "note": "No speech detected in source audio"
+    },
+    {
+      "id": 85,
+      "title": "SST-85",
+      "audioUrl": "SST-85.mp3",
+      "durationSec": 54.18,
+      "transcript": "I believe our borders should be open but if that isn't politically acceptable for now Europe should at least open up a legal route for people from developing countries to come work here. Over time hopefully we can move to a position where borders are completely open. Persuading skeptics won't be easy; that's why I think the argument for free migration has to be made at several levels: in principle it increases freedom and reduces injustice; in humanitarian case it helps people much poorer than ourselves; in economic case it makes us richer; in pragmatic case it is inevitable, so it is in everyone's interest to make the best of it. Freedom of movement isn't just a matter of human rights and international solidarity, it is our own self-interest. Opening our borders may seem unrealistic, but so too once did abolishing slavery or giving women the right to vote. Campaigning for people's right to move freely is a noble cause for our time."
+    },
+    {
+      "id": 86,
+      "title": "SST-86",
+      "audioUrl": "SST-86.mp3",
+      "durationSec": 82.83,
+      "transcript": "Ever try to get a baby to smile? It can seem close to impossible, and then suddenly there it is, that elusive, seemingly joyous grin. Well, it turns out those smiles aren't spontaneous, they're strategic. Researchers have found that when babies smile, it's for a reason. They want whoever they're interacting with, typically a parent, to smile back, and they time it just so. A smile here and a smile there. The researchers call it sophisticated timing. The study is in the journal PLOS One. The researchers enlisted real mothers and infants and quantified their interactions, which fell into four categories: one, babies wanted to maximize the amount of time smiling at their mothers; two, they wanted to maximize the time the mother smiled at them; three, they wanted to experience simultaneous smiling; and four, no smiling at all. By studying when smiles happened and what the subsequent effect was, the investigators were able to figure out that for mothers, the goal seventy percent of the time was to be smiling simultaneously, while for babies, eighty percent of the time they just wanted their mother smiling at them. So mothers want the interaction, while babies just want to be smiled at. So your baby may not be able to feed itself, talk, or even turn over yet, but when it comes to smiles, babies seem to know exactly what they're up to."
+    },
+    {
+      "id": 87,
+      "title": "SST-87",
+      "audioUrl": "SST-87.mp3",
+      "durationSec": 59.17,
+      "transcript": "But in the face of this sense of disempowerment there is surprisingly no decline in involvement in organizations which seek to share wealth and opportunities, protect another's rights and work towards common good. According to the United Nations, civil society groups have grown fortyfold since the turn of last century. Internationally, the nonprofit sector is worth one trillion dollars, and there are seven hundred thousand such organizations in Australia alone. The UN recognizes thirty-seven thousand specifically civil society organizations across the globe, and gave thirty-five hundred accreditation to the two thousand two World Summit on Sustainable Development. This profound movement towards harnessing voices and resources from outside the realm of governments and officialdom reflects a profound growth in NGOs, third sector, as some call it. As Robert Putnam discovered in the field of local government in Italy, the best predictor of governmental success was the strength and density of a region's civic associations."
+    },
+    {
+      "id": 88,
+      "title": "SST-88",
+      "audioUrl": "SST-88.mp3",
+      "durationSec": 65.78,
+      "transcript": "What you might see if you were orbiting a black hole: the light and position of background stars around the hole are distorted by its gravity and they seem to spin around. On the right, the constellation Orion appears to approach the event horizon, the boundary from which nothing can escape. Orion's stars look like they become separated and get spun around. Once the hole has passed by, Orion reappears on the left and looks normal again. Users can also experiment with different scenarios. This is what you might see if you were traveling towards a black hole with rocket engines slowing your descent. Another simulation mimics free fall into a hole. In the middle, the light of the entire universe appears to be concentrated in a bright ring."
+    },
+    {
+      "id": 89,
+      "title": "SST-89",
+      "audioUrl": "SST-89.mp3",
+      "durationSec": 74.32,
+      "transcript": "They call it the marshmallow test. A four to six year old child sits alone in a room at a table facing a marshmallow on a plate. The child is told if you don't eat this treat for fifteen minutes you can have both it and a second one. Kids on average wait for five or six minutes before eating the marshmallow. The longer a child can resist the treat has been correlated with higher general competency later in life. Now a study shows that the ability to resist temptation isn't strictly innate; it's also highly influenced by environment. Researchers gave five year olds crayons and one sticker to decorate a sheet of paper. One group was promised a new set of art supplies for the project, but then never received it, but the other group did receive new crayons and better stickers. Then both groups were given the marshmallow test. The children who had been lied to waited for a mean time of three minutes before eating the marshmallow. The group that got their promised materials resisted an average of twelve minutes. Thus, the researchers note that experience factors into a child's ability to delay gratification when previous promises have been hollow. Why believe the next one?"
+    },
+    {
+      "id": 90,
+      "title": "SST-90",
+      "audioUrl": "SST-90.mp3",
+      "durationSec": 75.13,
+      "transcript": "This is Hans Krebs, who in 1937 published a paper showing the sequence of chemical reactions by which energy is released in individual cells. It's called the Krebs cycle, which some of you may remember from your chemistry course in high school. Krebs is a wonderful example to me of how a scientist who is determined can overcome all kinds of human obstacles. Krebs' father constantly discouraged him and told him that he had just mediocre intelligence and would never do anything important in his life as a teenager. What Krebs remembers in his memoir, his father said to him, You can't make a silk purse out of a sow's ear. And later on, when Krebs studied with the great biochemist Otto Warburg, Warburg also told him the same thing, not the same quote, but that he had only mediocre ability and would never be a great scientist. And we all hear about how important it is for parents to encourage their children, but sometimes the children will go on to do great things no matter what we say to them."
+    },
+    {
+      "id": 91,
+      "title": "SST-91",
+      "audioUrl": "SST-91.mp3",
+      "durationSec": 52.53,
+      "transcript": "Why does burning a food item provide information about its value as a food? The nutritional value of food can be measured on many different scales. The most basic measurement scale is the free energy content of the food. In other words, how much energy is released when the chemical bonds within the food are broken. The energy content of food is measured in calories, the amount of kinetic energy required to raise the temperature of one milliliter of water one degree. Food is burned under controlled conditions, breaking chemical bonds and releasing free energy. The burning is chemically similar to the breakdown of food in cellular respiration, although the process occurs much more quickly and in a less controlled fashion during ignition. A calorimeter can measure the energy in food, but can't measure the digested energy of what we have."
+    },
+    {
+      "id": 92,
+      "title": "SST-92",
+      "audioUrl": "SST-92.mp3",
+      "durationSec": 62.3,
+      "transcript": "A depression in a child dates back as far as the 16th century when the first concept of children's depression was discovered. Research was taken at that time to find out what happened to children who suffer from depression. The study revealed that a dramatic increase in a child's depression can increase the risk later in life. For example, long-term illness such as diabetes and heart disease are associated with depression. One of the studies shows children with depression behave differently and respond differently to medical treatment. This is why many specialists have tried bringing a cure, but no one found a perfect medicine. It is quite rare that children suffer from depression, but in the recent study, the number has dramatically increased. Nowadays, no one has doubts about children's depression. It has become a common sickness in a child. Children's depression is still a puzzle for scientists and many specialists that needs to be resolved sooner than later."
+    },
+    {
+      "id": 93,
+      "title": "SST-93",
+      "audioUrl": "SST-93.mp3",
+      "durationSec": 57.97,
+      "transcript": "Okay to understand what vitamin D does we need to understand the central concept. The function of vitamin D is to maintain blood calcium. You probably think the function of vitamin D is to maintain strong bones and teeth. But it does that by accident. Its real function is to maintain your blood calcium level in a very narrow range, and the reason for that is if your blood calcium level falls below about nine milligrams per hundred milliliters, then you're going to be in big trouble and die rather quickly. And that's because blood calcium is important for muscle contraction and nerve transmission, and if you don't have enough of it, you can't contract your muscles normally. There can't be normal nerve impulses. And this results in a disease called tetany, where you can get those uncontrolled convulsions followed by rapid death. Calcium is also important for enzymic activities and blood clotting."
+    },
+    {
+      "id": 94,
+      "title": "SST-94",
+      "audioUrl": "SST-94.mp3",
+      "durationSec": 60.06,
+      "transcript": "Today, a university like the LSE certainly has to acknowledge that it is in competition for the best students, all of whom have choices they can exercise, and many of them, choices which run across national and continental borders. We are in competition too for staff. The academic job market is one of the most global there is, and in the twenty first century, English is the new Latin, so universities in English speaking countries are exposed to more intensive competition than those elsewhere. We are in competition for government funding through the assessment of research quality. We are in competition for research contracts from public and private sector sources, and indeed we are in competition for the philanthropic pound. Many of our own donors were at more than one university and indeed think of the LSE's request alongside those of other charities to which they are committed. That is a competitive environment which is particularly visible to a vice chancellor."
+    },
+    {
+      "id": 95,
+      "title": "SST-95",
+      "audioUrl": "SST-95.mp3",
+      "durationSec": 64.21,
+      "transcript": "The debt today is so high it's 200,000 rupees, 300,000 rupees of peasants who have no capital. They know within a year or two when they accumulate that kind of debt. Where is the debt coming from? It's coming from a seed that is costing 100,000 to 200,000 rupees per kilogram depending on what you have. Seeds that used to be free, used to be theirs. Pesticides, each time the more they use, the more they have to use. Twelve sprays, fifteen sprays, twenty sprays. Pesticides used in just the last five years in the land areas of India have gone up by two thousand percent. That's what the free market and globalization have brought, and since we are talking about peasants who have no money, who have no capital, they can only buy expensive seeds and expensive pesticides by borrowing. And who will lend that money? The seed companies that sell the pesticides, which are the same companies that sell the seeds, as you know, are now also the major creditors."
+    },
+    {
+      "id": 96,
+      "title": "SST-96",
+      "audioUrl": "SST-96.mp3",
+      "durationSec": 63.42,
+      "transcript": "One of the things that was going on during the Great Depression was the beginning of the sort of modern food technology that rules the way Americans eat today. That is, a lot of canned foods were coming onto the market at the time, and also refrigerators were really becoming very popular during the Great Depression, both in cities and in rural parts of the country. Thanks to electrification, the Rural Electrification Administration, people could buy appliances, farmers could buy appliances, and that meant frozen foods were becoming big. And at that time, few people could afford to buy them during the early years of the Great Depression, but gradually these things picked up. And so this was like the beginning of the era when people were starting to think about supermarkets with rows and rows of freezer cases and rows and rows of canned foods."
+    },
+    {
+      "id": 97,
+      "title": "SST-97",
+      "audioUrl": "SST-97.mp3",
+      "durationSec": 86.05,
+      "transcript": "This is a talk about visualizing life without fossil fuels. We have an addiction to fossil fuels, and it's not sustainable. When I say we, I'm talking about the so-called developed world. The developed world gets eighty or ninety percent of all its energy from fossil fuels. And living on fossil fuels for energy in this way is not sustainable for three fairly obvious reasons. First, easily accessible fossil fuels are a finite resource, and so at some point that resource will be exploited and humanity will have to do something else. Second, setting fire to fossil fuels puts carbon dioxide upstairs, so we have the climate motivation. The clear consensus of the climate science community is, with substantial error bars still on exactly what might happen, their advice is this is a geoengineering experiment that we're well advised to stop as soon as possible. And third, even if you don't believe in climate change, and even if global fossil fuels aren't running out, today it might be the case that your fossil fuels or our fossil fuels, in a particular country or state, have run out, and you might have to depend on other countries or states for fossil fuels in the future. So you have a security of supply motivation for saying, let's look into really getting off fossil fuels in a serious way. I find all three of these motivations equally compelling, and I'm just going to take it as given now that we are interested in discussing life after fossil fuels."
+    },
+    {
+      "id": 98,
+      "title": "SST-98",
+      "audioUrl": "SST-98.mp3",
+      "durationSec": 74.71,
+      "transcript": "A non-governmental organization is an organization that is neither a part of a government nor a conventional for-profit business. Usually set up by ordinary citizens, NGOs may be funded by governments, foundations, businesses, or private persons. Some avoid formal funding altogether and are run primarily by volunteers. NGOs are highly diverse groups of organizations engaged in a wide range of activities and take different forms in different parts of the world. Some may have charitable status while others may be registered for tax exemption based on recognition of social purposes; others may be fronts for political, religious, or other interests. The number of NGOs in the United States is estimated at 1.5 million. Russia has 277,000 NGOs. India is estimated to have around two million NGOs in 2009, just over one NGO per six hundred Indians, and many times the number of primary schools and primary health centers in India. NGOs are difficult to define, and the term NGO is rarely used consistently. As a result, there are many different classifications in use. The most common focus is on orientation and level of operation."
+    },
+    {
+      "id": 99,
+      "title": "SST-99",
+      "audioUrl": "SST-99.mp3",
+      "durationSec": 73.35,
+      "transcript": "I think there is an intense competition at the moment to hire the most talented and most intellectually able people. There was a time when companies had many of the advantages in the world. It was the boss's world. Now I think it reverses the case. We have a shortage in the talent base within countries and between countries. There is an intense battle between companies to hire the most talented workers and also between countries which are looking to recruit talented young people. We have this sense of immigrants being things that countries are battling to keep out, and immigrants want to get in, climb over the walls. I think the opposite is the case. Countries are trying to lure bright young people to get them to go to universities and get them to become immigrants. So, on many levels, talent is a premium. There is a shortage of talent, and so countries, companies, all sorts of organizations, of course volunteer organizations as well, are competing to hire the best and the brightest. You know, we have a baby boom population which is aging, we have an economy which is becoming more sophisticated, and so for all those sorts of reasons, talent is a premium."
+    },
+    {
+      "id": 100,
+      "title": "SST-100",
+      "audioUrl": "SST-100.mp3",
+      "durationSec": 70.06,
+      "transcript": "This course provides students with an in-depth understanding of the exciting disciplines of politics and international relations. Students will learn about the workings of political institutions in countries around the world and explore the complex field of relations between nations. Topics in governments, public policy, public administration, national security, and border control ensure that students receive a broad and current education in the range of issues which are covered under the label of politics and international relations. Students will undertake four compulsory units in two majors, one in politics and international relations, and the other in governments and policy. They will also choose an elective major from a wide choice of options including political communication, international studies, international business, and national security studies. In addition to acquiring specialist knowledge and competencies in politics and international relations and commerce, students will graduate with a range of generic skills such as critical thinking, enhanced communication abilities, problem-solving, and strong capacities to work with others. They will also develop ethically based and socially responsible attitudes and behaviors."
+    }
+  ]
+}
