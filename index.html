@@ -1734,6 +1734,14 @@
         </div>
       </div>
 
+      <div class="hub-card" onclick="navTo('sst')">
+        <div class="hub-icon">🎧</div>
+        <div class="hub-text">
+          <h3 style="color:#67e8f9;">Summarize Spoken Text</h3>
+          <p>100 lectures • Timer 10 min • Strict Form 50–70 • PTE ROOM sample</p>
+        </div>
+      </div>
+
       <div class="hub-card" onclick="navTo('ro')">
         <div class="hub-icon">🔀</div>
         <div class="hub-text">
@@ -1856,6 +1864,55 @@
         <button class="btn-secondary" style="flex: 1;" onclick="prevSwtQuestion()">◀️ Prev</button>
         <button class="btn-secondary" style="flex: 1;" onclick="retrySwtQuestion()">🔁 Try Again</button>
         <button class="btn-primary" style="flex: 1.5;" onclick="nextSwtQuestion()">Next ⏭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SST (Summarize Spoken Text) Practice Screen -->
+  <div class="view-screen" id="viewSst">
+    <div class="wfd-box">
+      <div class="wfd-category-bar" id="sstCatBar">
+        <button class="cat-btn active" id="sstCatAll" onclick="filterSstCategory('all')">🌐 All</button>
+        <button class="cat-btn" id="sstCatPred" onclick="filterSstCategory('prediction')">⭐ Prediction</button>
+      </div>
+      <select id="sstSelect" onchange="onSelectSst()"></select>
+
+      <div class="quiz-card" style="margin-top:6px; padding:10px;">
+        <div class="quiz-title"><span>🎧 Lecture Audio</span></div>
+        <audio id="sstAudioPlayer" controls style="width:100%; margin-top:6px;"></audio>
+        <div style="font-size:11px; color:#94a3b8; margin-top:6px;">Listen once or more · then write a 50–70 word summary</div>
+      </div>
+
+      <div class="wfd-status-bar">
+        <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="sstWordCount">Word Count: 0</span>
+        <span class="wfd-timer-badge" id="sstTimerBadge">⏱ 0:00</span>
+      </div>
+
+      <textarea id="sstInput" style="height:110px; min-height:100px;" placeholder="Write your summary (target 50–70 words). Timer keeps running until you Submit…" oninput="calcSstWords()"></textarea>
+
+      <div class="wfd-result-card" id="sstResultBox" style="display:none;">
+        <div class="wfd-score-header">
+          <span>📊 Automated Score (Pearson SST guide)</span>
+          <span id="sstScoreBadge" style="background:var(--primary-dark); color:#fff; padding:2px 8px; border-radius:8px;">0 / 12</span>
+        </div>
+        <div class="swt-crit-grid" id="sstCritGrid"></div>
+        <div class="wfd-tips-container" id="sstFeedbackContainer"></div>
+        <div class="swt-structure-box show" style="margin-top:6px;">
+          <b>🧩 Sample answer · PTE ROOM SST structure (60–68 words)</b>
+          <div id="sstSampleAnswer" style="margin-top:6px; color:#e2e8f0; line-height:1.7;"></div>
+          <div id="sstSampleWc" style="color:#facc15; font-size:11.5px; font-weight:700; margin-top:6px;"></div>
+        </div>
+      </div>
+
+      <div class="wfd-action-buttons" id="sstCheckActionBox">
+        <button class="btn-secondary" style="flex:1;" onclick="prevSstQuestion()">◀️ Prev</button>
+        <button class="btn-primary" style="flex:2;" onclick="gradeSstAnswer()">Submit &amp; Get Score</button>
+        <button class="btn-secondary" style="flex:1;" onclick="nextSstQuestion()">Next ⏭</button>
+      </div>
+      <div class="wfd-action-buttons" id="sstAfterActionBox" style="display:none;">
+        <button class="btn-secondary" style="flex:1;" onclick="prevSstQuestion()">◀️ Prev</button>
+        <button class="btn-secondary" style="flex:1;" onclick="retrySstQuestion()">🔁 Try Again</button>
+        <button class="btn-primary" style="flex:1.5;" onclick="nextSstQuestion()">Next ⏭</button>
       </div>
     </div>
   </div>
@@ -4144,6 +4201,15 @@
   let swtSubmitted = false;
   let swtDictionary = null; // Set of valid English words, or null if unavailable
 
+  /* SST Module state */
+  let sstQuestions = [];
+  let sstList = [];
+  let sstActiveIndex = 0;
+  let sstCat = 'all';
+  let sstTimerInterval = null;
+  let sstElapsedSeconds = 0;
+  let sstSubmitted = false;
+
   /* Duel Arena state */
   let db = null;
   let duelUser = null;
@@ -4230,7 +4296,293 @@
 
     initSwtModule();
     loadSwtDictionary();
+    // SST questions load on demand when user opens the screen
     initDuelModule();
+  }
+
+  /* ========== SST (Summarize Spoken Text) ========== */
+  async function loadSstQuestions() {
+    try {
+      const res = await fetch(`data/sst_questions.json?t=${Date.now()}`, { cache: "no-store" });
+      if (!res.ok) throw new Error("status " + res.status);
+      const raw = await res.json();
+      const list = Array.isArray(raw) ? raw : (raw.questions || []);
+      sstQuestions = list.map((q, i) => ({
+        id: q.id || (i + 1),
+        title: q.title || `SST-${q.id || i + 1}`,
+        audioUrl: q.audioUrl || `SST-${q.id || i + 1}.mp3`,
+        durationSec: q.durationSec || null,
+        transcript: q.transcript || "",
+        isPrediction: !!q.isPrediction
+      }));
+    } catch (e) {
+      console.warn("SST load error:", e);
+      sstQuestions = [];
+    }
+    filterSstCategory('all');
+  }
+
+  function filterSstCategory(cat) {
+    sstCat = cat;
+    document.getElementById('sstCatAll')?.classList.toggle('active', cat === 'all');
+    document.getElementById('sstCatPred')?.classList.toggle('active', cat === 'prediction');
+    if (cat === 'prediction') {
+      sstList = sstQuestions.filter(q => q.isPrediction);
+    } else {
+      sstList = [...sstQuestions];
+    }
+    const sel = document.getElementById('sstSelect');
+    if (!sel) return;
+    sel.innerHTML = "";
+    if (sstList.length === 0) {
+      const opt = document.createElement('option');
+      opt.value = "";
+      opt.innerText = cat === 'prediction' ? "No prediction items yet" : "No SST questions loaded";
+      sel.appendChild(opt);
+      return;
+    }
+    sstList.forEach((q, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = q.title || `SST #${q.id}`;
+      sel.appendChild(opt);
+    });
+    loadSstQuestion(0);
+  }
+
+  function onSelectSst() {
+    const idx = parseInt(document.getElementById('sstSelect').value, 10);
+    if (!isNaN(idx)) loadSstQuestion(idx);
+  }
+
+  function loadSstQuestion(idx) {
+    if (!sstList.length) return;
+    sstActiveIndex = idx;
+    const q = sstList[idx];
+    const sel = document.getElementById('sstSelect');
+    if (sel) sel.value = String(idx);
+
+    document.getElementById('sstResultBox').style.display = 'none';
+    document.getElementById('sstCheckActionBox').style.display = 'flex';
+    document.getElementById('sstAfterActionBox').style.display = 'none';
+    document.getElementById('sstInput').value = "";
+    calcSstWords();
+    sstSubmitted = false;
+    startSstTimer();
+
+    const audio = document.getElementById('sstAudioPlayer');
+    if (audio && q) {
+      audio.src = "sst_audios/" + q.audioUrl;
+      audio.load();
+    }
+  }
+
+  function nextSstQuestion() {
+    if (!sstList.length) return;
+    let n = sstActiveIndex + 1;
+    if (n >= sstList.length) n = 0;
+    loadSstQuestion(n);
+  }
+
+  function prevSstQuestion() {
+    if (!sstList.length) return;
+    let n = sstActiveIndex - 1;
+    if (n < 0) n = sstList.length - 1;
+    loadSstQuestion(n);
+  }
+
+  function retrySstQuestion() {
+    loadSstQuestion(sstActiveIndex);
+  }
+
+  function calcSstWords() {
+    const val = document.getElementById('sstInput')?.value.trim() || "";
+    const count = val === "" ? 0 : val.split(/\s+/).filter(Boolean).length;
+    const el = document.getElementById('sstWordCount');
+    if (el) {
+      el.innerText = "Word Count: " + count;
+      if (count >= 50 && count <= 70) el.style.color = "#34d399";
+      else if (count > 0) el.style.color = "#fbbf24";
+      else el.style.color = "#94a3b8";
+    }
+  }
+
+  function startSstTimer() {
+    stopSstTimer();
+    sstElapsedSeconds = 0;
+    updateSstTimerDisplay();
+    sstTimerInterval = setInterval(() => {
+      sstElapsedSeconds++;
+      updateSstTimerDisplay();
+    }, 1000);
+  }
+
+  function stopSstTimer() {
+    if (sstTimerInterval) {
+      clearInterval(sstTimerInterval);
+      sstTimerInterval = null;
+    }
+  }
+
+  function updateSstTimerDisplay() {
+    const badge = document.getElementById('sstTimerBadge');
+    if (!badge) return;
+    const mins = Math.floor(sstElapsedSeconds / 60);
+    const secs = sstElapsedSeconds % 60;
+    badge.innerText = `⏱ ${mins}:${String(secs).padStart(2, '0')}`;
+    badge.classList.remove('warning', 'danger');
+    // 0–8 min normal · 8–10 yellow · 10+ red — never auto-stop
+    if (sstElapsedSeconds >= 600) badge.classList.add('danger');
+    else if (sstElapsedSeconds >= 480) badge.classList.add('warning');
+  }
+
+  function extractNounPhrases(transcript) {
+    // Heuristic: frequent content words (length > 4), skip stopwords
+    const stop = new Set("about after again against all also another any because before being between both during each either every for from further have having here into just more most much only other over same some such than that the their then there these this those through under until very what when where which while with would could should about".split(" "));
+    const words = (transcript || "").toLowerCase().replace(/[^a-z\s'-]/g, " ").split(/\s+/).filter(w => w.length > 4 && !stop.has(w));
+    const freq = {};
+    words.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+    return Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8).map(x => x[0]);
+  }
+
+  function buildSstSample(q) {
+    const starts = [
+      "The discussion introduces {N} and highlights connections with other aspects of {N2}.",
+      "The lecture explores several important aspects of {N} from different perspectives.",
+      "In this talk, the speaker examines {N} and discusses broader effects related to {N2}.",
+      "The speaker begins by focusing on {N} and highlights the importance of {N} in shaping related fields."
+    ];
+    const bodies = [
+      "One key point involves {N}, playing a vital role in affecting the progress of {N2}.",
+      "Another focus is on {N}, especially related issues, influencing outcomes associated with {N2}.",
+      "The lecture also covers {N}, noting impacts on development in this area.",
+      "The speaker explains interactions between {N} and {N2}, creating benefits and challenges.",
+      "Attention is given to {N}, which directly shapes the outcomes associated with {N2}.",
+      "Then, it delves into the challenges and opportunities associated with {N}."
+    ];
+    const ends = [
+      "Overall, the talk stresses the crucial role of {N} in shaping {N2}.",
+      "The presentation ends by underlining the ongoing impact of {N} on related fields.",
+      "Finally, the lecturer emphasized many aspects of {N}.",
+      "The lecture closes by highlighting the importance of {N} in determining future developments."
+    ];
+    const nps = extractNounPhrases(q.transcript || "");
+    const N = nps[0] || "the topic";
+    const N2 = nps[1] || nps[0] || "related issues";
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    const fill = (s) => s.replace(/\{N2\}/g, N2).replace(/\{N\}/g, N);
+
+    let text = fill(pick(starts)) + " " + fill(pick(bodies)) + " " + fill(pick(bodies)) + " " + fill(pick(ends));
+    // Adjust toward 60–68 words
+    let words = text.split(/\s+/);
+    while (words.length < 60) {
+      text += " " + fill(pick(bodies));
+      words = text.split(/\s+/);
+    }
+    if (words.length > 68) {
+      words = words.slice(0, 68);
+      // end with period
+      let joined = words.join(" ");
+      if (!/[.!?]$/.test(joined)) joined += ".";
+      text = joined;
+    }
+    return text.replace(/\s+/g, " ").trim();
+  }
+
+  function gradeSstAnswer() {
+    if (!sstList.length) { showToast("⚠️ No SST question loaded."); return; }
+    const q = sstList[sstActiveIndex];
+    const userText = (document.getElementById('sstInput')?.value || "").trim();
+    if (!userText) { showToast("⚠️ Please write your summary before submitting."); return; }
+
+    stopSstTimer();
+    sstSubmitted = true;
+
+    const words = userText.split(/\s+/).filter(Boolean);
+    const wc = words.length;
+
+    // FORM (0–2) — Score Guide: 50–70 = 2; 40–49 or 71–100 = 1; else 0
+    let form = 0;
+    if (wc >= 50 && wc <= 70) form = 2;
+    else if ((wc >= 40 && wc <= 49) || (wc >= 71 && wc <= 100)) form = 1;
+    else form = 0;
+
+    // SPELLING (0–2) — rough: count unknown tokens vs dictionary if available
+    let spelling = 2;
+    const tokens = userText.toLowerCase().replace(/[^a-z\s']/g, " ").split(/\s+/).filter(Boolean);
+    let spellErrors = 0;
+    if (swtDictionary && swtDictionary.size > 100) {
+      tokens.forEach(t => {
+        if (t.length > 2 && !swtDictionary.has(t)) spellErrors++;
+      });
+    } else {
+      // fallback: repeated weird chars
+      spellErrors = (userText.match(/[A-Z]{4,}/g) || []).length;
+    }
+    if (spellErrors === 0) spelling = 2;
+    else if (spellErrors === 1) spelling = 1;
+    else spelling = 0;
+
+    // CONTENT (0–4) — keyword overlap with transcript (strict thresholds)
+    const contentWords = extractNounPhrases(q.transcript || "");
+    const userLower = userText.toLowerCase();
+    let hits = 0;
+    contentWords.forEach(w => { if (userLower.includes(w)) hits++; });
+    const ratio = contentWords.length ? hits / Math.min(contentWords.length, 6) : 0;
+    let content = 0;
+    if (ratio >= 0.75 && wc >= 45) content = 4;
+    else if (ratio >= 0.5) content = 3;
+    else if (ratio >= 0.33) content = 2;
+    else if (ratio >= 0.15) content = 1;
+    else content = 0;
+    // Penalize pure copy of long chunks
+    if (q.transcript && userText.length > 40) {
+      const chunk = q.transcript.slice(0, 80).toLowerCase();
+      if (userLower.includes(chunk.slice(0, 40))) content = Math.min(content, 2);
+    }
+
+    // GRAMMAR (0–2) — heuristic
+    let grammar = 2;
+    if (!/[.!?]$/.test(userText)) grammar = Math.min(grammar, 1);
+    if ((userText.match(/\bi\b/g) || []).length > 0) grammar = Math.min(grammar, 1); // lowercase i
+    if (wc < 20) grammar = 0;
+
+    // VOCABULARY (0–2) — heuristic variety
+    const unique = new Set(tokens);
+    let vocab = 2;
+    if (unique.size < wc * 0.45 && wc > 30) vocab = 1;
+    if (unique.size < 12) vocab = 0;
+
+    const total = content + form + grammar + vocab + spelling;
+    const max = 12;
+
+    document.getElementById('sstScoreBadge').innerText = `${total} / ${max}`;
+    document.getElementById('sstCritGrid').innerHTML = `
+      <div>Content: <b>${content}/4</b></div>
+      <div>Form: <b>${form}/2</b> (${wc} words)</div>
+      <div>Grammar: <b>${grammar}/2</b></div>
+      <div>Vocabulary: <b>${vocab}/2</b></div>
+      <div>Spelling: <b>${spelling}/2</b></div>
+    `;
+
+    const tips = [];
+    if (form < 2) tips.push(`⚠️ <b>Form:</b> Official range is <b>50–70</b> words. You wrote <b>${wc}</b>.`);
+    if (content <= 2) tips.push("⚠️ <b>Content:</b> Cover more main ideas from the lecture and paraphrase (do not copy long phrases).");
+    if (grammar < 2) tips.push("⚠️ <b>Grammar:</b> Use complete sentences with clear punctuation.");
+    if (spelling < 2) tips.push("⚠️ <b>Spelling:</b> Check word spelling carefully.");
+    if (sstElapsedSeconds >= 600) tips.push("⏱ You went over 10 minutes — in the real test, manage time carefully.");
+    else if (sstElapsedSeconds >= 480) tips.push("⏱ You were in the 8–10 minute yellow zone.");
+
+    document.getElementById('sstFeedbackContainer').innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join("");
+
+    const sample = buildSstSample(q);
+    const swc = sample.split(/\s+/).filter(Boolean).length;
+    document.getElementById('sstSampleAnswer').innerText = sample;
+    document.getElementById('sstSampleWc').innerText = `Sample word count: ${swc} (target 60–68)`;
+
+    document.getElementById('sstResultBox').style.display = 'block';
+    document.getElementById('sstCheckActionBox').style.display = 'none';
+    document.getElementById('sstAfterActionBox').style.display = 'flex';
   }
 
   /* Force Join — continuous real membership check (bot must be admin) */
@@ -4479,6 +4831,7 @@
     }
 
     if (current !== 'swt') stopSwtTimer();
+    if (current !== 'sst') stopSstTimer();
     if (current !== 'duels') { unsubscribeDuelLists(); stopDuelListTick(); }
     if (current !== 'duelPlay') {
       if (duelUnsubActive) { duelUnsubActive(); duelUnsubActive = null; }
@@ -4526,6 +4879,12 @@
       title.innerText = "PTE ROOM • Summarize Written Text";
       stopWfdTimer();
       if (swtQuestions.length > 0) startSwtTimer();
+    } else if (current === 'sst') {
+      document.getElementById('viewSst').classList.add('active');
+      title.innerText = "PTE ROOM • Summarize Spoken Text";
+      stopWfdTimer();
+      if (sstQuestions.length === 0) loadSstQuestions();
+      else if (sstList.length > 0) startSstTimer();
     } else if (current === 'ro') {
       document.getElementById('viewRo').classList.add('active');
       title.innerText = "PTE ROOM • Reorder Paragraph";
