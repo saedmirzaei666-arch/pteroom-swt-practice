@@ -1270,6 +1270,16 @@
         </div>
       </div>
 
+      <!-- DAILY WFD CHALLENGE -->
+      <div class="hub-card" id="dailyWfdCard" onclick="startDailyWfdChallenge()" style="border-color:rgba(52,211,153,0.45); position:relative;">
+        <span class="wfd-badge" style="background:linear-gradient(135deg,#34d399,#059669);">TODAY</span>
+        <div class="hub-icon" style="background:rgba(52,211,153,0.12); border-color:rgba(52,211,153,0.4);">🔥</div>
+        <div class="hub-text">
+          <h3 style="color:#34d399;">CHALLENGE OF THE DAY · WFD</h3>
+          <p id="dailyWfdCardSub">One shared question for everyone today · Score appears on the live board</p>
+        </div>
+      </div>
+
       <!-- DUEL ARENA -->
       <div class="hub-card duel-highlight" onclick="navTo('duels')">
         <div class="hub-icon">⚔️</div>
@@ -3423,9 +3433,14 @@
   }
 
   function startHomeArenaFeed() {
-    if (!db || homeArenaPollTimer) return;
+    if (homeArenaPollTimer) return;
     fetchHomeArenaOnce();
-    homeArenaPollTimer = setInterval(fetchHomeArenaOnce, FIRESTORE_POLL_MS);
+    fetchDailyWfdBoardOnce();
+    refreshDailyWfdCard();
+    homeArenaPollTimer = setInterval(() => {
+      fetchHomeArenaOnce();
+      fetchDailyWfdBoardOnce();
+    }, FIRESTORE_POLL_MS);
   }
 
   function stopHomeArenaFeed() {
@@ -3753,7 +3768,146 @@
   }
 
   /* Home page LIVE ARENA ticker – shows open challenges, upcoming matches, recent results & top users */
-  let homeTickerCache = { open: [], matched: [], results: [] };
+  let homeTickerCache = { open: [], matched: [], results: [], daily: [] };
+  let dailyWfdMode = false; // true when user opened today's shared WFD
+
+  function getTehranDateKey() {
+    const p = getTehranNowParts();
+    return `${p.year}-${p.month}-${p.day}`;
+  }
+
+  function getDailyWfdQuestion() {
+    if (!wfdQuestions || !wfdQuestions.length) return null;
+    const pool = wfdQuestions.filter(q => !q.isPrediction);
+    const list = pool.length ? pool : wfdQuestions;
+    const key = getTehranDateKey();
+    // stable hash from date → same question for everyone that day
+    let h = 0;
+    for (let i = 0; i < key.length; i++) h = ((h << 5) - h) + key.charCodeAt(i);
+    const idx = Math.abs(h) % list.length;
+    return list[idx];
+  }
+
+  function refreshDailyWfdCard() {
+    const sub = document.getElementById('dailyWfdCardSub');
+    if (!sub) return;
+    const q = getDailyWfdQuestion();
+    const key = getTehranDateKey();
+    const saved = localStorage.getItem('pteroom_daily_wfd_' + key);
+    if (saved) {
+      try {
+        const s = JSON.parse(saved);
+        sub.innerText = `Your score today: ${s.score}/${s.total} · See the live board above`;
+        return;
+      } catch (e) {}
+    }
+    if (q) sub.innerText = `Today's shared WFD · ${key} · Score goes to the live board`;
+    else sub.innerText = `One shared question for everyone today · Score appears on the live board`;
+  }
+
+  function startDailyWfdChallenge() {
+    if (!wfdQuestions.length) {
+      showToast("⚠️ WFD questions still loading… try again in a moment.");
+      return;
+    }
+    const q = getDailyWfdQuestion();
+    if (!q) { showToast("⚠️ No WFD question available."); return; }
+    dailyWfdMode = true;
+    navTo('wfd');
+    setTimeout(() => {
+      try {
+        filterWfdCategory('all');
+        const list = [...wfdQuestions].sort((a, b) => {
+          const aHard = wfdHardList.includes(String(a.id));
+          const bHard = wfdHardList.includes(String(b.id));
+          if (aHard && !bHard) return -1;
+          if (!aHard && bHard) return 1;
+          return 0;
+        });
+        const pos = list.findIndex(x => String(x.id) === String(q.id));
+        const s = document.getElementById('wfdSelect');
+        if (s && pos >= 0) {
+          s.value = String(pos);
+          onSelectWfd();
+        }
+        showToast("🔥 Challenge of the Day · WFD");
+      } catch (e) {
+        console.warn(e);
+        showToast("🔥 Challenge of the Day — open WFD");
+      }
+    }, 250);
+  }
+
+  async function publishDailyWfdResult(score, total, q) {
+    const key = getTehranDateKey();
+    const user = duelUser || getDuelUser();
+    const payload = {
+      dateKey: key,
+      score,
+      total,
+      qId: q?.id ?? null,
+      name: user?.name || 'Player',
+      userId: user?.id || 'guest',
+      at: Date.now()
+    };
+    localStorage.setItem('pteroom_daily_wfd_' + key, JSON.stringify(payload));
+    refreshDailyWfdCard();
+
+    // Local board entry
+    homeTickerCache.daily = homeTickerCache.daily || [];
+    homeTickerCache.daily = [
+      payload,
+      ...homeTickerCache.daily.filter(x => !(x.userId === payload.userId && x.dateKey === key))
+    ].slice(0, 20);
+    updateHomeArenaTicker();
+
+    // Shared board (Firebase) — same path as duels when reachable
+    if (db) {
+      try {
+        await db.collection('daily_wfd').add({
+          ...payload,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        fetchDailyWfdBoardOnce();
+      } catch (e) {
+        console.warn('daily_wfd publish:', e);
+      }
+    }
+  }
+
+  async function fetchDailyWfdBoardOnce() {
+    if (!db) return;
+    const key = getTehranDateKey();
+    try {
+      let snap;
+      try {
+        snap = await db.collection('daily_wfd')
+          .where('dateKey', '==', key)
+          .orderBy('score', 'desc')
+          .limit(12)
+          .get();
+      } catch (e) {
+        snap = await db.collection('daily_wfd')
+          .where('dateKey', '==', key)
+          .limit(25)
+          .get();
+      }
+      const rows = [];
+      snap.forEach(doc => rows.push(doc.data()));
+      rows.sort((a, b) => (b.score - a.score) || ((a.total || 0) - (b.total || 0)));
+      // unique by userId keep best
+      const best = new Map();
+      rows.forEach(r => {
+        const id = r.userId || r.name;
+        const prev = best.get(id);
+        if (!prev || (r.score > prev.score)) best.set(id, r);
+      });
+      homeTickerCache.daily = Array.from(best.values()).slice(0, 10);
+      updateHomeArenaTicker();
+    } catch (e) {
+      console.warn('daily_wfd fetch:', e);
+    }
+  }
 
   function updateHomeArenaTicker(resultsOverride) {
     const tickerEl = document.getElementById('liveArenaTicker');
@@ -3763,6 +3917,16 @@
 
     const parts = [];
     const now = Date.now();
+
+    // 0) Challenge of the Day board
+    const daily = homeTickerCache.daily || [];
+    if (daily.length) {
+      daily.slice(0, 6).forEach(r => {
+        parts.push(`<span class="duel-result">🔥 TODAY WFD: ${escapeHtml(r.name || 'Player')} ${r.score}/${r.total}</span>`);
+      });
+    } else {
+      parts.push(`<span class="duel-live">🔥 Challenge of the Day · WFD is live — tap the green card</span>`);
+    }
 
     // 1) Matched duels (2 players locked in) — highest priority, clear announcement
     (homeTickerCache.matched || []).forEach(d => {
@@ -4538,6 +4702,8 @@
       if (resWFD.ok) {
         wfdQuestions = await resWFD.json();
         filterWfdCategory('all');
+        refreshDailyWfdCard();
+        fetchDailyWfdBoardOnce();
       }
     } catch (e) { console.warn("WFD load error:", e); }
 
@@ -5649,6 +5815,20 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
       tipsContainer.innerHTML = '';
       tipsContainer.style.display = 'none';
     }
+
+    // Challenge of the Day → publish to live board (ticker)
+    try {
+      const dailyQ = getDailyWfdQuestion();
+      if (dailyWfdMode || (dailyQ && String(dailyQ.id) === String(q.id))) {
+        dailyWfdMode = false;
+        publishDailyWfdResult(score, origTokens.length, q);
+        tips.push(`🔥 <b>Challenge of the Day:</b> ${score}/${origTokens.length} posted to the live board.`);
+        if (tipsContainer) {
+          tipsContainer.innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join('');
+          tipsContainer.style.display = 'flex';
+        }
+      }
+    } catch (e) { console.warn(e); }
 
     document.getElementById('wfdResultBox').style.display = 'flex';
     document.getElementById('wfdCheckActionBox').style.display = 'none';
