@@ -4313,6 +4313,7 @@
         audioUrl: q.audioUrl || `SST-${q.id || i + 1}.mp3`,
         durationSec: q.durationSec || null,
         transcript: q.transcript || "",
+        sampleAnswer: q.sampleAnswer || q.sample_answer || "",
         isPrediction: !!q.isPrediction
       }));
     } catch (e) {
@@ -4714,7 +4715,9 @@
 
     document.getElementById('sstFeedbackContainer').innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join("");
 
-    const sample = buildSstSample(q);
+    // Prefer pre-written sample from JSON (better grammar & meaning); fallback to generator
+    let sample = (q.sampleAnswer || "").trim();
+    if (!sample) sample = buildSstSample(q);
     const swc = sample.split(/\s+/).filter(Boolean).length;
     document.getElementById('sstSampleAnswer').innerText = sample;
     document.getElementById('sstSampleWc').innerText = `Sample word count: ${swc} (target 60–68)`;
