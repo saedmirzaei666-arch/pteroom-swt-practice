@@ -1883,6 +1883,68 @@
         <div style="font-size:11px; color:#94a3b8; margin-top:6px;">Listen once or more · then write a 50–70 word summary</div>
       </div>
 
+      <details class="quiz-card" style="margin-top:6px; padding:10px; cursor:pointer;">
+        <summary style="font-size:12.5px; font-weight:700; color:#67e8f9; list-style:none; display:flex; align-items:center; gap:6px;">
+          📋 Scoring Guide (Pearson SST) · Max 12 · tap to expand
+        </summary>
+        <div style="font-size:11.5px; color:#cbd5e1; line-height:1.55; margin-top:10px;">
+          <div style="margin-bottom:10px; color:#94a3b8;">
+            <b style="color:#e2e8f0;">Task:</b> Summarize Spoken Text · <b style="color:#e2e8f0;">Skills:</b> Listening + Writing · <b style="color:#e2e8f0;">Scoring:</b> Partial credit
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Content (0–4)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>4</b> — Full comprehension; effective paraphrase; all main ideas synthesized; smooth flow; varied connectives</div>
+              <div><b>3</b> — Good comprehension; paraphrase uneven; minor omissions; ideas linked but not fully synthesized</div>
+              <div><b>2</b> — Basic comprehension; little distinction main vs detail; heavy copying from the lecture</div>
+              <div><b>1</b> — Limited comprehension; disconnected excerpts; main ideas missing or wrong; hard to follow</div>
+              <div><b>0</b> — Too limited; no real comprehension of the source</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Form (0–2)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>2</b> — 50–70 words</div>
+              <div><b>1</b> — 40–49 or 71–100 words</div>
+              <div><b>0</b> — Under 40 or over 100 · OR all caps · no punctuation · bullets only / very short sentences</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Grammar (0–2)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>2</b> — Correct grammatical structures</div>
+              <div><b>1</b> — Errors present but do not hinder communication</div>
+              <div><b>0</b> — Defective structure that hinders communication</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Vocabulary (0–2)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>2</b> — Appropriate word choice</div>
+              <div><b>1</b> — Some lexical errors; communication still clear</div>
+              <div><b>0</b> — Word choice hinders communication</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Spelling (0–2)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>2</b> — Correct spelling</div>
+              <div><b>1</b> — One spelling error</div>
+              <div><b>0</b> — More than one spelling error</div>
+            </div>
+          </div>
+
+          <div style="margin-top:8px; padding-top:8px; border-top:1px solid #334155; color:#94a3b8; font-size:11px;">
+            Practice tip: cover main ideas · paraphrase (do not copy long phrases) · stay in 50–70 words · use complete sentences.
+          </div>
+        </div>
+      </details>
+
       <div class="wfd-status-bar">
         <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="sstWordCount">Word Count: 0</span>
         <span class="wfd-timer-badge" id="sstTimerBadge">⏱ 0:00</span>
@@ -1897,11 +1959,6 @@
         </div>
         <div class="swt-crit-grid" id="sstCritGrid"></div>
         <div class="wfd-tips-container" id="sstFeedbackContainer"></div>
-        <div class="swt-structure-box show" style="margin-top:6px;">
-          <b>🧩 Sample answer · PTE ROOM SST structure (60–68 words)</b>
-          <div id="sstSampleAnswer" style="margin-top:6px; color:#e2e8f0; line-height:1.7;"></div>
-          <div id="sstSampleWc" style="color:#facc15; font-size:11.5px; font-weight:700; margin-top:6px;"></div>
-        </div>
       </div>
 
       <div class="wfd-action-buttons" id="sstCheckActionBox">
@@ -4313,7 +4370,6 @@
         audioUrl: q.audioUrl || `SST-${q.id || i + 1}.mp3`,
         durationSec: q.durationSec || null,
         transcript: q.transcript || "",
-        sampleAnswer: q.sampleAnswer || q.sample_answer || "",
         isPrediction: !!q.isPrediction
       }));
     } catch (e) {
@@ -4552,93 +4608,6 @@
     };
   }
 
-  function buildSstSample(q) {
-    // Meaningful sample for ANY SST item: real ideas from transcript + PTE ROOM frame
-    const transcript = (q.transcript || "").replace(/\s+/g, " ").trim();
-    if (!transcript) {
-      return "The lecture introduces the main topic and explains several related points, noting causes and effects before concluding with the overall significance of these ideas for listeners.";
-    }
-
-    const STOP = new Set("a an the and or but if so as at by for in is it of on to up with was were be been being this that these those there their they them then than from have has had do does did will would can could should may might must not no into onto over under about after before during while when where which who whom how why what also just only very more most much many some any each every both few other such same own across between among against without within well okay now actually basically really quite rather people someone something things thing way ways part parts kind kinds sort sorts".split(" "));
-    const WEAK = new Set("days increasingly complain suffering certain example another further important different several related various possible general specific major minor large small high low good bad new old".split(" "));
-
-    // Topic = strongest content nouns (skip -ly adverbs and weak words)
-    function topTopics(text, n) {
-      const toks = text.toLowerCase().replace(/[^a-z\s]/g, " ").split(/\s+/).filter(w =>
-        w.length >= 5 && !STOP.has(w) && !WEAK.has(w) && !w.endsWith("ly")
-      );
-      const freq = {};
-      toks.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
-      return Object.entries(freq).sort((a, b) => b[1] - a[1] || b[0].length - a[0].length).slice(0, n).map(x => x[0]);
-    }
-
-    // Short clean idea from a sentence (max ~18 words), not a raw dump
-    function ideaFromSentence(s) {
-      let t = s
-        .replace(/\b(Well|So|Now|Okay|Alright|Look|Listen),?\s+/gi, "")
-        .replace(/\b(you know|I mean|kind of|sort of|actually|basically|really),?\s+/gi, "")
-        .replace(/\s+/g, " ")
-        .trim();
-      // Prefer clause after that/which if long
-      const m = t.match(/\b(?:that|which)\s+(.{20,120})$/i);
-      if (m && m[1].split(/\s+/).length >= 6) t = m[1].trim();
-      let words = t.split(/\s+/);
-      if (words.length > 18) words = words.slice(0, 18);
-      t = words.join(" ").replace(/[,:;]+$/, "").trim();
-      if (!t) return "";
-      t = t.charAt(0).toUpperCase() + t.slice(1);
-      if (!/[.!?]$/.test(t)) t += ".";
-      return t;
-    }
-
-    const sentences = transcript.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.split(/\s+/).length >= 7);
-    const topics = topTopics(transcript, 4);
-    const topic1 = topics[0] || "the main topic";
-    const topic2 = topics[1] || topics[0] || "related issues";
-
-    // Pick first + middle (+ last if needed) as idea sources
-    const ideaSrc = [];
-    if (sentences[0]) ideaSrc.push(sentences[0]);
-    if (sentences.length > 2) ideaSrc.push(sentences[Math.floor(sentences.length / 2)]);
-    else if (sentences[1]) ideaSrc.push(sentences[1]);
-    if (sentences.length > 3) ideaSrc.push(sentences[sentences.length - 1]);
-
-    const ideas = ideaSrc.map(ideaFromSentence).filter(Boolean);
-    // Deduplicate near-identical starts
-    const uniqueIdeas = [];
-    ideas.forEach(id => {
-      if (!uniqueIdeas.some(u => u.slice(0, 40) === id.slice(0, 40))) uniqueIdeas.push(id);
-    });
-
-    const start = `The lecture explores ${topic1} and discusses important points related to ${topic2}.`;
-    const end = `Overall, the talk stresses the significance of ${topic1} and how it connects to practical outcomes.`;
-
-    const bodyParts = [];
-    if (uniqueIdeas[0]) bodyParts.push(`One key point is that ${uniqueIdeas[0].charAt(0).toLowerCase()}${uniqueIdeas[0].slice(1)}`);
-    if (uniqueIdeas[1]) bodyParts.push(`Another focus is that ${uniqueIdeas[1].charAt(0).toLowerCase()}${uniqueIdeas[1].slice(1)}`);
-
-    let text = [start, ...bodyParts, end].join(" ").replace(/\s+/g, " ").replace(/\.\./g, ".").trim();
-
-    let words = text.split(/\s+/).filter(Boolean);
-    if (words.length < 60 && uniqueIdeas[2]) {
-      text = [start, ...bodyParts, `The speaker also notes that ${uniqueIdeas[2].charAt(0).toLowerCase()}${uniqueIdeas[2].slice(1)}`, end]
-        .join(" ").replace(/\s+/g, " ").replace(/\.\./g, ".").trim();
-      words = text.split(/\s+/).filter(Boolean);
-    }
-    if (words.length < 60) {
-      text += ` These ideas help explain the main message of the lecture for the audience.`;
-      text = text.replace(/\s+/g, " ").trim();
-      words = text.split(/\s+/).filter(Boolean);
-    }
-    if (words.length > 68) {
-      words = words.slice(0, 68);
-      text = words.join(" ");
-      if (!/[.!?]$/.test(text)) text += ".";
-    }
-    if (!/[.!?]$/.test(text)) text += ".";
-    return text;
-  }
-
   function gradeSstAnswer() {
     if (!sstList.length) { showToast("⚠️ No SST question loaded."); return; }
     const q = sstList[sstActiveIndex];
@@ -4714,13 +4683,6 @@
     else if (sstElapsedSeconds >= 480) tips.push("⏱ You were in the 8–10 minute yellow zone.");
 
     document.getElementById('sstFeedbackContainer').innerHTML = tips.map(t => `<div class="wfd-warning-tip">${t}</div>`).join("");
-
-    // Prefer pre-written sample from JSON (better grammar & meaning); fallback to generator
-    let sample = (q.sampleAnswer || "").trim();
-    if (!sample) sample = buildSstSample(q);
-    const swc = sample.split(/\s+/).filter(Boolean).length;
-    document.getElementById('sstSampleAnswer').innerText = sample;
-    document.getElementById('sstSampleWc').innerText = `Sample word count: ${swc} (target 60–68)`;
 
     document.getElementById('sstResultBox').style.display = 'block';
     document.getElementById('sstCheckActionBox').style.display = 'none';
