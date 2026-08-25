@@ -1867,6 +1867,53 @@
         <div class="passage-box" id="swtPassageBox" style="font-size:13.5px; line-height:2;"></div>
       </div>
 
+      <details class="quiz-card" style="margin-top:6px; padding:10px; cursor:pointer;">
+        <summary style="font-size:12.5px; font-weight:700; color:#a78bfa; list-style:none; display:flex; align-items:center; gap:6px;">
+          📋 Scoring Guide (Pearson SWT) · Max 9 · tap to expand
+        </summary>
+        <div style="font-size:11.5px; color:#cbd5e1; line-height:1.55; margin-top:10px;">
+          <div style="margin-bottom:10px; color:#94a3b8;">
+            <b style="color:#e2e8f0;">Task:</b> Summarize Written Text · <b style="color:#e2e8f0;">Skills:</b> Reading + Writing · <b style="color:#e2e8f0;">Scoring:</b> Partial credit
+          </div>
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Content (0–4)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>4</b> — Full comprehension; effective paraphrase; all main ideas synthesized; smooth flow; varied connectives</div>
+              <div><b>3</b> — Good comprehension; paraphrase uneven; minor omissions; ideas linked but not fully synthesized</div>
+              <div><b>2</b> — Basic comprehension; little distinction main vs detail; heavy copying from the passage</div>
+              <div><b>1</b> — Limited comprehension; disconnected excerpts; main ideas missing or wrong; hard to follow</div>
+              <div><b>0</b> — Too limited; no real comprehension of the source</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Form (0–1)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>1</b> — One single complete sentence · 5–75 words</div>
+              <div><b>0</b> — Not one complete sentence · under 5 or over 75 words · OR all capital letters</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Grammar (0–2)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>2</b> — Correct grammatical structure</div>
+              <div><b>1</b> — Errors present but do not hinder communication</div>
+              <div><b>0</b> — Defective structure that hinders communication</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <b style="color:#fbbf24;">Vocabulary (0–2)</b>
+            <div style="margin-top:4px; padding-left:6px; border-left:2px solid #334155;">
+              <div><b>2</b> — Appropriate word choice</div>
+              <div><b>1</b> — Some lexical errors; communication still clear</div>
+              <div><b>0</b> — Word choice hinders communication</div>
+            </div>
+          </div>
+          <div style="margin-top:8px; padding-top:8px; border-top:1px solid #334155; color:#94a3b8; font-size:11px;">
+            Practice tip: one sentence only · cover main ideas · paraphrase · 5–75 words (ideal often ~60–68).
+          </div>
+        </div>
+      </details>
+
       <div class="wfd-status-bar">
         <span style="font-size:12px; font-weight:700; color:#94a3b8;" id="swtWordCount">Word Count: 0</span>
         <span class="wfd-timer-badge" id="swtTimerBadge">⏱ 0:00</span>
@@ -1875,22 +1922,46 @@
 
       <textarea id="swtInput" style="height:95px; min-height:95px; max-height:110px;" placeholder="Write your one-sentence summary here (5–75 words)..." oninput="calcSwtWords()"></textarea>
 
-      <div class="wfd-result-card" id="swtResultBox">
+      <div class="wfd-result-card" id="swtResultBox" style="display:none;">
         <div class="wfd-score-header">
-          <span>📊 Automated Score (Pearson score guide)</span>
+          <span>📊 Automated Score (Pearson SWT guide)</span>
           <span id="swtScoreBadge" style="background:var(--primary-dark); color:#fff; padding:2px 8px; border-radius:8px;">0 / 9</span>
         </div>
         <div class="swt-crit-grid" id="swtCritGrid"></div>
         <div class="wfd-tips-container" id="swtFeedbackContainer"></div>
 
-        <div class="swt-structure-box show" id="swtStructureBox" style="margin-top:6px;">
-          <b>🧩 Sample answer using PTE ROOM structure</b>
-          <div class="swt-structure-tpl">The passage discusses [NP], explaining (that) [CLAUSE or NP] and [CLAUSE or NP], mentioning [NP] as well as [NP], presenting [NP], and ending with [NP].</div>
-          <div style="font-size:11px; color:#94a3b8; margin:4px 0 6px; line-height:1.5;">
-            📌 Use <b>that</b> before a full clause · omit <b>that</b> before a noun phrase · keep items around <b>and</b> parallel · aim for <b>60–68 words</b>
+        <div class="swt-structure-box show" id="swtStructureBox" style="margin-top:10px;">
+          <b style="color:#a78bfa;">✅ Use the proven PTE ROOM structure for the real exam</b>
+          <div style="font-size:11.5px; color:#94a3b8; margin:6px 0 10px; line-height:1.5;">
+            This structure is tested and aligned with current Pearson scoring. Write <b style="color:#e2e8f0;">one complete sentence</b> (5–75 words). Replace brackets with content from the passage.
           </div>
-          <div id="swtSampleAnswer" style="margin-top:4px; color:#e2e8f0; line-height:1.7;"></div>
-          <div id="swtSampleWc" style="color:#facc15; font-size:11.5px; font-weight:700; margin-top:6px;"></div>
+
+          <div style="font-size:12px; color:#e2e8f0; line-height:1.7; margin-bottom:8px;">
+            <b style="color:#fbbf24;">SWT Structure</b><br>
+            The passage discusses <b>[NP]</b>, explaining <b>(that)</b> <b>[CLAUSE or NP]</b> and <b>[CLAUSE or NP]</b>, mentioning <b>[NP]</b> as well as <b>[NP]</b>, presenting <b>[NP]</b>, and ending with <b>[NP]</b>.
+          </div>
+
+          <div style="font-size:11.5px; color:#cbd5e1; line-height:1.55; padding-left:8px; border-left:2px solid #334155;">
+            <div style="color:#fbbf24; font-weight:700; margin-bottom:4px;">📌 that + clause vs noun phrase</div>
+            • If you use a <b>full clause</b>, put <b>that</b> before it.<br>
+            &nbsp;&nbsp;… explaining <b>that</b> electric cars do very little to reduce carbon dioxide emissions …<br>
+            • If you use a <b>noun phrase</b> only, do <b>not</b> use that.<br>
+            &nbsp;&nbsp;… explaining <b>carbon dioxide emissions</b> …
+          </div>
+
+          <div style="font-size:11.5px; color:#cbd5e1; line-height:1.55; margin-top:10px; padding-left:8px; border-left:2px solid #334155;">
+            <div style="color:#fbbf24; font-weight:700; margin-bottom:4px;">‼️ Parallel structure with and</div>
+            Items before and after <b>and</b> must match:<br>
+            • clause + <b>and</b> + clause<br>
+            • noun phrase + <b>and</b> + noun phrase
+          </div>
+
+          <div style="font-size:11.5px; color:#94a3b8; margin-top:12px; padding-top:10px; border-top:1px solid #334155; line-height:1.55;">
+            <b style="color:#e2e8f0;">How to use</b><br>
+            • Fill each slot with main ideas from the passage (paraphrase; do not copy long chunks).<br>
+            • Keep <b>one sentence</b> only · capital letter at the start · end with a period.<br>
+            • Aim for clear Content coverage within the Form range (5–75 words).
+          </div>
         </div>
       </div>
 
@@ -2581,9 +2652,6 @@
     if (!q) return;
 
     document.getElementById('swtPassageBox').innerText = q.passage;
-    // sample is shown fully after submit; keep structure tip only before submit
-    document.getElementById('swtSampleAnswer').innerText = "";
-    document.getElementById('swtSampleWc').innerText = "";
 
     document.getElementById('swtInput').value = "";
     document.getElementById('swtInput').disabled = false;
@@ -3011,14 +3079,8 @@
       vocab.issues.forEach(msg => addSwtFeedback(fb, "Vocabulary — " + msg, vocab.score === 0 ? "neg" : "tip"));
     }
 
-    // Sample in PTE ROOM structure, target 60–68 words
-    const sample = buildSwtRoomSample(q);
-    const sampleEl = document.getElementById('swtSampleAnswer');
-    const sampleWcEl = document.getElementById('swtSampleWc');
-    sampleEl.innerText = sample;
-    const swc = countSwtWords(sample);
-    sampleWcEl.innerText = swc + " words" + (swc >= 60 && swc <= 68 ? " ✓ (ideal 60–68 range)" : " · target 60–68 words");
-    document.getElementById('swtStructureBox').classList.add('show');
+    // No sample answer — show PTE ROOM structure guide only
+    document.getElementById('swtStructureBox')?.classList.add('show');
 
     document.getElementById('swtResultBox').style.display = 'flex';
     document.getElementById('swtCheckActionBox').style.display = 'none';
