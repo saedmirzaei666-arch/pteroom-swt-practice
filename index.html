@@ -4552,71 +4552,80 @@
   }
 
   function buildSstSample(q) {
-    // Applies to ALL SST questions that have a transcript in sst_questions.json
+    // Meaningful sample for ANY SST item: real ideas from transcript + PTE ROOM frame
     const transcript = (q.transcript || "").replace(/\s+/g, " ").trim();
     if (!transcript) {
       return "The lecture introduces the main topic and explains several related points, noting causes and effects before concluding with the overall significance of these ideas for listeners.";
     }
 
-    const STOP = new Set("a an the and or but if so as at by for in is it of on to up with was were be been being this that these those there their they them then than from have has had do does did will would can could should may might must not no into onto over under about after before during while when where which who whom how why what also just only very more most much many some any each every both few other such same own across between among against without within well okay now actually basically really quite rather people someone something".split(" "));
+    const STOP = new Set("a an the and or but if so as at by for in is it of on to up with was were be been being this that these those there their they them then than from have has had do does did will would can could should may might must not no into onto over under about after before during while when where which who whom how why what also just only very more most much many some any each every both few other such same own across between among against without within well okay now actually basically really quite rather people someone something things thing way ways part parts kind kinds sort sorts".split(" "));
+    const WEAK = new Set("days increasingly complain suffering certain example another further important different several related various possible general specific major minor large small high low good bad new old".split(" "));
 
-    // Extract meaningful 2–3 word content phrases from THIS lecture (all questions)
-    function contentPhrases(text, max) {
-      const toks = text.toLowerCase().replace(/[^a-z0-9\s'-]/g, " ").split(/\s+/).filter(Boolean);
-      const out = [];
-      const seen = new Set();
-      for (let i = 0; i < toks.length - 1 && out.length < max; i++) {
-        if (STOP.has(toks[i]) || toks[i].length < 4) continue;
-        if (!STOP.has(toks[i + 1]) && toks[i + 1].length > 2) {
-          const bi = toks[i] + " " + toks[i + 1];
-          if (!seen.has(bi)) { seen.add(bi); out.push(bi); }
-        }
-        if (out.length < max && i + 2 < toks.length && !STOP.has(toks[i + 1]) && toks[i + 2].length > 2) {
-          const tri = toks[i] + " " + toks[i + 1] + " " + toks[i + 2];
-          if (!seen.has(tri) && tri.length < 42) { seen.add(tri); out.push(tri); }
-        }
-      }
-      if (out.length < 3) {
-        toks.filter(t => t.length > 5 && !STOP.has(t)).forEach(t => {
-          if (!seen.has(t) && out.length < max) { seen.add(t); out.push(t); }
-        });
-      }
-      return out;
+    // Topic = strongest content nouns (skip -ly adverbs and weak words)
+    function topTopics(text, n) {
+      const toks = text.toLowerCase().replace(/[^a-z\s]/g, " ").split(/\s+/).filter(w =>
+        w.length >= 5 && !STOP.has(w) && !WEAK.has(w) && !w.endsWith("ly")
+      );
+      const freq = {};
+      toks.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+      return Object.entries(freq).sort((a, b) => b[1] - a[1] || b[0].length - a[0].length).slice(0, n).map(x => x[0]);
     }
 
-    const phrases = contentPhrases(transcript, 6);
-    const A = phrases[0] || "the main topic";
-    const B = phrases[1] || phrases[0] || "related issues";
-    const C = phrases[2] || phrases[1] || "key factors";
-    const D = phrases[3] || phrases[0] || "important outcomes";
+    // Short clean idea from a sentence (max ~18 words), not a raw dump
+    function ideaFromSentence(s) {
+      let t = s
+        .replace(/\b(Well|So|Now|Okay|Alright|Look|Listen),?\s+/gi, "")
+        .replace(/\b(you know|I mean|kind of|sort of|actually|basically|really),?\s+/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
+      // Prefer clause after that/which if long
+      const m = t.match(/\b(?:that|which)\s+(.{20,120})$/i);
+      if (m && m[1].split(/\s+/).length >= 6) t = m[1].trim();
+      let words = t.split(/\s+/);
+      if (words.length > 18) words = words.slice(0, 18);
+      t = words.join(" ").replace(/[,:;]+$/, "").trim();
+      if (!t) return "";
+      t = t.charAt(0).toUpperCase() + t.slice(1);
+      if (!/[.!?]$/.test(t)) t += ".";
+      return t;
+    }
 
-    // PTE ROOM shells + lecture-specific phrases = paraphrase (not full sentence copy)
-    const starts = [
-      `The lecture explores ${A} and highlights connections with ${B}.`,
-      `In this talk, the speaker examines ${A} and discusses broader effects related to ${B}.`,
-      `The discussion introduces ${A}, explaining key ideas linked to ${B}.`
-    ];
-    const bodies = [
-      `One key point involves ${A}, which plays a vital role in shaping ${B}.`,
-      `The speaker also focuses on ${C}, noting how it influences ${D}.`,
-      `Another element is ${B}, especially in relation to ${C}, affecting practical outcomes.`,
-      `Attention is given to ${C}, which directly shapes decisions and results around ${D}.`
-    ];
-    const ends = [
-      `Overall, the talk stresses the crucial role of ${A} in understanding ${B}.`,
-      `Finally, the speaker underlines the ongoing importance of ${A} for related fields.`,
-      `The lecture closes by emphasizing why ${A} and ${B} matter in practice.`
-    ];
+    const sentences = transcript.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.split(/\s+/).length >= 7);
+    const topics = topTopics(transcript, 4);
+    const topic1 = topics[0] || "the main topic";
+    const topic2 = topics[1] || topics[0] || "related issues";
 
-    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-    let body1 = pick(bodies);
-    let body2 = pick(bodies.filter(b => b !== body1));
-    if (!body2) body2 = bodies[(bodies.indexOf(body1) + 1) % bodies.length];
+    // Pick first + middle (+ last if needed) as idea sources
+    const ideaSrc = [];
+    if (sentences[0]) ideaSrc.push(sentences[0]);
+    if (sentences.length > 2) ideaSrc.push(sentences[Math.floor(sentences.length / 2)]);
+    else if (sentences[1]) ideaSrc.push(sentences[1]);
+    if (sentences.length > 3) ideaSrc.push(sentences[sentences.length - 1]);
 
-    let text = [pick(starts), body1, body2, pick(ends)].join(" ").replace(/\s+/g, " ").trim();
+    const ideas = ideaSrc.map(ideaFromSentence).filter(Boolean);
+    // Deduplicate near-identical starts
+    const uniqueIdeas = [];
+    ideas.forEach(id => {
+      if (!uniqueIdeas.some(u => u.slice(0, 40) === id.slice(0, 40))) uniqueIdeas.push(id);
+    });
+
+    const start = `The lecture explores ${topic1} and discusses important points related to ${topic2}.`;
+    const end = `Overall, the talk stresses the significance of ${topic1} and how it connects to practical outcomes.`;
+
+    const bodyParts = [];
+    if (uniqueIdeas[0]) bodyParts.push(`One key point is that ${uniqueIdeas[0].charAt(0).toLowerCase()}${uniqueIdeas[0].slice(1)}`);
+    if (uniqueIdeas[1]) bodyParts.push(`Another focus is that ${uniqueIdeas[1].charAt(0).toLowerCase()}${uniqueIdeas[1].slice(1)}`);
+
+    let text = [start, ...bodyParts, end].join(" ").replace(/\s+/g, " ").replace(/\.\./g, ".").trim();
+
     let words = text.split(/\s+/).filter(Boolean);
+    if (words.length < 60 && uniqueIdeas[2]) {
+      text = [start, ...bodyParts, `The speaker also notes that ${uniqueIdeas[2].charAt(0).toLowerCase()}${uniqueIdeas[2].slice(1)}`, end]
+        .join(" ").replace(/\s+/g, " ").replace(/\.\./g, ".").trim();
+      words = text.split(/\s+/).filter(Boolean);
+    }
     if (words.length < 60) {
-      text += ` The speaker also notes further details about ${C} to support these points.`;
+      text += ` These ideas help explain the main message of the lecture for the audience.`;
       text = text.replace(/\s+/g, " ").trim();
       words = text.split(/\s+/).filter(Boolean);
     }
