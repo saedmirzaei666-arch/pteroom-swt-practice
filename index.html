@@ -4445,6 +4445,112 @@
     return Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8).map(x => x[0]);
   }
 
+  /* Strict content keys for SST: sentence-level idea units + distinctive topic words */
+  function extractSstKeyPoints(transcript) {
+    const stop = new Set("a an the and or but if so as at by for in is it of on to up with was were be been being this that these those there their they them then than from have has had do does did will would can could should may might must not no nor not into onto over under about after before during while when where which who whom whose how why what also just only very more most much many some any each every both few other such same own into across between among against without within".split(" "));
+    const text = (transcript || "").replace(/\s+/g, " ").trim();
+    if (!text) return { ideas: [], keywords: [] };
+
+    // Split into idea sentences
+    const sentences = text.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.split(/\s+/).length >= 6);
+    const ideas = sentences.slice(0, 8).map(s => {
+      const toks = s.toLowerCase().replace(/[^a-z0-9\s'-]/g, " ").split(/\s+/).filter(w => w.length > 3 && !stop.has(w));
+      // distinctive words for this sentence (prefer rarer / longer)
+      const keys = [...new Set(toks)].sort((a, b) => b.length - a.length).slice(0, 5);
+      return { sentence: s, keys };
+    }).filter(idea => idea.keys.length >= 2);
+
+    // Global distinctive keywords (topic-specific)
+    const all = text.toLowerCase().replace(/[^a-z0-9\s'-]/g, " ").split(/\s+/).filter(w => w.length > 4 && !stop.has(w));
+    const freq = {};
+    all.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+    // Prefer mid-frequency distinctive words (not ultra-common fillers if any slipped through)
+    const keywords = Object.entries(freq)
+      .filter(([w, c]) => c >= 1 && w.length >= 5)
+      .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)
+      .slice(0, 12)
+      .map(x => x[0]);
+
+    return { ideas, keywords };
+  }
+
+  function scoreSstContent(userText, transcript) {
+    const userLower = (userText || "").toLowerCase();
+    const { ideas, keywords } = extractSstKeyPoints(transcript);
+
+    if (!ideas.length && !keywords.length) return { score: 0, covered: 0, total: 0, detail: "No transcript keys" };
+
+    // An idea is "covered" only if at least 2 of its distinctive keys appear in the answer
+    let coveredIdeas = 0;
+    const coveredList = [];
+    ideas.forEach((idea, idx) => {
+      const hitKeys = idea.keys.filter(k => userLower.includes(k));
+      if (hitKeys.length >= 2) {
+        coveredIdeas++;
+        coveredList.push(idx + 1);
+      }
+    });
+    const ideaTotal = Math.max(ideas.length, 1);
+    const ideaRatio = coveredIdeas / ideaTotal;
+
+    // Keyword coverage (must hit topic-specific terms, not generic template words)
+    const kwHits = keywords.filter(k => userLower.includes(k)).length;
+    const kwRatio = keywords.length ? kwHits / Math.min(keywords.length, 8) : 0;
+
+    // Generic template penalty: if answer is mostly structure words with almost no lecture keys
+    const templateMarks = ["the lecture", "the speaker", "the discussion", "the talk", "overall", "highlights", "introduces", "explores"];
+    const templateHits = templateMarks.filter(t => userLower.includes(t)).length;
+    const isMostlyTemplate = kwHits <= 1 && templateHits >= 2;
+
+    // Strict mapping to Content 0–4 (Pearson-style)
+    // 4 = most main ideas covered (need solid idea + keyword coverage)
+    // 3 = adequate main ideas
+    // 2 = partial / few ideas
+    // 1 = limited relevance
+    // 0 = almost nothing from the lecture
+    let score = 0;
+    if (isMostlyTemplate) {
+      score = kwHits >= 1 ? 1 : 0;
+    } else if (coveredIdeas >= 4 && kwRatio >= 0.5) {
+      score = 4;
+    } else if (coveredIdeas >= 3 && kwRatio >= 0.35) {
+      score = 3;
+    } else if (coveredIdeas >= 2 || (coveredIdeas >= 1 && kwRatio >= 0.4)) {
+      score = 2;
+    } else if (coveredIdeas >= 1 || kwHits >= 2) {
+      score = 1;
+    } else {
+      score = 0;
+    }
+
+    // Cap at 2 if word count is too short to hold real content
+    const wc = (userText || "").trim().split(/\s+/).filter(Boolean).length;
+    if (wc < 40 && score > 2) score = 2;
+    if (wc < 25 && score > 1) score = 1;
+
+    // Heavy copy of source → max 2 (paraphrase required for high content)
+    if (transcript && userText.length > 50) {
+      const src = transcript.toLowerCase();
+      const window = 35;
+      for (let i = 0; i < userLower.length - window; i += 12) {
+        const slice = userLower.slice(i, i + window);
+        if (slice.split(/\s+/).length >= 5 && src.includes(slice)) {
+          score = Math.min(score, 2);
+          break;
+        }
+      }
+    }
+
+    return {
+      score,
+      covered: coveredIdeas,
+      total: ideas.length,
+      kwHits,
+      kwTotal: keywords.length,
+      detail: `ideas ${coveredIdeas}/${ideas.length} · keys ${kwHits}/${Math.min(keywords.length, 8)}`
+    };
+  }
+
   function buildSstSample(q) {
     const starts = [
       "The discussion introduces {N} and highlights connections with other aspects of {N2}.",
@@ -4523,28 +4629,14 @@
     else if (spellErrors === 1) spelling = 1;
     else spelling = 0;
 
-    // CONTENT (0–4) — keyword overlap with transcript (strict thresholds)
-    const contentWords = extractNounPhrases(q.transcript || "");
-    const userLower = userText.toLowerCase();
-    let hits = 0;
-    contentWords.forEach(w => { if (userLower.includes(w)) hits++; });
-    const ratio = contentWords.length ? hits / Math.min(contentWords.length, 6) : 0;
-    let content = 0;
-    if (ratio >= 0.75 && wc >= 45) content = 4;
-    else if (ratio >= 0.5) content = 3;
-    else if (ratio >= 0.33) content = 2;
-    else if (ratio >= 0.15) content = 1;
-    else content = 0;
-    // Penalize pure copy of long chunks
-    if (q.transcript && userText.length > 40) {
-      const chunk = q.transcript.slice(0, 80).toLowerCase();
-      if (userLower.includes(chunk.slice(0, 40))) content = Math.min(content, 2);
-    }
+    // CONTENT (0–4) — STRICT: must cover real lecture idea units (not just template)
+    const contentResult = scoreSstContent(userText, q.transcript || "");
+    let content = contentResult.score;
 
     // GRAMMAR (0–2) — heuristic
     let grammar = 2;
     if (!/[.!?]$/.test(userText)) grammar = Math.min(grammar, 1);
-    if ((userText.match(/\bi\b/g) || []).length > 0) grammar = Math.min(grammar, 1); // lowercase i
+    if ((userText.match(/\bi\b/g) || []).length > 0) grammar = Math.min(grammar, 1);
     if (wc < 20) grammar = 0;
 
     // VOCABULARY (0–2) — heuristic variety
@@ -4558,7 +4650,7 @@
 
     document.getElementById('sstScoreBadge').innerText = `${total} / ${max}`;
     document.getElementById('sstCritGrid').innerHTML = `
-      <div>Content: <b>${content}/4</b></div>
+      <div>Content: <b>${content}/4</b> <span style="color:#94a3b8;font-size:11px;">(${contentResult.detail})</span></div>
       <div>Form: <b>${form}/2</b> (${wc} words)</div>
       <div>Grammar: <b>${grammar}/2</b></div>
       <div>Vocabulary: <b>${vocab}/2</b></div>
@@ -4567,7 +4659,11 @@
 
     const tips = [];
     if (form < 2) tips.push(`⚠️ <b>Form:</b> Official range is <b>50–70</b> words. You wrote <b>${wc}</b>.`);
-    if (content <= 2) tips.push("⚠️ <b>Content:</b> Cover more main ideas from the lecture and paraphrase (do not copy long phrases).");
+    if (content <= 2) {
+      tips.push(`⚠️ <b>Content:</b> Only <b>${contentResult.covered}/${contentResult.total}</b> main idea groups matched. Include specific points from the lecture (names, facts, causes, results) — not only a generic template.`);
+    } else if (content === 3) {
+      tips.push(`📌 <b>Content:</b> Good coverage (${contentResult.covered}/${contentResult.total} idea groups). Add one more key point + stronger paraphrase for 4/4.`);
+    }
     if (grammar < 2) tips.push("⚠️ <b>Grammar:</b> Use complete sentences with clear punctuation.");
     if (spelling < 2) tips.push("⚠️ <b>Spelling:</b> Check word spelling carefully.");
     if (sstElapsedSeconds >= 600) tips.push("⏱ You went over 10 minutes — in the real test, manage time carefully.");
