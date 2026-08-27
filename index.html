@@ -2397,7 +2397,7 @@
   </div>
 
   <div class="app-toast" id="appToast">Please type your answer first!</div>
-  <div class="app-version">Version 1.4</div>
+  <div class="app-version">Version 1.5</div>
 </div>
 
 <script>
@@ -5291,14 +5291,19 @@
     } else {
       audio.src = '';
     }
+    const pred = predQuestions();
+    const num = q ? (pred.findIndex(x => String(x.id) === String(q.id)) + 1) : 0;
     const hint = document.getElementById('ankiQueueHint');
     if (hint) {
       if (!q) hint.textContent = 'Done for today.';
       else {
         const c = ankiCard(q.id);
-        hint.textContent = (c.reps ? ('Review · interval ' + c.interval + 'd') : 'New prediction card') + ' · ' + predQuestions().length + ' cards';
+        const kind = c.reps ? ('Review · ' + c.interval + 'd') : 'New card';
+        hint.textContent = 'Q ' + num + ' / ' + pred.length + ' · WFD #' + q.id + ' · ' + kind;
       }
     }
+    const titleEl = document.querySelector('#ankiWfdBar div[style*="font-weight:800"]');
+    if (titleEl && q) titleEl.textContent = 'ANKI PREDICTION WFD · Q ' + num;
     const counts = ankiCounts();
     const db = document.getElementById('ankiDueBadge');
     const nb = document.getElementById('ankiNewBadge');
@@ -5895,13 +5900,14 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     document.getElementById('wfdWordCount').innerText = "Word Count: " + count;
   }
 
-  function evaluateWfdAnswer() {
+  function getActiveWfdQuestion() {
+    if (ankiWfdMode && ankiCurrentId) {
+      return (wfdQuestions || []).find(x => String(x.id) === String(ankiCurrentId)) || null;
+    }
     let list = [];
-    if (currentWfdCat === 'pred') {
-      list = wfdQuestions.filter(q => q.isPrediction);
-    } else if (currentWfdCat === 'review') {
-      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
-    } else {
+    if (currentWfdCat === 'pred') list = wfdQuestions.filter(q => q.isPrediction);
+    else if (currentWfdCat === 'review') list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    else {
       list = [...wfdQuestions].sort((a, b) => {
         const aHard = wfdHardList.includes(String(a.id));
         const bHard = wfdHardList.includes(String(b.id));
@@ -5910,9 +5916,12 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
         return 0;
       });
     }
-
     const idx = document.getElementById('wfdSelect').value;
-    const q = list[idx];
+    return list[idx] || null;
+  }
+
+  function evaluateWfdAnswer() {
+    const q = getActiveWfdQuestion();
     const userRawText = document.getElementById('wfdInput').value.trim();
 
     if (!q) {
