@@ -1260,13 +1260,13 @@
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
 
-      <!-- WFD PRACTICE — top of home, glowing -->
-      <div class="hub-card wfd-highlight" onclick="navTo('wfd')">
-        <span class="wfd-badge">HOT</span>
-        <div class="hub-icon">🎧</div>
+      <!-- ANKI PREDICTION WFD — top of home, glowing -->
+      <div class="hub-card wfd-highlight" onclick="openAnkiPredictionWfd()">
+        <span class="wfd-badge">ANKI</span>
+        <div class="hub-icon">🧠</div>
         <div class="hub-text">
-          <h3>WRITE FROM DICTATION</h3>
-          <p>Practice WFD • Check score instantly • Prediction &amp; Review list</p>
+          <h3>ANKI PREDICTION WFD</h3>
+          <p>ویس پردیکشن ماه • مرور فاصله‌دار • Hard / Easy مثل انکی</p>
         </div>
       </div>
 
@@ -2309,7 +2309,7 @@
     <div class="wfd-box">
       <div class="wfd-category-bar">
         <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All</button>
-        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Pred</button>
+        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🧠 ANKI Pred</button>
         <button class="cat-btn" id="catReview" onclick="filterWfdCategory('review')">🔖 Review List</button>
       </div>
 
@@ -5205,9 +5205,22 @@
     return p || '';
   }
 
+  function openAnkiPredictionWfd() {
+    navTo('wfd');
+    setTimeout(() => {
+      try { filterWfdCategory('pred'); showToast("🧠 ANKI PREDICTION WFD"); } catch (e) {}
+    }, 50);
+  }
+
   function handleDuelDeepLink() {
-    const param = getStartParam();
-    if (!param || !param.startsWith('duel_')) return;
+    const param = (getStartParam() || '').trim();
+    if (!param) return;
+    const key = param.toLowerCase();
+    if (key === 'wfd' || key === 'anki' || key === 'anki_wfd' || key === 'prediction') {
+      setTimeout(() => openAnkiPredictionWfd(), 300);
+      return;
+    }
+    if (!param.startsWith('duel_')) return;
     const duelId = param.replace(/^duel_/, '');
     if (!duelId) return;
     setTimeout(async () => {
@@ -5342,7 +5355,7 @@
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
-      title.innerText = "PTE ROOM • Write From Dictation";
+      title.innerText = "PTE ROOM • ANKI PREDICTION WFD";
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
