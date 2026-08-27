@@ -1741,7 +1741,7 @@
   <!-- Listening Practice Submenu -->
   <div class="view-screen" id="viewListeningMenu">
     <div class="hub-grid">
-      <div class="hub-card" onclick="navTo('wfd')">
+      <div class="hub-card" onclick="ankiWfdMode=false;setAnkiWfdChrome(false);navTo('wfd')">
         <div class="hub-icon">✍️</div>
         <div class="hub-text">
           <h3>Write From Dictation</h3>
@@ -2307,10 +2307,20 @@
   <!-- WFD Simulator Screen -->
   <div class="view-screen" id="viewWfd">
     <div class="wfd-box">
-      <div class="wfd-category-bar">
+      <div class="wfd-category-bar" id="wfdClassicBar">
         <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All</button>
-        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🧠 ANKI Pred</button>
+        <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Pred</button>
         <button class="cat-btn" id="catReview" onclick="filterWfdCategory('review')">🔖 Review List</button>
+      </div>
+      <div id="ankiWfdBar" style="display:none;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="font-weight:800;color:#67E8F9;font-size:13px;">ANKI PREDICTION WFD</div>
+          <div style="display:flex;gap:6px;">
+            <span class="wfd-badge" id="ankiDueBadge">مرور 0</span>
+            <span class="wfd-badge" style="background:linear-gradient(135deg,#2563EB,#06B6D4);" id="ankiNewBadge">جدید 0</span>
+          </div>
+        </div>
+        <div class="tiny" id="ankiQueueHint" style="color:#94a3b8;font-size:11px;">فقط پردیکشن · زمان‌بندی واقعی انکی</div>
       </div>
 
       <select id="wfdSelect" onchange="onSelectWfd()"></select>
@@ -2343,6 +2353,12 @@
       <div class="wfd-diff-buttons" id="wfdDiffActionBox">
         <button class="btn-diff-hard" onclick="markWfdDifficulty('hard')">🔴 Hard (Needs Review)</button>
         <button class="btn-diff-easy" onclick="markWfdDifficulty('easy')">🟢 Easy (Got it)</button>
+      </div>
+      <div class="wfd-diff-buttons" id="ankiGradeBox" style="display:none;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="btn-diff-hard" onclick="gradeAnkiWfd(1)">Again · ۱ دقیقه</button>
+        <button class="btn-diff-hard" style="background:#F59E0B;border-color:#F59E0B;color:#0b1220;" onclick="gradeAnkiWfd(2)">Hard</button>
+        <button class="btn-diff-easy" onclick="gradeAnkiWfd(3)">Good</button>
+        <button class="btn-diff-easy" style="background:#6ee7b7;color:#0b1220;" onclick="gradeAnkiWfd(4)">Easy</button>
       </div>
     </div>
   </div>
@@ -2393,7 +2409,7 @@
   </div>
 
   <div class="app-toast" id="appToast">Please type your answer first!</div>
-  <div class="app-version">Version 1.2 · ANKI WFD</div>
+  <div class="app-version">Version 1.3 · ANKI SRS</div>
 </div>
 
 <script>
@@ -5205,11 +5221,143 @@
     return p || '';
   }
 
+  let ankiWfdMode = false;
+  const ANKI_WFD_KEY = 'pteroom_anki_wfd_srs_v1';
+  const ANKI_NEW_PER_DAY = 12;
+  let ankiWfdState = {};
+  try { ankiWfdState = JSON.parse(localStorage.getItem(ANKI_WFD_KEY) || '{}') || {}; } catch(e) { ankiWfdState = {}; }
+  let ankiCurrentId = null;
+
+  function saveAnkiWfd() {
+    localStorage.setItem(ANKI_WFD_KEY, JSON.stringify(ankiWfdState));
+  }
+  function predQuestions() {
+    return (wfdQuestions || []).filter(q => q.isPrediction);
+  }
+  function ankiCard(id) {
+    const k = String(id);
+    if (!ankiWfdState[k]) ankiWfdState[k] = { due: 0, interval: 0, ease: 2.5, reps: 0, lapses: 0 };
+    return ankiWfdState[k];
+  }
+  function ankiTodayKey() {
+    return new Date().toISOString().slice(0,10);
+  }
+  function ankiNewUsed() {
+    const d = ankiWfdState._day;
+    if (d !== ankiTodayKey()) { ankiWfdState._day = ankiTodayKey(); ankiWfdState._newUsed = 0; }
+    return ankiWfdState._newUsed || 0;
+  }
+  function ankiCounts() {
+    const now = Date.now();
+    const pred = predQuestions();
+    let due = 0, neu = 0;
+    pred.forEach(q => {
+      const c = ankiCard(q.id);
+      if (c.reps > 0 && c.due <= now) due++;
+      else if (c.reps === 0) neu++;
+    });
+    neu = Math.min(neu, Math.max(0, ANKI_NEW_PER_DAY - ankiNewUsed()));
+    return { due, neu, total: pred.length };
+  }
+  function pickAnkiWfd() {
+    const now = Date.now();
+    const pred = predQuestions();
+    const due = pred.filter(q => ankiCard(q.id).reps > 0 && ankiCard(q.id).due <= now)
+      .sort((a,b) => ankiCard(a.id).due - ankiCard(b.id).due);
+    if (due.length) return due[0];
+    if (ankiNewUsed() < ANKI_NEW_PER_DAY) {
+      return pred.find(q => ankiCard(q.id).reps === 0) || null;
+    }
+    return null;
+  }
+  function setAnkiWfdChrome(on) {
+    ankiWfdMode = !!on;
+    const bar = document.getElementById('wfdClassicBar');
+    const ankiBar = document.getElementById('ankiWfdBar');
+    const sel = document.getElementById('wfdSelect');
+    const nextBtns = document.getElementById('wfdCheckActionBox');
+    if (bar) bar.style.display = on ? 'none' : 'flex';
+    if (ankiBar) ankiBar.style.display = on ? 'block' : 'none';
+    if (sel) sel.style.display = on ? 'none' : 'block';
+    document.getElementById('ankiGradeBox').style.display = 'none';
+    if (!on) document.getElementById('wfdDiffActionBox').style.display = '';
+    const c = ankiCounts();
+    const db = document.getElementById('ankiDueBadge');
+    const nb = document.getElementById('ankiNewBadge');
+    if (db) db.textContent = 'مرور ' + c.due;
+    if (nb) nb.textContent = 'جدید ' + c.neu;
+  }
+  function loadAnkiWfdQuestion(q) {
+    ankiCurrentId = q ? String(q.id) : null;
+    document.getElementById('wfdResultBox').style.display = 'none';
+    document.getElementById('wfdCheckActionBox').style.display = 'flex';
+    document.getElementById('wfdDiffActionBox').style.display = 'none';
+    document.getElementById('ankiGradeBox').style.display = 'none';
+    document.getElementById('wfdInput').value = '';
+    calcWfdWords();
+    startWfdTimer();
+    const audio = document.getElementById('wfdAudioPlayer');
+    if (q) {
+      audio.src = 'wfd_audios/' + q.audioUrl;
+      audio.load();
+    } else {
+      audio.src = '';
+    }
+    const hint = document.getElementById('ankiQueueHint');
+    if (hint) {
+      if (!q) hint.textContent = 'برای امروز تمام شد. بعداً برگرد.';
+      else {
+        const c = ankiCard(q.id);
+        hint.textContent = (c.reps ? 'مرور · فاصله فعلی ' + c.interval + ' روز' : 'کارت جدید پردیکشن') + ' · ' + predQuestions().length + ' پردیکشن';
+      }
+    }
+    const counts = ankiCounts();
+    const db = document.getElementById('ankiDueBadge');
+    const nb = document.getElementById('ankiNewBadge');
+    if (db) db.textContent = 'مرور ' + counts.due;
+    if (nb) nb.textContent = 'جدید ' + counts.neu;
+  }
   function openAnkiPredictionWfd() {
+    setAnkiWfdChrome(true);
     navTo('wfd');
     setTimeout(() => {
-      try { filterWfdCategory('pred'); showToast("🧠 ANKI PREDICTION WFD"); } catch (e) {}
-    }, 50);
+      const q = pickAnkiWfd();
+      loadAnkiWfdQuestion(q);
+      if (!q) showToast('امروز صف انکی پردیکشن تمام شد');
+      else showToast('🧠 فقط پردیکشن · مرور انکی');
+    }, 40);
+  }
+  function gradeAnkiWfd(grade) {
+    if (!ankiCurrentId) { openAnkiPredictionWfd(); return; }
+    const card = ankiCard(ankiCurrentId);
+    const now = Date.now();
+    if (grade === 1) {
+      card.lapses = (card.lapses || 0) + 1;
+      card.interval = 0;
+      card.due = now + 60 * 1000;
+      card.ease = Math.max(1.3, (card.ease || 2.5) - 0.2);
+    } else {
+      const ease = card.ease || 2.5;
+      if (!card.reps) card.interval = grade === 2 ? 0.1 : grade === 3 ? 1 : 3;
+      else if (card.interval < 1) card.interval = grade === 2 ? 1 : grade === 3 ? 3 : 4;
+      else {
+        const m = grade === 2 ? 1.2 : grade === 3 ? ease : ease + 0.15;
+        card.interval = Math.max(1, Math.round(card.interval * m * 10) / 10);
+      }
+      if (grade === 2) card.ease = Math.max(1.3, ease - 0.15);
+      else if (grade === 4) card.ease = ease + 0.15;
+      else card.ease = ease;
+      card.due = now + card.interval * 86400000;
+    }
+    if (!card.reps) {
+      ankiNewUsed();
+      ankiWfdState._newUsed = (ankiWfdState._newUsed || 0) + 1;
+    }
+    card.reps = (card.reps || 0) + 1;
+    saveAnkiWfd();
+    const nxt = pickAnkiWfd();
+    loadAnkiWfdQuestion(nxt);
+    if (!nxt) showToast('تمام شد برای امروز');
   }
 
   function handleDuelDeepLink() {
@@ -5355,7 +5503,8 @@
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
-      title.innerText = "PTE ROOM • ANKI PREDICTION WFD";
+      title.innerText = ankiWfdMode ? "PTE ROOM • ANKI PREDICTION WFD" : "PTE ROOM • Write From Dictation";
+      if (!ankiWfdMode) setAnkiWfdChrome(false);
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
@@ -5845,7 +5994,13 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
 
     document.getElementById('wfdResultBox').style.display = 'flex';
     document.getElementById('wfdCheckActionBox').style.display = 'none';
-    document.getElementById('wfdDiffActionBox').style.display = 'flex';
+    if (ankiWfdMode) {
+      document.getElementById('wfdDiffActionBox').style.display = 'none';
+      document.getElementById('ankiGradeBox').style.display = 'grid';
+    } else {
+      document.getElementById('wfdDiffActionBox').style.display = 'flex';
+      document.getElementById('ankiGradeBox').style.display = 'none';
+    }
   }
 
   function markWfdDifficulty(diff) {
