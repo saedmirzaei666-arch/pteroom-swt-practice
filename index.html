@@ -1269,11 +1269,11 @@
         </div>
       </div>
 
-      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
-        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
+      <div class="hub-card flashcard-highlight" onclick="navTo('general_english')">
+        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">📘</div>
         <div class="hub-text">
-          <h3 style="color:#f472b6;">FLASH CARDS</h3>
-          <p>Academic vocab · Leitner boxes</p>
+          <h3 style="color:#f472b6;">GENERAL ENGLISH</h3>
+          <p>Flash cards · more lessons later</p>
         </div>
       </div>
 
@@ -1296,6 +1296,18 @@
   </div>
 
 
+
+  <div class="view-screen" id="viewGeneralEnglish">
+    <div class="hub-grid">
+      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
+        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
+        <div class="hub-text">
+          <h3 style="color:#f472b6;">FLASH CARDS</h3>
+          <p>Academic vocab · Leitner boxes</p>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="view-screen" id="viewServices">
     <div class="hub-grid">
       <div class="hub-card" onclick="navTo('materials')">
@@ -2405,7 +2417,7 @@
   </div>
 
   <div class="app-toast" id="appToast">Please type your answer first!</div>
-  <div class="app-version">Version 1.5.1</div>
+  <div class="app-version">Version 1.6</div>
 </div>
 
 <script>
@@ -5545,6 +5557,10 @@
       title.innerText = "PTE ROOM • Duel";
       stopWfdTimer();
       if (currentDuelId) setupDuelPlayScreen(currentDuelId);
+    } else if (current === 'general_english') {
+      document.getElementById('viewGeneralEnglish').classList.add('active');
+      title.innerText = "PTE ROOM • General English";
+      stopWfdTimer();
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
