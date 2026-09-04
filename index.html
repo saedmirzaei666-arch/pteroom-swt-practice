@@ -1324,18 +1324,11 @@
           <p>جزئیات دوره‌ها، مشاوره و ثبت‌نام</p>
         </div>
       </div>
-      <div class="hub-card" onclick="navTo('schedule')">
-        <div class="hub-icon">📅</div>
-        <div class="hub-text">
-          <h3>برنامه این هفته</h3>
-          <p>جلسات آنلاین و تمرین‌ها</p>
-        </div>
-      </div>
       <div class="hub-card placement-highlight" onclick="openPlacementIntro()">
         <div class="hub-icon">📋</div>
         <div class="hub-text">
           <h3 style="color:var(--primary);">آزمون تعیین سطح</h3>
-          <p>ریدینگ، لیسنینگ و رایتینگ</p>
+          <p>ریدینگ، لیسنینگ، اسپیکینگ و رایتینگ</p>
         </div>
       </div>
     </div>
@@ -1530,7 +1523,52 @@
         </div>
       </div>
 
-      <!-- Section 5: Short Writing Task -->
+      <!-- Section 5: Speaking — Read Aloud -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎤 Speaking: Read Aloud</span>
+          <span id="raRecStatus" style="font-size:11.5px; color:var(--text-muted); font-weight:700;">Not recorded</span>
+        </div>
+        <div style="font-size:13px; color:#94a3b8; margin-bottom:8px; direction:rtl; text-align:right;">
+          جمله زیر را با صدای واضح بخوانید. حدود ۲۰–۳۵ ثانیه کافی است.
+        </div>
+        <div class="passage-box" style="font-size:15px; line-height:1.7;">
+          Climate change is one of the most pressing challenges of our time, requiring coordinated international action and long-term investment in renewable energy.
+        </div>
+        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-primary" id="raRecBtn" style="flex:1; padding:10px; border-radius:10px;" onclick="togglePlacementRec('ra')">⏺ Record</button>
+          <button type="button" class="btn-secondary" style="flex:1; padding:10px; border-radius:10px;" onclick="clearPlacementRec('ra')">Clear</button>
+        </div>
+        <audio id="raPreview" controls style="width:100%; margin-top:8px; display:none;"></audio>
+      </div>
+
+      <!-- Section 6: Speaking — Describe Image -->
+      <div class="quiz-card">
+        <div class="quiz-title">
+          <span>🎤 Speaking: Describe Image</span>
+          <span id="diRecStatus" style="font-size:11.5px; color:var(--text-muted); font-weight:700;">Not recorded</span>
+        </div>
+        <div style="font-size:13px; color:#94a3b8; margin-bottom:8px; direction:rtl; text-align:right;">
+          تصویر را در حدود ۲۵–۴۰ ثانیه توصیف کنید (موضوع، جزئیات مهم، نتیجه یا روند).
+        </div>
+        <div style="background:#0b1120; border:1px solid #1e293b; border-radius:12px; padding:12px; direction:ltr; text-align:center;">
+          <img id="placementDiImg"
+               src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_energy_consumption.svg/640px-World_energy_consumption.svg.png"
+               alt="Describe Image"
+               style="max-width:100%; border-radius:8px; background:#fff;"
+               onerror="this.style.display='none'; document.getElementById('placementDiFallback').style.display='block';" />
+          <div id="placementDiFallback" style="display:none; color:#e2e8f0; font-size:13px; line-height:1.6; padding:8px;">
+            <b>Chart:</b> Global energy consumption by source (oil, coal, gas, renewables, nuclear) over recent decades — renewables rising while fossil fuels remain large.
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-primary" id="diRecBtn" style="flex:1; padding:10px; border-radius:10px;" onclick="togglePlacementRec('di')">⏺ Record</button>
+          <button type="button" class="btn-secondary" style="flex:1; padding:10px; border-radius:10px;" onclick="clearPlacementRec('di')">Clear</button>
+        </div>
+        <audio id="diPreview" controls style="width:100%; margin-top:8px; display:none;"></audio>
+      </div>
+
+      <!-- Section 7: Short Writing Task -->
       <div class="quiz-card">
         <div class="quiz-title">
           <span>✍️ Short Writing Task</span>
@@ -1564,72 +1602,6 @@
         ‹ بازگشت
       </button>
     </form>
-  </div>
-
-  <!-- Weekly Schedule Screen -->
-  <div class="view-screen" id="viewSchedule">
-    <div class="schedule-container">
-      <div class="schedule-banner">
-        📅 برنامه تمرینی هفته – تیم PTE ROOM<br>
-        <span style="font-size: 11.5px; color: #94a3b8; font-weight: 600;">از شنبه ۳۱ مرداد تا جمعه ۶ شهریور</span>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 شنبه</span><span class="day-date">۳۱ مرداد</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">💬 SST – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 یکشنبه</span><span class="day-date">۱ شهریور</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">📖 RA – بهنام حق گویی</span><span class="event-time">18:00</span></div>
-          <div class="event-row"><span class="event-info">🎧 DI – محمد حسین نیرومند</span><span class="event-time">20:00</span></div>
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 دوشنبه</span><span class="day-date">۲ شهریور</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 سه‌شنبه</span><span class="day-date">۳ شهریور</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">📖 RA – سعید میرزایی</span><span class="event-time">09:00</span></div>
-          <div class="event-row"><span class="event-info">📖 RTS – بهنام حق گویی</span><span class="event-time">18:00</span></div>
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 چهارشنبه</span><span class="day-date">۴ شهریور</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 پنج‌شنبه</span><span class="day-date">۵ شهریور</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-day-card">
-        <div class="day-header"><span class="day-title">📌 جمعه</span><span class="day-date">۶ شهریور</span></div>
-        <div class="day-events">
-          <div class="event-row"><span class="event-info">🤖 WFD Bot</span><span class="event-time">21:00</span></div>
-        </div>
-      </div>
-
-      <div class="schedule-footer-note">⚠️ در صورت هرگونه تغییر، اطلاع‌رسانی از طریق کانال و گروه انجام خواهد شد.</div>
-    </div>
   </div>
 
   <!-- Courses View Screen -->
@@ -1680,10 +1652,10 @@
         <div style="background: var(--surface-2); border:1px solid #334155; padding:12px 14px; border-radius:12px; margin-bottom:8px;">
           <div style="font-weight:800; color:var(--primary); font-size:13.5px; margin-bottom:6px;">📌 نکات کلیدی پیش از شروع:</div>
           <div style="font-size:13px; line-height:1.8; color:#cbd5e1;">
-            • 🎯 <b>هدف آزمون:</b> ارزیابی مهارت‌های کلیدی (Reading، Listening، Spelling و Writing) جهت تعیین دقیق پلن مطالعاتی.<br>
-            • ⏱ <b>زمان تقریبی:</b> حدود ۵ الی ۷ دقیقه تمرکز کامل.<br>
-            • 📊 <b>ساختار بخش‌ها:</b> شامل ریدینگ، لیسنینگ، واژگان، املا و رایتینگ کوتاه.<br>
-            • 🚀 <b>گام بعدی:</b> پس از ثبت نهایی، پاسخ‌ها همراه با تحلیل دقیق و کد رهگیری برای تیم پشتیبانی ارسال می‌شود تا مشاوره اختصاصی دریافت کنید.
+            • 🎯 <b>هدف آزمون:</b> ارزیابی Reading، Listening، Speaking (Read Aloud + Describe Image)، Spelling و Writing.<br>
+            • ⏱ <b>زمان تقریبی:</b> حدود ۸ الی ۱۲ دقیقه تمرکز کامل.<br>
+            • 🎤 <b>اسپیکینگ:</b> دسترسی میکروفون لازم است؛ ویس‌ها برای منتور ارسال می‌شود.<br>
+            • 🚀 <b>گام بعدی:</b> پس از ثبت نهایی، پاسخ‌ها و ویس‌ها با کد رهگیری برای پشتیبانی می‌رود.
           </div>
         </div>
       </div>
@@ -5494,10 +5466,6 @@
       document.getElementById('viewMaterials').classList.add('active');
       title.innerText = "PTE ROOM • متریال آموزشی";
       stopWfdTimer();
-    } else if (current === 'schedule') {
-      document.getElementById('viewSchedule').classList.add('active');
-      title.innerText = "PTE ROOM • برنامه تمرینی هفته";
-      stopWfdTimer();
     } else if (current === 'courses') {
       document.getElementById('viewCourses').classList.add('active');
       title.innerText = "PTE ROOM • دوره‌های آموزشی";
@@ -5597,6 +5565,94 @@
     counterEl.style.color = (count >= 50 && count <= 100) ? "#10b981" : (count > 100 ? "#f59e0b" : "var(--primary)");
   }
 
+  /* —— Placement Speaking (Read Aloud + Describe Image) —— */
+  const placementSpeak = {
+    ra: { recorder: null, chunks: [], blob: null, stream: null },
+    di: { recorder: null, chunks: [], blob: null, stream: null }
+  };
+
+  function setSpeakStatus(task, text, color) {
+    const el = document.getElementById(task === 'ra' ? 'raRecStatus' : 'diRecStatus');
+    if (el) {
+      el.innerText = text;
+      el.style.color = color || 'var(--text-muted)';
+    }
+  }
+
+  async function togglePlacementRec(task) {
+    const st = placementSpeak[task];
+    if (!st) return;
+    if (st.recorder && st.recorder.state === 'recording') {
+      st.recorder.stop();
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      st.stream = stream;
+      st.chunks = [];
+      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : (MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '');
+      st.recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+      st.recorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) st.chunks.push(e.data);
+      };
+      st.recorder.onstop = () => {
+        try { st.stream.getTracks().forEach(t => t.stop()); } catch (_) {}
+        st.stream = null;
+        st.blob = new Blob(st.chunks, { type: st.recorder.mimeType || 'audio/webm' });
+        const preview = document.getElementById(task === 'ra' ? 'raPreview' : 'diPreview');
+        if (preview) {
+          preview.src = URL.createObjectURL(st.blob);
+          preview.style.display = 'block';
+        }
+        const btn = document.getElementById(task === 'ra' ? 'raRecBtn' : 'diRecBtn');
+        if (btn) btn.innerText = '⏺ Record again';
+        setSpeakStatus(task, 'Recorded ✓', '#10b981');
+      };
+      st.recorder.start();
+      const btn = document.getElementById(task === 'ra' ? 'raRecBtn' : 'diRecBtn');
+      if (btn) btn.innerText = '⏹ Stop';
+      setSpeakStatus(task, 'Recording…', '#f59e0b');
+    } catch (err) {
+      console.error(err);
+      alert('⚠️ دسترسی میکروفون لازم است. در تنظیمات تلگرام/مرورگر اجازه دهید.');
+      setSpeakStatus(task, 'Mic blocked', '#ef4444');
+    }
+  }
+
+  function clearPlacementRec(task) {
+    const st = placementSpeak[task];
+    if (!st) return;
+    if (st.recorder && st.recorder.state === 'recording') {
+      try { st.recorder.stop(); } catch (_) {}
+    }
+    st.blob = null;
+    st.chunks = [];
+    const preview = document.getElementById(task === 'ra' ? 'raPreview' : 'diPreview');
+    if (preview) {
+      preview.removeAttribute('src');
+      preview.style.display = 'none';
+    }
+    const btn = document.getElementById(task === 'ra' ? 'raRecBtn' : 'diRecBtn');
+    if (btn) btn.innerText = '⏺ Record';
+    setSpeakStatus(task, 'Not recorded', 'var(--text-muted)');
+  }
+
+  async function sendPlacementVoice(blob, caption, filename) {
+    if (!blob) return false;
+    const fd = new FormData();
+    fd.append('chat_id', ADMIN_CHAT_ID);
+    fd.append('caption', caption);
+    fd.append('document', blob, filename || 'speaking.webm');
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, {
+      method: 'POST',
+      body: fd
+    });
+    const data = await res.json().catch(() => ({}));
+    return !!data.ok;
+  }
+
   async function handlePlacementSubmit(e) {
     e.preventDefault();
     if (isSubmitting) return;
@@ -5604,6 +5660,11 @@
     const contactVal = document.getElementById('userContact').value.trim();
     if (!contactVal) {
       alert("⚠️ لطفاً شماره تماس یا آیدی تلگرام خود را وارد کنید تا نتیجه مشاوره ارسال شود.");
+      return;
+    }
+
+    if (!placementSpeak.ra.blob || !placementSpeak.di.blob) {
+      alert("⚠️ لطفاً هر دو بخش Speaking (Read Aloud و Describe Image) را ضبط کنید.");
       return;
     }
 
@@ -5684,6 +5745,8 @@
 • 🔤 <b>Vocab & Spelling:</b> ${vocabScore} / 2
 🎯 <b>مجموع نمره تستی:</b> <b>${totalScore} / 17</b>
 
+🎤 <b>Speaking:</b> ویس Read Aloud + Describe Image در پیام‌های بعدی (تصحیح دستی).
+
 ━━━━━━━━━━━━━━━━━━━━
 ✍️ <b>پاراگراف رایتینگ داوطلب (${wordsCount} کلمه):</b>
 <i>"${writingText || 'متنی ارسال نشده است.'}"</i>
@@ -5733,6 +5796,29 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
         })
       });
 
+      await new Promise(r => setTimeout(r, 400));
+      const raOk = await sendPlacementVoice(
+        placementSpeak.ra.blob,
+        `🎤 Read Aloud | ${trackingCode} | ${fullName} | ${contactVal}`,
+        `${trackingCode}_RA.webm`
+      );
+      await new Promise(r => setTimeout(r, 400));
+      const diOk = await sendPlacementVoice(
+        placementSpeak.di.blob,
+        `🎤 Describe Image | ${trackingCode} | ${fullName} | ${contactVal}`,
+        `${trackingCode}_DI.webm`
+      );
+      if (!raOk || !diOk) {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: ADMIN_CHAT_ID,
+            text: `⚠️ ${trackingCode}: ارسال ویس ناقص شد (RA:${raOk} DI:${diOk})`
+          })
+        });
+      }
+
       formElement.reset();
       rfibUserAnswers = { A: null, B: null, C: null, D: null };
       ['A', 'B', 'C', 'D'].forEach(k => {
@@ -5740,6 +5826,8 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
         if (z) { z.innerText = ""; z.classList.remove('filled'); }
       });
       document.querySelectorAll('.rfib-chip').forEach(c => c.classList.remove('used', 'selected'));
+      clearPlacementRec('ra');
+      clearPlacementRec('di');
       updateWritingCount();
 
       const userSuccessNotice = `✅ آزمون تعیین سطح شما با موفقیت ثبت شد.\n\n🔖 کد پیگیری شما: ${trackingCode}\n\nبه زودی نتیجه و تحلیل اختصاصی از طریق پشتیبانان PTE ROOM برای شما ارسال خواهد شد.`;
