@@ -1532,8 +1532,8 @@
         <div style="font-size:13px; color:#94a3b8; margin-bottom:8px; direction:rtl; text-align:right;">
           جمله زیر را با صدای واضح بخوانید. حدود ۲۰–۳۵ ثانیه کافی است.
         </div>
-        <div class="passage-box" style="font-size:15px; line-height:1.7;">
-          Climate change is one of the most pressing challenges of our time, requiring coordinated international action and long-term investment in renewable energy.
+        <div class="passage-box" style="font-size:14.5px; line-height:1.65;">
+          The numbers on U.S. student debt, after all, are truly staggering. The average 2015 U.S. university graduate who took out loans to help pay for tuition enters the workforce with thirty-five thousand dollars in student debt. In the U.S., total student debt exceeds one point one five trillion dollars — dwarfing, for instance, the nation's credit card debt.
         </div>
         <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
           <button type="button" class="btn-primary" id="raRecBtn" style="flex:1; padding:10px; border-radius:10px;" onclick="togglePlacementRec('ra')">⏺ Record</button>
@@ -1553,12 +1553,12 @@
         </div>
         <div style="background:#0b1120; border:1px solid #1e293b; border-radius:12px; padding:12px; direction:ltr; text-align:center;">
           <img id="placementDiImg"
-               src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_energy_consumption.svg/640px-World_energy_consumption.svg.png"
+               src="di_images/di_92.png"
                alt="Describe Image"
                style="max-width:100%; border-radius:8px; background:#fff;"
                onerror="this.style.display='none'; document.getElementById('placementDiFallback').style.display='block';" />
           <div id="placementDiFallback" style="display:none; color:#e2e8f0; font-size:13px; line-height:1.6; padding:8px;">
-            <b>Chart:</b> Global energy consumption by source (oil, coal, gas, renewables, nuclear) over recent decades — renewables rising while fossil fuels remain large.
+            <b>Image di_92</b> could not load. Check that <code>di_images/di_92.png</code> exists on the server.
           </div>
         </div>
         <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
@@ -5579,6 +5579,29 @@
     }
   }
 
+  function pickRecorderMime() {
+    // Prefer Telegram-friendly formats (voice = OGG Opus; audio = MP4/M4A). Avoid webm when possible.
+    const candidates = [
+      'audio/ogg;codecs=opus',
+      'audio/ogg',
+      'audio/mp4',
+      'audio/aac',
+      'audio/mpeg'
+    ];
+    for (const t of candidates) {
+      if (window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t;
+    }
+    return '';
+  }
+
+  function extFromMime(mime) {
+    const m = (mime || '').toLowerCase();
+    if (m.includes('ogg')) return 'ogg';
+    if (m.includes('mp4') || m.includes('aac') || m.includes('m4a')) return 'm4a';
+    if (m.includes('mpeg') || m.includes('mp3')) return 'mp3';
+    return 'ogg';
+  }
+
   async function togglePlacementRec(task) {
     const st = placementSpeak[task];
     if (!st) return;
@@ -5590,17 +5613,16 @@
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       st.stream = stream;
       st.chunks = [];
-      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-        ? 'audio/webm;codecs=opus'
-        : (MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '');
+      const mime = pickRecorderMime();
       st.recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+      st.mime = st.recorder.mimeType || mime || 'audio/ogg';
       st.recorder.ondataavailable = (e) => {
         if (e.data && e.data.size > 0) st.chunks.push(e.data);
       };
       st.recorder.onstop = () => {
         try { st.stream.getTracks().forEach(t => t.stop()); } catch (_) {}
         st.stream = null;
-        st.blob = new Blob(st.chunks, { type: st.recorder.mimeType || 'audio/webm' });
+        st.blob = new Blob(st.chunks, { type: st.mime || 'audio/ogg' });
         const preview = document.getElementById(task === 'ra' ? 'raPreview' : 'diPreview');
         if (preview) {
           preview.src = URL.createObjectURL(st.blob);
@@ -5629,6 +5651,7 @@
     }
     st.blob = null;
     st.chunks = [];
+    st.mime = null;
     const preview = document.getElementById(task === 'ra' ? 'raPreview' : 'diPreview');
     if (preview) {
       preview.removeAttribute('src');
@@ -5639,18 +5662,44 @@
     setSpeakStatus(task, 'Not recorded', 'var(--text-muted)');
   }
 
-  async function sendPlacementVoice(blob, caption, filename) {
+  async function sendPlacementVoice(blob, caption, baseName) {
     if (!blob) return false;
+    const mime = (blob.type || '').toLowerCase();
+    const ext = extFromMime(mime);
+    const filename = `${baseName}.${ext}`;
     const fd = new FormData();
     fd.append('chat_id', ADMIN_CHAT_ID);
     fd.append('caption', caption);
-    fd.append('document', blob, filename || 'speaking.webm');
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, {
+
+    // Telegram: sendVoice = OGG Opus (native voice bubble); sendAudio = mp3/m4a
+    let method = 'sendDocument';
+    if (ext === 'ogg') {
+      method = 'sendVoice';
+      fd.append('voice', blob, filename);
+    } else if (ext === 'mp3' || ext === 'm4a') {
+      method = 'sendAudio';
+      fd.append('audio', blob, filename);
+    } else {
+      fd.append('document', blob, filename);
+    }
+
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${method}`, {
       method: 'POST',
       body: fd
     });
     const data = await res.json().catch(() => ({}));
-    return !!data.ok;
+    if (data.ok) return true;
+    // Fallback: send as document if voice/audio rejected
+    const fd2 = new FormData();
+    fd2.append('chat_id', ADMIN_CHAT_ID);
+    fd2.append('caption', caption);
+    fd2.append('document', blob, filename);
+    const res2 = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, {
+      method: 'POST',
+      body: fd2
+    });
+    const data2 = await res2.json().catch(() => ({}));
+    return !!data2.ok;
   }
 
   async function handlePlacementSubmit(e) {
@@ -5800,13 +5849,13 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
       const raOk = await sendPlacementVoice(
         placementSpeak.ra.blob,
         `🎤 Read Aloud | ${trackingCode} | ${fullName} | ${contactVal}`,
-        `${trackingCode}_RA.webm`
+        `${trackingCode}_RA`
       );
       await new Promise(r => setTimeout(r, 400));
       const diOk = await sendPlacementVoice(
         placementSpeak.di.blob,
         `🎤 Describe Image | ${trackingCode} | ${fullName} | ${contactVal}`,
-        `${trackingCode}_DI.webm`
+        `${trackingCode}_DI`
       );
       if (!raOk || !diOk) {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
