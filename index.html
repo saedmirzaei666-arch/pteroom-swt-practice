@@ -1247,7 +1247,7 @@
   </div>
 
   <!-- Live Arena Feed Bar -->
-  <div class="news-ticker-bar" id="newsTickerBar" style="display:none;">
+  <div class="news-ticker-bar" id="newsTickerBar">
     <span class="ticker-tag">⚔️ LIVE ARENA</span>
     <div class="ticker-content">
       <span class="ticker-text" id="liveArenaTicker">
@@ -1260,20 +1260,73 @@
   <div class="view-screen active" id="viewHome">
     <div class="hub-grid">
 
-      <div class="hub-card wfd-highlight" onclick="openAnkiPredictionWfd()">
-        <span class="wfd-badge">ANKI</span>
-        <div class="hub-icon">🧠</div>
+      <!-- WFD PRACTICE — top of home, glowing -->
+      <div class="hub-card wfd-highlight" onclick="navTo('wfd')">
+        <span class="wfd-badge">HOT</span>
+        <div class="hub-icon">🎧</div>
         <div class="hub-text">
-          <h3>ANKI PREDICTION WFD</h3>
-          <p>Monthly prediction audio · spaced repetition</p>
+          <h3>WRITE FROM DICTATION</h3>
+          <p>Practice WFD • Check score instantly • Prediction &amp; Review list</p>
         </div>
       </div>
 
-      <div class="hub-card flashcard-highlight" onclick="navTo('general_english')">
-        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">📘</div>
+      <!-- DAILY WFD CHALLENGE -->
+      <div class="hub-card" id="dailyWfdCard" onclick="startDailyWfdChallenge()" style="border-color:rgba(52,211,153,0.45); position:relative;">
+        <span class="wfd-badge" style="background:linear-gradient(135deg,#34d399,#059669);">TODAY</span>
+        <div class="hub-icon" style="background:rgba(52,211,153,0.12); border-color:rgba(52,211,153,0.4);">🔥</div>
         <div class="hub-text">
-          <h3 style="color:#f472b6;">GENERAL ENGLISH</h3>
-          <p>Flash cards · more lessons later</p>
+          <h3 style="color:#34d399;">CHALLENGE OF THE DAY · WFD</h3>
+          <p id="dailyWfdCardSub">One shared question for everyone today · Score appears on the live board</p>
+        </div>
+      </div>
+
+      <!-- DUEL ARENA -->
+      <div class="hub-card duel-highlight" onclick="navTo('duels')">
+        <div class="hub-icon">⚔️</div>
+        <div class="hub-text">
+          <h3 style="color:#fbbf24;">WFD DUEL • LIVE CHALLENGE</h3>
+          <p>1v1 Write From Dictation • Pick 3 or 5 questions • Rank &amp; win</p>
+        </div>
+      </div>
+
+      <div class="hub-card placement-highlight" onclick="openPlacementIntro()">
+        <div class="hub-icon">📋</div>
+        <div class="hub-text">
+          <h3 style="color:var(--primary);">آزمون تعیین سطح تخصصی</h3>
+          <p>شبیه‌ساز استاندارد ریدینگ، لیسنینگ و نگارش تحلیلی</p>
+        </div>
+      </div>
+
+      <!-- FLASH CARDS Added to Main Menu with Glowing Style -->
+      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
+        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
+        <div class="hub-text">
+          <h3 style="color:#f472b6; font-size: 16px; letter-spacing: 0.5px;">FLASH CARDS</h3>
+          <p>جعبه لایتنر واژگان آکادمیک (مرور هوشمند و جعبه‌های ۵گانه)</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('materials')">
+        <div class="hub-icon">📁</div>
+        <div class="hub-text">
+          <h3 style="color:var(--primary);">متریال PTE ROOM</h3>
+          <p>آخرین ورژن فایل‌ها و پردیکشن‌های رسمی آزمون اصلی</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('schedule')">
+        <div class="hub-icon">📅</div>
+        <div class="hub-text">
+          <h3>برنامه تمرینی این هفته</h3>
+          <p>جدول زمان‌بندی جلسات آنلاین، تسک‌ها و تمرینات ربات</p>
+        </div>
+      </div>
+
+      <div class="hub-card" onclick="navTo('courses')">
+        <div class="hub-icon">🎓</div>
+        <div class="hub-text">
+          <h3>دوره‌های موجود در PTE ROOM</h3>
+          <p>مشاهده جزئیات ۴ دوره تخصصی، دریافت مشاوره و ثبت‌نام</p>
         </div>
       </div>
 
@@ -1281,65 +1334,12 @@
         <div class="hub-icon">⚡</div>
         <div class="hub-text">
           <h3>PTE PRACTICE</h3>
-          <p>WFD · RFIB · SWT · SST</p>
-        </div>
-      </div>
-
-      <div class="hub-card" onclick="navTo('services')">
-        <div class="hub-icon">🏛️</div>
-        <div class="hub-text">
-          <h3>خدمات PTE ROOM</h3>
-          <p>Materials · Courses · Schedule · Placement</p>
+          <p>شبیه‌ساز هوشمند WFD و بانک سوالات RFIB • SWT</p>
         </div>
       </div>
     </div>
   </div>
 
-
-
-  <div class="view-screen" id="viewGeneralEnglish">
-    <div class="hub-grid">
-      <div class="hub-card flashcard-highlight" onclick="navTo('flash_setup')">
-        <div class="hub-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4);">🔥</div>
-        <div class="hub-text">
-          <h3 style="color:#f472b6;">FLASH CARDS</h3>
-          <p>Academic vocab · Leitner boxes</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="view-screen" id="viewServices">
-    <div class="hub-grid">
-      <div class="hub-card" onclick="navTo('materials')">
-        <div class="hub-icon">📁</div>
-        <div class="hub-text">
-          <h3 style="color:var(--primary);">متریال PTE ROOM</h3>
-          <p>آخرین ورژن فایل‌ها و پردیکشن‌های رسمی</p>
-        </div>
-      </div>
-      <div class="hub-card" onclick="navTo('courses')">
-        <div class="hub-icon">🎓</div>
-        <div class="hub-text">
-          <h3>دوره‌های PTE ROOM</h3>
-          <p>جزئیات دوره‌ها، مشاوره و ثبت‌نام</p>
-        </div>
-      </div>
-      <div class="hub-card" onclick="navTo('schedule')">
-        <div class="hub-icon">📅</div>
-        <div class="hub-text">
-          <h3>برنامه این هفته</h3>
-          <p>جلسات آنلاین و تمرین‌ها</p>
-        </div>
-      </div>
-      <div class="hub-card placement-highlight" onclick="openPlacementIntro()">
-        <div class="hub-icon">📋</div>
-        <div class="hub-text">
-          <h3 style="color:var(--primary);">آزمون تعیین سطح</h3>
-          <p>ریدینگ، لیسنینگ و رایتینگ</p>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- Materials View Screen -->
   <div class="view-screen" id="viewMaterials">
     <div class="materials-container">
@@ -1399,14 +1399,6 @@
         <div class="material-info">
           <span class="material-badge">PREDICTION</span>
           <div class="material-title">آخرین ورژن سوالات پردیکشن SWT</div>
-        </div>
-        <div class="arrow-icon">‹</div>
-      </div>
-
-      <div class="material-item-card" onclick="openExternalLink('https://t.me/pte_room/2882')">
-        <div class="material-info">
-          <span class="material-badge">PREDICTION</span>
-          <div class="material-title">آخرین ورژن سوالات پردیکشن SST</div>
         </div>
         <div class="arrow-icon">‹</div>
       </div>
@@ -1749,7 +1741,7 @@
   <!-- Listening Practice Submenu -->
   <div class="view-screen" id="viewListeningMenu">
     <div class="hub-grid">
-      <div class="hub-card" onclick="ankiWfdMode=false;setAnkiWfdChrome(false);navTo('wfd')">
+      <div class="hub-card" onclick="navTo('wfd')">
         <div class="hub-icon">✍️</div>
         <div class="hub-text">
           <h3>Write From Dictation</h3>
@@ -2315,20 +2307,10 @@
   <!-- WFD Simulator Screen -->
   <div class="view-screen" id="viewWfd">
     <div class="wfd-box">
-      <div class="wfd-category-bar" id="wfdClassicBar">
+      <div class="wfd-category-bar">
         <button class="cat-btn active" id="catAll" onclick="filterWfdCategory('all')">🌐 All</button>
         <button class="cat-btn" id="catPred" onclick="filterWfdCategory('pred')">🔥 Pred</button>
         <button class="cat-btn" id="catReview" onclick="filterWfdCategory('review')">🔖 Review List</button>
-      </div>
-      <div id="ankiWfdBar" style="display:none;margin-bottom:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
-          <div style="font-weight:800;color:#67E8F9;font-size:13px;">ANKI PREDICTION WFD</div>
-          <div style="display:flex;gap:6px;">
-            <span class="wfd-badge" id="ankiDueBadge">Due 0</span>
-            <span class="wfd-badge" style="background:linear-gradient(135deg,#2563EB,#06B6D4);" id="ankiNewBadge">New 0</span>
-          </div>
-        </div>
-        <div class="tiny" id="ankiQueueHint" style="color:#94a3b8;font-size:11px;">فقط پردیکشن · زمان‌بندی واقعی انکی</div>
       </div>
 
       <select id="wfdSelect" onchange="onSelectWfd()"></select>
@@ -2361,12 +2343,6 @@
       <div class="wfd-diff-buttons" id="wfdDiffActionBox">
         <button class="btn-diff-hard" onclick="markWfdDifficulty('hard')">🔴 Hard (Needs Review)</button>
         <button class="btn-diff-easy" onclick="markWfdDifficulty('easy')">🟢 Easy (Got it)</button>
-      </div>
-      <div class="wfd-diff-buttons" id="ankiGradeBox" style="display:none;grid-template-columns:1fr 1fr;gap:8px;">
-        <button class="btn-diff-hard" onclick="gradeAnkiWfd(1)">Again · 1 Min</button>
-        <button class="btn-diff-hard" style="background:#F59E0B;border-color:#F59E0B;color:#0b1220;" onclick="gradeAnkiWfd(2)">Hard</button>
-        <button class="btn-diff-easy" onclick="gradeAnkiWfd(3)">Good</button>
-        <button class="btn-diff-easy" style="background:#6ee7b7;color:#0b1220;" onclick="gradeAnkiWfd(4)">Easy</button>
       </div>
     </div>
   </div>
@@ -2417,7 +2393,7 @@
   </div>
 
   <div class="app-toast" id="appToast">Please type your answer first!</div>
-  <div class="app-version">Version 1.6</div>
+  <div class="app-version">Version 1.1</div>
 </div>
 
 <script>
@@ -5229,159 +5205,9 @@
     return p || '';
   }
 
-  let ankiWfdMode = false;
-  const ANKI_WFD_KEY = 'pteroom_anki_wfd_srs_v1';
-  const ANKI_NEW_PER_DAY = 12;
-  let ankiWfdState = {};
-  try { ankiWfdState = JSON.parse(localStorage.getItem(ANKI_WFD_KEY) || '{}') || {}; } catch(e) { ankiWfdState = {}; }
-  let ankiCurrentId = null;
-
-  function saveAnkiWfd() {
-    localStorage.setItem(ANKI_WFD_KEY, JSON.stringify(ankiWfdState));
-  }
-  function predQuestions() {
-    return (wfdQuestions || []).filter(q => q.isPrediction);
-  }
-  function ankiCard(id) {
-    const k = String(id);
-    if (!ankiWfdState[k]) ankiWfdState[k] = { due: 0, interval: 0, ease: 2.5, reps: 0, lapses: 0 };
-    return ankiWfdState[k];
-  }
-  function ankiTodayKey() {
-    return new Date().toISOString().slice(0,10);
-  }
-  function ankiNewUsed() {
-    const d = ankiWfdState._day;
-    if (d !== ankiTodayKey()) { ankiWfdState._day = ankiTodayKey(); ankiWfdState._newUsed = 0; }
-    return ankiWfdState._newUsed || 0;
-  }
-  function ankiCounts() {
-    const now = Date.now();
-    const pred = predQuestions();
-    let due = 0, neu = 0;
-    pred.forEach(q => {
-      const c = ankiCard(q.id);
-      if (c.reps > 0 && c.due <= now) due++;
-      else if (c.reps === 0) neu++;
-    });
-    neu = Math.min(neu, Math.max(0, ANKI_NEW_PER_DAY - ankiNewUsed()));
-    return { due, neu, total: pred.length };
-  }
-  function pickAnkiWfd() {
-    const now = Date.now();
-    const pred = predQuestions();
-    const due = pred.filter(q => ankiCard(q.id).reps > 0 && ankiCard(q.id).due <= now)
-      .sort((a,b) => ankiCard(a.id).due - ankiCard(b.id).due);
-    if (due.length) return due[0];
-    if (ankiNewUsed() < ANKI_NEW_PER_DAY) {
-      return pred.find(q => ankiCard(q.id).reps === 0) || null;
-    }
-    return null;
-  }
-  function setAnkiWfdChrome(on) {
-    ankiWfdMode = !!on;
-    const bar = document.getElementById('wfdClassicBar');
-    const ankiBar = document.getElementById('ankiWfdBar');
-    const sel = document.getElementById('wfdSelect');
-    const nextBtns = document.getElementById('wfdCheckActionBox');
-    if (bar) bar.style.display = on ? 'none' : 'flex';
-    if (ankiBar) ankiBar.style.display = on ? 'block' : 'none';
-    if (sel) sel.style.display = on ? 'none' : 'block';
-    document.getElementById('ankiGradeBox').style.display = 'none';
-    if (!on) document.getElementById('wfdDiffActionBox').style.display = '';
-    const c = ankiCounts();
-    const db = document.getElementById('ankiDueBadge');
-    const nb = document.getElementById('ankiNewBadge');
-    if (db) db.textContent = 'Due ' + c.due;
-    if (nb) nb.textContent = 'New ' + c.neu;
-  }
-  function loadAnkiWfdQuestion(q) {
-    ankiCurrentId = q ? String(q.id) : null;
-    document.getElementById('wfdResultBox').style.display = 'none';
-    document.getElementById('wfdCheckActionBox').style.display = 'flex';
-    document.getElementById('wfdDiffActionBox').style.display = 'none';
-    document.getElementById('ankiGradeBox').style.display = 'none';
-    document.getElementById('wfdInput').value = '';
-    calcWfdWords();
-    startWfdTimer();
-    const audio = document.getElementById('wfdAudioPlayer');
-    if (q) {
-      audio.src = 'wfd_audios/' + q.audioUrl;
-      audio.load();
-    } else {
-      audio.src = '';
-    }
-    const pred = predQuestions();
-    const num = q ? (pred.findIndex(x => String(x.id) === String(q.id)) + 1) : 0;
-    const hint = document.getElementById('ankiQueueHint');
-    if (hint) {
-      if (!q) hint.textContent = 'Done for today.';
-      else {
-        const c = ankiCard(q.id);
-        const kind = c.reps ? ('Review · ' + c.interval + 'd') : 'New card';
-        hint.textContent = 'Q ' + num + ' / ' + pred.length + ' · WFD #' + q.id + ' · ' + kind;
-      }
-    }
-    const titleEl = document.querySelector('#ankiWfdBar div[style*="font-weight:800"]');
-    if (titleEl && q) titleEl.textContent = 'ANKI PREDICTION WFD · Q ' + num;
-    const counts = ankiCounts();
-    const db = document.getElementById('ankiDueBadge');
-    const nb = document.getElementById('ankiNewBadge');
-    if (db) db.textContent = 'Due ' + counts.due;
-    if (nb) nb.textContent = 'New ' + counts.neu;
-  }
-  function openAnkiPredictionWfd() {
-    setAnkiWfdChrome(true);
-    navTo('wfd');
-    setTimeout(() => {
-      const q = pickAnkiWfd();
-      loadAnkiWfdQuestion(q);
-      if (!q) showToast('Anki queue done for today');
-      else showToast('Prediction only · Anki review');
-    }, 40);
-  }
-  function gradeAnkiWfd(grade) {
-    if (!ankiCurrentId) { openAnkiPredictionWfd(); return; }
-    const card = ankiCard(ankiCurrentId);
-    const now = Date.now();
-    if (grade === 1) {
-      card.lapses = (card.lapses || 0) + 1;
-      card.interval = 0;
-      card.due = now + 60 * 1000;
-      card.ease = Math.max(1.3, (card.ease || 2.5) - 0.2);
-    } else {
-      const ease = card.ease || 2.5;
-      if (!card.reps) card.interval = grade === 2 ? 0.1 : grade === 3 ? 1 : 3;
-      else if (card.interval < 1) card.interval = grade === 2 ? 1 : grade === 3 ? 3 : 4;
-      else {
-        const m = grade === 2 ? 1.2 : grade === 3 ? ease : ease + 0.15;
-        card.interval = Math.max(1, Math.round(card.interval * m * 10) / 10);
-      }
-      if (grade === 2) card.ease = Math.max(1.3, ease - 0.15);
-      else if (grade === 4) card.ease = ease + 0.15;
-      else card.ease = ease;
-      card.due = now + card.interval * 86400000;
-    }
-    if (!card.reps) {
-      ankiNewUsed();
-      ankiWfdState._newUsed = (ankiWfdState._newUsed || 0) + 1;
-    }
-    card.reps = (card.reps || 0) + 1;
-    saveAnkiWfd();
-    const nxt = pickAnkiWfd();
-    loadAnkiWfdQuestion(nxt);
-    if (!nxt) showToast('Done for today');
-  }
-
   function handleDuelDeepLink() {
-    const param = (getStartParam() || '').trim();
-    if (!param) return;
-    const key = param.toLowerCase();
-    if (key === 'wfd' || key === 'anki' || key === 'anki_wfd' || key === 'prediction') {
-      setTimeout(() => openAnkiPredictionWfd(), 300);
-      return;
-    }
-    if (!param.startsWith('duel_')) return;
+    const param = getStartParam();
+    if (!param || !param.startsWith('duel_')) return;
     const duelId = param.replace(/^duel_/, '');
     if (!duelId) return;
     setTimeout(async () => {
@@ -5486,10 +5312,6 @@
       document.getElementById('viewPlacement').classList.add('active');
       title.innerText = "PTE ROOM • آزمون تعیین سطح";
       stopWfdTimer();
-    } else if (current === 'services') {
-      document.getElementById('viewServices').classList.add('active');
-      title.innerText = "PTE ROOM • خدمات";
-      stopWfdTimer();
     } else if (current === 'materials') {
       document.getElementById('viewMaterials').classList.add('active');
       title.innerText = "PTE ROOM • متریال آموزشی";
@@ -5520,8 +5342,7 @@
       stopWfdTimer();
     } else if (current === 'wfd') {
       document.getElementById('viewWfd').classList.add('active');
-      title.innerText = ankiWfdMode ? "PTE ROOM • ANKI PREDICTION WFD" : "PTE ROOM • Write From Dictation";
-      if (!ankiWfdMode) setAnkiWfdChrome(false);
+      title.innerText = "PTE ROOM • Write From Dictation";
       startWfdTimer();
     } else if (current === 'rfib') {
       document.getElementById('viewRfib').classList.add('active');
@@ -5557,10 +5378,6 @@
       title.innerText = "PTE ROOM • Duel";
       stopWfdTimer();
       if (currentDuelId) setupDuelPlayScreen(currentDuelId);
-    } else if (current === 'general_english') {
-      document.getElementById('viewGeneralEnglish').classList.add('active');
-      title.innerText = "PTE ROOM • General English";
-      stopWfdTimer();
     } else if (current === 'flash_setup') {
       document.getElementById('viewFlashSetup').classList.add('active');
       title.innerText = "PTE ROOM • تنظیمات لایتنر";
@@ -5924,14 +5741,13 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     document.getElementById('wfdWordCount').innerText = "Word Count: " + count;
   }
 
-  function getActiveWfdQuestion() {
-    if (ankiWfdMode && ankiCurrentId) {
-      return (wfdQuestions || []).find(x => String(x.id) === String(ankiCurrentId)) || null;
-    }
+  function evaluateWfdAnswer() {
     let list = [];
-    if (currentWfdCat === 'pred') list = wfdQuestions.filter(q => q.isPrediction);
-    else if (currentWfdCat === 'review') list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
-    else {
+    if (currentWfdCat === 'pred') {
+      list = wfdQuestions.filter(q => q.isPrediction);
+    } else if (currentWfdCat === 'review') {
+      list = wfdQuestions.filter(q => wfdHardList.includes(String(q.id)));
+    } else {
       list = [...wfdQuestions].sort((a, b) => {
         const aHard = wfdHardList.includes(String(a.id));
         const bHard = wfdHardList.includes(String(b.id));
@@ -5940,12 +5756,9 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
         return 0;
       });
     }
-    const idx = document.getElementById('wfdSelect').value;
-    return list[idx] || null;
-  }
 
-  function evaluateWfdAnswer() {
-    const q = getActiveWfdQuestion();
+    const idx = document.getElementById('wfdSelect').value;
+    const q = list[idx];
     const userRawText = document.getElementById('wfdInput').value.trim();
 
     if (!q) {
@@ -6006,7 +5819,7 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
     // Challenge of the Day → publish to live board (ticker)
     try {
       const dailyQ = getDailyWfdQuestion();
-      if (!ankiWfdMode && (dailyWfdMode || (dailyQ && String(dailyQ.id) === String(q.id)))) {
+      if (dailyWfdMode || (dailyQ && String(dailyQ.id) === String(q.id))) {
         dailyWfdMode = false;
         publishDailyWfdResult(score, origTokens.length, q);
         tips.push(`🔥 <b>Challenge of the Day:</b> ${score}/${origTokens.length} posted to the live board.`);
@@ -6019,13 +5832,7 @@ ${vocabCorrect ? '✅' : '❌'} <b>Vocabulary:</b> ${userVocab} ${!vocabCorrect 
 
     document.getElementById('wfdResultBox').style.display = 'flex';
     document.getElementById('wfdCheckActionBox').style.display = 'none';
-    if (ankiWfdMode) {
-      document.getElementById('wfdDiffActionBox').style.display = 'none';
-      document.getElementById('ankiGradeBox').style.display = 'grid';
-    } else {
-      document.getElementById('wfdDiffActionBox').style.display = 'flex';
-      document.getElementById('ankiGradeBox').style.display = 'none';
-    }
+    document.getElementById('wfdDiffActionBox').style.display = 'flex';
   }
 
   function markWfdDifficulty(diff) {
